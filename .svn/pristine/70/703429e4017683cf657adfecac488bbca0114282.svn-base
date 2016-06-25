@@ -1,0 +1,19 @@
+<?php 
+	header("Content-type:application/json;");
+	if ( !!$error=Yii::app()->errorHandler->error)
+	{
+		header("Content-type:application/json;");
+		echo $content;
+	}
+	else
+	{
+		$return = array();
+		$return['code'] = '200';
+		$return['version'] = 'V_ 0.001-'.Yii::getVersion();
+		$array = json_decode($content, true);
+		if ( !empty($array))
+			$return['content'] = $array;
+		else 
+			$return['content'] = $content;
+		echo json_encode($return);
+	}

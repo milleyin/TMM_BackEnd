@@ -1,0 +1,92 @@
+<?php
+/**
+ * 运营商登录
+ * @author Changhai Zhan
+ */
+class OperatorWebUser extends CWebUser
+{
+	/**
+	 * 加载用户的信息
+	 * @var unknown
+	 */
+	protected  $_model;
+	/**
+	 * 当前登录凭证密码
+	 * @var unknown
+	 */
+	protected $_login_unique;
+	
+	/**
+	 * 初始化
+	 * @see CWebUser::init()
+	 */
+	public function init()
+	{
+		parent::init();
+	}
+	
+	/**
+	 * 获取信息
+	 * @param unknown $id
+	 * @return unknown|NULL
+	 */
+	protected function getUser($id)
+	{
+		if(! $this->_model)
+			$this->_model = Agent::model()->findByPk($id,'`status`=:status',array(':status'=>Agent::status_suc));
+
+		return isset($this->_model->id) && $this->_model->id == $id ? $this->_model : null;
+	}
+	
+	/**
+	 * 获取唯一登录的秘钥
+	 * @param unknown $id
+	 * @return string
+	 */
+	protected function getLoginUnique($id)
+	{
+		if(! $this->_login_unique)
+			$this->_login_unique = md5($this->stateKeyPrefix.time().$id.mt_rand(10000000, 99999999));
+		
+		return $this->_login_unique;
+	}
+	
+	/**
+	 * 登录之前的操作
+	 * @see CWebUser::beforeLogin()
+	 */
+	protected function beforeLogin($id,$states,$fromCookie)
+	{ 
+		if(!! $model = $this->getUser($id))
+		{	
+			$time=time();
+			$login_unique = $this->getLoginUnique($model->id);
+			//缓存错误次数
+			$this->setFlash(LoginLog::login_error_name, $model->login_error);
+			//设置登录状态
+			if($model->set_login(time(), $login_unique))
+			{
+				$this->setState(Agent::login_unique, $login_unique);
+				
+				$this->setState('username', $model->phone);
+				$this->setState('name', $model->firm_name);
+				$this->setState('ip', Yii::app()->request->userHostAddress);
+				
+				$this->setFlash(LoginLog::login_address_name,'');
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * 登录之后的操作
+	 * @see CWebUser::afterLogin()
+	 */
+	protected function afterLogin($fromCookie)
+	{
+		LoginLog::createLog(LoginLog::agent, $this);
+	}
+	
+}
+

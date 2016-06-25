@@ -1,0 +1,44 @@
+body, div, ol, ul, h1, h2, h3, h4, h5, h6, p, th, td, dl, dd, form, iframe, input, textarea, select, label, article, aside, footer, header, menu, nav, section, time, audio, video {margin: 0;padding: 0; }
+article, aside, footer, header, hgroup, nav, section, audio, canvas, video, img {display: block; }
+body, button, input, select, textarea {font-size: 14px;font-family: arial,\5b8b\4f53,Microsoft YaHei; }
+body{margin: 0 auto;min-width: 320px;max-width: 640px;height: 100%;background-color: #E6E6E6;}
+iframe, img {border: 0; }
+textarea {resize: none; }
+em, i {font-style: normal; }
+ul, ol, li {list-style: none; }
+button, input, select, textarea {font-size: 100%; }
+a, a:visited {text-decoration: none; }
+table {border-collapse: collapse;border-spacing: 0; }
+img {-ms-interpolation-mode: bicubic; }
+
+.tmm_weui_label {
+    width: 4em;
+}
+.tmm_weui_cell_primary {
+    text-align: right;
+}
+.tmm_weui_input {
+    text-align: right;
+}
+.tmm_weui_btn_warn {
+    background-color: #723d3d;
+}
+.tmm_weui_btn_warn:not(.weui_btn_disabled):active {
+    background-color: #723d3d;
+}
+.tmm_weui_cell {
+    padding-top: 20px;
+    background-color: #E6E6E6;
+}
+.no_after_borderl:after {
+    width: 0;
+    height: 0;
+}
+.no_before_border:before {
+    width: 0;
+    height: 0;
+}
+li.weui_uploader_file {
+    position: relative;
+}
+li.weui_uploader_file .del {position:absolute;right:0;top: -7px;background:url(../images/del.png) no-repeat 15px 0;background-size:23px auto;width:40px;height:40px;display:inline-block;}

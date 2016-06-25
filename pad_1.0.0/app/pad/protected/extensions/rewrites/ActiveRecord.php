@@ -1,0 +1,150 @@
+<?php
+/**
+ * 数据模型入口
+ * @author Changhai Zhan
+ * 命名规则 
+ * 1）全大写
+ * 2）全局使用             _columnName_typeName
+ * 3）非全局使用      modelName_columnName_typeName 
+ */
+class ActiveRecord extends CActiveRecord
+{    
+    /***************************************  {公共的}  *****************************************************/
+    /**
+     * 记录状态 => 删除的 
+     * @var integer
+     */
+    const _STATUS_DELETED = -1;
+    /**
+     * 记录状态 => 禁用的
+     * @var integer
+     */
+    const _STATUS_DISABLE = 0;
+    /**
+     * 记录状态 => 正常的
+     * @var integer
+     */
+    const _STATUS_NORMAL = 1;
+    /**
+     * 解释字段 status 的含义
+     * @var array
+     */
+    public static $_status = array(
+        self::_STATUS_DELETED => '已删除',
+        self::_STATUS_DISABLE => '已禁用',
+        self::_STATUS_NORMAL => '正常',
+    );
+        
+    /***************************************  function   *****************************************************/
+    /**
+     * 时间搜索 
+     * @param unknown $attribute
+     * @param unknown $criteria
+     * @param string $relation
+     */
+    public function timeSearch($attribute, $criteria, $relation = 't')
+    {
+        if (strpos($attribute, '.') !== false)
+            list($relation, $attribute) = explode('.', $attribute);
+        $value = $this->$attribute;
+        if (is_array($value) && !empty($value))
+        {
+            if (isset($value[0], $value[1]) || isset($value['start'], $value['end']))
+            {
+                $start = strtotime($value[0]);
+                $end = strtotime($value[1]);
+            }
+            elseif (isset($value['start'], $value['end']))
+            {
+                $start = strtotime($value['start']);
+                $end = strtotime($value['end']);
+            }
+            if (isset($start, $end) && $start !== false && $end !== false)
+                $criteria->addBetweenCondition($relation . '.' . $attribute, $start, $end + 3600 * 24 - 1);
+        }
+        else
+        {
+            if (preg_match('/^(?:\s*(<>|<=|>=|<|>|=))?(.*)$/', $value, $matches))
+            {
+                $value = $matches[2];
+                $op = $matches[1];
+            }
+            else
+                $op = '';
+            if ($value != '' && (($value = strtotime($value)) !== false))
+            {
+                if ($op == '<>')
+                {
+                    $criteria->addCondition($relation . '.' . $attribute . '<'. CDbCriteria::PARAM_PREFIX . CDbCriteria::$paramCount . ' OR ' . $relation . '.' . $attribute . '>'. CDbCriteria::PARAM_PREFIX . (CDbCriteria::$paramCount+1));
+                    $criteria->params[CDbCriteria::PARAM_PREFIX . CDbCriteria::$paramCount++] = $value;
+                    $criteria->params[CDbCriteria::PARAM_PREFIX . CDbCriteria::$paramCount++] = $value + 3600 * 24 - 1;
+                }
+                elseif ($op == '<=' || $op == '<')
+                    $criteria->compare($relation . '.' . $attribute, $op . ($value + 3600 * 24 - 1));
+                elseif ($op == '')
+                    $criteria->addBetweenCondition($relation . '.' . $attribute, $value, $value + 3600 * 24 - 1);
+                else
+                    $criteria->compare($relation . '.' . $attribute, $op . $value);
+            }
+        }
+    }
+    
+    /**
+     * 属性是否存在
+     * @param unknown $attribute
+     */
+    public function isExistAttribute($attribute)
+    {
+        return in_array($attribute, $this->attributeNames());
+    }
+    
+    /**
+     * 
+     * @param string $attributes
+     * @return string
+     */
+    public function unsafeAttribute($attributes = '')
+    {
+//         if ($attributes != '' && !is_array($attributes))
+//              $attributes = explode(',', $attributes);
+//         $safeAttributeNames = $this->getSafeAttributeNames();
+//         $safeAttributeNames = array_flip($safeAttributeNames);
+//         if ( !empty($attributes))
+//         {
+//             foreach ($attributes as $attribute)
+//             {
+//                $attribute = trim($attribute);
+//                 if (key_exists($attribute, $safeAttributeNames))
+//                     unset($safeAttributeNames[$attribute]);
+//             }
+//         }
+//         return implode(', ', array_flip($safeAttributeNames));
+    }
+    
+    /**
+     * 保存之前的操作
+     * @see CActiveRecord::beforeSave()
+     */
+    public function beforeSave()
+    {
+        if (parent::beforeSave())
+        {
+            if ($this->getIsNewRecord())
+            {
+                if ($this->isExistAttribute('add_time'))
+                    $this->add_time = time();
+                if ($this->isExistAttribute('up_time'))
+                    $this->up_time = time();
+            }
+            else
+            {
+                if ($this->isExistAttribute('up_time'))
+                    $this->up_time = time();
+            }
+            if ($this->isExistAttribute('manager_id') && isset(Yii::app()->user, Yii::app()->user->id))
+                $this->manager_id = Yii::app()->user->id;       
+            return true;
+        }
+        return false;
+    }
+}

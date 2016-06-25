@@ -1,0 +1,57 @@
+<?php
+/* @var $this PadController */
+/* @var $model Pad */
+/* @var $form CActiveForm */
+?>
+
+<div class="form wide">
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'pad-form',
+	'focus'=>array($model, 'number'),
+	'enableAjaxValidation'=>true,
+	'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>true,
+	),
+)); ?>
+
+	<p class="note">这些字段<span class="required">*</span>是必须的。</p>
+
+	<?php echo $form->errorSummary($model); ?>
+
+	<div class="row value">
+		<?php echo $form->label($model,'store_id'); ?>
+		<?php echo $model->Pad_Store->store_name; ?>
+	</div>
+	
+    <div class="row value">
+		<?php echo $form->label($model->Pad_Store, 'phone'); ?>
+		<?php echo $model->Pad_Store->phone; ?>
+	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'name'); ?>
+		<?php echo $form->textField($model,'name',array('size'=>16,'maxlength'=>16)); ?>
+		<?php echo $form->error($model,'name'); ?>
+	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'number'); ?>
+		<?php echo $form->textField($model,'number',array('size'=>30,'maxlength'=>128)); ?>
+		<?php echo $form->error($model,'number'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'mac'); ?>
+		<?php echo $form->textField($model,'mac',array('size'=>30,'maxlength'=>128)); ?>
+		<?php echo $form->error($model,'mac'); ?>
+	</div>
+
+	<div class="row buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? '绑定' : '保存'); ?>
+	</div>
+
+<?php $this->endWidget(); ?>
+
+</div><!-- form -->

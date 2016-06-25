@@ -1,0 +1,273 @@
+<extend name="Base/common"/>
+<block name="style">
+
+</block>
+<block name="body">
+    <body class="mallingForm">
+    <div class="headerbg"></div>
+    <div class="mallingCard">
+        <div class="title">{$cardInfo.name}</div>
+        <div class="txt" v-text="message">桂味荔枝25kg+随赠5kg</div>
+        <span class="ticket">卡券号：{$cardInfo.card_no}</span>
+    </div>
+
+    <div class="conForm">
+        <div class="specification">选择包装规格</div>
+        <div class="boxes">
+            <div class="item" data-item="one">
+                <div class="divLeftImg">
+                    <img src="__IMG__/selboxes.png"/>
+                </div>
+                <div class="divLeft">6箱 x 5kg</div>
+            </div>
+            <div class="item" data-item="two">
+                <div class="divRightImg">
+                    <img src="__IMG__/selboxes.png" style="display:none"/>
+                </div>
+                <div class="divRight">10箱 x 3kg</div>
+            </div>
+        </div>
+    </div>
+    <div class="triangle"></div>
+
+    <form action="{:U('Card/logistics', array('fromType' => $fromType))}" method="post" id="item-one-form">
+        <div id="address-one">
+            <div class="addr">
+                <div class="receiver">
+                    <div class="receiver-name">收货人1</div>
+                </div>
+                <div class="con">
+                    <div class="row">
+                        <div class="tit">姓名</div>
+                        <input type="text" name="cnee[]" placeholder="收货人真实姓名">
+                    </div>
+                    <div class="row">
+                        <div class="tit">手机号码 </div>
+                        <input type="tel" name="phone[]" placeholder="手机号或电话">
+                    </div>
+                    <div class="row">
+                        <div class="tit">邮寄箱数</div>
+                        <select class="num" name="number[]">
+                            <option value="1" name="isDefault">1</option>
+                            <option value="2" name="isDefault">2</option>
+                            <option value="3" name="isDefault">3</option>
+                            <option value="4" name="isDefault">4</option>
+                            <option value="5" name="isDefault">5</option>
+                            <option value="6" name="isDefault">6</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="tit">选择省份</div>
+                        <select class="province" name="province[]">
+                            <option value="" name="isDefault">请选择省份</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="tit">选择城市</div>
+                        <select class="city" name="city[]">
+                            <option value="" name="isDefault">请选择城市</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="tit">选择地区</div>
+                        <select class="area" name="area[]">
+                            <option value="" name="isDefault">请选择地区</option>
+                        </select>
+                    </div>
+                    <div class="row rowarea">
+                        <div class="tit">详细地址</div>
+                        <textarea name="address[]" rows="2" class="detialAddr" placeholder="请详细到门牌号"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btnAdd"><span class="add" id="add-one" data-specs="1">添加收货人</span></div>
+        <div class="divBtn">
+            <input type="hidden" name="card_id" value="{$cardInfo.id}">
+            <input type="hidden" name="specs_id" value="1">
+            <button class="submit" type="submit">确认收货地址</button>
+        </div>
+    </form>
+
+    <form action="{:U('Card/logistics', array('fromType' => $fromType))}" method="post" id="item-two-form" style="display: none;">
+        <div id="address-two">
+            <div class="addr">
+                <div class="receiver">
+                    <div class="receiver-name">收货人1</div>
+                </div>
+                <div class="con">
+                    <div class="row">
+                        <div class="tit">姓名</div>
+                        <input type="text" name="cnee[]" placeholder="收货人真实姓名">
+                    </div>
+                    <div class="row">
+                        <div class="tit">手机号码 </div>
+                        <input type="tel" name="phone[]" placeholder="手机号或电话">
+                    </div>
+                    <div class="row">
+                        <div class="tit">邮寄箱数</div>
+                        <select class="num" name="number[]">
+                            <option value="1" name="isDefault">1</option>
+                            <option value="2" name="isDefault">2</option>
+                            <option value="3" name="isDefault">3</option>
+                            <option value="4" name="isDefault">4</option>
+                            <option value="5" name="isDefault">5</option>
+                            <option value="6" name="isDefault">6</option>
+                            <option value="7" name="isDefault">7</option>
+                            <option value="8" name="isDefault">8</option>
+                            <option value="9" name="isDefault">9</option>
+                            <option value="10" name="isDefault">10</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="tit">选择省份</div>
+                        <select class="province" name="province[]">
+                            <option value="" name="isDefault">请选择省份</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="tit">选择城市</div>
+                        <select class="city" name="city[]">
+                            <option value="" name="isDefault">请选择城市</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="tit">选择地区</div>
+                        <select class="area" name="area[]">
+                            <option value="" name="isDefault">请选择地区</option>
+                        </select>
+                    </div>
+                    <div class="row rowarea">
+                        <div class="tit">详细地址</div>
+                        <textarea name="address[]" rows="2" class="detialAddr" placeholder="请详细到门牌号"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btnAdd"><span class="add" id="add-two" data-specs="2">添加收货人</span></div>
+        <div class="divBtn">
+            <input type="hidden" name="card_id" value="{$cardInfo.id}">
+            <input type="hidden" name="specs_id" value="2">
+            <button class="submit" type="submit">确认收货地址</button>
+        </div>
+    </form>
+
+    <div id="address-one-tml" style="display: none">
+        <div class="addr">
+            <div class="receiver">
+                <div class="receiver-name">收货人</div>
+                <div class="del-address">删除</div>
+            </div>
+            <div class="con">
+                <div class="row">
+                    <div class="tit">姓名</div>
+                    <input type="text" name="cnee[]" placeholder="收货人真实姓名">
+                </div>
+                <div class="row">
+                    <div class="tit">手机号码 </div>
+                    <input type="tel" name="phone[]" placeholder="手机号或电话">
+                </div>
+                <div class="row">
+                    <div class="tit">邮寄箱数</div>
+                    <select class="num" name="number[]">
+                        <option value="1" name="isDefault">1</option>
+                        <option value="2" name="isDefault">2</option>
+                        <option value="3" name="isDefault">3</option>
+                        <option value="4" name="isDefault">4</option>
+                        <option value="5" name="isDefault">5</option>
+                        <option value="6" name="isDefault">6</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="tit">选择省份</div>
+                    <select class="province" name="province[]">
+                        <option value="" name="isDefault">请选择省份</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="tit">选择城市</div>
+                    <select class="city" name="city[]">
+                        <option value="" name="isDefault">请选择城市</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="tit">选择地区</div>
+                    <select class="area" name="area[]">
+                        <option value="" name="isDefault">请选择地区</option>
+                    </select>
+                </div>
+                <div class="row rowarea">
+                    <div class="tit">详细地址</div>
+                    <textarea name="address[]" rows="2" class="detialAddr" placeholder="请详细到门牌号"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="address-two-tml" style="display: none">
+        <div class="addr">
+            <div class="receiver">
+                <div class="receiver-name">收货人</div>
+                <div class="del-address">删除</div>
+            </div>
+            <div class="con">
+                <div class="row">
+                    <div class="tit">姓名</div>
+                    <input type="text" name="cnee[]" placeholder="收货人真实姓名">
+                </div>
+                <div class="row">
+                    <div class="tit">手机号码 </div>
+                    <input type="tel" name="phone[]" placeholder="手机号或电话">
+                </div>
+                <div class="row">
+                    <div class="tit">邮寄箱数</div>
+                    <select class="num" name="number[]">
+                        <option value="1" name="isDefault">1</option>
+                        <option value="2" name="isDefault">2</option>
+                        <option value="3" name="isDefault">3</option>
+                        <option value="4" name="isDefault">4</option>
+                        <option value="5" name="isDefault">5</option>
+                        <option value="6" name="isDefault">6</option>
+                        <option value="7" name="isDefault">7</option>
+                        <option value="8" name="isDefault">8</option>
+                        <option value="9" name="isDefault">9</option>
+                        <option value="10" name="isDefault">10</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="tit">选择省份</div>
+                    <select class="province" name="province[]">
+                        <option value="" name="isDefault">请选择省份</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="tit">选择城市</div>
+                    <select class="city" name="city[]">
+                        <option value="" name="isDefault">请选择城市</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="tit">选择地区</div>
+                    <select class="area" name="area[]">
+                        <option value="" name="isDefault">请选择地区</option>
+                    </select>
+                </div>
+                <div class="row rowarea">
+                    <div class="tit">详细地址</div>
+                    <textarea name="address[]" rows="2" class="detialAddr" placeholder="请详细到门牌号"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+</block>
+<block name="script">
+    <script>
+
+        var _URL_ = '__URL__';
+        var _MODULE_ = '__MODULE__';
+
+    </script>
+    <script src="__STATIC__/layermobile/layer.js"></script>
+    <script src="__STATIC__/common/js/region.js"></script>
+    <script src="__JS__/mailing.js"></script>
+</block>

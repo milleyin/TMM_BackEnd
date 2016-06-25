@@ -1,0 +1,8 @@
+<?php 
+    $return = array(
+    	'id'=>Yii::app()->user->id,
+        'pad_id'=>Yii::app()->user->padId,
+        'pad_name'=>Yii::app()->user->padName,
+        'pad_number'=>Yii::app()->user->padNumber,
+    );
+	echo json_encode($return);

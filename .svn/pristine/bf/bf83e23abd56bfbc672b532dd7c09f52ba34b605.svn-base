@@ -1,0 +1,114 @@
+.<extend name="Base/back"/>
+<block name="style">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+    </style>
+</block>
+<block name="body">
+    <body>
+    <include file="Public/back-nav"/>
+
+    <div class="container-fluid" style="padding-top: 30px;">
+        <form id="ticket-form" class="form-inline" method="get" action="{:U('Back/ticket')}">
+            <div class="form-group">
+                <input id="mobile" type="text" class="form-control" name="mobile" placeholder="输入手机号查找" value="{$mobile}">
+            </div>
+            <button type="submit" class="btn btn-default">查找</button>
+        </form>
+        <div class="table-responsive manage-table" style="margin-top: 10px;">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>手机号</th>
+                    <th>名称</th>
+                    <th>类别</th>
+                    <th>入园门票</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <empty name="ticketOrderList">
+                    <tr>
+                        <td colspan="5">暂无数据...</td>
+                    </tr>
+
+                    <else />
+
+                    <volist name="ticketOrderList" id="vo" >
+                        <tr>
+                            <td>{$vo.mobile}</td>
+                            <td>{$vo.ticketInfo.name}</td>
+                            <td>
+                                <eq name="vo.type" value="1">
+                                    自购
+                                </eq>
+                                <eq name="vo.type" value="2">
+                                    赠票
+                                </eq>
+                            </td>
+                            <td>{$vo.nums}</td>
+                            <td>
+                                <a href="javascript:;" class="go-enter" data-number="{$vo.nums}" data-mobile="{$vo.mobile}" data-type="{$vo.type}">确认入园</a>
+                            </td>
+                        </tr>
+                    </volist>
+                </empty>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </body>
+</block>
+<block name="script">
+    <script src="__STATIC__/layer/layer.js"></script>
+    <script src="__STATIC__/layer/extend/layer.ext.js"></script>
+    <script>
+        $(function() {
+            $('.go-enter').on('click', function() {
+                var $this = $(this);
+                var dataObj = $this.data();
+                layer.prompt({
+                    title: '请输入要确认入园的门票数',
+                }, function(value, index){
+                    layer.close(index);
+                    if(!/^[0-9]*$/.test(value)){
+                        layer.alert("请输入数字!");
+                    } else if (value < 1 || value > dataObj.number) {
+                        layer.alert("门票数 无效!");
+                    } else {
+                        $.post(
+                            "{:U('Back/goToEnter')}",
+                            {'mobile': dataObj.mobile, 'type':dataObj.type, 'number': value},
+                            function(response) {
+                                if (response.status) {
+                                    layer.alert(response.prompt, function(index){
+                                        layer.close(index);
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    layer.alert(response.prompt);
+                                }
+                        });
+                    }
+                });
+            });
+
+            $('#ticket-form').submit(function() {
+                var mobile = $('#mobile').val();
+                if ($.trim(mobile)) {
+                    if (! mobile.match(/^1[34578][0-9]{9}$/)) {
+                        layer.tips('手机号 无效', '#mobile', {
+                            tips: [1, '#3595CC'],
+                            time: 4000
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+    </script>
+</block>

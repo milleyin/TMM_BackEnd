@@ -1,0 +1,86 @@
+@CHARSET "UTF-8";
+.form{
+	overflow:hidden;
+	padding:10px;
+	margin-bottom:10px;
+	background:#E9F3FA;
+	color: rgb(14, 4, 4);
+	border-radius: 10px;
+	font-weight:900;
+}
+#Search{
+	overflow:hidden;
+	padding:10px;
+	margin-bottom:10px;
+	background:#A9A9A9;
+	color: white;
+	border-radius: 10px;
+	font-weight:900;
+}
+#Search span {
+	height: 22px;
+	width: 200px;
+	padding-left: 5px;
+	font-size: 16px;
+}
+#Search input{
+	height: 22px;
+	width: 200px;
+	padding-left: 5px;
+	font-size: 16px;
+}
+.button{
+	padding:20px 20px 50px 100px;
+}
+#Search .button input ,.buttons input,.button input{
+	font-size: 16px;
+	font-weight:900;
+	height: 28px;
+	width: 88px;
+	margin:0 0 0 50px;
+	cursor: pointer;
+	border-radius: 10px;
+	color: white;
+	background: #21AA37;	
+}
+#Search .button input:hover,.buttons input:hover,.button input:hover{
+	width: 80px;
+}
+.buttons{
+	padding:5px 0 0 350px;
+}
+.date{
+	margin: 10px 0 10px 5px;
+	font-size: 16px;
+	color: red;
+}
+ .rows {
+ 	height:auto;
+ 	clear: left;
+	padding:5px 0 0 35px;
+	vertical-align:middle;
+ }
+.rows label{
+	float:left;
+ 	width:80px;
+ 	padding:6px 0 0 0;
+}
+.radio{
+	padding:0 0 5px 35px;
+}
+.radio span{
+	height: 4em;
+	line-height: 2em;
+	overflow: hidden;
+	padding:5px 5px 0 35px;
+}
+.radio .radios{
+	float:left;
+	width:100px;
+	height:22px;
+	padding:5px 0 0 20px;
+
+}
+.radio .radios input{
+	width: 20px;
+}

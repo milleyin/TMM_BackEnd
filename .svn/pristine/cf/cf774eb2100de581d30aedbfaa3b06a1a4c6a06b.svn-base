@@ -1,0 +1,43 @@
+<?php
+/**
+ * This is the template for generating a controller class file.
+ * The following variables are available in this template:
+ * - $this: the ControllerCode object
+ */
+$path = explode('/', $this->controller);
+$namespace = '';
+if ( !empty($path) && count($path) > 1)
+{
+	unset($path[count($path)-1]);
+	$namespace = '\\' . implode('\\', $path);
+}
+?>
+<?php echo "<?php\n"; ?>
+namespace app<?php echo $namespace;?>\controllers;
+
+use <?php echo $this->baseClass?>;
+
+/**
+ * @author Changhai Zhan
+ *	创建时间：<?php echo date('Y-m-d H:i:s');?>
+ */
+class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseClass."\n"; ?>
+{
+<?php foreach($this->getActionIDs() as $action): ?>
+	public function action<?php echo ucfirst($action); ?>()
+	{
+		$this->render('<?php echo $action; ?>');
+	}
+
+<?php endforeach; ?>
+	/*
+	public function actions()
+	{
+		return array(
+<?php foreach($this->getActionIDs() as $action): ?>
+			'<?php echo $action;?>'=>'<?php echo $this->getUniqueControllerID();?>.<?php echo ucfirst($action) . ucfirst($this->getUniqueControllerID());?>Action',
+<?php endforeach; ?>
+		);
+	}
+	*/
+}

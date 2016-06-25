@@ -1,0 +1,90 @@
+
+--
+-- 表的结构 `tmm_order_items`
+--
+DROP TABLE IF EXISTS `tmm_order_items`;
+CREATE TABLE IF NOT EXISTS `tmm_order_items` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',  
+  `organizer_id` int(11) unsigned NOT NULL DEFAULT 0 COMMENT '归属组织者表',
+  `order_organizer_id` int(11) unsigned NOT NULL DEFAULT 0 COMMENT '归属组织者订单详情表',  
+  `user_id` int(11) unsigned NOT NULL DEFAULT 0 COMMENT '归属用户',  
+  `order_id` int(11) unsigned NOT NULL DEFAULT 0 COMMENT '归属订单表',
+  `order_shops_id` int(11) unsigned NOT NULL COMMENT '归属订单商品表（复制表）',
+  `store_id` int(11) unsigned NOT NULL COMMENT '项目归属商家',
+  `manager_id` int(11) unsigned NOT NULL COMMENT '商家管理者',
+  `agent_id` int(11) unsigned NOT NULL COMMENT '项目归属代理商',
+  `shops_id` INT(11) UNSIGNED NOT NULL COMMENT '商品来源',  
+  `shops_c_id` int(11) unsigned NOT NULL COMMENT '归属商品分类',
+  `shops_c_name` varchar(20) NOT NULL COMMENT '归属商品分类名称',  
+  `items_id` INT(11) UNSIGNED NOT NULL COMMENT '项目来源',
+  `items_c_id` int(11) unsigned NOT NULL COMMENT '归属项目分类',
+  `items_c_name` varchar(20) NOT NULL COMMENT '归属项目分类名称', 
+  `items_name` varchar(100) NOT NULL COMMENT '项目名称', 
+  `items_address` varchar(200) NOT NULL COMMENT '项目地址', 
+  `items_push` FLOAT(5,2) NOT NULL DEFAULT 0.00 COMMENT '平台对项目的抽成 %(生效值)',
+  `items_push_orgainzer` FLOAT(5,2) NOT NULL DEFAULT 0.00 COMMENT '组织者对项目的抽成 %(生效值)',
+  `items_push_store` FLOAT(5,2) NOT NULL DEFAULT 0.00 COMMENT '商家对项目的抽成 %(生效值)',
+  `items_push_agent` FLOAT(5,2) NOT NULL DEFAULT 0.00 COMMENT '代理商平台对项目的抽成 %(生效值)',
+  `items_map` VARCHAR(100) NULL COMMENT '地图',
+  `items_phone` VARCHAR(20) NULL COMMENT '联系电话',
+  `items_weixin` VARCHAR(20) NULL COMMENT '微信号',
+  `items_content` TEXT NOT NULL DEFAULT '' COMMENT '项目详细内容',
+  `items_img` VARCHAR(100) NULL COMMENT '随机一张图片',
+  `items_start_work` TIME NOT NULL DEFAULT '00:00:00' COMMENT '工作开始时间',
+  `items_end_work` TIME NOT NULL DEFAULT '23:59:59' COMMENT '工作结束时间',
+  `items_up_time` INT(10) UNSIGNED NOT NULL COMMENT '最后一次更新时间',  
+  `items_pub_time` INT(10) NOT NULL COMMENT '项目审核通过时间',     
+  `shops_sort` TINYINT(3) UNSIGNED NOT NULL DEFAULT 50 COMMENT '点排序',
+  `shops_day_sort` TINYINT(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '区分天单位(半天)',
+  `shops_half_sort` TINYINT(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '线 结伴游 排序',
+  `shops_dot_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '当前项目关联点id',
+  `shops_thrand_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '当前项目关联线id',
+  `shops_info` text  NOT NULL DEFAULT '' COMMENT '项目简介',
+  `shops_up_time` INT(10) UNSIGNED NOT NULL COMMENT '最后一次更新时间',  
+  `shops_pub_time` INT(10) NOT NULL COMMENT '商品审核通过时间',   
+  `total` decimal(13,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '总计总额',
+  `employ_time` INT(10) UNSIGNED NOT NULL COMMENT '消费时间',  
+  `barcode` VARCHAR(100) NOT NULL COMMENT '消费码',  
+  `is_shops` tinyint(3) NOT NULL DEFAULT '0' COMMENT '商家同意是否接单 0没选择 1同意 -1 不同意',
+  `is_barcode` tinyint(3) NOT NULL DEFAULT '0' COMMENT '-1 无效 0 可消费 1已消费',
+  `scan_barcode` VARCHAR(100) NOT NULL COMMENT '扫码',  
+  `add_time` int(10) unsigned NOT NULL COMMENT '创建时间',
+  `up_time` int(10) unsigned NOT NULL COMMENT '更新时间',
+  `status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '记录状态1正常0禁用-1删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单项目详细情况';
+
+--
+-- 表的结构 `tmm_order_items_fare`
+--
+DROP TABLE IF EXISTS `tmm_order_items_fare`;
+CREATE TABLE IF NOT EXISTS `tmm_order_items_fare` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `order_items_id` int(11) unsigned NOT NULL DEFAULT 0 COMMENT '归属订单项目详细',
+  `organizer_id` int(11) unsigned NOT NULL DEFAULT 0 COMMENT '归属组织者',
+  `order_organizer_id` int(11) unsigned NOT NULL DEFAULT 0 COMMENT '归属组织者订单详情表',
+  `user_id` int(11) unsigned NOT NULL DEFAULT 0 COMMENT '归属用户',
+  `order_id` int(11) unsigned NOT NULL DEFAULT 0 COMMENT '归属订单表',
+  `order_shops_id` int(11) unsigned NOT NULL COMMENT '归属订单商品表（复制表）',
+  `store_id` int(11) unsigned NOT NULL COMMENT '归属商家',  
+  `manager_id` int(11) unsigned NOT NULL COMMENT '商家管理者',
+  `agent_id` int(11) unsigned NOT NULL COMMENT '项目归属代理商',
+  `shops_id` INT(11) UNSIGNED NOT NULL COMMENT '商品来源',  
+  `shops_c_id` int(11) unsigned NOT NULL COMMENT '归属商品分类',
+  `items_id` INT(11) UNSIGNED NOT NULL COMMENT '项目来源',
+  `items_c_id` int(11) unsigned NOT NULL COMMENT '归属项目分类',
+  `fare_id` int(11) unsigned NOT NULL COMMENT '归属价格fare表',
+  `fare_name` varchar(24) NOT NULL DEFAULT '' COMMENT '名称',
+  `fare_info` varchar(64)  NULL DEFAULT '' COMMENT '类型',
+  `fare_number` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '平方',
+  `fare_price` decimal(13,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '商品价格',
+  `fare_up_time` int(10) unsigned NOT NULL COMMENT '创建时间',
+  `price` decimal(13,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '付款价格',  
+  `number` int(11) unsigned NOT NULL DEFAULT 0 COMMENT '购买数量',
+  `total` decimal(13,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '总计总额',
+  `add_time` int(10) unsigned NOT NULL COMMENT '创建时间',
+  `up_time` int(10) unsigned NOT NULL COMMENT '更新时间',
+  `status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '记录状态1正常0禁用-1删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单项目详细购买价格';
+

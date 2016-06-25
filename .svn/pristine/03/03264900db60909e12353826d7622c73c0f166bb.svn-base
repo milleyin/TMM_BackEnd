@@ -1,0 +1,29 @@
+<?php
+namespace app\user\controllers;
+
+use UserModulesController;
+
+/**
+ * @author Moore Mo
+ *	创建时间：2016-06-03 10:12:18 */
+class LoginController extends UserModulesController
+{
+	public function actionAdmin()
+	{
+		$this->render('admin');
+	}
+
+	public function actionIndex()
+	{
+		if (! \Yii::app()->user->isGuest) {
+			$this->redirect(\Yii::app()->homeUrl);
+		}
+		$this->renderPartial('index');
+	}
+
+
+	public function actionView()
+	{
+		$this->render('view');
+	}
+}

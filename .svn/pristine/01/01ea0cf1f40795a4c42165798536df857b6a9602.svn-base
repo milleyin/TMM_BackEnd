@@ -1,0 +1,11 @@
+
+
+// http://58.240.26.203:8090/api/product/plans/search?q=旅游&uid=1111085&sid=qljltest&ts=2015-10-12 08:10:32&sig=D0AF3FE28DBB07C2B112A961818E6600&v=1.0.1
+// 选择的是 华泰境内旅行险标准款
+{
+  "planId": 175,
+  "name": "华泰境内旅行险标准款",
+  "lastModified": "2015-09-06 00:01:45",
+  "insComShortName": "华泰财险",
+  "buyNum": 166
+},

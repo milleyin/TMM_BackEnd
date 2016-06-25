@@ -1,0 +1,731 @@
+<?php
+
+/**
+ * This is the model class for table "{{items}}".
+ *
+ * The followings are the available columns in table '{{items}}':
+ * @property string $id
+ * @property string $c_id
+ * @property string $agent_id
+ * @property string $store_id
+ * @property string $manager_id
+ * @property string $name
+ * @property string $area_id_p
+ * @property string $area_id_m
+ * @property string $area_id_c
+ * @property string $address
+ * @property double $push
+ * @property double $push_orgainzer
+ * @property double $push_store
+ * @property double $push_agent
+ * @property string $map
+ * @property string $info
+ * @property string $phone
+ * @property string $weixin
+ * @property string $content
+ * @property integer $audit
+ * @property string $down
+ * @property string $start_work
+ * @property string $end_work
+ * @property string $pub_time
+ * @property string $add_time
+ * @property string $up_time
+ *  @property integer $is_push
+ * @property integer $lng
+ * @property integer $lat
+ * @property integer $free_status
+ * @property integer $status
+ * @property integer distance
+ */
+class Items extends CActiveRecord
+{
+	/**
+	 * push 设置初始化
+	 * @var integer
+	 */
+	const push_init=1;
+	
+	/**
+	 * 未提交
+	 * @var integer
+	 */
+	const audit_draft=-2;
+	/**
+	 * 未审核
+	 * @var integer
+	 */
+	const audit_pending=0;
+	/**
+	 * 未通过
+	 * @var integer
+	 */
+	const audit_nopass=-1;
+	/**
+	 * 通过
+	 * @var integer
+	 */
+	const audit_pass=1;
+	/**
+	 * 上线
+	 * @var integer
+	 */
+	const status_online=1;
+	/**
+	 * 下线
+	 * @var integer
+	 */
+	const status_offline=0;
+	/**
+	 * 删除
+	 * @var integer
+	 */
+	const status_del=-1;
+	/**
+	 * 项目(吃)
+	 * @var integer
+	 */
+	const items_eat=1;
+	/**
+	 * 项目(住)
+	 * @var integer
+	 */
+	const items_hotel=2;
+	/**
+	 * 项目(玩)
+	 * @var integer
+	 */
+	const items_play=3;
+	/**
+	 * 项目(农产品)
+	 * @var integer
+	 */
+	const items_farm=4;
+	/**
+	 * 项目(免费)
+	 * @var integer
+	 */
+	const free_status_yes=0;
+	/**
+	 * 项目(不免费)
+	 * @var integer
+	 */
+	const free_status_not=1;
+	/***************************************我是分隔线*************************************************/
+	/**
+	 * 解释字段 free_status 的含义
+	 * @var array
+	 */
+	public static $_free_status=array('免费','不免费');
+    /**
+     * 解释字段 status 的含义
+     * @var array
+     */
+    public static $_status=array(-1=>'删除','下线','上线');
+    /**
+     * 解释字段 audit 的含义
+     * @var array
+     */
+    public static $_audit=array(-2=>'未提交',-1=>'未通过','未审核','已通过');
+    /**
+     * 解释字段 audit 日志类型
+     * @var array
+     */
+    public static $__audit = array(
+    		self::items_eat 	=> AuditLog::items_eat,
+    		self::items_hotel => AuditLog::items_hotel,
+    		self::items_play 	=> AuditLog::items_play,
+    );
+    /**
+     * 搜索的时间类型
+     * @var array
+     */
+    public $search_time_type;
+    /**
+     *	解释搜索类型时间的含义 search_time_type
+     * @var string
+     */
+    public static $_search_time_type=array('发布时间','创建时间','更新时间');
+    /**
+     *	解释搜索类型时间 search_time_type 的字段搜索
+     * @var string
+     */
+    public $__search_time_type=array('pub_time','add_time','up_time');
+   /**
+     * 搜索开始的时间
+     * @var string
+	 */
+    public $search_start_time;
+    /**
+     * 搜索结束的时间
+     * @var string
+     */
+    public $search_end_time; 
+
+	public $distance;
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return '{{items}}';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+			//array('name, area_id_p, area_id_m, area_id_c, address, content, pub_time, add_time, up_time', 'required'),
+			array('audit, status,free_status', 'numerical', 'integerOnly'=>true),
+			array('lng,lat,push,push_orgainzer,push_store,push_agent', 'numerical'),
+			array('c_id, agent_id, store_id, manager_id, area_id_p, area_id_m, area_id_c', 'length', 'max'=>11),
+			array('name, address,map, info', 'length', 'max'=>100),
+			array('phone, weixin', 'length', 'max'=>20),
+			array('lng,lat,down, pub_time, add_time, up_time', 'length', 'max'=>10),
+			array('audit, status,free_status', 'length', 'max'=>3),
+							
+			array('free_status','in','range'=>array_keys(self::$_free_status)),
+			array('lng,lat','validate_lng_lat'),
+						
+			array('name', 'length', 'min'=>1,'max'=>15),
+			array('address', 'length', 'max'=>25),
+			//创建项目主要
+			array('free_status,lng,lat,manager_id, name, area_id_p, area_id_m, area_id_c, address , phone, start_work, end_work, weixin', 'required','on'=>'create,update',),
+			array('free_status,lng,lat,manager_id, name, area_id_p, area_id_m, area_id_c, address, phone, weixin, content, start_work, end_work','safe','on'=>'create,update'),
+			array('search_time_type,search_start_time,search_end_time,id, c_id,map, agent_id,info, store_id, push, push_orgainzer,push_store,push_agent,audit, down,info, pub_time, add_time, up_time, status,with_store','unsafe','on'=>'create,update'),			
+			array(
+					'map','file','allowEmpty'=>true,
+					'types'=>'jpg,png', 'maxSize'=>1024*1024*2,
+					'tooLarge'=>'图片超过2M,请重新上传', 'wrongType'=>'图片格式错误',
+					'on'=>'create,update',
+			),
+			array('manager_id','verify_store','on'=>'create,update'),		
+			array('start_work, end_work','type','timeFormat'=>'hh:mm:ss','type'=>'time','on'=>'create,update','message'=>'{attribute} 格式必须是 00:00:00','on'=>'create,update',),
+			array('phone','match','pattern'=>'/^1\d{10}$|^(0\d{2,3}-?|\(0\d{2,3}\))?[1-9]\d{4,7}(-\d{1,8})?$/','message'=>'{attribute} 不是有效的','on'=>'create,update'),
+			array('area_id_p, area_id_m, area_id_c','ext.Validator.Validator_area','on'=>'create,update'),
+
+			//选择创建类型
+			array('c_id','required','on'=>'select_create'),
+			array('c_id', 'safe', 'on'=>'select_create'),
+			array('free_status,search_time_type,search_start_time,search_end_time,id,map, agent_id, store_id, manager_id, name, area_id_p, area_id_m, area_id_c, address, push,push_orgainzer,push_store,push_agent, info, phone, weixin, content, audit, down, start_work, end_work, pub_time, add_time, up_time, status,with_store', 'unsafe', 'on'=>'select_create'),
+				
+			//审核通过 设置默认分成比例
+			array('push,push_orgainzer,push_store,push_agent','required','on'=>'pass'),
+			array('push,push_orgainzer,push_store,push_agent', 'safe', 'on'=>'pass'),
+			//验证是否合法
+			array('push,push_orgainzer,push_store,push_agent','ext.Validator.Validator_push','on'=>'pass'),
+			//验证统计是否合法
+			array('push,push_orgainzer,push_store,push_agent','push_count','on'=>'pass'),
+			array('free_status,lng,lat,search_time_type,search_start_time,search_end_time,id, c_id,map, agent_id, store_id, manager_id, name, area_id_p, area_id_m, area_id_c, address, info, phone, weixin, content, audit, down, start_work, end_work, pub_time, add_time, up_time, status,with_store', 'unsafe', 'on'=>'pass'),
+
+			//代理商创建 修改项目(吃)
+			array('name, area_id_p, area_id_m, area_id_c, address , phone, start_work, end_work, weixin', 'required','on'=>'agent_create_eat,agent_update_eat',),
+			array('name, area_id_p, area_id_m, area_id_c, address, phone, weixin, content, start_work, end_work','safe','on'=>'agent_create_eat,agent_update_eat'),
+			array('free_status,lng,lat,manager_id,search_time_type,search_start_time,search_end_time,id, c_id,map, agent_id,info, store_id, push, push_orgainzer,push_store,push_agent,audit, down,info, pub_time, add_time, up_time, status,with_store','unsafe','on'=>'agent_create_eat,agent_update_eat'),
+			array(
+					'map','file','allowEmpty'=>true,
+					'types'=>'jpg,png', 'maxSize'=>1024*1024*2,
+					'tooLarge'=>'图片超过2M,请重新上传', 'wrongType'=>'图片格式错误',
+					'on'=>'agent_create_eat,agent_update_eat',
+			),
+			array('start_work, end_work','type','timeFormat'=>'hh:mm:ss','type'=>'time','on'=>'create,update','message'=>'{attribute} 格式必须是 00:00:00','on'=>'agent_create_eat,agent_update_eat',),
+			array('phone','match','pattern'=>'/^1\d{10}$|^(0\d{2,3}-?|\(0\d{2,3}\))?[1-9]\d{4,7}(-\d{1,8})?$/','message'=>'{attribute} 不是有效的','on'=>'agent_create_eat,agent_update_eat'),
+			array('area_id_p, area_id_m, area_id_c','ext.Validator.Validator_area','on'=>'agent_create_eat,agent_update_eat'),
+
+			//代理商创建项目(玩)
+			array('name, area_id_p, area_id_m, area_id_c, address , phone, start_work, end_work, weixin', 'required','on'=>'agent_create_play,agent_update_play',),
+			array('name, area_id_p, area_id_m, area_id_c, address, phone, weixin, content, start_work, end_work','safe','on'=>'agent_create_play,agent_update_play'),
+			array('free_status,lng,lat,manager_id,search_time_type,search_start_time,search_end_time,id, c_id,map, agent_id,info, store_id, push, push_orgainzer,push_store,push_agent,audit, down,info, pub_time, add_time, up_time, status,with_store','unsafe','on'=>'agent_create_play,agent_update_play'),
+			array(
+				'map','file','allowEmpty'=>true,
+				'types'=>'jpg,png', 'maxSize'=>1024*1024*2,
+				'tooLarge'=>'图片超过2M,请重新上传', 'wrongType'=>'图片格式错误',
+				'on'=>'agent_create_play,agent_update_play',
+			),
+			array('start_work, end_work','type','timeFormat'=>'hh:mm:ss','type'=>'time','on'=>'create,update','message'=>'{attribute} 格式必须是 00:00:00','on'=>'agent_create_play,agent_update_play',),
+			array('phone','match','pattern'=>'/^1\d{10}$|^(0\d{2,3}-?|\(0\d{2,3}\))?[1-9]\d{4,7}(-\d{1,8})?$/','message'=>'{attribute} 不是有效的','on'=>'agent_create_play,agent_update_play'),
+			array('area_id_p, area_id_m, area_id_c','ext.Validator.Validator_area','on'=>'agent_create_play,agent_update_play'),
+
+			//代理商创建 修改项目(住)
+			array('name, area_id_p, area_id_m, area_id_c, address , phone, start_work, end_work, weixin', 'required','on'=>'agent_create_hotel,agent_update_hotel',),
+			array('name, area_id_p, area_id_m, area_id_c, address, phone, weixin, content, start_work, end_work','safe','on'=>'agent_create_hotel,agent_update_hotel'),
+			array('free_status,lng,lat,manager_id,search_time_type,search_start_time,search_end_time,id, c_id,map, agent_id,info, store_id, push, push_orgainzer,push_store,push_agent,audit, down,info, pub_time, add_time, up_time, status,with_store','unsafe','on'=>'agent_create_hotel,agent_update_hotel'),
+			array(
+				'map','file','allowEmpty'=>true,
+				'types'=>'jpg,png', 'maxSize'=>1024*1024*2,
+				'tooLarge'=>'图片超过2M,请重新上传', 'wrongType'=>'图片格式错误',
+				'on'=>'agent_create_hotel,agent_update_hotel',
+			),
+			array('start_work, end_work','type','timeFormat'=>'hh:mm:ss','type'=>'time','on'=>'create,update','message'=>'{attribute} 格式必须是 00:00:00','on'=>'agent_create_hotel,agent_update_hotel',),
+			array('phone','match','pattern'=>'/^1\d{10}$|^(0\d{2,3}-?|\(0\d{2,3}\))?[1-9]\d{4,7}(-\d{1,8})?$/','message'=>'{attribute} 不是有效的','on'=>'agent_create_hotel,agent_update_hotel'),
+			array('area_id_p, area_id_m, area_id_c','ext.Validator.Validator_area','on'=>'agent_create_hotel,agent_update_hotel'),
+
+			// The following rule is used by search().
+			// @todo Please remove those attributes that should not be searched.
+			array('free_status,lng,lat,search_time_type,search_start_time,search_end_time,id, c_id,map, agent_id, store_id, manager_id, name, area_id_p, area_id_m, area_id_c, address, push,push_orgainzer,push_store,push_agent,info, phone, weixin, content, audit, down, start_work, end_work, pub_time, add_time, up_time, status,with_store', 'safe', 'on'=>'search'),
+		);
+	}
+
+	/**
+	 * 验证经纬度
+	 * @param unknown $attribute
+	 */
+	public function validate_lng_lat()
+	{
+		if(!preg_match('/^[-]?(\d|([1-9]\d)|(1[0-7]\d)|(180))(\.\d*)?$/', $this->lng))
+			$this->addError('lng','{attribute} 不是有效的经度');		
+		if(!preg_match('/^[-]?(\d|([1-8]\d)|(90))(\.\d*)?$/', $this->lat))
+			$this->addError('lat','{attribute} 不是有效的维度');
+	}
+	
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+                    // 吃，住，玩
+                    'Items_Eat'=>array(self::HAS_ONE,'Eat','id'),
+                    'Items_Hotel'=>array(self::HAS_ONE,'Hotel','id'),
+                    'Items_Play'=>array(self::HAS_ONE,'Play','id'),
+                    //对应项目类型
+                    'Items_ItemsClassliy'=>array(self::BELONGS_TO,'ItemsClassliy','c_id'),
+                    // 所属商家
+                    'Items_StoreContent'=>array(self::BELONGS_TO,'StoreContent','store_id'),
+					// 所属商家管理
+					'Items_Store_Manager'=>array(self::BELONGS_TO,'StoreUser','manager_id'),
+                    //所属代理商
+                    'Items_agent'=>array(self::BELONGS_TO,'Agent','agent_id'),
+                    // 关联地址，取省名称
+                    'Items_area_id_p_Area_id' => array(self::BELONGS_TO, 'Area', 'area_id_p'),
+                    // 关联地址，取市名称
+                    'Items_area_id_m_Area_id' => array(self::BELONGS_TO, 'Area', 'area_id_m'),
+                    // 关联地址，取县（区）名称
+                    'Items_area_id_c_Area_id' => array(self::BELONGS_TO, 'Area', 'area_id_c'),
+                    // 关联项目图片
+                    'Items_ItemsImg'=>array(self::HAS_MANY,'ItemsImg','items_id'),
+					// 关联项目价格
+					'Items_Fare'=>array(self::HAS_MANY,'Fare','item_id'),
+					//项目关联的标签        一对多
+					'Items_TagsElement'=>array(self::HAS_MANY,'TagsElement','element_id'),
+		);
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'id' => 'ID',
+			'c_id' => '类型',
+			'agent_id' => '代理商',
+			'store_id' => '商家(主)',
+			'manager_id' => '管理者',
+			'name' => '名称',
+			'area_id_p' => '省',
+			'area_id_m' => '市',
+			'area_id_c' => '县(区)',
+			'address' => '详细地址',
+			'push'=>'平台分成',//'代理分成比例 % 最大为100',
+			'push_orgainzer'=>'组织者分成',
+			'push_store'=>'商家分成',
+			'push_agent'=>'代理商分成',
+            'map' =>'地图',
+			'info' => '简介',
+			'phone' => '联系电话',
+			'weixin' => '微信号',
+			'content' => '详细内容',
+			'audit' => '审核',
+			'down' => '下单量',
+			'start_work' => '工作开始时间',
+			'end_work' => '工作结束时间',
+			'pub_time' => '通过时间',
+			'add_time' => '创建时间',
+			'up_time' => '更新时间',		
+			'lng'=>'经度',
+			'lat'=>'纬度',
+			'free_status'=>'免费状态',
+			'status' => '状态',
+			'search_time_type'=>'时间类型',
+			'search_start_time'=>'开始时间',
+			'search_end_time'=>'结束时间',
+			'distance'=>'距离'
+		);
+	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 *
+	 * Typical usecase:
+	 * - Initialize the model fields with values from filter form.
+	 * - Execute this method to get CActiveDataProvider instance which will filter
+	 * models according to data in model fields.
+	 * - Pass data provider to CGridView, CListView or any similar widget.
+	 *
+	 * @return CActiveDataProvider the data provider that can return the models
+	 * based on the search/filter conditions.
+	 */
+	public function search($criteria='')
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+		if($criteria ===''){
+			$criteria=new CDbCriteria;
+            $criteria->with=array(
+                'Items_agent',
+                'Items_StoreContent'=>array('select'=>'name','with'=>array('Content_Store'=>array('select'=>'phone'))),
+            	'Items_Store_Manager'=>array('select'=>'phone'),	
+                'Items_ItemsClassliy',
+                'Items_area_id_p_Area_id'=>array('select'=>'name'),
+                'Items_area_id_m_Area_id'=>array('select'=>'name'),
+                'Items_area_id_c_Area_id'=>array('select'=>'name')
+             );
+			$criteria->compare('t.status','<>-1');
+			if($this->search_time_type != '' && isset($this->__search_time_type[$this->search_time_type]))
+			{
+				if($this->search_start_time !='' && $this->search_end_time !='')
+					$criteria->addBetweenCondition('t.'.$this->__search_time_type[$this->search_time_type],strtotime($this->search_start_time),strtotime($this->search_end_time)+3600*24-1);
+				elseif($this->search_start_time !='' && $this->search_end_time =='')
+					$criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'>='.strtotime($this->search_start_time));
+				elseif($this->search_start_time =='' && $this->search_end_time !='')
+					$criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'<='.strtotime($this->search_end_time)+3600*24-1);
+			}
+			$criteria->compare('t.id',$this->id,true);
+			$criteria->compare('t.c_id',$this->c_id,true);
+			$criteria->compare('Items_agent.phone',$this->agent_id,true);
+			$criteria->compare('Content_Store.phone',$this->store_id,true);
+			$criteria->compare('Items_Store_Manager.phone',$this->manager_id,true);
+			$criteria->compare('t.name',$this->name,true);		
+			//关联地址
+			if(!! $model_p=Area::name($this->area_id_p)){
+				$model_m=Area::name($this->area_id_m);
+				if($model_m && $model_p->id != $model_m->pid)
+					$this->area_id_m='';
+			}else
+				$this->area_id_m='';
+            $criteria->compare('Items_area_id_p_Area_id.name',$this->area_id_p,true);
+            $criteria->compare('Items_area_id_m_Area_id.name',$this->area_id_m,true);
+            $criteria->compare('Items_area_id_c_Area_id.name',$this->area_id_c,true);
+               
+			$criteria->compare('t.area_id_p',$this->area_id_p,true);
+			$criteria->compare('t.area_id_m',$this->area_id_m,true);
+			$criteria->compare('t.area_id_c',$this->area_id_c,true);
+			$criteria->compare('t.address',$this->address,true);
+			$criteria->compare('t.push',$this->push);
+            $criteria->compare('t.map',$this->map,true);
+			$criteria->compare('t.info',$this->info,true);
+			$criteria->compare('t.phone',$this->phone,true);
+			$criteria->compare('t.weixin',$this->weixin,true);
+			$criteria->compare('t.content',$this->content,true);
+			$criteria->compare('t.audit',$this->audit);
+			$criteria->compare('t.down',$this->down,true);
+			$criteria->compare('t.start_work',$this->start_work,true);
+			$criteria->compare('t.end_work',$this->end_work,true);
+			if($this->pub_time != '')
+				$criteria->addBetweenCondition('t.pub_time',strtotime($this->pub_time),(strtotime($this->pub_time)+3600*24-1));
+			if($this->add_time != '')
+				$criteria->addBetweenCondition('t.add_time',strtotime($this->add_time),(strtotime($this->add_time)+3600*24-1));
+			if($this->up_time != '')
+				$criteria->addBetweenCondition('t.up_time',strtotime($this->up_time),(strtotime($this->up_time)+3600*24-1));
+			$criteria->compare('t.lng',$this->lng,true);
+			$criteria->compare('t.lat',$this->lat,true);
+			$criteria->compare('t.free_status',$this->free_status);
+			$criteria->compare('t.status',$this->status);
+		}
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+					'pageSize'=>Yii::app()->params['admin_pageSize'],
+			),
+			'sort'=>array(
+					'defaultOrder'=>'t.add_time desc', //设置默认排序
+			),
+		));
+	}
+
+	/**
+	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param string $className active record class name.
+	 * @return Items the static model class
+	 */
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+
+
+	/**
+	 * 保存之前的操作
+	 * @see CActiveRecord::beforeSave()
+	 */
+	public function beforeSave(){
+		if(parent::beforeSave()){		
+			if($this->isNewRecord)
+				$this->pub_time=$this->up_time=$this->add_time=time();
+			else
+				$this->up_time=time();			
+			return true;
+		}else
+			return false;
+	}
+	
+	/**
+	 * 验证 商家 是不是之前的代理商一样
+	 * @param unknown $attribute
+	 */
+	public function verify_store($attribute){
+		if(!! $model=StoreUser::model()->findByPk($this->$attribute)){
+			if($model->p_id==0 && $this->store_id !=$this->$attribute)
+				$this->addError($attribute, $this->getAttributeLabel($attribute).' 不是有效的值');				
+			elseif($model->p_id !=0 &&$this->store_id !=$model->p_id)
+				$this->addError($attribute,$this->getAttributeLabel($attribute).' 不是有效的值');	
+		}else 
+			$this->addError($attribute, $this->getAttributeLabel($attribute).' 不是有效的值');	
+	}
+	
+	/**
+	 * 过滤数据 空的 返回所有
+	 * @param string $ids
+	 * @param string $array
+	 * @return multitype:NULL |unknown
+	 */
+	public static function filter_items($ids,$array=true,$audit=true)
+    {
+    	$criteria=new CDbCriteria;
+    	if($array)
+    		$criteria->select='id';
+    	if(! empty($ids))
+    	{		
+    		if(! is_array($ids))
+    			$ids=array($ids);
+    		$criteria->addInCondition('id',$ids);	
+    		$i=0;
+    		foreach ($ids as $id)
+    		{
+    			$params[]=':id_'.$i;
+    			$criteria->params[':id_'.$i++]=$id;
+    		}
+    		$criteria->order='field(`id`,'.implode(',',$params).')';
+    	}elseif($array)
+    		return array();
+    	else 
+    		return null;
+    	if($audit)
+    		$criteria->addColumnCondition(array('audit'=>self::audit_pass));
+    	$criteria->addColumnCondition(array('status'=>1));
+    	$models=self::model()->findAll($criteria);
+		
+    	if($array)
+    	{
+    		$return=array();
+    		foreach ($models as $model)
+    			$return[]=$model->id;
+    		return $return;
+    	}else 
+    		return $models;
+    }
+    
+    /**
+     * 获取class
+     * @param unknown $ids
+     * @return NULL|Ambigous <multitype:static , mixed, static, NULL, multitype:unknown Ambigous <static, NULL> , multitype:, multitype:unknown >
+     */
+    public static function get_class($ids)
+    {
+    	$criteria=new CDbCriteria;
+    	if(! empty($ids))
+    	{
+    		if(! is_array($ids))
+    			$ids=array($ids);
+    		$criteria->addInCondition('t.id',$ids);
+    	}else 
+    		return null;
+    	$criteria->with=array('Items_ItemsClassliy');   
+    	return self::model()->findAll($criteria);    	
+    }
+    
+    /**
+     * 分成比例 之和验证
+     * @param unknown $attribute
+     */
+    public function push_count($attribute)
+    {
+    	if(($this->push+$this->push_orgainzer+$this->push_store+$this->push_agent) !=100)
+    			$this->addError($attribute,$this->getAttributeLabel($attribute).' 它们之和只能等于100%');
+    }
+    
+    /**
+     * 设置项目数据模型
+     */
+    public static function set_order_items($data,$params=array())
+    {
+    	$shops_model=$params['shops_model'];
+
+    	$model=new OrderItems;
+    	$model->scenario='create_dot';
+    	$model->user_id=Yii::app()->api->id;
+    	//活动
+    	if(isset($shops_model->Shops_Actives))
+    	{
+    		$model->organizer_id=$shops_model->Shops_Actives->organizer_id;
+    		$model->order_items_id=$data->id;//归属父
+    		$model->store_id=$data->store_id;
+    		$model->manager_id=$data->manager_id;
+    		$model->agent_id=$data->agent_id;
+    		$model->shops_id=$data->shops_id;//商品来源
+    		$model->shops_name=$data->shops_name;//商品名
+    		$model->shops_c_id=$data->shops_c_id;
+    		$model->shops_c_name=$data->shops_c_name;
+    		$model->items_id=$data->items_id;
+    		$model->items_c_name=$data->items_c_name;
+    		$model->items_name=$data->items_name;
+    		$model->items_address=$data->items_address;
+    		$model->items_push=$data->items_push;
+    		$model->items_push_orgainzer=$data->items_push_orgainzer;
+    		$model->items_push_store=$data->items_push_store;
+    		$model->items_c_id=$data->items_c_id;
+    		$model->items_push_agent=$data->items_push_agent;
+    		$model->items_map=$data->items_map;
+    		$model->items_phone=$data->items_phone;
+    		$model->items_weixin=$data->items_weixin;
+    		$model->items_content=$data->items_content;
+    		//新增
+    		$model->items_lng=$data->items_lng;
+    		$model->items_lat=$data->items_lat;
+    		$model->items_free_status=$data->items_free_status;
+    		
+    		$model->items_img=$data->items_img;
+    		$model->items_start_work=$data->items_start_work;
+    		$model->items_end_work=$data->items_end_work;
+    		$model->items_up_time=$data->items_up_time;
+    		$model->items_pub_time=$data->items_up_time;
+    		$model->shops_sort=$data->shops_sort;
+    		$model->shops_day_sort=$data->shops_day_sort;
+    		$model->shops_half_sort=$data->shops_half_sort;
+    		$model->shops_dot_id=$data->shops_dot_id;
+    		$model->shops_thrand_id=$data->shops_thrand_id;
+    		$model->shops_info=$data->shops_info;
+    		$model->shops_up_time=$data->shops_up_time;
+    		$model->shops_pub_time=$data->shops_pub_time;
+    	}
+    	else
+    	{
+	    	$model->store_id=$data->Pro_Items->store_id;
+	    	$model->manager_id=$data->Pro_Items->manager_id;
+	    	$model->agent_id=$data->Pro_Items->agent_id;
+	    	$model->shops_id=$shops_model->id;//商品来源
+	    	$model->shops_name=$shops_model->name;//商品名
+	    	$model->shops_c_id=$shops_model->Shops_ShopsClassliy->id;
+	    	$model->shops_c_name=$shops_model->Shops_ShopsClassliy->name;
+	    	$model->items_id=$data->Pro_Items->id;
+	    	$model->items_c_name=$data->Pro_Items->Items_ItemsClassliy->name;
+	    	$model->items_name=$data->Pro_Items->name;
+	    	$model->items_address=$data->Pro_Items->Items_area_id_p_Area_id->name.$data->Pro_Items->Items_area_id_m_Area_id->name.$data->Pro_Items->Items_area_id_c_Area_id->name.$data->Pro_Items->address;
+	    	$model->items_push=Push::executed($data->Pro_Items->id,'push');
+	    	$model->items_push_orgainzer=Push::executed($data->Pro_Items->id,'push_orgainzer');
+	    	$model->items_push_store=Push::executed($data->Pro_Items->id,'push_store');
+	    	$model->items_c_id=$data->Pro_Items->Items_ItemsClassliy->id;
+	    	$model->items_push_agent=Push::executed($data->Pro_Items->id,'push_agent');
+	    	$model->items_map=$data->Pro_Items->map;
+	    	$model->items_phone=$data->Pro_Items->phone;
+	    	$model->items_weixin=$data->Pro_Items->weixin;
+	    	$model->items_content=$data->Pro_Items->content;
+	    	//新增
+	    	$model->items_lng=$data->Pro_Items->lng;
+	    	$model->items_lat=$data->Pro_Items->lat;
+	    	$model->items_free_status=$data->Pro_Items->free_status;
+	    	
+	    	$model->items_img=isset($data->Pro_Items->Items_ItemsImg[0]->img)?$data->Pro_Items->Items_ItemsImg[0]->img:'';
+	    	$model->items_start_work=$data->Pro_Items->start_work;
+	    	$model->items_end_work=$data->Pro_Items->end_work;
+	    	$model->items_up_time=$data->Pro_Items->up_time;
+	    	$model->items_pub_time=$data->Pro_Items->pub_time;
+	    	$model->shops_sort=$data->sort;
+	    	$model->shops_day_sort=$data->day_sort;
+	    	$model->shops_half_sort=$data->half_sort;
+	    	$model->shops_dot_id=$data->dot_id;
+	    	$model->shops_thrand_id=$data->thrand_id;
+	    	$model->shops_info=$data->info;
+	    	$model->shops_up_time=$shops_model->up_time;
+	    	$model->shops_pub_time=$shops_model->pub_time;
+    	}
+    	Order::$order_items_count++;
+    	return $model;
+    }
+
+	/**
+	 * 多图片集合
+	 * @param $model
+	 */
+	public static function items_img($arr_img){
+		$return = array();
+		if(is_array($arr_img) && $arr_img){
+			foreach($arr_img as $v)
+				$return[] = Yii::app()->params['admin_img_domain'].ltrim( Yii::app()->controller->litimg_path($v->img),'.');
+		}
+		return $return;
+	}
+
+	/**
+	 * 计算距离
+	 */
+	public static function items_gps($id)
+	{
+		$getGps   = Yii::app()->cookie->getCookie(Yii::app()->params['gps']);
+		$distance = '';
+
+		if(isset($getGps['address_info']['location']['lng'],$getGps['address_info']['location']['lat']))
+		{
+			$criteria=new CDbCriteria;
+			$select='ROUND(6378.138*2*ASIN(SQRT(POW(SIN(( :lat *PI()/180-`t`.`lat`*PI()/180)/2) , 2)+COS( :lat *PI()/180)*COS(`t`.`lat`*PI()/180)*POW(SIN(( :lng *PI()/180-`t`.`lng`*PI()/180)/2),2)))*1000) AS distance';
+			$criteria->params[':lat']=$getGps['address_info']['location']['lat'];
+			$criteria->params[':lng']=$getGps['address_info']['location']['lng'];
+			$criteria->select=array($select);
+			$criteria->addColumnCondition(array(
+				'`t`.`id`'=>$id,	//上线  114.092803  22.493675
+			));
+			$model = self::model()->find($criteria);
+			$distance = $model ?Yii::app()->controller->FormatDistance($model->distance):'';
+		}
+		return $distance;
+	}
+	
+    /**
+     * 添加下单量
+     * @param unknown $id
+     * @param number $number
+     */
+    public static function add_down($id,$down=1)
+    {
+    	return self::model()->updateByPk($id, array(	
+    		'down'=>new CDbExpression('`down`+:down',array(':down'=>$down)),
+    	));
+    }
+    
+    /**
+     * 保存地图
+     * @param unknown $pathname
+     * @param unknown $lng
+     * @param unknown $lat
+     * @param string $size
+     * @return number|boolean
+     */
+    public static function saveAmapImage($pathname,$lng,$lat,$size='800*800')
+    {
+    	$url='http://restapi.amap.com/v3/staticmap?location='.$lng.','.$lat.'&zoom=17&size='.$size.'&markers=mid,,A:'.$lng.','.$lat.'&key='.Yii::app()->params['amap_web_key'].'&scale=2';
+    	$img=file_get_contents($url);
+    	if($img)
+    	{
+    		if(! is_dir(dirname($pathname)))
+    			mkdir(dirname($pathname), 0777, true);
+    		return file_put_contents($pathname,$img);
+    	}
+    	return false;
+    }
+}

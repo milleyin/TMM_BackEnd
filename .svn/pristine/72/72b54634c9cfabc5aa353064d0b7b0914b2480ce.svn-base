@@ -1,0 +1,19 @@
+@CHARSET "UTF-8";
+.list-view .sorter 
+{
+	margin: 0 0 5px 0;
+	text-align: left;
+}
+.grid-view .pager 
+{
+	text-align: left;
+}
+.ui-accordion .ui-accordion-content 
+{
+    padding: 20px 15px;
+    border-top: 0;
+    overflow: auto;
+}
+div.error {
+    color: red;
+}

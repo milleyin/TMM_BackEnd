@@ -1,0 +1,70 @@
+<?php
+namespace app\admin\controllers;
+
+use AdminModulesController;
+
+class IndexController extends AdminModulesController
+{
+	/**
+	 * 操作模型名
+	 * @var string
+	 */
+	public $_modelName = 'Admin';
+	
+	/**
+	 * 我的信息
+	 */
+	public function actionIndex()
+	{
+		$criteria = new \CDbCriteria;
+		$criteria->with = array(
+			'Admin_Role',
+		);
+		$criteria->addColumnCondition(array(
+			'`t`.`status`'=>\Admin::_STATUS_NORMAL,
+			'`Admin_Role`.`status`'=>\Role::_STATUS_NORMAL,
+		));
+		
+		$this->render('index', array(
+			'model'=>$this->loadModelByPk(\Yii::app()->user->id, $criteria),
+		));
+	}
+	
+	/**
+	 * 更新信息
+	 */
+	public function actionUpdate()
+	{
+		$criteria = new \CDbCriteria;
+		$criteria->with = array(
+				'Admin_Role',
+		);
+		$criteria->addColumnCondition(array(
+				'`t`.`status`'=>\Admin::_STATUS_NORMAL,
+				'`Admin_Role`.`status`'=>\Role::_STATUS_NORMAL,
+		));
+		
+		$this->render('index', array(
+				'model'=>$this->loadModelByPk(\Yii::app()->user->id, $criteria),
+		));
+	}
+	
+	/**
+	 * 修改密码
+	 */
+	public function actionPwd()
+	{
+		$criteria = new \CDbCriteria;
+		$criteria->with = array(
+				'Admin_Role',
+		);
+		$criteria->addColumnCondition(array(
+				'`t`.`status`'=>\Admin::_STATUS_NORMAL,
+				'`Admin_Role`.`status`'=>\Role::_STATUS_NORMAL,
+		));
+		
+		$this->render('index', array(
+				'model'=>$this->loadModelByPk(\Yii::app()->user->id, $criteria),
+		));
+	}
+}

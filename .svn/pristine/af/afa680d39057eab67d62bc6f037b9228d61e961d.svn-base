@@ -1,0 +1,86 @@
+<?php
+/**
+ * 
+ * @author Changhai Zhan
+ *	创建时间：2016-04-01 14:43:41 */
+class StoreController extends OperatorMainController
+{
+	/**
+	 * 默认操作数据模型
+	 * @var string
+	 */
+	public $_class_model = 'StoreContent';
+
+	/**
+	 * 查看详情
+	 * @param integer $id
+	 */
+	public function actionView($id)
+	{
+		$criteria = new CDbCriteria;
+		$criteria->with = array(
+				'Content_area_id_p_Area_id',
+				'Content_area_id_m_Area_id',
+				'Content_area_id_c_Area_id',
+				'Content_Store'=>array(
+						'with'=>array(
+								//统计上线的
+								'Store_Items_Count'=>array(
+										'condition'=>'`t`.`status`=:status',
+										'params'=>array(':status'=>Items::status_online),
+								),
+						),
+				),
+		);
+		$criteria->compare('Content_Store.status', '<>'.StoreUser::status_del);			
+		$criteria->addColumnCondition(array(
+				'`Content_Store`.`agent_id`'=>Yii::app()->operator->id,
+		));
+		//视图
+		$this->render('view', array(
+			'model'=>$this->loadModel($id, $criteria),
+		));
+	}
+	
+	/**
+	 *管理页
+	 */
+	public function actionAdmin()
+	{
+		$model = new StoreContent('operatorSearch');
+		$model->unsetAttributes();  // 删除默认属性
+		
+		$model->Content_Store = new StoreUser('operatorSearch');
+		$model->Content_Store->unsetAttributes();  // 删除默认属性
+		
+		if (isset($_GET['StoreContent']))
+			$model->attributes = $_GET['StoreContent'];
+		if (isset($_GET['StoreUser']))
+			$model->Content_Store->attributes = $_GET['StoreUser'];
+
+		$this->render('admin', array(
+			'model'=>$model,
+		));
+	}
+	
+	/**
+	 * 选择创建项目
+	 */
+	public function actionSelect()
+	{
+		$model = new StoreContent('operatorSearch');
+		$model->unsetAttributes();  // 删除默认属性
+		
+		$model->Content_Store = new StoreUser('operatorSearch');
+		$model->Content_Store->unsetAttributes();  // 删除默认属性
+		
+		if (isset($_GET['StoreContent']))
+			$model->attributes = $_GET['StoreContent'];
+		if (isset($_GET['StoreUser']))
+			$model->attributes = $_GET['StoreUser'];
+				
+		$this->render('select', array(
+				'model'=>$model,
+		));
+	}
+}

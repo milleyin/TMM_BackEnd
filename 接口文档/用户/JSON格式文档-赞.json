@@ -1,0 +1,62 @@
+
+// 备注：凡是POST请求的，都需要先请求一下GET，拿到CSRF码，请求格式为
+// 模块/方法：
+// api/xx/xxx (同要POST请求的url)
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取CSRF
+
+// 参数 &csrf=csrf
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "csrf": {
+            "TMM_CSRF": "5d2694695c6989098c22879610e3fd007294f67c"
+        }
+    }
+}
+
+// 模块/方法：
+// index.php?r=api/shops/collect
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        点赞，取消赞
+
+// 参数
+{
+  "Collect": {
+    "shops_id": "41",
+    "user_address": "广东深圳"
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "value": 1, // 1点赞
+        "name": "点赞"
+    }
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "value": 0, // 0取消赞
+        "name": "取消赞"
+    }
+}

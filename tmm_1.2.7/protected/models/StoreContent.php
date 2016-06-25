@@ -1,0 +1,560 @@
+<?php
+
+/**
+ * This is the model class for table "{{store_content}}".
+ *
+ * The followings are the available columns in table '{{store_content}}':
+ * @property string $id
+ * @property string $name
+ * @property double $push
+ * @property string $income_count
+ * @property string $cash
+ * @property string $money
+ * @property string $deposit
+ * @property string $area_id_p
+ * @property string $area_id_m
+ * @property string $area_id_c
+ * @property string $address
+ * @property string $store_tel
+ * @property integer $store_postcode
+ * @property string $lx_contacts
+ * @property string $lx_identity_code
+ * @property string $lx_phone
+ * @property string $identity_before
+ * @property string $identity_after
+ * @property string $identity_hand
+ * @property string $com_contacts
+ * @property string $com_phone
+ * @property string $com_identity
+ * @property string $bl_code
+ * @property string $bl_img
+ * @property string $bank_id
+ * @property string $bank_name
+ * @property string $bank_branch
+ * @property string $bank_code
+ * @property string $son_count
+ * @property string $son_limit
+ * @property integer $audit
+ * @property string $up_time
+ * @property string $pass_time
+ * @property string $add_time
+ * @property int    $is_push
+ */
+class StoreContent extends CActiveRecord
+{
+	/**
+	 * 搜索的时间类型
+	 * @var array
+	 */
+	public $search_time_type;
+	/**
+	 * 解释字段 audit 的含义
+	 * @var array
+	 */
+	public static $_audit=array(-1=>'未通过','未审核','已通过');
+	/**
+	 *	解释搜索类型时间的含义 search_time_type
+	 * @var string
+	 */
+	public static $_search_time_type=array('修改时间','通过时间','创建时间'); 
+	/**
+	 *	解释搜索类型时间 search_time_type 的字段搜索
+	 * @var string
+	 */
+	public $__search_time_type=array('up_time','pass_time','add_time'); 
+	/**
+	 * 搜索开始的时间
+	 * @var string
+	 */
+	public $search_start_time;
+	/**
+	 * 搜索结束的时间
+	 * @var string
+	 */
+	public $search_end_time;
+	
+	
+	public $agent_id;
+
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return '{{store_content}}';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+			array('store_postcode, audit', 'numerical', 'integerOnly'=>true),
+			array('push', 'numerical'),
+			array('id, area_id_p, area_id_m, area_id_c, bank_id, son_count, son_limit', 'length', 'max'=>11),
+			array('name', 'length', 'max'=>128),
+			array('income_count, cash, money, deposit', 'length', 'max'=>13),
+			array('address, identity_before, identity_after, identity_hand, bl_code, bl_img, bank_branch', 'length', 'max'=>100),
+			array('store_tel, lx_contacts, lx_phone, com_contacts, com_phone', 'length', 'max'=>15),
+			array('lx_identity_code, com_identity', 'length', 'max'=>32),
+			array('bank_name', 'length', 'max'=>20),
+			array('bank_code', 'length', 'max'=>50),
+			array('up_time, pass_time, add_time', 'length', 'max'=>10),
+			
+			array('son_limit','validateSon','create,update'),		
+			array('address', 'length', 'max'=>25),
+			array('name', 'length', 'max'=>20),
+			//创建、修改
+			array('name,area_id_p,area_id_m, area_id_c, address, store_tel, store_postcode,lx_contacts, lx_identity_code, lx_phone, com_contacts, com_phone, com_identity,bl_code, son_limit','required','on'=>'create,update'),
+			array(
+				'bl_img,identity_before, identity_after, identity_hand','file','allowEmpty'=>true,
+				'types'=>'jpg,png', 'maxSize'=>1024*1024*2,
+				'tooLarge'=>'图片超过2M,请重新上传', 'wrongType'=>'{attribute} 格式错误',
+				'on'=>'create,update',
+			),
+			array('bl_img,identity_before, identity_after, identity_hand,search_time_type,search_start_time,search_end_time,id, push, income_count, cash, money, deposit, bank_id, bank_name, bank_branch, bank_code, son_count, audit, up_time, pass_time, add_time,is_push','unsafe','on'=>'create,update'),
+			array('name,area_id_p, area_id_m, area_id_c, address, store_tel, store_postcode,lx_contacts, lx_identity_code, lx_phone, com_contacts, com_phone, com_identity,bl_code, son_limit','safe','on'=>'create,update'),
+
+			array('store_tel,com_phone,lx_phone','match','pattern'=>'/^1\d{10}$|^(0\d{2,3}-?|\(0\d{2,3}\))?[1-9]\d{4,7}(-\d{1,8})?$/','message'=>'{attribute} 不是有效的','on'=>'create,update'),
+			array('store_postcode','match','pattern'=>'/[1-9]\d{5}(?!\d)/','message'=>'{attribute} 不是有效的','on'=>'create,update'),
+			array('area_id_p, area_id_m, area_id_c','ext.Validator.Validator_area','on'=>'create,update'),
+			array('lx_identity_code,com_identity','ext.Validator.Validator_identity','on'=>'create,update'),
+			array('area_id_c','is_power','on'=>'create,update'),
+			 //是否接收表单值
+
+			//设置银行信息
+			array('bank_id,bank_name,bank_branch,bank_code','required','on'=>'bank'),
+			array('bank_id,bank_name,bank_branch,bank_code','safe','on'=>'bank'),
+			array('search_time_type,search_start_time,search_end_time,id, name, push, income_count, cash, money, deposit, area_id_p, area_id_m, area_id_c, address, store_tel, store_postcode, lx_contacts, lx_identity_code, lx_phone, identity_before, identity_after, identity_hand, com_contacts, com_phone, com_identity, bl_code, bl_img, son_count, son_limit, audit, up_time, pass_time, add_time,is_push', 'unsafe', 'on'=>'bank'),
+			array('bank_id','ext.Validator.Validator_bank','on'=>'bank'),
+
+			//商家第二次创建 agent_create_2
+			array('name, area_id_p, area_id_m, area_id_c, address,store_tel,store_postcode,bl_code,com_contacts,com_identity,com_phone,lx_contacts,lx_identity_code,lx_phone',
+					'required','on'=>'agent_create_2'),
+			array('name, area_id_p, area_id_m, area_id_c, address,store_tel,store_postcode,bl_code,com_contacts,com_identity,com_phone,lx_contacts,lx_identity_code,lx_phone',
+					'safe','on'=>'agent_create_2'),
+			array('search_time_type,search_start_time,search_end_time,id, push, income_count, cash, money, deposit, identity_before, identity_after, identity_hand, bl_img, bank_id, bank_name, bank_branch, bank_code, son_count, son_limit, audit, up_time, pass_time, add_time,is_push', 
+					'unsafe', 'on'=>'agent_create_2'),
+			array('store_tel,com_phone,lx_phone','match','pattern'=>'/^1\d{10}$|^(0\d{2,3}-?|\(0\d{2,3}\))?[1-9]\d{4,7}(-\d{1,8})?$/','message'=>'{attribute} 不是有效的','on'=>'agent_create_2'),
+			array('store_postcode','match','pattern'=>'/[1-9]\d{5}(?!\d)/','message'=>'{attribute} 不是有效的','on'=>'agent_create_2'),
+			array('lx_identity_code,com_identity','ext.Validator.Validator_identity','on'=>'agent_create_2'),
+			array('area_id_p, area_id_m, area_id_c','ext.Validator.Validator_area','on'=>'agent_create_2'),
+			array('area_id_c','is_power_agent','on'=>'agent_create_2'),
+
+			//商家第三次创建 agent_create_3
+			array(
+					'bl_img,identity_before, identity_after, identity_hand','file','allowEmpty'=>true,
+					'types'=>'jpg,png', 'maxSize'=>1024*1024*2,
+					'tooLarge'=>'图片超过2M,请重新上传', 'wrongType'=>'{attribute} 格式错误',
+					'on'=>'agent_create_3',
+			),
+			array('search_time_type,search_start_time,search_end_time,
+                            id, name, push, income_count, cash, money, deposit, area_id_p, area_id_m, area_id_c, address, store_tel, store_postcode,
+                            lx_contacts, lx_identity_code, lx_phone, identity_before, identity_after, identity_hand, com_contacts, com_phone, com_identity,
+                            bl_code, bl_img, bank_id, bank_name, bank_branch, bank_code, son_count, son_limit, audit, up_time, pass_time, add_time,is_push', 'unsafe', 'on'=>'agent_create_3'),
+			                             
+			
+			array('search_time_type,search_start_time,search_end_time,
+                            id, name, push, income_count, cash, money, deposit, area_id_p, area_id_m, area_id_c, address, store_tel, store_postcode, 
+                            lx_contacts, lx_identity_code, lx_phone, identity_before, identity_after, identity_hand, com_contacts, com_phone, com_identity, 
+                            bl_code, bl_img, bank_id, bank_name, bank_branch, bank_code, son_count, son_limit, audit, up_time, pass_time, add_time,is_push', 'safe', 'on'=>'search'),
+            array('name', 'safe', 'on'=>'agent_store_search'),            
+            array('name', 'safe', 'on'=>'agent_store_son_search'),
+            
+            //运营商 1.2.7
+            array('search_time_type,search_start_time,search_end_time,
+                            id, name, deposit, area_id_p, area_id_m, area_id_c, address, store_tel, store_postcode,
+                            lx_contacts, lx_identity_code, lx_phone, com_contacts, com_phone, com_identity,
+                            bl_code', 'safe', 'on'=>'operatorSearch'),
+		);
+	}
+
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+                   //  'Store_Content'=>array(self::HAS_ONE,'Content','id'),
+                     // 账号
+                    'Content_Store'=>array(self::HAS_ONE,'StoreUser','id'),
+                    // 关联地址表
+                    'Content_area_id_p_Area_id' => array(self::BELONGS_TO, 'Area', 'area_id_p'),
+                    'Content_area_id_m_Area_id' => array(self::BELONGS_TO, 'Area', 'area_id_m'),
+                    'Content_area_id_c_Area_id' => array(self::BELONGS_TO, 'Area', 'area_id_c'),
+					// 关联银行表
+					'Content_Bank'=>array(self::BELONGS_TO,'Bank','bank_id'),
+					//关联代理商子账户表
+					'Content_Stoer_Son'=>array(self::HAS_MANY,'StoreUser','p_id'),
+					'Content_Account'=>array(self::HAS_ONE,'Account','account_id'),
+		);
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'id' => 'ID',
+			'name' => '公司名称',
+			'is_push' => '是否设置分成',
+			'push' => '分成比例%',
+			'income_count' => '收益总额',
+			'cash' => '已提现总额',
+			'money' => '可用金额',
+			'deposit' => '保证金',
+			'area_id_p' => '省',
+			'area_id_m' => '市',
+			'area_id_c' => '县(区)',
+			'address' => '公司地址',
+			'store_tel' => '公司电话',
+			'store_postcode' => '公司邮编',
+			'lx_contacts' => '负责人姓名',
+			'lx_identity_code' => '负责人身份证',
+			'lx_phone' => '负责人电话',
+			'identity_before' => '负责人身份证正面',
+			'identity_after' => '负责人身份证反面',
+			'identity_hand' => '负责人手持身份证',
+			'com_contacts' => '公司法人姓名',
+			'com_phone' => '法人联系电话',
+			'com_identity' => '法人身份证',
+			'bl_code' => '营业执照编号',
+			'bl_img' => '营业执照扫描件',
+			'bank_id' => '开户银行',
+			'bank_name' => '开户姓名',
+			'bank_branch' => '开户支行',
+			'bank_code' => '开户银行账号',
+			'son_count' => '子账号数量',
+			'son_limit' => '子账号上限',
+			'audit' => '审核状态',
+			'up_time' => '更新时间',
+			'pass_time' => '通过时间',
+			'add_time' => '创建时间',
+			'search_time_type'=>'时间类型',
+			'search_start_time'=>'开始时间',
+			'search_end_time'=>'结束时间',
+		);
+	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 *
+	 * Typical usecase:
+	 * - Initialize the model fields with values from filter form.
+	 * - Execute this method to get CActiveDataProvider instance which will filter
+	 * models according to data in model fields.
+	 * - Pass data provider to CGridView, CListView or any similar widget.
+	 *
+	 * @return CActiveDataProvider the data provider that can return the models
+	 * based on the search/filter conditions.
+	 */
+	public function search($criteria='')
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+		if($criteria ===''){
+			$criteria=new CDbCriteria;
+			if($this->search_time_type != '' && isset($this->__search_time_type[$this->search_time_type]))
+			{
+				if($this->search_start_time !='' && $this->search_end_time !='')
+					$criteria->addBetweenCondition($this->__search_time_type[$this->search_time_type],strtotime($this->search_start_time),strtotime($this->search_end_time));
+				elseif($this->search_start_time !='' && $this->search_end_time =='')
+					$criteria->compare($this->__search_time_type[$this->search_time_type],'>='.strtotime($this->search_start_time));
+				elseif($this->search_start_time =='' && $this->search_end_time !='')
+					$criteria->compare($this->__search_time_type[$this->search_time_type],'<='.strtotime($this->search_end_time));
+			}			
+			$criteria->compare('id',$this->id,true);
+			$criteria->compare('name',$this->name,true);
+			$criteria->compare('push',$this->push);
+			$criteria->compare('is_push',$this->push);
+			$criteria->compare('income_count',$this->income_count,true);
+			$criteria->compare('cash',$this->cash,true);
+			$criteria->compare('money',$this->money,true);
+			$criteria->compare('deposit',$this->deposit,true);
+			$criteria->compare('area_id_p',$this->area_id_p,true);
+			$criteria->compare('area_id_m',$this->area_id_m,true);
+			$criteria->compare('area_id_c',$this->area_id_c,true);
+			$criteria->compare('address',$this->address,true);
+			$criteria->compare('store_tel',$this->store_tel,true);
+			$criteria->compare('store_postcode',$this->store_postcode);
+			$criteria->compare('lx_contacts',$this->lx_contacts,true);
+			$criteria->compare('lx_identity_code',$this->lx_identity_code,true);
+			$criteria->compare('lx_phone',$this->lx_phone,true);
+			$criteria->compare('identity_before',$this->identity_before,true);
+			$criteria->compare('identity_after',$this->identity_after,true);
+			$criteria->compare('identity_hand',$this->identity_hand,true);
+			$criteria->compare('com_contacts',$this->com_contacts,true);
+			$criteria->compare('com_phone',$this->com_phone,true);
+			$criteria->compare('com_identity',$this->com_identity,true);
+			$criteria->compare('bl_code',$this->bl_code,true);
+			$criteria->compare('bl_img',$this->bl_img,true);
+			$criteria->compare('bank_id',$this->bank_id,true);
+			$criteria->compare('bank_name',$this->bank_name,true);
+			$criteria->compare('bank_branch',$this->bank_branch,true);
+			$criteria->compare('bank_code',$this->bank_code,true);
+			$criteria->compare('son_count',$this->son_count,true);
+			$criteria->compare('son_limit',$this->son_limit,true);
+			$criteria->compare('audit',$this->audit);
+			if($this->up_time != '')
+				$criteria->addBetweenCondition('up_time',strtotime($this->up_time),(strtotime($this->up_time)+3600*24-1));
+			if($this->pass_time != '')
+				$criteria->addBetweenCondition('pass_time',strtotime($this->pass_time),(strtotime($this->pass_time)+3600*24-1));
+			if($this->add_time != '')
+				$criteria->addBetweenCondition('add_time',strtotime($this->add_time),(strtotime($this->add_time)+3600*24-1));
+		}
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+					'pageSize'=>Yii::app()->params['admin_pageSize'],
+			),
+			'sort'=>array(
+					'defaultOrder'=>'t.add_time desc', //设置默认排序
+			),
+		));
+	}
+
+	/**
+	 * 运营商搜索页
+	 * @param string $criteria
+	 * @return CActiveDataProvider
+	 */
+	public function operatorSearch($criteria='')
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+		if ($criteria === '')
+		{
+			$criteria = new CDbCriteria;		
+			$criteria->with = array(
+				'Content_area_id_p_Area_id',
+				'Content_area_id_m_Area_id',
+				'Content_area_id_c_Area_id',
+				'Content_Store'=>array(
+					'with'=>array('Store_Items_Count'), //统计创建的项目数量
+				),
+			);
+			$criteria->compare('Content_Store.status', '<>'.StoreUser::status_del);
+			
+			$criteria->addColumnCondition(array(
+				'`Content_Store`.`agent_id`'=>Yii::app()->operator->id,
+			));
+			
+			if ($this->search_time_type != '' && isset($this->Content_Store->__search_time_type[$this->search_time_type]))
+			{
+				if ($this->search_start_time !='' && $this->search_end_time !='')
+					$criteria->addBetweenCondition('Content_Store.'.$this->Content_Store->__search_time_type[$this->search_time_type], strtotime($this->search_start_time), strtotime($this->search_end_time)+3600*24-1);
+				else if ($this->search_start_time !='' && $this->search_end_time =='')
+					$criteria->compare('Content_Store.'.$this->Content_Store->__search_time_type[$this->search_time_type], '>='.strtotime($this->search_start_time));
+				else if ($this->search_start_time =='' && $this->search_end_time !='')
+					$criteria->compare('Content_Store.'.$this->Content_Store->__search_time_type[$this->search_time_type], '<=' . (strtotime($this->search_end_time)+3600*24-1));
+			}
+			
+			$criteria->compare('Content_Store.id', $this->id, true);
+			$criteria->compare('t.name', $this->name, true);
+			$criteria->compare('Content_Store.phone', $this->Content_Store->phone, true);
+			
+			//关联地址
+			if (!! $model_p=Area::name($this->area_id_p))
+			{
+				$model_m = Area::name($this->area_id_m);
+				if($model_m && $model_p->id != $model_m->pid)
+					$this->area_id_m='';
+			}
+			else
+				$this->area_id_m='';
+				
+			$criteria->compare('Content_area_id_p_Area_id.name', $this->area_id_p);
+			$criteria->compare('Content_area_id_m_Area_id.name', $this->area_id_m);
+			$criteria->compare('Content_area_id_c_Area_id.name', $this->area_id_c);
+			$criteria->compare('t.address', $this->address, true);			
+			$criteria->compare('t.store_tel', $this->store_tel, true);
+			$criteria->compare('t.store_postcode', $this->store_postcode, true);
+			$criteria->compare('t.lx_contacts', $this->lx_contacts, true);
+			$criteria->compare('t.lx_identity_code', $this->lx_identity_code, true);
+			$criteria->compare('t.lx_phone', $this->lx_phone, true);
+			$criteria->compare('t.com_contacts', $this->com_contacts, true);
+			$criteria->compare('t.com_phone', $this->com_phone, true);
+			$criteria->compare('t.com_identity', $this->com_identity, true);
+			$criteria->compare('t.bl_code', $this->bl_code, true);
+			if ($this->Content_Store->login_time != '')
+				$criteria->addBetweenCondition('Content_Store.login_time', strtotime($this->Content_Store->login_time), (strtotime($this->Content_Store->login_time)+3600*24-1));
+			if ($this->Content_Store->last_time != '')
+				$criteria->addBetweenCondition('Content_Store.last_time', strtotime($this->Content_Store->last_time), (strtotime($this->Content_Store->last_time)+3600*24-1));
+			if ($this->Content_Store->add_time != '')
+				$criteria->addBetweenCondition('Content_Store.add_time', strtotime($this->Content_Store->add_time), (strtotime($this->Content_Store->add_time)+3600*24-1));
+			if ($this->Content_Store->up_time != '')
+				$criteria->addBetweenCondition('Content_Store.up_time', strtotime($this->Content_Store->up_time), (strtotime($this->Content_Store->up_time)+3600*24-1));
+		}
+		return new CActiveDataProvider($this, array(
+				'criteria'=>$criteria,
+				'pagination'=>array(
+						'pageSize'=>Yii::app()->params['admin_pageSize'],
+				),
+				'sort'=>array(
+						'defaultOrder'=>'`t`.`add_time` desc', //设置默认排序
+				),
+		));
+	}
+	
+	/**
+	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param string $className active record class name.
+	 * @return StoreContent the static model class
+	 */
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+	
+	/**
+	 * 保存之前的操作
+	 * @see CActiveRecord::beforeSave()
+	 */
+	public function beforeSave(){
+		if(parent::beforeSave()){		
+			if($this->isNewRecord)
+				$this->up_time=$this->pass_time=$this->add_time=time();
+			else
+				$this->up_time=time();
+			return true;
+		}else
+			return false;
+	}
+        
+	/**
+	 * 银行信息
+	 * @return bank_list 返回所有银行信息
+	 */
+   public  function select_bank_id($id){
+	   $bank_model = new Bank();
+	   $bank_arr   = $bank_model->findAll(array('condition'=>'status =1','select'=>'id,name'));
+	   $bank_list  = array();
+	   foreach($bank_arr as $v){
+		   $bank_list[$v['id']] = $v['name'];
+	   }
+
+	   return $bank_list;
+   }
+       
+    /**
+     * 验证密码是否对
+     * @param $pwd
+     * @param $password
+     * @return bool
+     */
+    public function validatePassword($pwd,$password){
+        return self::pwdEncrypt($pwd) === $password;
+    }
+
+    /**
+     * 密码加密函数
+     * @param $pwd
+     * @return string
+     */
+    public static function pwdEncrypt($pwd){
+        return md5(md5($pwd));
+    }
+
+
+	/**
+	 *验证是否有该区域权限
+	 * @param $attribute
+	 */
+	public function is_power($attribute){
+		if(!! $model=Area::model()->find('id=:id AND agent_id !=0',array(':id'=>$this->$attribute))) {
+			  if($model->agent_id != $this->agent_id)
+				  $this->addError($attribute, $this->getAttributeLabel($attribute).' 该区域权限已有代理商');
+		}else
+			$this->addError($attribute, $this->getAttributeLabel($attribute).' 该区域权限无代理商');
+	}
+	
+	/**
+	 *验证是否有该区域权限
+	 * @param $attribute
+	 */
+	public function is_power_agent($attribute){
+		if(!! $model=Area::model()->find('id=:id AND agent_id !=0',array(':id'=>$this->$attribute))) {
+			if($model->agent_id != Yii::app()->agent->id)
+				$this->addError($attribute, $this->getAttributeLabel($attribute).' 该区域权限已有代理商');
+		}else
+			$this->addError($attribute, $this->getAttributeLabel($attribute).' 该区域权限无代理商');
+	}
+	
+	/**
+	 * 返回商家主账号 子账号
+	 * @param unknown $data
+	 * @return multitype:string
+	 */
+	public static function manager_items($data)
+	{
+		$array = array();
+		$array[$data->id] = $data->Content_Store->phone . '(主账号)';
+		if (is_array($data->Content_Stoer_Son))
+		{
+			foreach ($data->Content_Stoer_Son as $son)
+			{
+				if ($son->status == 1)
+					$array[$son->id] = $son->phone . '(子账号)';
+			}
+		}
+		return $array;
+	}
+
+	/**
+	 * 返回商家主账号信息
+	 * @param bool|true $array
+	 * @param array $params
+	 * @return array|mixed|null <multitype:static , mixed, static, NULL, multitype:unknown Ambigous <static, NULL> , multitype:, multitype:unknown >
+	 */
+	public static function data($array=true,$params=array(''=>'--请选择--'),$condition='')
+	{
+		if($condition=='')
+			$condition=array(
+					'with'=>'Content_Store',
+					'condition'=>'`Content_Store`.`status`=1 AND `Content_Store`.`agent_id`=:agent_id',
+					'params'=>array(':agent_id'=>Yii::app()->agent->id),
+			);
+		if(!! $models=self::model()->findAll($condition))
+		{
+			if($array==true)
+				return $params+CHtml::listData($models, 'id', 'name');
+			elseif($array != false)
+				return $params+CHtml::listData($models, $array, 'name');
+			else
+				return $models;
+		}else{
+			if($array)
+				return $params+array();
+			else
+				return null;
+		}
+	}
+	
+	/**
+	 *验证子账号的数量
+	 */
+	public function validateSon()
+	{
+		if(! $this->hasErrors())
+		{
+			$son=self::getSonNumber($this->id);
+			if($this->son_limit < $son)
+				$this->addError('son_limit', '不可小于现有子账号的数量 ：（'.$son.'个）');
+		}
+	}
+	
+	/**
+	 * 获取son的数量
+	 * @param unknown $id
+	 * @return Ambigous <string, mixed, unknown>
+	 */
+	public static function getSonNumber($id)
+	{
+		return StoreUser::model()->count('`p_id`=:p_id AND status=:status',array(':p_id'=>$id,':status'=>1));
+	}
+}

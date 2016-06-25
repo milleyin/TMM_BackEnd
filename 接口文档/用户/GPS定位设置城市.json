@@ -1,0 +1,76 @@
+
+//GPS 设置定位城市
+
+// UEL  /index.php?r=api/area/gps
+
+// POST 请求 无需登录 需要GET 请求获取秘钥
+
+//存在错误 返回的数据 高德的返回错误信息
+
+//发送数据
+{
+	"location":{				//经纬度
+		"lng":"",				//经度 小数点后不超过6位
+		"lat":""				//维度 小数点后不超过6位
+	}
+}
+
+//成功
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "address_info": {																	//地址信息
+            "name": "深圳",																	//城市名称  当前不支持县（区）
+            "value": "2211",																//城市ID
+            "counties_link": "http://localhost/tmm/index.php?r=api/area/counties&id=2211",	//切换城市（县（区））更详细的链接
+            "city": {																		//城市
+                "name": "深圳",																//名称
+                "value": "2211"																//ID
+            },
+            "province": {																	//省
+                "name": "广东省",															//名称
+                "value": "2184"																//ID
+            },
+            "district": {																	//县(区) 可以为空
+                "name": "龙岗区",															//名称
+                "value": "2217"																//ID
+            },
+            "address": "广东省深圳龙岗区",													//格式化地址
+            "location": {																	//后端返回经纬度
+                "location": "114.251373,22.721512",											//格式化经纬度
+                "lng": "114.251373",														//经度
+                "lat": "22.721512"															//纬度
+            },
+            "location_accurate": {															//GPS经纬度
+                "location": "114.25,22.721512",												//格式化经纬度
+                "lng": "114.25",															//经度
+                "lat": "22.721512"															//纬度
+            }
+        }
+    }
+}
+
+//错误1
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "location_lng": [
+            {
+                "status": "0",
+                "info": "INVALID_PARAMS",
+                "infocode": "2001"
+            }
+        ]
+    }
+}
+//错误2
+{
+    "status": 0,
+    "code": 50005,
+    "msg": "数据不合法",
+    "data": {}
+}

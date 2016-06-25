@@ -1,0 +1,6 @@
+@CHARSET "UTF-8";
+.ui-accordion .ui-accordion-content {
+	padding: 1em;
+	border-top: 0;
+	overflow: auto;
+}

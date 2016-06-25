@@ -1,0 +1,24 @@
+<?php
+namespace app\controllers;
+
+use FrontController;
+
+/**
+ * 抽奖相关接口
+ * Class IndexController
+ * @package app\controllers
+ *
+ * @author Moore Mo
+ */
+class RewardController extends FrontController
+{
+	/**
+	 * 首页
+	 */
+	public function actionIndex()
+	{
+
+		$model = 'test';
+		$this->render('index', array('model'=>$model));
+	}
+}

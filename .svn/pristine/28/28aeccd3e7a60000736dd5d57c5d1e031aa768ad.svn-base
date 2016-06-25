@@ -1,0 +1,45 @@
+<extend name="Base/common"/>
+<block name="body">
+</block>
+<block name="script">
+    <script>
+        var type = "{$orderInfo['type']}";
+        //调用微信JS api 支付
+        function jsApiCall()
+        {
+            WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest',
+                    {$jsApiParameters},
+                    function(res){
+                        if (res.err_msg == "get_brand_wcpay_request:ok") {
+                            // success
+                            if (type == 1) {
+                                window.location.replace("{:U('Ticket/paySuccess', array('id'=>$orderInfo['id'], 'fromType'=>$orderInfo['from_type']))}");
+                            } else if (type == 2) {
+                                window.location.replace("{:U('Card/paySuccess', array('id'=>$orderInfo['id'], 'fromType'=>$orderInfo['from_type']))}");
+                            } else {
+                                window.location.replace("{:U('Card/logisticsPaySuccess', array('id'=>$orderInfo['id'], 'fromType'=>$orderInfo['from_type']))}");
+                            }
+                        } else {
+                            // error or cancle
+                            window.location.replace("{:U('Index/index', array('fromType'=>$orderInfo['from_type']))}");
+                        }
+                    }
+            );
+        }
+        function callpay()
+        {
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+                }
+            }else{
+                jsApiCall();
+            }
+        }
+        callpay();
+    </script>
+</block>

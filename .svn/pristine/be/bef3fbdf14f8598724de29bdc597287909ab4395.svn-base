@@ -1,0 +1,359 @@
+2016/05/31 16:00:01 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "favicon.ico"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('favicon.ico')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/favicon.ico
+HTTP_REFERER=http://pad.cn/login/index.html
+---
+2016/05/31 16:06:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/dd_zhuan.png"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/dd_zhuan.png
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:08:55 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/js/jQueryRotate.js"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/js/jQueryRotate.js
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:08:55 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/dd_zhuan.png"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/dd_zhuan.png
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:26:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/dd_zhuan.png"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/dd_zhuan.png
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:34:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhizhen1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhizhen1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:34:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/dd_zhuan.png"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/dd_zhuan.png
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:34:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhizhen1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhizhen1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:34:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/dd_zhuan.png"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/dd_zhuan.png
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:35:07 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhizhen1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhizhen1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:35:32 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhizhen1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhizhen1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:36:09 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhizhen1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhizhen1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:36:39 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhizhen1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhizhen1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:40:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhizhen1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhizhen1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:40:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhizhen1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhizhen1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:40:49 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhizhen1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhizhen1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:41:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhizhen1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhizhen1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:42:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhizhen1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhizhen1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:43:00 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhuanpan1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhuanpan1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:44:09 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhuanpan1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhuanpan1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:46:10 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhuanpan1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhuanpan1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:46:11 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhuanpan1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhuanpan1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:46:49 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhuanpan1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhuanpan1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:46:59 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhuanpan1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhuanpan1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:47:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhuanpan1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhuanpan1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:47:42 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhuanpan1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhuanpan1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:47:54 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhuanpan1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhuanpan1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:48:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhuanpan1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhuanpan1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:48:30 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhuanpan1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhuanpan1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:48:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhuanpan1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhuanpan1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 16:50:57 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/admin/images/zhuanpan1.png;"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/admin/images/zhuanpan1.png;
+HTTP_REFERER=http://pad.cn/admin/index/test
+---
+2016/05/31 17:37:32 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---
+2016/05/31 17:37:33 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---
+2016/05/31 17:49:17 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---
+2016/05/31 17:49:17 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---
+2016/05/31 17:49:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---
+2016/05/31 17:49:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---
+2016/05/31 17:49:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---
+2016/05/31 17:49:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---

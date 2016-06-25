@@ -1,0 +1,44 @@
+/**
+ * http://58.240.26.203:8090/api/util/areas/get/?type=PROVINCE_LIST&uid=1111085&sid=qljltest&ts=2015-10-12 07:10:31&sig=ED344768B325DFE485DEBA8E42DC171C&v=1.0.1
+ * http://58.240.26.203:8090/api/util/areas/get/?type=COUNTRY_LIST&uid=1111085&sid=qljltest&ts=2015-10-12 07:10:31&sig=ED344768B325DFE485DEBA8E42DC171C&v=1.0.1
+ * http://58.240.26.203:8090/api/util/occupations/get?uid=1111085&sid=qljltest&ts=2015-10-12 07:10:31&sig=ED344768B325DFE485DEBA8E42DC171C&v=1.0.1
+ * http://58.240.26.203:8090/api/util/industrys/get?uid=1111085&sid=qljltest&ts=2015-10-12 07:10:31&sig=ED344768B325DFE485DEBA8E42DC171C&v=1.0.1
+ * http://58.240.26.203:8090/api/product/categories/get?type=0&uid=1111085&sid=qljltest&ts=2015-10-12 07:10:31&sig=ED344768B325DFE485DEBA8E42DC171C&v=1.0.1
+ * http://58.240.26.203:8090/api/product/categories/get?type=1&uid=1111085&sid=qljltest&ts=2015-10-12 07:10:31&sig=ED344768B325DFE485DEBA8E42DC171C&v=1.0.1
+ * http://58.240.26.203:8090/api/insCom/get?comId=101&uid=1111085&sid=qljltest&ts=2015-10-12 07:10:31&sig=ED344768B325DFE485DEBA8E42DC171C&v=1.0.1
+ * http://58.240.26.203:8090/api/product/plans/search?uid=1111085&sid=qljltest&ts=2015-10-12 07:10:31&sig=ED344768B325DFE485DEBA8E42DC171C&v=1.0.1
+ * http://58.240.26.203:8090/api//product/plan/get?planId=1&uid=1111085&sid=qljltest&ts=2015-10-12 07:10:31&sig=ED344768B325DFE485DEBA8E42DC171C&v=1.0.1
+ * http://58.240.26.203:8090/api/product/plans/get?planIds=8&uid=1111085&sid=qljltest&ts=2015-10-12 07:10:31&sig=ED344768B325DFE485DEBA8E42DC171C&v=1.0.1
+ * http://58.240.26.203:8090/api/product/plan/trial?planId=8&gender=1&period=2012-8-12 00&birthday=1988-08-08&uid=1111085&sid=qljltest&ts=2015-10-12 07:10:31&sig=ED344768B325DFE485DEBA8E42DC171C&v=1.0.1
+ *
+ */
+
+
+/**
+$uid = '1111085';
+$sid = 'qljltest';
+
+$ts = date('Y-m-d H:m:s', time());
+
+$appsecret = 'abcd1111085';
+
+$sign_arr = array(
+    'uid' => $uid,
+    'sid' => $sid,
+    'ts' => $ts,
+    'loginId' => '',
+    'orderId' => '',
+    'policyId' => '',
+    'applicationId' => '',
+    'appsecret' => strtoupper(md5($appsecret))
+);
+$sig_arr_end = array();
+foreach ($sign_arr as $key=>$val) {
+    if (! empty($val)) {
+        $sig_arr_end[$key] = $val;
+    }
+}
+
+$sig_md5 = strtoupper(md5(implode(',', $sig_arr_end)));
+echo $sig_md5;
+*/

@@ -1,0 +1,90 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__STATIC__/swiper/css/swiper.min.css" rel="stylesheet">
+    <link href="__CSS__/main.css" rel="stylesheet">
+</block>
+<block name="body">
+    <div class="wrap">
+        <empty name="ticketData">
+            <div class="check-info">
+                <p class="check-info-p">您当前没有可用的门票，请购买。</p>
+                <a href="{:U('index/activity')}" class="pay-btn">购买门票</a>
+            </div>
+        <else />
+
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+
+            <foreach name="ticketData" item="vo" >
+
+            <if condition="($vo.normalYesCount gt 0) OR ($vo.yyYesCount gt 0) ">
+                <div class="swiper-slide">
+                    <div class="card">
+                        <div class="card-header">通过此微信购买的门票</div>
+                        <div class="card-body">
+                            <div class="tit">购票手机 {$vo.mobile}</div>
+                            <img width="138" height="138" src="__ROOT__/{$vo.codeImgUrl}">
+                            <ul class="describe">
+                                <li>1. 请妥善保存该门票二维码，凭二维码可兑换纸质门票</li>
+                                <li>2. 在园内哥特广场指定点换取小礼品一份, 并参与现场抽奖</li>
+                                <li>3. 如若丢失，可在公众号“成都樱花节”下点击“门票查询”</li>
+                                <li>4. 如有疑问，请致电客服400-019-7090</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            <p class="tit">此二维码包含门票信息包含：</p>
+                            <div class="cardinfo">
+
+
+                                    <div class="mincard-wrap">
+                                        <img width="23" height="35" src="__IMG__/ticket11.png"></img>
+                        <span class="desc">
+                            <span class="top">{$vo.normalYesCount}<span class="sub">张</span></span>
+                        <span class="bottom">未兑换</span>
+                        </span>
+                                    </div>
+
+
+
+                                    <div class="mincard-wrap">
+                                        <img width="23" height="35" src="__IMG__/ticket12.png"></img>
+                        <span class="desc">
+                            <span class="top">{$vo.yyYesCount}<span class="sub">张</span></span>
+                        <span class="bottom">未兑换</span>
+                        </span>
+                                    </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </if>
+
+            </foreach>
+
+
+            </div>
+        </div>
+
+        <div class="btlink">
+            <a class="active" href="http://mp.weixin.qq.com/s?__biz=MzA5ODM1Njk4OA==&amp;mid=405350758&amp;idx=1&amp;sn=a21b58147eb67f5cadbb983be64179b1#rd">查看攻略</a>
+            <a href="{:U('map/index')}">查看地图</a>
+            <a href="{:U('index/activity')}">继续购票</a>
+        </div>
+        </empty>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__STATIC__/swiper/js/swiper.jquery.min.js"></script>
+    <script>
+        $(function() {
+            var mySwiper = new Swiper ('.swiper-container', {
+                // Optional parameters
+                direction: 'horizontal',
+            });
+        });
+    </script>
+</block>

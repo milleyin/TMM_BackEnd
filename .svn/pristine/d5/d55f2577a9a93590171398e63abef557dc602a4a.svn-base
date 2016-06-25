@@ -1,0 +1,225 @@
+//name 我发起的活动-详情1（审核未通过）type=0
+//链接 index.php?r=api/orderActives/oldview&id=value
+//GET
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "name": "创建线222",
+        "list_info": "",
+        "shops": {
+            "value": "52",
+            "link": "http://localhost/tmm/index.php?r=api/actives/view&id=52"
+        },
+		"shops_info":'',
+        "image": "",
+        "actives": {
+            "name": "活动(旅游)",
+            "value": "0"
+        },
+        "audit_stauts": {
+            "name": "平台审核未通过",
+            "value": "-1"
+        },
+        "audit_info": "测试下(最小值为 10 字符串).",
+        "actives_info": {
+            "remark": "创建线2",
+            "actives_no": "",
+            "order_list": "",
+            "number": {
+                "name": "活动人数",
+                "value": "20"
+            },
+            "order_number": {
+                "name": "剩余报名人数",
+                "value": "20"
+            },
+            "tour_price": {
+                "name": "服务费/人",
+                "value": "10.00",
+                "count": "0.00"
+            },
+            "tour_count": {
+                "name": "报名统计",
+                "value": "0"
+            },
+            "order_count": {
+                "name": "付款统计",
+                "value": "0"
+            }
+        },
+        "actives_time": {
+            "start_time": "1970-01-01",
+            "end_time": "2015-11-05",
+            "go_time": "出游日期未定",
+            "add_time": "2015-11-03 14:22:53"
+        },
+        "actives_status": {
+            "name": "没有开始",
+            "value": "0"
+        },
+        "items_fare": {
+            "1": [
+                [
+                    {
+                        "name": "广宁竹海",
+                        "value": "57",
+                        "image": "http://test.365tmm.net/uploads/items/tmp/play/20150930/8296560ba44a2553e7.03434368.jpg",
+                        "link": "http://localhost/tmm/index.php?r=api/play/view&id=57",
+                        "classliy": {
+                            "name": "玩",
+                            "value": "3"
+                        },
+                        "fare": [
+                            {
+                                "name": "特价门票",
+                                "info": "儿童",
+                                "room_number": "0",
+                                "price": "1.69"
+                            }
+                        ]
+                    }
+                ],
+                [
+                    {
+                        "name": "放鸡岛",
+                        "value": "56",
+                        "image": "http://test.365tmm.net/uploads/items/play/20150930/6422560b9ce2c87157.58467922.jpg",
+                        "link": "http://localhost/tmm/index.php?r=api/play/view&id=56",
+                        "classliy": {
+                            "name": "玩",
+                            "value": "3"
+                        },
+                        "fare": [
+                            {
+                                "name": "特价门票",
+                                "info": "成人",
+                                "room_number": "0",
+                                "price": "20.50"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "茂名海岸",
+                        "value": "55",
+                        "image": "http://test.365tmm.net/uploads/items/play/20150930/6044560b9542cd4d04.79039845.jpg",
+                        "link": "http://localhost/tmm/index.php?r=api/play/view&id=55",
+                        "classliy": {
+                            "name": "玩",
+                            "value": "3"
+                        },
+                        "fare": [
+                            {
+                                "name": "特价门票",
+                                "info": "儿童",
+                                "room_number": "0",
+                                "price": "0.59"
+                            }
+                        ]
+                    }
+                ]
+            ],
+            "2": [
+                [
+                    {
+                        "name": "溪头村",
+                        "value": "33",
+                        "image": "http://test.365tmm.net/uploads/items/play/20150929/1787560a5cf4d762a0.13107331.jpg",
+                        "link": "http://localhost/tmm/index.php?r=api/play/view&id=33",
+                        "classliy": {
+                            "name": "玩",
+                            "value": "3"
+                        },
+                        "fare": [
+                            {
+                                "name": "特价门票",
+                                "info": "儿童",
+                                "room_number": "0",
+                                "price": "34.75"
+                            }
+                        ]
+                    }
+                ],
+                [
+                    {
+                        "name": "大埔蜜柚",
+                        "value": "29",
+                        "image": "http://test.365tmm.net/uploads/items/eat/20150929/7017560a5830dd8463.23306165.jpg",
+                        "link": "http://localhost/tmm/index.php?r=api/play/view&id=29",
+                        "classliy": {
+                            "name": "玩",
+                            "value": "3"
+                        },
+                        "fare": [
+                            {
+                                "name": "特价套餐",
+                                "info": "成人",
+                                "room_number": "0",
+                                "price": "34.47"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "瑞锦酒店",
+                        "value": "31",
+                        "image": "http://test.365tmm.net/uploads/items/hotel/20150929/9686560a5a5ea9f568.83407161.jpg",
+                        "link": "http://localhost/tmm/index.php?r=api/play/view&id=31",
+                        "classliy": {
+                            "name": "玩",
+                            "value": "3"
+                        },
+                        "fare": [
+                            {
+                                "name": "单人间套房",
+                                "info": "100",
+                                "room_number": "1",
+                                "price": "34.99"
+                            }
+                        ]
+                    }
+                ]
+            ],
+            "3": [
+                [
+                    {
+                        "name": "大埔蜜柚",
+                        "value": "29",
+                        "image": "http://test.365tmm.net/uploads/items/eat/20150929/7017560a5830dd8463.23306165.jpg",
+                        "link": "http://localhost/tmm/index.php?r=api/play/view&id=29",
+                        "classliy": {
+                            "name": "玩",
+                            "value": "3"
+                        },
+                        "fare": [
+                            {
+                                "name": "特价套餐",
+                                "info": "成人",
+                                "room_number": "0",
+                                "price": "34.47"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "瑞锦酒店",
+                        "value": "31",
+                        "image": "http://test.365tmm.net/uploads/items/hotel/20150929/9686560a5a5ea9f568.83407161.jpg",
+                        "link": "http://localhost/tmm/index.php?r=api/play/view&id=31",
+                        "classliy": {
+                            "name": "玩",
+                            "value": "3"
+                        },
+                        "fare": [
+                            {
+                                "name": "单人间套房",
+                                "info": "100",
+                                "room_number": "1",
+                                "price": "34.99"
+                            }
+                        ]
+                    }
+                ]
+            ]
+        }
+    }
+}

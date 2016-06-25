@@ -1,0 +1,125 @@
+<?php
+/* @var $this Tmm_groupController */
+/* @var $model Group */
+
+$this->breadcrumbs=array(
+	'线路管理页'=>array('/admin/tmm_shops/admin'),
+	'结伴游(订单)管理页'=>array('admin'),
+);
+?>
+
+<h1>查看 结伴游(订单)管理页 <font color='#eb6100'><?php echo $model->id; ?></font></h1>
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		array(
+				'name'=>'id',
+		),
+		array(
+				'name'=>'group_no',
+		),
+		array(
+				'name'=>'organizer_id',
+		),
+		array(
+				'name'=>'group_id',
+		),
+		array(
+				'name'=>'shops_name',
+		),
+		array(
+				'name'=>'shops_list_img',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->shops_list_img),
+		),
+		array(
+				'name'=>'shops_page_img',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->shops_page_img),
+		),
+		array(
+				'name'=>'shops_list_info',
+		),
+		array(
+				'name'=>'shops_page_info',
+		),
+		array(
+				'name'=>'shops_pub_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'shops_up_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'shops_add_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'group_price',
+		),
+		array(
+				'name'=>'group_remark',
+		),
+		array(
+				'name'=>'group_start_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'group_end_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'group_group_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'group_group',
+				'value'=>$model::$_group_group[$model->group_group],
+		),
+		array(
+				'name'=>'user_order_count',
+		),
+		array(
+				'name'=>'user_pay_count',
+		),
+		array(
+				'name'=>'user_submit_count',
+		),
+		array(
+				'name'=>'user_price',
+		),
+		array(
+				'name'=>'user_go_count',
+		),
+		array(
+				'name'=>'user_price_count',
+		),
+		array(
+				'name'=>'total',
+		),
+		array(
+				'name'=>'is_organizer',
+				'value'=>$model::$_is_organizer[$model->is_organizer],
+		),
+		array(
+				'name'=>'add_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'up_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'status',
+				'value'=>$model::$_status[$model->status],
+		),
+	),
+));
+
+$this->renderPartial('_items_view', array(
+	'model'=>$model,
+));
+?>
+

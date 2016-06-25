@@ -1,0 +1,58 @@
+<?php
+/**
+ * @author Changhai Zhan
+ */
+?>
+<?php echo "<?php\n"; ?>
+/* @var $this <?php echo $this->getControllerClass(); ?> */
+/* @var $model <?php echo $this->getModelClass(); ?> */
+
+<?php
+$nameColumn=$this->guessNameColumn($this->tableSchema->columns);
+$label=$this->pluralize($this->class2name($this->modelClass));
+echo "\$this->breadcrumbs = array(
+    '管理页'=>array('admin'),
+    \$model->{$nameColumn},
+);\n";
+?>
+?>
+
+<h1>查看 <?php echo $this->modelClass." <font color='#eb6100'><?php echo CHtml::encode(\$model->{$this->tableSchema->primaryKey}); ?></font>"; ?></h1>
+
+<?php echo "<?php"; ?> $this->widget('zii.widgets.CDetailView', array(
+    'data'=>$model,
+    'attributes'=>array(
+<?php
+foreach($this->tableSchema->columns as $column)
+{
+            if (strpos($column->name,'status') !== false || strpos($column->name,'type') !== false || strpos($column->name,'audit') !== false)
+            {
+        ?>
+        array(
+                'name'=>'<?php echo $column->name;?>',
+                'value'=>$model::$_<?php echo $column->name;?>[$model-><?php echo $column->name;?>],
+        ),
+<?php 
+            }
+            elseif (strpos($column->name,'time') !== false)
+            {
+        ?>
+        array(
+                'name'=>'<?php echo $column->name;?>',
+                'type'=>'datetime',
+        ),
+<?php 
+            }
+            else
+            {
+        ?>
+        array(
+                'name'=>'<?php echo $column->name;?>',
+        ),
+<?php 
+            }
+}
+?>
+    ),
+)); 
+?>

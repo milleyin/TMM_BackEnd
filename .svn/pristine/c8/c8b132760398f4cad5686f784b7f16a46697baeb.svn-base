@@ -1,0 +1,645 @@
+
+
+//交易流水 
+
+//URL /index.php?r=store/store_accountLog/index
+
+//GET
+
+//不存在错误 存在空
+
+//有数据返回结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "http://localhost/tmm/index.php?r=store/store_accountLog/index",
+            "next": "http://localhost/tmm/index.php?r=store/store_accountLog/index&page=2",
+            "selectedPage": 1,
+            "count": 2,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=store/store_accountLog/index"
+        },
+        "list_data": [
+            {
+                "name": "订单收益",										//交易名称
+                "value": "13",											//交易名称编号
+                "account_no": "EOI201512291652400000000662898102",		//交易单号
+                "use_money": "+4,550.00",								//交易金额
+                "add_time": "2015-12-29 16:52:40",						//交易时间
+                "money": "9,140.09"										//交易之后的余额
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512291125470000000616581028",
+                "use_money": "+13.51",
+                "add_time": "2015-12-29 11:25:47",
+                "money": "4,590.09"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512291116090000000612541166",
+                "use_money": "+4,550.00",
+                "add_time": "2015-12-29 11:16:09",
+                "money": "4,576.58"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221428560000000553994949",
+                "use_money": "+0.21",
+                "add_time": "2015-12-22 14:28:56",
+                "money": "26.58"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221428290000000549366075",
+                "use_money": "+0.21",
+                "add_time": "2015-12-22 14:28:29",
+                "money": "26.37"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221427590000000545198062",
+                "use_money": "+0.28",
+                "add_time": "2015-12-22 14:27:59",
+                "money": "26.16"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221414300000000513447287",
+                "use_money": "+0.21",
+                "add_time": "2015-12-22 14:14:30",
+                "money": "25.88"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221414150000000509207192",
+                "use_money": "+0.28",
+                "add_time": "2015-12-22 14:14:15",
+                "money": "25.67"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221407390000000490644702",
+                "use_money": "+0.21",
+                "add_time": "2015-12-22 14:07:39",
+                "money": "25.39"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221359220000000424113699",
+                "use_money": "+0.21",
+                "add_time": "2015-12-22 13:59:22",
+                "money": "24.76"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221359220000000429727362",
+                "use_money": "+0.21",
+                "add_time": "2015-12-22 13:59:22",
+                "money": "24.97"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221359220000000434998693",
+                "use_money": "+0.21",
+                "add_time": "2015-12-22 13:59:22",
+                "money": "25.18"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221346490000000313509065",
+                "use_money": "+0.21",
+                "add_time": "2015-12-22 13:46:49",
+                "money": "23.22"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221346490000000323184529",
+                "use_money": "+0.21",
+                "add_time": "2015-12-22 13:46:49",
+                "money": "23.43"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221346490000000343590983",
+                "use_money": "+0.35",
+                "add_time": "2015-12-22 13:46:49",
+                "money": "23.78"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221346490000000353692544",
+                "use_money": "+0.35",
+                "add_time": "2015-12-22 13:46:49",
+                "money": "24.13"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221346490000000373274523",
+                "use_money": "+0.21",
+                "add_time": "2015-12-22 13:46:49",
+                "money": "24.34"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221346490000000383617865",
+                "use_money": "+0.21",
+                "add_time": "2015-12-22 13:46:49",
+                "money": "24.55"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221045290000000271928406",
+                "use_money": "+0.21",
+                "add_time": "2015-12-22 10:45:29",
+                "money": "22.73"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221045290000000279491838",
+                "use_money": "+0.28",
+                "add_time": "2015-12-22 10:45:29",
+                "money": "23.01"
+            }
+        ]
+    }
+}
+
+//空值返回结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=store/store_accountLog/index",
+            "selectedPage": 1
+        },
+        "list_data": [],
+        "null": "小觅已经很努力了！"
+    }
+}
+
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 我是分隔线 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+//我的收入 不分子账号 父账号
+
+//URL /index.php?r=store/store_accountLog/count&time={'detail','day','month'}
+
+//PARAMS 参数   time => 默认 day 表示按天统计我相关收益 ; month 表示按月统计我相关收益 ; detail 表示按记录详细展现我相关的每笔收益情况
+
+//GET
+
+//存在错误（参数错误）、 存在空
+
+//无参数 默认 time=day
+
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=store/store_accountLog/count",
+            "selectedPage": 1
+        },
+        "list_data": [												//数据
+            {
+                "name": "2015年12月",								//分组名称
+                "value": [											//分组值
+                    {
+                        "group": "2015年12月",						//归属分组名
+                        "add_time": "2015-12-21",					//统计天数
+                        "money": "0.49",							//收益金额
+                        "format_money": "0.49"						//格式化收益金额
+                    },
+                    {
+                        "group": "2015年12月",
+                        "add_time": "2015-12-22",
+                        "money": "14.07",
+                        "format_money": "14.07"
+                    },
+                    {
+                        "group": "2015年12月",
+                        "add_time": "2015-12-29",
+                        "money": "9113.51",
+                        "format_money": "9,113.51"
+                    }
+                ]
+            }
+        ],
+        "money_count": 9128.07,
+        "format_money_count": "9,128.07"
+    }
+}
+
+//day 默认 天
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=store/store_accountLog/count",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "name": "2015年12月",
+                "value": [
+                    {
+                        "group": "2015年12月",
+                        "add_time": "2015-12-21",
+                        "money": "0.49",
+                        "format_money": "0.49"
+                    },
+                    {
+                        "group": "2015年12月",
+                        "add_time": "2015-12-22",
+                        "money": "14.07",
+                        "format_money": "14.07"
+                    },
+                    {
+                        "group": "2015年12月",
+                        "add_time": "2015-12-29",
+                        "money": "9113.51",
+                        "format_money": "9,113.51"
+                    }
+                ]
+            }
+        ],
+        "money_count": 9128.07,
+        "format_money_count": "9,128.07"
+    }
+}
+
+//month 月
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=store/store_accountLog/count&time=month",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "add_time": "2015-12",				//时间
+                "money": "8.33",					//金额
+                "format_money": "8.33"				//格式化金额
+            }
+        ],
+        "money_count": 8.33,						//统计金额
+        "format_money_count": "8.33"				//格式化统计金额
+    }
+}
+
+//detail 详细
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=store/store_accountLog/count&time=detail",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "name": "订单收益",															//交易名称
+                "value": "13",																//交易编号
+                "account_no": "EOI201512221045070000000127411337",							//交易单号
+                "add_time": "2015-12-22 10:45:07",											//交易时间
+                "money": "0.07",															//交易 收益金额
+                "format_money": "0.00",														//交易 格式化收益
+                "items": {
+                    "name": "石河村",														//项目名
+                    "value": "33",															//项目值
+                    "link": "http://localhost/tmm/index.php?r=store/store_items/view&id=33",//项目链接
+                    "total": "0.10",														//项目总额
+                    "format_total": "0.10",													//格式化总额
+                    "employ_time": "过期消费",												//消费时间 
+                    "push": 0.7,															//项目分成
+                    "classliy": {																
+                        "name": "3",														//项目类型值
+                        "value": "玩"														//项目类型名
+                    }
+                }
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221045070000000131199504",
+                "add_time": "2015-12-22 10:45:07",
+                "money": "0.14",
+                "format_money": "0.00",
+                "items": {
+                    "name": "热带雨林酒店",
+                    "value": "32",
+                    "link": "http://localhost/tmm/index.php?r=store/store_items/view&id=32",
+                    "total": "0.20",
+                    "format_total": "0.20",
+                    "employ_time": "过期消费",
+                    "push": 0.7,
+                    "classliy": {
+                        "name": "2",
+                        "value": "住"
+                    }
+                }
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221045070000000135265443",
+                "add_time": "2015-12-22 10:45:07",
+                "money": "0.14",
+                "format_money": "0.00",
+                "items": {
+                    "name": "长沙臭豆腐",
+                    "value": "31",
+                    "link": "http://localhost/tmm/index.php?r=store/store_items/view&id=31",
+                    "total": "0.20",
+                    "format_total": "0.20",
+                    "employ_time": "过期消费",
+                    "push": 0.7,
+                    "classliy": {
+                        "name": "1",
+                        "value": "吃"
+                    }
+                }
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221045070000000179387187",
+                "add_time": "2015-12-22 10:45:07",
+                "money": "0.14",
+                "format_money": "0.00",
+                "items": {
+                    "name": "石河村",
+                    "value": "33",
+                    "link": "http://localhost/tmm/index.php?r=store/store_items/view&id=33",
+                    "total": "0.20",
+                    "format_total": "0.20",
+                    "employ_time": "过期消费",
+                    "push": 0.7,
+                    "classliy": {
+                        "name": "3",
+                        "value": "玩"
+                    }
+                }
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221045070000000183391266",
+                "add_time": "2015-12-22 10:45:07",
+                "money": "1.40",
+                "format_money": "0.00",
+                "items": {
+                    "name": "热带雨林酒店",
+                    "value": "32",
+                    "link": "http://localhost/tmm/index.php?r=store/store_items/view&id=32",
+                    "total": "2.00",
+                    "format_total": "2.00",
+                    "employ_time": "过期消费",
+                    "push": 0.7,
+                    "classliy": {
+                        "name": "2",
+                        "value": "住"
+                    }
+                }
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221045070000000187267888",
+                "add_time": "2015-12-22 10:45:07",
+                "money": "0.14",
+                "format_money": "0.00",
+                "items": {
+                    "name": "长沙臭豆腐",
+                    "value": "31",
+                    "link": "http://localhost/tmm/index.php?r=store/store_items/view&id=31",
+                    "total": "0.20",
+                    "format_total": "0.20",
+                    "employ_time": "过期消费",
+                    "push": 0.7,
+                    "classliy": {
+                        "name": "1",
+                        "value": "吃"
+                    }
+                }
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221045290000000267494371",
+                "add_time": "2015-12-22 10:45:29",
+                "money": "0.14",
+                "format_money": "0.00",
+                "items": {
+                    "name": "热带雨林酒店",
+                    "value": "32",
+                    "link": "http://localhost/tmm/index.php?r=store/store_items/view&id=32",
+                    "total": "0.20",
+                    "format_total": "0.20",
+                    "employ_time": "过期消费",
+                    "push": 0.7,
+                    "classliy": {
+                        "name": "2",
+                        "value": "住"
+                    }
+                }
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221045290000000219160963",
+                "add_time": "2015-12-22 10:45:29",
+                "money": "0.14",
+                "format_money": "0.00",
+                "items": {
+                    "name": "热带雨林酒店",
+                    "value": "32",
+                    "link": "http://localhost/tmm/index.php?r=store/store_items/view&id=32",
+                    "total": "0.20",
+                    "format_total": "0.20",
+                    "employ_time": "过期消费",
+                    "push": 0.7,
+                    "classliy": {
+                        "name": "2",
+                        "value": "住"
+                    }
+                }
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221413130000000505305965",
+                "add_time": "2015-12-22 14:13:13",
+                "money": "0.14",
+                "format_money": "0.00",
+                "items": {
+                    "name": "热带雨林酒店",
+                    "value": "32",
+                    "link": "http://localhost/tmm/index.php?r=store/store_items/view&id=32",
+                    "total": "0.20",
+                    "format_total": "0.20",
+                    "employ_time": "2015-12-22 14:13:13",
+                    "push": 0.7,
+                    "classliy": {
+                        "name": "2",
+                        "value": "住"
+                    }
+                }
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512221432180000000573226724",
+                "add_time": "2015-12-22 14:32:18",
+                "money": "0.14",
+                "format_money": "0.00",
+                "items": {
+                    "name": "热带雨林酒店",
+                    "value": "32",
+                    "link": "http://localhost/tmm/index.php?r=store/store_items/view&id=32",
+                    "total": "0.20",
+                    "format_total": "0.20",
+                    "employ_time": "2015-12-22 14:32:18",
+                    "push": 0.7,
+                    "classliy": {
+                        "name": "2",
+                        "value": "住"
+                    }
+                }
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512291145200000000624434738",
+                "add_time": "2015-12-29 11:45:20",
+                "money": "5.53",
+                "format_money": "0.00",
+                "items": {
+                    "name": "热带雨林酒店",
+                    "value": "32",
+                    "link": "http://localhost/tmm/index.php?r=store/store_items/view&id=32",
+                    "total": "7.90",
+                    "format_total": "7.90",
+                    "employ_time": "2015-12-29 11:45:20",
+                    "push": 0.7,
+                    "classliy": {
+                        "name": "2",
+                        "value": "住"
+                    }
+                }
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "account_no": "EOI201512291926080000000717486665",
+                "add_time": "2015-12-29 19:26:08",
+                "money": "0.21",
+                "format_money": "0.00",
+                "items": {
+                    "name": "热带雨林酒店",
+                    "value": "32",
+                    "link": "http://localhost/tmm/index.php?r=store/store_items/view&id=32",
+                    "total": "0.30",
+                    "format_total": "0.30",
+                    "employ_time": "2015-12-29 19:26:08",
+                    "push": 0.7,
+                    "classliy": {
+                        "name": "2",
+                        "value": "住"
+                    }
+                }
+            }
+        ],
+        "money_count": 8.33,
+        "format_money_count": "8.33"
+    }
+}
+
+
+//参数错误
+{
+    "status": 0,
+    "code": 50006,
+    "msg": "没有相关数据",
+    "data": []
+}
+
+//没有数据
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=store/store_accountLog/count&time=day",
+            "selectedPage": 1
+        },
+        "list_data": [
+   
+        ],
+        "money_count": 0.00,
+        "format_money_count": "0.00"
+    }
+}

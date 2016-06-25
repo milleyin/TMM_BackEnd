@@ -1,0 +1,5 @@
+//name 我发起的活动-（创建之前没有给出出游时间）确认出游时间
+//链接 index.php?r=api/orderActives/gotime&id=value
+//POST
+
+Actives[go_time] = 'Y-m-d'

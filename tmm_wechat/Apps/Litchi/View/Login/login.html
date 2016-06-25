@@ -1,0 +1,88 @@
+<extend name="Base/back"/>
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/login.css"/>
+</block>
+<block name="body">
+    <body class="templatemo-bg-image-1">
+    <div class="container">
+        <div class="col-md-12">
+            <form  id="loginForm" class="form-horizontal templatemo-login-form-2" role="form" action="{:U('Back/login')}" method="post">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>天美荔枝文化节后台管理</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label for="loginName" class="control-label">用户名</label>
+                                <div class="templatemo-input-icon-container">
+                                    <i class="fa glyphicon glyphicon-user"></i>
+                                    <input  id="loginName" name="loginName" type="text" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label for="password" class="control-label">密 码</label>
+                                <div class="templatemo-input-icon-container">
+                                    <i class="fa glyphicon glyphicon-lock"></i>
+                                    <input id="password" name="password" type="password" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type="submit" id="confirmLogin" value="登  录" class="btn btn-warning">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </body>
+
+</block>
+<block name="script">
+    <script src="__STATIC__/layer/layer.js"></script>
+    <script>
+        $(function() {
+            // 表单检测
+            $('#confirmLogin').click(function() {
+                if ($('#loginName').val() == '') {
+                    $('#loginName').next().show();
+                    return false;
+                }
+                if ($('#password').val() == '') {
+                    $('#password').next().show();
+                    return false;
+                }
+                $.ajax({
+                    type: 'POST',
+                    data: $('#loginForm').serialize(),
+                    url: "{:U('Login/Login')}",
+                    success: function(json) {
+                        var result = eval(json);
+                        if (result.status != 1) {
+                            layer.alert(result.prompt);
+                        } else if (result.status == 1)  {
+                            window.location.href = result.url;
+                        }
+                    }
+                });
+                return false;
+            });
+
+            // 回车提交
+            $('#password').keydown(function(event) {
+                if (event.keyCode == 13) {
+                    $('#confirmLogin').trigger('click');
+                    return false;
+                }
+            });
+
+        });
+    </script>
+</block>

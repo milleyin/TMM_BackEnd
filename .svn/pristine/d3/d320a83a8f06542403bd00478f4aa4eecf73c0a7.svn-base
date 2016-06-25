@@ -1,0 +1,252 @@
+
+//热门活动相关文档
+
+// UEL /index.php?r=api/shops/hot
+
+// get 请求 无需登录
+
+//返回值
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {										
+            "prev": "",
+            "selected": "http://localhost/tmm/index.php?r=api/shops/hot",
+            "next": "http://localhost/tmm/index.php?r=api/shops/hot&page=2",
+            "selectedPage": 1,
+            "count": 2,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=api/shops/hot"
+        },
+        "list_data": [
+            {
+                "day_num": 1,
+                "collect_count": "0",
+                "value": "222",
+                "price": 300.9,
+                "down": "599",
+                "brow": "4",
+                "share": "1",
+                "praise": "1",
+                "link": "http://test2.365tmm.net/tmm/index.php?r=api/actives/view&id=222",
+                "name": "测试自己报名",
+                "info": "sdgdsgsgdads",
+                "image": "http://test2.365tmm.net/uploads/shops/actives/20160301/litimg_app/76756d50b1e0908f8.23793945.png",
+                "share_image": "http://test2.365tmm.net/uploads/shops/actives/20160301/litimg_share/76756d50b1e0908f8.23793945.png",
+                "classliy": {
+                    "name": "活动",
+                    "value": "3"
+                },
+                "type": {
+                    "name": "觅趣",
+                    "value": "3"
+                },
+                "actives": {
+                    "actives_status": {
+                        "name": "已结束",
+                        "value": "2"
+                    },
+                    "order_number": {
+                        "name": "剩余数量",
+                        "value": "0"
+                    },
+                    "number": {
+                        "name": "觅趣人数",
+                        "value": "2"
+                    },
+                    "actives_type": {
+                        "name": "觅趣",
+                        "value": "0"
+                    },
+                    "actives_pay_type": {
+                        "name": "代付",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "day_num": 1,
+                "collect_count": "0",
+                "value": "225",
+                "price": 100.3,
+                "down": "129",
+                "brow": "24",
+                "share": "1",
+                "praise": "1",
+                "link": "http://test2.365tmm.net/tmm/index.php?r=api/actives/view&id=225",
+                "name": "活动报名自己的手机号",
+                "info": "dsgsgdsads",
+                "image": "http://test2.365tmm.net/uploads/shops/actives/20160301/litimg_app/379956d54385f22b96.21452567.jpg",
+                "share_image": "http://test2.365tmm.net/uploads/shops/actives/20160301/litimg_share/379956d54385f22b96.21452567.jpg",
+                "classliy": {
+                    "name": "活动",
+                    "value": "3"
+                },
+                "type": {
+                    "name": "觅趣",
+                    "value": "3"
+                },
+                "actives": {
+                    "actives_status": {
+                        "name": "已结束",
+                        "value": "2"
+                    },
+                    "order_number": {
+                        "name": "剩余数量",
+                        "value": "3"
+                    },
+                    "number": {
+                        "name": "觅趣人数",
+                        "value": "10"
+                    },
+                    "actives_type": {
+                        "name": "觅趣",
+                        "value": "0"
+                    },
+                    "actives_pay_type": {
+                        "name": "代付",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "day_num": 1,
+                "collect_count": "0",
+                "value": "223",
+                "price": 0.3,
+                "down": "105",
+                "brow": "2",
+                "share": "1",
+                "praise": "1",
+                "link": "http://test2.365tmm.net/tmm/index.php?r=api/actives/view&id=223",
+                "name": "测试自己报名",
+                "info": "sdgdsgdgsg",
+                "image": "http://test2.365tmm.net/uploads/shops/actives/20160301/litimg_app/670556d5364d60ebd8.62666785.png",
+                "share_image": "http://test2.365tmm.net/uploads/shops/actives/20160301/litimg_share/670556d5364d60ebd8.62666785.png",
+                "classliy": {
+                    "name": "活动",
+                    "value": "3"
+                },
+                "type": {
+                    "name": "觅趣",
+                    "value": "3"
+                },
+                "actives": {
+                    "actives_status": {
+                        "name": "已结束",
+                        "value": "2"
+                    },
+                    "order_number": {
+                        "name": "剩余数量",
+                        "value": "0"
+                    },
+                    "number": {
+                        "name": "觅趣人数",
+                        "value": "2"
+                    },
+                    "actives_type": {
+                        "name": "觅趣",
+                        "value": "0"
+                    },
+                    "actives_pay_type": {
+                        "name": "代付",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "day_num": 1,
+                "collect_count": "0",
+                "value": "224",
+                "price": 100.3,
+                "down": "129",
+                "brow": "1",
+                "share": "1",
+                "praise": "1",
+                "link": "http://test2.365tmm.net/tmm/index.php?r=api/actives/view&id=224",
+                "name": "测试活动的报名",
+                "info": "dsgsdgsagss",
+                "image": "http://test2.365tmm.net/uploads/shops/actives/20160301/litimg_app/818656d53a99d90415.45414268.png",
+                "share_image": "http://test2.365tmm.net/uploads/shops/actives/20160301/litimg_share/818656d53a99d90415.45414268.png",
+                "classliy": {
+                    "name": "活动",
+                    "value": "3"
+                },
+                "type": {
+                    "name": "觅趣",
+                    "value": "3"
+                },
+                "actives": {
+                    "actives_status": {
+                        "name": "已结束",
+                        "value": "2"
+                    },
+                    "order_number": {
+                        "name": "剩余数量",
+                        "value": "8"
+                    },
+                    "number": {
+                        "name": "觅趣人数",
+                        "value": "10"
+                    },
+                    "actives_type": {
+                        "name": "觅趣",
+                        "value": "0"
+                    },
+                    "actives_pay_type": {
+                        "name": "代付",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "day_num": 1,
+                "collect_count": "0",
+                "value": "226",
+                "price": 900.8,
+                "down": "122",
+                "brow": "1",
+                "share": "1",
+                "praise": "1",
+                "link": "http://test2.365tmm.net/tmm/index.php?r=api/actives/view&id=226",
+                "name": "测试活动详情审核没有通过的",
+                "info": "sdgsdgdsgsdsg",
+                "image": "http://test2.365tmm.net/uploads/shops/actives/20160308/litimg_app/826756de3e0632b3b8.70119894.png",
+                "share_image": "http://test2.365tmm.net/uploads/shops/actives/20160308/litimg_share/826756de3e0632b3b8.70119894.png",
+                "classliy": {
+                    "name": "活动",
+                    "value": "3"
+                },
+                "type": {
+                    "name": "觅趣",
+                    "value": "3"
+                },
+                "actives": {
+                    "actives_status": {
+                        "name": "已结束",
+                        "value": "2"
+                    },
+                    "order_number": {
+                        "name": "剩余数量",
+                        "value": "10"
+                    },
+                    "number": {
+                        "name": "觅趣人数",
+                        "value": "10"
+                    },
+                    "actives_type": {
+                        "name": "觅趣",
+                        "value": "0"
+                    },
+                    "actives_pay_type": {
+                        "name": "自费",
+                        "value": "0"
+                    }
+                }
+            }
+        ],
+        "type": 3
+    }
+}

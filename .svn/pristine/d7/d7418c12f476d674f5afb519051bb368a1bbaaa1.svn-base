@@ -1,0 +1,88 @@
+
+<div id="selected_items" >
+	<?php 
+	if (isset($model->Dot_Pro, $model->Dot_Pro[0]->Pro_Items, $model->Dot_Pro[0]->Pro_Items->id))
+	{
+		foreach ($model->Dot_Pro as $pro)
+		{
+	?>
+	<div class="seleced_item">
+		<div class="item_img">
+			<?php
+				if (isset($pro->Pro_Items->Items_ItemsImg[0]))
+				{
+					foreach ($pro->Pro_Items->Items_ItemsImg as $img)
+					{
+						if (file_exists($img->img))
+						{
+							echo Yii::app()->controller->show_img($img->img, '', '', array(
+									'title'=>Yii::app()->controller->setHideKey($pro->Pro_Items->Items_StoreContent->Content_Store->phone) . ' [' . 
+									$pro->Pro_Items->Items_StoreContent->name . ']'
+							));
+							break;
+						}
+					}
+				}
+			?>
+		</div>
+		<div class="item_coment">
+			<span class="name">名称：</span> 
+			<span>
+				 <?php echo CHtml::encode($pro->Pro_Items->name);?>
+			</span>
+			<span class="classliy">
+				<?php echo CHtml::encode($pro->Pro_ItemsClassliy->name); ?>
+			</span>
+			<div class="address">
+				<span class="name">地址：</span> 
+					<?php 
+				 		echo CHtml::encode(
+								$pro->Pro_Items->Items_area_id_p_Area_id->name . 
+								$pro->Pro_Items->Items_area_id_m_Area_id->name . 
+								$pro->Pro_Items->Items_area_id_c_Area_id->name . 
+								$pro->Pro_Items->address
+						);
+					?>
+			</div>
+			<div class="item_coment_mark">
+				<input type="button" value="上移" class="up">
+				<input type="button" value="下移" class="down">
+				<input type="button" value="删除" class="remove">
+			</div>
+		</div>
+		<div class="item_id" class="display: none;">
+			<?php echo $form->HiddenField($pro, "[]items_id", array('id'=>false)); ?>
+		</div>
+		<hr class="hr">
+	</div>
+	<?php 
+		}
+	}
+	else
+	{
+	?>
+	<div class="none" id="none">
+		<h2>请从右边列表中选择项目</h2>
+	</div>
+	<?php 
+		$is_none = true;
+	}
+	?>
+</div>
+<div id="list_items" >
+	<?php 
+		$this->renderPartial('_form/_name/items', array(
+			'itemsModel'=>$itemsModel,
+		)); 
+	?>
+</div>
+<?php 
+	if (! isset($is_none))
+	{
+	?>
+	<div class="none" id="none" style="display:none;">
+		<h2>请从右边列表中选择项目</h2>
+	</div>
+<?php 
+	}
+	?>

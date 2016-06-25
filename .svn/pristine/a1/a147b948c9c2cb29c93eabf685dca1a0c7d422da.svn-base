@@ -1,0 +1,464 @@
+<?php
+
+/**
+ * This is the model class for table "{{password}}".
+ *
+ * The followings are the available columns in table '{{password}}':
+ * @property string $id
+ * @property integer $type
+ * @property string $role_id
+ * @property string $manager_id
+ * @property string $password
+ * @property string $salt
+ * @property string $pass_count
+ * @property string $error_count
+ * @property string $use_error
+ * @property string $use_ip
+ * @property string $use_time
+ * @property string $last_ip
+ * @property string $last_time
+ * @property string $up_count
+ * @property string $up_time
+ * @property string $add_time
+ * @property integer $status
+ */
+class Password extends ActiveRecord
+{
+    /**
+     * 密码表 password type 密码类型 => 登录密码
+     * @var integer
+     */
+    const PASSWORD_TYPE_LOGIN = 0;
+    
+    /**
+     * 验证通过
+     * @var integer
+     */
+    const PASSWORD_PASS = 1;
+    
+    /**
+     * 密码
+     * @var unknown
+     */
+    public $_pwd;
+    /**
+     * 确认密码
+     * @var unknown
+     */
+    public $_confirm_pwd;
+    /**
+     * 原密码
+     * @var unknown
+     */
+    public $_old_pwd;    
+	/**
+	 * 解释字段 status 的含义
+	 * @var array
+	 */
+	public static $_status = array(
+			self::_STATUS_DELETED => '已删除',
+			self::_STATUS_DISABLE => '已禁用',
+			self::_STATUS_NORMAL => '正常',
+	);
+	/**
+	 * 解释字段 type 的含义
+	 * @var array
+	 */
+	public static $_type = array(
+		self::PASSWORD_TYPE_LOGIN => '登录密码'
+	);
+	
+	/**
+	 * 角色的密码
+	 * @var unknown
+	 */	
+	public static $__type = array(
+		Role::ROLE_TYPE_ADMIN =>array(
+			self::PASSWORD_TYPE_LOGIN,
+		),
+		Role::ROLE_TYPE_STORE =>array(
+			self::PASSWORD_TYPE_LOGIN,
+		)
+	);
+	
+	
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return '{{password}}';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+			//array('role_id, manager_id', 'required'),
+			array('type, status', 'numerical', 'integerOnly'=>true),
+			array('role_id, manager_id', 'length', 'max'=>20),
+			array('password, salt', 'length', 'max'=>128),
+			array('pass_count, error_count, use_error, up_count', 'length', 'max'=>11),
+			array('use_ip, last_ip', 'length', 'max'=>15),
+			array('use_time, last_time, up_time, add_time', 'length', 'max'=>10),
+			
+			//密码类型
+		   array('type', 'in', 'range'=>array_keys(self::$_type)),
+		   array('status', 'in', 'range'=>array_keys(self::$_status)),
+		        
+		   array('_old_pwd, _pwd, _confirm_pwd', 'length', 'max'=>25, 'min'=>8),
+		   //管理员 修改自己的密码
+		   array('_old_pwd, _pwd, _confirm_pwd', 'required', 'on'=>'self_update'),
+		   array('_pwd', 'ext.validators.PasswordValidator', 'on'=>'self_update'),
+		   array('_confirm_pwd', 'compare', 'compareAttribute'=>'_pwd', 'on'=>'self_update'),
+		   array('_old_pwd', 'oldPasswordValidator', 'on'=>'self_update'),
+		   array('_old_pwd, _pwd, _confirm_pwd', 'safe', 'on'=>'self_update'),
+		   array('id, type, role_id, manager_id, password, salt, pass_count, error_count, use_error, use_ip, use_time, last_ip, last_time, up_count, up_time, add_time, status', 'unsafe', 'on'=>'self_update'),
+		   
+		   //体验店 密码创建 修改
+		   array('_pwd, _confirm_pwd', 'required', 'on'=>'create'),
+		   array('_pwd', 'ext.validators.PasswordValidator', 'on'=>'create, update'),
+		   array('_confirm_pwd', 'compare', 'compareAttribute'=>'_pwd', 'on'=>'create, update'),		   
+		   array('_pwd', 'isExistPasswordValidator', 'on'=>'create'),
+		   array('_pwd, _confirm_pwd', 'safe', 'on'=>'create, update'),
+		   array('id, type, role_id, manager_id, password, salt, pass_count, error_count, use_error, use_ip, use_time, last_ip, last_time, up_count, up_time, add_time, status', 'unsafe', 'on'=>'create, update'),
+			// The following rule is used by search().
+			// @todo Please remove those attributes that should not be searched.
+			array('id, type, role_id, manager_id, password, salt, pass_count, error_count, use_error, use_ip, use_time, last_ip, last_time, up_count, up_time, add_time, status', 'safe', 'on'=>'search'),
+		);
+	}
+
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+			'Password_Role'=>array(self::BELONGS_TO, 'Role', 'role_id'),
+		    'Password_Admin'=>array(self::BELONGS_TO, 'Admin', 'role_id'),
+		    'Password_Store'=>array(self::BELONGS_TO, 'Store', 'role_id'),
+		);
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'id' => 'ID',
+			'type' => '类型',
+			'role_id' => '角色ID',
+			'manager_id' => '操作角色ID',
+			'password' => '密码',
+			'salt' => '盐密码',
+			'pass_count' => '通过次数',
+			'error_count' => '错误统计',
+			'use_error' => '单次错误',
+			'use_ip' => '上次IP',
+			'use_time' => '上次时间',
+			'last_ip' => '最近IP',
+			'last_time' => '最近时间',
+			'up_count' => '修改次数',
+			'up_time' => '更新时间',
+			'add_time' => '创建时间',
+			'status' => '状态',
+		    '_pwd'=>'密码',
+		    '_confirm_pwd'=>'确认密码',
+		    '_old_pwd'=>'原密码',
+		);
+	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 *
+	 * Typical usecase:
+	 * - Initialize the model fields with values from filter form.
+	 * - Execute this method to get CActiveDataProvider instance which will filter
+	 * models according to data in model fields.
+	 * - Pass data provider to CGridView, CListView or any similar widget.
+	 *
+	 * @return CActiveDataProvider the data provider that can return the models
+	 * based on the search/filter conditions.
+	 */
+	public function search()
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria = new CDbCriteria;
+
+		$criteria->compare('id', $this->id,true);
+		$criteria->compare('type', $this->type);
+		$criteria->compare('role_id', $this->role_id,true);
+		$criteria->compare('manager_id', $this->manager_id,true);
+		$criteria->compare('password', $this->password,true);
+		$criteria->compare('salt', $this->salt,true);
+		$criteria->compare('pass_count', $this->pass_count,true);
+		$criteria->compare('error_count', $this->error_count,true);
+		$criteria->compare('use_error', $this->use_error,true);
+		$criteria->compare('use_ip', $this->use_ip,true);
+		$this->timeSearch('use_time', $criteria);
+		$criteria->compare('last_ip', $this->last_ip,true);
+		$this->timeSearch('last_time', $criteria);
+		$criteria->compare('up_count', $this->up_count,true);
+		$this->timeSearch('up_time', $criteria);
+		$this->timeSearch('add_time', $criteria);
+		if ($this->status != self::_STATUS_DELETED)
+			$criteria->compare('status', '<>' . self::_STATUS_DELETED);
+		$criteria->compare('status', $this->status);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>10,
+			),
+			'sort'=>array(
+				'defaultOrder'=>'t.id desc',
+				/*
+				'attributes'=>array(
+					'id'=>array(
+						'desc'=>'id desc',
+					),
+				),
+				*/
+			),
+		));
+	}
+
+	/**
+	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param string $className active record class name.
+	 * @return Password the static model class
+	 */
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+	
+	/**
+	 * 保存之前的操作
+	 * (non-PHPdoc)
+	 * @see CActiveRecord::beforeSave()
+	 */
+	public function beforeSave()
+	{
+		if (parent::beforeSave())
+		{
+			if ($this->getIsNewRecord())
+			{
+				$this->use_time = $this->last_time = $this->up_time = $this->add_time = time();
+				$this->use_ip = $this->last_ip = Yii::app()->request->userHostAddress;
+			}
+			else
+			{
+			    $this->up_time = time();
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 验证密码是否存在
+	 * @param unknown $attribute
+	 */
+	public function isExistPasswordValidator($attribute)
+	{
+	    if ( !$this->hasErrors())
+	    {
+	        if ($this->find('type=:type AND role_id=:role_id', array(':type'=>$this->type, ':role_id'=>$this->role_id)))
+	            $this->addError($attribute, self::$_type[$this->type] . '已存在');
+	    }
+	}
+	
+	/**
+	 * 获取密码 数据模型
+	 * @param unknown $role_id
+	 * @param unknown $type
+	 * @param unknown $status
+	 * @return Ambigous <static, mixed, NULL, multitype:static , multitype:unknown Ambigous <static, NULL> , multitype:, multitype:unknown >
+	 */
+	public function getPassword($role_id, $type, $status = self::_STATUS_NORMAL)
+	{
+		$criteria = new CDbCriteria;
+		$criteria->with = array(
+			'Password_Role',
+		);
+		$criteria->addColumnCondition(array(
+				'`t`.`role_id`'=>$role_id,
+				'`t`.`type`'=>$type,
+				'`Password_Role`.`id`'=>$role_id,
+		));	
+		if ($status !== false)
+			$criteria->addColumnCondition(array('`t`.`status`'=>$status));
+		
+		return $this->find($criteria);
+	}
+	
+
+	/**
+	 * 	创建密码
+	 * @param unknown $role_id
+	 * @param unknown $type
+	 * @param unknown $password
+	 * @param string $scenario
+	 * @return Ambigous <number, unknown>|boolean
+	 */
+	public function setPassword($data, $role_id = '', $type = '', $scenario = '')
+	{
+	    if ($scenario != '')
+	       $this->scenario = $scenario;
+	    $this->attributes = $data;  
+	    if ($this->getIsNewRecord())
+	    {
+    	    $this->type = $type;
+    	    $this->role_id = $role_id;
+    	    $this->status = self::_STATUS_DELETED;
+	    }
+        return $this;
+	}
+	
+	/**
+	 * 执行保存
+	 * @return boolean
+	 */
+	public function execute()
+	{
+	    if ($this->validate())
+	    {
+	        if ($this->getIsNewRecord())
+	        {
+	            if (isset(self::$_type[$this->type]) && $this->role_id && $this->save(false))
+	            {
+	                $this->salt = $this->getPasswordSalt();
+	                $this->password = $this->passwordEncrypt($this->_confirm_pwd);
+	                $this->status = self::_STATUS_NORMAL;
+	                return $this->save();
+	            }
+	        }
+	        else
+	        {
+	            if ($this->_confirm_pwd != '')
+	            {
+                    $this->salt = $this->getPasswordSalt();
+                    $this->password = $this->passwordEncrypt($this->_confirm_pwd);
+                    $this->up_count = $this->up_count+1;
+                    return $this->save();
+	            }
+	            else 
+	                return true;               
+	        }
+	    }
+	    return false;
+	}
+	
+	/**
+	 * 密码统计
+	 * @param unknown $result
+	 * @return boolean
+	 */
+	public function updatePasswordCount($result = self::PASSWORD_PASS)
+	{
+		if ($result == self::PASSWORD_PASS)
+		{
+			$this->pass_count = $this->pass_count + 1;
+			$this->use_error = 0;
+		}
+		else
+		{
+		    $this->error_count = $this->error_count + 1;
+		    $this->use_error = $this->use_error + 1;
+		}
+		$this->last_ip = $this->use_ip;
+		$this->last_time = $this->use_time;
+		$this->use_ip = Yii::app()->request->userHostAddress;
+		$this->use_time = time();
+		return $this->save(false);
+	}
+	
+	/**
+	 * 验证密码
+	 * @param unknown $role_id
+	 * @param unknown $type
+	 * @param unknown $password
+	 * @return Ambigous <Ambigous, static, mixed, NULL, multitype:static , multitype:unknown Ambigous <static, NULL> , multitype:, multitype:unknown >|string|boolean
+	 */
+	public function validatePassword($role_id, $type, $password)
+	{
+		$model = $this->getPassword($role_id, $type, self::_STATUS_NORMAL);
+		if ($model && ($pwd = $model->passwordEncrypt($password)))
+		{
+			if ($model->password !== $pwd)
+			{
+			    $model->updatePasswordCount( !self::PASSWORD_PASS);
+				$model->addError('password', '密码错误');		
+				return $model;
+			}
+			else
+			{
+				$model->updatePasswordCount();
+				return self::PASSWORD_PASS;
+			}
+		}
+		else
+		{
+			$model->addError('password', '密码不存在');
+			return !self::PASSWORD_PASS;
+		}
+	}
+	
+	/**
+	 * 验证原来的密码
+	 * @return string|boolean
+	 */
+	public function oldPasswordValidator()
+	{
+	    if ( !$this->hasErrors())
+	    {
+	        if ($this->password !== $this->passwordEncrypt($this->_old_pwd))
+	            $this->addError('_old_pwd', '原密码错误');
+	        else 
+	            return self::PASSWORD_PASS;
+	    }
+	    return !self::PASSWORD_PASS;
+	}
+	
+	/**
+	 * 获取密码加密的盐密码
+	 * @param unknown $id
+	 * @param unknown $role_id
+	 * @param unknown $type
+	 * @return string|boolean
+	 */
+	public function getPasswordSalt()
+	{
+		switch ($this->type)
+		{
+			case self::PASSWORD_TYPE_LOGIN:
+				return sha1($this->id . md5($this->role_id . time() . mt_rand(10000000, 99999999) . $this->type) . md5($this->type . time() . mt_rand(10000000, 99999999) . $this->role_id));
+		}
+		return false;
+	}
+	
+	/**
+	 * 密码加密
+	 * @param unknown $password
+	 * @return string|boolean
+	 */
+	public function passwordEncrypt($password)
+	{
+		switch ($this->type)
+		{
+			case self::PASSWORD_TYPE_LOGIN:
+				return sha1(md5($password . $this->salt) . md5($this->salt . $password));
+		}
+		return false;
+	}
+}

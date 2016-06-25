@@ -1,0 +1,467 @@
+
+// 备注：凡是POST请求的，都需要先请求一下GET，拿到CSRF码，请求格式为
+// 模块/方法：
+// api/xx/xxx (同要POST请求的url)
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取CSRF
+
+// 参数 &csrf=csrf
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "csrf": {
+            "TMM_CSRF": "5d2694695c6989098c22879610e3fd007294f67c"
+        }
+    }
+}
+
+// 模块/方法：
+// index.php?r=store/store_store/view
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取主商家信息
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "store_info": { // 商家基本信息
+            "value": "7", // 商家id
+            "phone": "15814421487", // 手机帐号
+            "is_set": true,  // 是否设置了密码 ture已设, false未设
+            "is_main": true, // true为主商家，false为商家子帐号
+        },
+        "agent_info": { // 代理商信息
+            "agent_name": "我的公司名称", // 代理商名称
+            "agent_phone": "13632677944" // 代理商手机号
+        },
+        "frm_info": { // 公司信息
+            "name": "我想想", // 公司名称
+            "address": "湖南省株洲荷塘区dsfsdfdsf", // 公司地址
+            "store_tel": "13632677944", // 公司电话
+            // 公司营业执照原件
+            "bl_img": "http://test.365tmm.net/uploads/role/store/20150906/909355ebe4ca9e2db9.07966100.jpg",
+            // 企业法人姓名
+            "com_contacts": "想想",
+            // 企业法人身份证号
+            "com_identity": "360428198911212933",
+            // 企业法人联系电话
+            "com_phone": "13632677944"
+        },
+        "contact_info": { // 联系人信息电话
+            "lx_contacts": "静静",// 联系人姓名
+            "lx_phone": "13632677944", // 联系人电话
+            "lx_identity_code": "360428198911212933", // 联系人身份证号
+            // 联系人身份证原件正面
+            "identity_before": "http://test.365tmm.net/uploads/role/store/20150906/344955ec027ec75c42.10703361.jpg",
+            // 联系人身份证原件反面
+            "identity_after": "http://test.365tmm.net/uploads/role/store/20150906/104955ebe4ca9e6a92.90487532.png",
+            // 联系人手持身份证原件
+            "identity_hand": "http://test.365tmm.net/uploads/role/store/20150906/659455ebe4ca9e6d31.36466534.jpg"
+        },
+        "bank_info": { // 账务信息
+            "bank_value": "工商银行", // 开户行
+            "bank_name": "莫生", // 开户名
+            "bank_code": "646545115546465456" // 银行帐号
+        },
+        "son_info": [ // 商家子帐号信息
+            {
+                "value": "7", // 商家id
+                "name": "我想想", // 商家名称
+                "phone": "13392851103", // 商家子帐号手机
+                // 商家主页
+                "link": "http://test.365tmm.net/index.php?r=store/store_store/son_view&id=7"
+            }
+        ]
+    }
+}
+
+
+// 模块/方法：
+// index.php?r=store/store_store/son_view
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取商家子帐号信息
+
+// 参数
+$id=7
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "store_info": { // 商家子帐号信息
+            "value": "7", // 商家id
+            "phone": "18127005180", //  商家子帐号手机号
+            "is_set": true,  // 是否设置了密码 ture已设, false未设
+            "is_main": false, // true为主商家，false为商家子帐号
+        },
+        // 暂时隐藏
+        // "contact_info": { // 联系人信息电话
+        //     "lx_contacts": "静静",// 联系人姓名
+        //     "lx_phone": "13632677944", // 联系人电话
+        //     "lx_identity_code": "360428198911212933", // 联系人身份证号
+        //     // 联系人身份证原件正面
+        //     "identity_before": "http://test.365tmm.net/uploads/role/store/20150906/344955ec027ec75c42.10703361.jpg",
+        //     // 联系人身份证原件反面
+        //     "identity_after": "http://test.365tmm.net/uploads/role/store/20150906/104955ebe4ca9e6a92.90487532.png",
+        //     // 联系人手持身份证原件
+        //     "identity_hand": "http://test.365tmm.net/uploads/role/store/20150906/659455ebe4ca9e6d31.36466534.jpg"
+        // }
+    }
+}
+
+// 模块/方法：
+// index.php?r=store/store_store/bank_index
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取银行信息列表
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": [
+        {
+            "value": "1", // 银行id
+            "name": "工商银行" // 银行名字
+        },
+        {
+            "value": "2",
+            "name": "中国银行"
+        },
+        {
+            "value": "3",
+            "name": "建设银行"
+        },
+        {
+            "value": "4",
+            "name": "农业银行"
+        },
+        {
+            "value": "5",
+            "name": "交通银行"
+        },
+        {
+            "value": "6",
+            "name": "广发银行"
+        },
+        {
+            "value": "7",
+            "name": "招商银行"
+        },
+        {
+            "value": "8",
+            "name": "平安银行"
+        },
+        {
+            "value": "9",
+            "name": "兴业银行"
+        },
+        {
+            "value": "10",
+            "name": "民生银行"
+        },
+        {
+            "value": "11",
+            "name": "华夏银行"
+        },
+        {
+            "value": "12",
+            "name": "上海浦东发展银行"
+        },
+        {
+            "value": "13",
+            "name": "中信银行"
+        },
+        {
+            "value": "14",
+            "name": "光大银行"
+        },
+        {
+            "value": "15",
+            "name": "深圳发展银行"
+        },
+        {
+            "value": "16",
+            "name": "桂林商业银行"
+        },
+        {
+            "value": "17",
+            "name": "湛江商行"
+        },
+        {
+            "value": "18",
+            "name": "鄞州银行"
+        },
+        {
+            "value": "19",
+            "name": "进出口银行"
+        },
+        {
+            "value": "20",
+            "name": "农业发展银行"
+        },
+        {
+            "value": "21",
+            "name": "国家开发银行"
+        },
+        {
+            "value": "22",
+            "name": "富滇银行"
+        },
+        {
+            "value": "23",
+            "name": "深圳农村商业银行"
+        },
+        {
+            "value": "24",
+            "name": "柳州市商业银行"
+        },
+        {
+            "value": "25",
+            "name": "吉林银行"
+        },
+        {
+            "value": "26",
+            "name": "上海农商行"
+        },
+        {
+            "value": "27",
+            "name": "西安商行"
+        },
+        {
+            "value": "28",
+            "name": "北京银行"
+        },
+        {
+            "value": "29",
+            "name": "上海银行"
+        },
+        {
+            "value": "30",
+            "name": "浙商银行"
+        },
+        {
+            "value": "31",
+            "name": "东亚银行"
+        },
+        {
+            "value": "32",
+            "name": "恒生银行"
+        },
+        {
+            "value": "33",
+            "name": "汇丰中国"
+        },
+        {
+            "value": "34",
+            "name": "渣打银行"
+        },
+        {
+            "value": "35",
+            "name": "花旗银行"
+        },
+        {
+            "value": "36",
+            "name": "星展银行"
+        },
+        {
+            "value": "37",
+            "name": "徽商银行"
+        },
+        {
+            "value": "38",
+            "name": "南京银行"
+        },
+        {
+            "value": "39",
+            "name": "恒丰银行"
+        },
+        {
+            "value": "40",
+            "name": "广州银行"
+        },
+        {
+            "value": "41",
+            "name": "厦门国际银行"
+        },
+        {
+            "value": "42",
+            "name": "荷兰银行"
+        },
+        {
+            "value": "43",
+            "name": "华侨银行"
+        },
+        {
+            "value": "44",
+            "name": "德意志银行"
+        },
+        {
+            "value": "45",
+            "name": "杭州银行"
+        },
+        {
+            "value": "46",
+            "name": "宁波银行"
+        },
+        {
+            "value": "47",
+            "name": "渤海银行"
+        },
+        {
+            "value": "48",
+            "name": "永亨银行中国"
+        },
+        {
+            "value": "49",
+            "name": "南商银行中国"
+        },
+        {
+            "value": "50",
+            "name": "友利银行中国"
+        },
+        {
+            "value": "51",
+            "name": "中信嘉华"
+        },
+        {
+            "value": "52",
+            "name": "巴黎银行中国"
+        },
+        {
+            "value": "53",
+            "name": "三菱东京日联银行"
+        },
+        {
+            "value": "54",
+            "name": "瑞穗银行"
+        },
+        {
+            "value": "55",
+            "name": "北京农商行"
+        },
+        {
+            "value": "56",
+            "name": "邮政储蓄银行"
+        },
+        {
+            "value": "57",
+            "name": "东莞银行"
+        },
+        {
+            "value": "58",
+            "name": "汉口银行"
+        },
+        {
+            "value": "59",
+            "name": "法国兴业银行"
+        },
+        {
+            "value": "60",
+            "name": "泉州商业银行"
+        },
+        {
+            "value": "61",
+            "name": "成都银行"
+        },
+        {
+            "value": "62",
+            "name": "厦门市商业银行"
+        },
+        {
+            "value": "63",
+            "name": "福建海峡银行"
+        },
+        {
+            "value": "64",
+            "name": "包商银行"
+        },
+        {
+            "value": "65",
+            "name": "大连银行"
+        },
+        {
+            "value": "66",
+            "name": "哈尔滨银行"
+        },
+        {
+            "value": "67",
+            "name": "大庆商行"
+        }
+    ]
+}
+
+// 模块/方法：
+// index.php?r=store/store_store/captcha_bank_sms
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        商家绑定银行账户，获取短信验证码
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": []
+}
+
+// 模块/方法：
+// index.php?r=store/store_store/bank
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        商家绑定银行账户
+
+// 参数
+// 参数
+{
+  "StoreContent": {
+    "bank_id": "1", // 开户行id
+    "bank_name": "沫沫", // 开户名
+    "bank_branch": "高新园支行", // 开户行支行名称
+    "bank_code": "646545115546465456", // 对公银行账号
+    "sms": "179486" // 短信验证码
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": []
+}

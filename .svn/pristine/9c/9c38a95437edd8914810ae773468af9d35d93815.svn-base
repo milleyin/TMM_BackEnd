@@ -1,0 +1,48 @@
+<?php
+	$retrun = array(
+		'id'=>'login-form',
+		'focus'=>'username',
+		'enableAjaxValidation'=>false,
+		'enableClientValidation'=>true,
+		'clientOptions'=>array(
+				'ajaxVar'=>'ajax',
+				'validateOnSubmit'=>true,
+		),
+		'errors'=>$model->getErrors(),
+		'htmlOptions'=>array(
+			'action'=> $this->route,
+			'method'=>'post',
+		),
+		'attributes'=>array(
+				'username'=>array(
+						'name'=>$model->getAttributeLabel('username'),
+						'value'=>$model->username,
+						'required'=>$model->isAttributeRequired('username'),
+						'enableAjaxValidation'=>false,
+						'enableClientValidation'=>false,
+						'error'=>$model->getError('name'),
+						'htmlOptions'=>array('type'=>'text', 'placeholder'=>$model->getAttributeLabel('username')),
+				),
+				'password'=>array(
+						'name'=>$model->getAttributeLabel('password'),
+						'value'=>$model->password,
+						'required'=>$model->isAttributeRequired('password'),
+						'enableAjaxValidation'=>false,
+						'enableClientValidation'=>false,
+						'error'=>$model->getError('password'),
+						'htmlOptions'=>array('type'=>'password', 'placeholder'=>$model->getAttributeLabel('password')),
+				),
+				'verifycode'=>array(
+						'name'=>$model->getAttributeLabel('verifycode'),
+						'value'=>$model->verifycode,
+						'required'=>$model->isAttributeRequired('verifycode'),
+						'enableAjaxValidation'=>false,
+						'enableClientValidation'=>false,
+						'error'=>$model->getError('verifycode'),
+						'htmlOptions'=>array('type'=>'text', 'placeholder'=>$model->getAttributeLabel('verifycode')),
+				),
+		),
+
+	);
+	
+	echo json_encode($retrun);

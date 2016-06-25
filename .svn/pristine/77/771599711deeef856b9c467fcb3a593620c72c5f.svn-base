@@ -1,0 +1,16 @@
+// 模块/方法：
+// 域名/index.php?r=api/order/payment
+//	需要登录  没有登录会报错
+// 传值方式: POST
+// id  订单id 
+// 支付类型  pay_type = 1
+
+	order_status=1,	//订单的状态
+	status_go=2						//是否出游
+	pay_status=0			//是否支付
+	centre_status=0	//是否可以支付
+	{
+		"alipay:""
+		"phone":
+		"nickname":	
+	}

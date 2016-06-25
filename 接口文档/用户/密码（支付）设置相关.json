@@ -1,0 +1,358 @@
+
+//查看密码相关信息
+
+// UEL  /index.php?r=api/password/view&type={type}   
+// 默认 type=0 即支付密码
+//	/**
+//	 * 密码类型 支付密码
+//	 * @var integer
+//	 */
+//	const password_type_pay=0;
+//	/**
+//	 * 解释字段 password_type 的含义
+//	 * @var array
+//	 */
+//	public static $_password_type=array('支付密码');
+//
+
+//value 说明
+//	  -3 => 已禁用
+//	  -2 => 已无效
+//	  -1 => 未设置
+//	   0 => 已锁定
+//	   1 => 已设置
+
+// GET 请求 需要登录
+
+//存在错误 返回的数据 
+
+// 成功 1
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "type": {												//type 密码类型说明
+            "name": "支付密码",									//密码类型的名字
+            "value": "0"										//密码的类型的值
+        },
+        "sms_link": "http://localhost/tmm/index.php?r=api/password/captcha_sms&type=0", //发送短信 链接  GET 请求 需要登录 详情见 1
+        "validate": "http://localhost/tmm/index.php?r=api/password/validate&type=0",	//验证短信 链接  POST 请求  需要登录 需要GET ( {url}&csrf=csrf ) 获取秘钥  详细见 2
+        "name": "已设置",
+        "value": 1,
+        "link": "http://localhost/tmm/index.php?r=api/password/update&type=0" //更新密码 链接 POST 请求 需要登录 需要 GET ({url}&csrf=csrf) 获取秘钥  详情见 3
+    }
+}
+// 成功 2
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "type": {
+            "name": "支付密码",
+            "value": "0"
+        },
+        "name": "未设置",
+        "value": -1,
+        "sms_link": "http://localhost/tmm/index.php?r=api/password/captcha_sms&type=0",	//同上
+        "link": "http://localhost/tmm/index.php?r=api/password/create&type=0",			// 设置密码 链接 POST 请求 需要登录 需要 GET ({url}&csrf=csrf) 获取秘钥  详情见 4
+        "validate": "http://localhost/tmm/index.php?r=api/password/validate&type=0" //同上
+    }
+}
+// 成功 3
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "type": {
+            "name": "支付密码",
+            "value": "0"
+        },
+        "sms_link": "http://localhost/tmm/index.php?r=api/password/captcha_sms&type=0", //同上
+        "validate": "http://localhost/tmm/index.php?r=api/password/validate&type=0",	//同上
+        "name": "已锁定",
+        "value": 0,
+        "link": "http://localhost/tmm/index.php?r=api/password/update&type=0"			//同上
+    }
+}
+
+//没有密码的类型错误
+
+{
+    "status": 0,
+    "code": 50006,
+    "msg": "没有相关数据",
+    "data": []
+}
+
+////////////////////////////////////////////////////////我是分割线/////////////////////////////////////////////////////////
+//  1
+
+// 发送手机短信验证码
+//UEL /index.php?r=api/password/captcha_sms&type={type}
+
+// GET 
+
+// "sms_link": "http://localhost/tmm/index.php?r=api/password/captcha_sms&type=0", //发送短信 链接  GET 请求 需要登录
+// 成功 
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "type": {
+            "name": "支付密码",
+            "value": "0"
+        },
+        "status": 1
+    }
+}
+//失败 可能已经发送了  可能短信供应商未发送成功
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "phone": [
+            "操作过于频繁,请1分钟后再试"
+        ]
+    }
+}
+
+////////////////////////////////////////////////////////我是分割线/////////////////////////////////////////////////////////
+//2
+
+// 验证短信 注意 为了安全  验证后 有 150秒有效  否则 无效
+//UEL /index.php?r=api/password/validate&type={type}
+
+// "validate": "http://localhost/tmm/index.php?r=api/password/validate&type=0",	//验证短信 链接  POST 请求  需要登录 需要GET ( {url}&csrf=csrf ) 获取秘钥 
+
+//POST　请求
+
+// GET 获取 秘钥 /index.php?r=api/password/validate&type={type}&csrf=csrf
+
+//POST  数据格式
+{
+	"Password":{
+		"sms":"876870"		
+	},
+	"TMM_CSRF":""
+}
+
+//返回正确的
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "type": {
+            "name": "支付密码",
+            "value": 0
+        },
+        "status": 1
+    }
+}
+//返回错误的
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "Password_sms": [
+            "短信验证码 错误"
+        ]
+    }
+}
+////////////////////////////////////////////////////////我是分割线/////////////////////////////////////////////////////////
+
+//3
+
+// 更新密码
+//UEL /index.php?r=api/password/update&type={type}
+
+//POST　请求
+
+//需要登录 
+
+//GET 获取 秘钥 /index.php?r=api/password/update&type={type}&csrf=csrf
+
+// "link": "http://localhost/tmm/index.php?r=api/password/update&type=0" //更新密码 链接 POST 请求 需要登录 需要 GET ({url}&csrf=csrf) 获取秘钥  
+
+//POST  数据格式
+{
+	"Password":{  
+		"_pwd":"654321",
+		"_confirm_pwd":"654321"
+	},
+	"csrf":""
+}
+
+//正确的返回数据
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "type": {
+            "name": "支付密码",
+            "value": "0"
+        },
+        "status": 1
+    }
+}
+
+//错误返回数据
+
+//密码格式错误
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "Password__pwd": [
+            "密码 只能是6位数字组成"
+        ],
+        "Password__confirm_pwd": [
+            "确认密码 必须被重复."
+        ]
+    }
+}
+ 
+//确认密码 与 密码 不一样
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "Password__confirm_pwd": [
+            "确认密码 必须被重复."
+        ]
+    }
+}
+//没有通过短信验证 
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "Password__pwd": [
+            "短信验证 未通过"
+        ]
+    }
+}
+
+////////////////////////////////////////////////////////我是分割线/////////////////////////////////////////////////////////
+
+//4
+
+// 设置密码
+//UEL /index.php?r=api/password/create&type={type}
+
+//POST　请求
+
+//需要登录 
+
+//GET 获取 秘钥 /index.php?r=api/password/create&type={type}&csrf=csrf
+
+//  "link": "http://localhost/tmm/index.php?r=api/password/create&type=0",			// 设置密码 链接 POST 请求 需要登录 需要 GET ({url}&csrf=csrf) 获取秘钥  
+
+
+//POST  数据格式
+{
+	"Password":{  
+		"_pwd":"654321",
+		"_confirm_pwd":"654321"
+	},
+	"csrf":""
+}
+
+//正确的返回数据
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "type": {
+            "name": "支付密码",
+            "value": "0"
+        },
+        "status": 1
+    }
+}
+
+//错误返回数据
+
+//密码格式错误
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "Password__pwd": [
+            "密码 只能是6位数字组成"
+        ],
+        "Password__confirm_pwd": [
+            "确认密码 必须被重复."
+        ]
+    }
+}
+//确认密码 与 密码 不一样
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "Password__confirm_pwd": [
+            "确认密码 必须被重复."
+        ]
+    }
+}
+//已设置了密码
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "Password__pwd": [
+            "支付密码已设置"
+        ]
+    }
+}
+//没有通过短信验证 
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "Password__pwd": [
+            "短信验证 未通过"
+        ]
+    }
+}
+
+////////////////////////////////////////////////////////我是分割线/////////////////////////////////////////////////////////
+// 附加 
+// 是否以及验证过  
+// /index.php?r=api/password/isvalidate&type={type} 默认 type=0
+
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "name": "验证通过",
+        "value": 1
+    }
+}
+
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "name": "验证未通过",
+        "value": -1
+    }
+}

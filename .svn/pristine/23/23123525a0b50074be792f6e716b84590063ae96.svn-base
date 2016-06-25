@@ -1,0 +1,147 @@
+<?php
+/**
+ * 
+ * @author Changhai Zhan
+ *	创建时间：2016-04-01 10:47:49 */
+class BankCardController extends OperatorMainController
+{
+	/**
+	 * 默认操作数据模型
+	 * @var string
+	 */
+	public $_class_model = 'BankCard';
+
+	/**
+	 * 银行卡详情
+	 */
+	public function actionView()
+	{
+		$this->render('view', array(
+			'model' => BankCard::getBankCard(Yii::app()->operator->id, BankCard::agent),
+		));
+	}
+
+	/**
+	 * 创建
+	 */
+	public function actionCreate()
+	{
+		$model = new BankCard;
+		
+		$model->scenario = 'create';
+		$this->_Ajax_Verify($model, 'bank-card-form');
+		
+		$this->_class_model = 'Agent';
+		$model->BankCard_Agent = $this->loadModel(Yii::app()->operator->id, 'status=:status', array(':status'=>Agent::status_suc));
+		
+		if (isset($_POST['BankCard']))
+		{
+			$model::setBankCard($model, $_POST['BankCard'], array(
+				'card_type'=>$model::agent,
+				'card_id'=>Yii::app()->operator->id,
+			));
+			$sms = array(
+				'sms_id'=>Yii::app()->operator->id,
+				'sms_type'=>SmsLog::sms_agent,
+			);
+			$role = array(
+				'role_id'=>Yii::app()->operator->id,
+				'role_type'=>SmsLog::send_agent,
+			);
+			if ($model->validate() && $model->sendSms($sms, $role, $model->BankCard_Agent->phone, 'agent_update_bank_phone') && $this->setCacheAttributes($model))
+				$this->redirect(array('save'));
+		}
+		
+		$oldModel = BankCard::getBankCard(Yii::app()->operator->id, BankCard::agent);
+		
+		$this->render('create', array(
+			'model'=>$model,
+			'oldModel'=>$oldModel ? $oldModel : $model, 
+		));
+	}
+	
+	/**
+	 * 设置 
+	 * @param unknown $model
+	 * @return unknown
+	 */
+	public function setCacheAttributes($model)
+	{
+		return Yii::app()->session['operatorCacheBankCardAttributes' . Yii::app()->operator->id] = $model->getAttributes();
+	}
+	
+	/**
+	 * 获取
+	 */
+	public function getCacheAttributes()
+	{
+		return Yii::app()->session['operatorCacheBankCardAttributes' . Yii::app()->operator->id];
+	}
+	
+	/**
+	 * 删除
+	 * @return boolean
+	 */
+	public function unsetCacheAttributes()
+	{
+		unset(Yii::app()->session['operatorCacheBankCardAttributes' . Yii::app()->operator->id]);
+		return true;
+	}
+	
+	/**
+	 * 保存
+	 * @param integer $id
+	 */
+	public function actionSave()
+	{
+		$data = $this->getCacheAttributes();
+		if ( !$data)
+			$this->redirect(array('create'));
+		
+		$model = new BankCard;
+		$model->setAttributes($data, false);
+		
+		$this->_class_model = 'Agent';
+		$model->BankCard_Agent = $this->loadModel(Yii::app()->operator->id, 'status=:status', array(':status'=>Agent::status_suc));
+			
+		$model->scenario = 'save';
+		
+		if (isset($_POST['BankCard']))
+		{
+			$model->attributes = $_POST['BankCard'];
+			$sms = array(
+					'sms_id'=>Yii::app()->operator->id,
+					'sms_type'=>SmsLog::sms_agent,
+			);
+			$role = array(
+					'role_id'=>Yii::app()->operator->id,
+					'role_type'=>SmsLog::send_agent,
+			);
+			if ($model->validate() && $model->validatorSms($sms, $role, $model->BankCard_Agent->phone))
+			{
+				//开启事物
+				$transaction = Yii::app()->db->beginTransaction();
+				try
+				{
+					if ( !$model::bankCardSave($model))
+						throw new Exception("保存银行卡失败");
+					
+					$return = $this->log('绑定银行卡', ManageLog::operator, ManageLog::create);	
+					$transaction->commit();
+				}
+				catch (Exception $e)
+				{
+					$transaction->rollBack();
+					$this->error_log($e->getMessage(), ErrorLog::operator, ErrorLog::create, ErrorLog::rollback, __METHOD__);
+				}
+				$this->unsetCacheAttributes();
+				if (isset($return) && $return)
+					$this->redirect(array('view'));			
+			}
+		}
+
+		$this->render('save', array(
+			'model'=>$model,
+		));
+	}
+}

@@ -1,0 +1,123 @@
+<extend name="Base/common"/>
+
+<block name="body">
+
+
+
+    <div class="container gdu-container">
+        <div class="row gdu-row-left">
+            <div class="col-xs-12 col-sm-9">
+                <div class="jumbotron gdu-jumbotron">
+                    <div class="swiper-container gdu-swiper-container">
+                        <div class="swiper-wrapper">
+                            <volist name="bannerList" id="banner">
+                                <div class="swiper-slide">
+                                    <a href="{$banner.url}" target="<eq name='banner.target' value='1'>_blank<else/>_self</eq>">
+                                        <img src="__ROOT__{$banner.path}" alt="{$banner.title}">
+                                    </a>
+                                </div>
+                            </volist>
+                        </div>
+                        <!-- If we need pagination -->
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+
+            <volist name="articleList" id="article">
+                <div class="row show-grid">
+                    <div class="col-xs-article-img col-sm-4">
+                        <a href="{:U('Article/detail?id='.$article['id'])}" target="_blank" class="gdu-article-cover">
+                            <img src="__ROOT__{$article.cover_path}" alt="{$article.title}">
+                        </a>
+                    </div>
+                    <div class="col-xs-article-title col-sm-8">
+                        <h2 class="gdu-title">
+                            <a href="{:U('Article/detail?id='.$article['id'])}" target="_blank">{$article.title}</a>
+                        </h2>
+                        <div class="gdu-options">
+                            <span class="gdu-time">{$article.update_time|date='Y-m-d',###}</span>
+                            <span class="gdu-type">{$article.category_name}</span>
+                        </div>
+                        <p class="gdu-info">
+                            {$article.description}
+                        </p>
+                    </div>
+                </div>
+            </volist>
+                <div class="row gdu-article-row" id="index_more_content">
+                    <div class="col-sm-12 gdu-article-more" id="loadMore" data-page="{$pageInfo.down_page}">
+                        <empty name="pageInfo.down_page">
+                            <span>没有更多文章了</span>
+                            <else />
+                            <span>更多文章</span><span class="glyphicon glyphicon glyphicon-menu-down"></span>
+                        </empty>
+                    </div>
+                </div>
+            </div>
+            <!--/.col-xs-12.col-sm-9-->
+            <div class="col-xs-6 col-sm-3" id="sidebar">
+                <include file="Public/sidebar"/>
+            </div>
+        <!--/row-->
+        <div class="go-top" style="display: none;"></div>
+    </div>
+</block>
+<block name="script">
+    <script id="index-template" type="text/x-handlebars-template">
+        {{#each articleList}}
+        <div class="row show-grid">
+            <div class="col-xs-article-img col-sm-4">
+                <a href="{{../appUrl}}/home/article/detail/id/{{id}}.html" target="_blank" class="gdu-article-cover">
+                    <img src="{{../rootUrl}}{{cover_path}}" alt="{{title}}">
+                </a>
+            </div>
+            <div class="col-xs-article-title col-sm-8">
+                <h2 class="gdu-title"><a href="{{../appUrl}}/home/article/detail/id/{{id}}.html" target="_blank">{{title}}</a></h2>
+                <div class="gdu-options">
+                    <span class="gdu-time">{{prettifyDate update_time}}</span>
+                    <span class="gdu-type">{{category_name}}</span>
+                </div>
+                <p class="gdu-info">
+                    {{description}}
+                </p>
+            </div>
+        </div>
+        {{/each}}
+    </script>
+    <script type="text/javascript">
+        $(function() {
+            var mySwiper = new Swiper('.swiper-container', {
+                autoplay: 5000, //可选选项，自动滑动
+                loop: true,
+                pagination: '.swiper-pagination',
+                paginationClickable: true
+            });
+
+
+            $('#loadMore').on('click', function() {
+                var that = this;
+                // 下一页
+                var nextPage = $(that).attr('data-page');
+                if (nextPage == '') return ;
+
+                $.post(nextPage).success(function(data){
+                    if (data.status==1) {
+                        var dataRes = JSON.parse(data.info);
+                        dataRes.appUrl = Think.APP;
+                        dataRes.rootUrl = Think.ROOT;
+                        var source   = $("#index-template").html();
+                        var template = Handlebars.compile(source);
+                        var html    = template(dataRes);
+                        $('#index_more_content').before(html);
+                        if (dataRes.pageInfo.down_page) {
+                            $(that).attr('data-page', dataRes.pageInfo.down_page);
+                        } else {
+                            $(that).attr('data-page', '');
+                            $(that).html('<span>没有更多文章了</span>');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</block>

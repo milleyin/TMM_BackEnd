@@ -1,0 +1,13 @@
+<?php 
+class ActiveFormJson extends CActiveForm
+{
+	public $attributes = array();
+	
+	public function init()
+	{
+		parent::init();
+		
+	}
+	
+	
+}

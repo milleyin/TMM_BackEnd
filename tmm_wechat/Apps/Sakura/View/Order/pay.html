@@ -1,0 +1,38 @@
+<extend name="Base/common"/>
+<block name="body">
+</block>
+<block name="script">
+    <script>
+        //调用微信JS api 支付
+        function jsApiCall()
+        {
+            WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest',
+                    {$jsApiParameters},
+                    function(res){
+                        if (res.err_msg == "get_brand_wcpay_request:ok") {
+                            // success
+                            window.location.replace("{:U('Index/paySuccess', array('codeUrl'=>$orderData['codeUrl'], 'id'=>$orderData['id']))}");
+                        } else {
+                            // error or cancle
+                            window.location.replace("{:U('Index/activity')}");
+                        }
+                    }
+            );
+        }
+        function callpay()
+        {
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+                }
+            }else{
+                jsApiCall();
+            }
+        }
+        callpay();
+    </script>
+</block>

@@ -1,0 +1,503 @@
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "name": "线的名称",
+        "value": "6",
+        "classliy": {
+            "name": "线",
+            "value": "2"
+        },
+        "items_fare": [
+            {
+                "name": "吃 谁不会啊 订单",
+                "value": "1",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "1",
+                        "name": "大碗餐",
+                        "info": "成人",
+                        "number": "0",
+                        "price": "2000.00"
+                    },
+                    {
+                        "value": "2",
+                        "name": "小碗餐",
+                        "info": "儿童",
+                        "number": "0",
+                        "price": "800.00"
+                    }
+                ]
+            },
+            {
+                "name": "吃 谁不会啊 订单",
+                "value": "1",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "1",
+                        "name": "大碗餐",
+                        "info": "成人",
+                        "number": "0",
+                        "price": "2000.00"
+                    },
+                    {
+                        "value": "2",
+                        "name": "小碗餐",
+                        "info": "儿童",
+                        "number": "0",
+                        "price": "800.00"
+                    }
+                ]
+            },
+            {
+                "name": "吃 谁不会啊 订单",
+                "value": "1",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "1",
+                        "name": "大碗餐",
+                        "info": "成人",
+                        "number": "0",
+                        "price": "2000.00"
+                    },
+                    {
+                        "value": "2",
+                        "name": "小碗餐",
+                        "info": "儿童",
+                        "number": "0",
+                        "price": "800.00"
+                    }
+                ]
+            },
+            {
+                "name": "吃 谁不会啊 订单",
+                "value": "1",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "1",
+                        "name": "大碗餐",
+                        "info": "成人",
+                        "number": "0",
+                        "price": "2000.00"
+                    },
+                    {
+                        "value": "2",
+                        "name": "小碗餐",
+                        "info": "儿童",
+                        "number": "0",
+                        "price": "800.00"
+                    }
+                ]
+            },
+            {
+                "name": "松德股份多少",
+                "value": "8",
+                "classliy": {
+                    "name": "住",
+                    "value": "2"
+                },
+                "fare": [
+                    {
+                        "value": "13",
+                        "name": "叔叔婶婶",
+                        "info": "2",
+                        "number": "2",
+                        "price": "1000.00"
+                    }
+                ]
+            },
+            {
+                "name": "的粉丝粉丝的第三方",
+                "value": "6",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "8",
+                        "name": "sdgdssdgds",
+                        "info": "sdgdsg",
+                        "number": "0",
+                        "price": "100.00"
+                    }
+                ]
+            },
+            {
+                "name": "我想去看看，世界这么大",
+                "value": "7",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "9",
+                        "name": "大碗餐",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1000.00"
+                    },
+                    {
+                        "value": "10",
+                        "name": "小碗餐",
+                        "info": "小孩",
+                        "number": "0",
+                        "price": "100.00"
+                    },
+                    {
+                        "value": "12",
+                        "name": "四号",
+                        "info": "大海",
+                        "number": "0",
+                        "price": "1000.00"
+                    }
+                ]
+            },
+            {
+                "name": "松德股份多少",
+                "value": "8",
+                "classliy": {
+                    "name": "住",
+                    "value": "2"
+                },
+                "fare": [
+                    {
+                        "value": "13",
+                        "name": "叔叔婶婶",
+                        "info": "2",
+                        "number": "2",
+                        "price": "1000.00"
+                    }
+                ]
+            },
+            {
+                "name": "的粉丝粉丝的第三方",
+                "value": "6",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "8",
+                        "name": "sdgdssdgds",
+                        "info": "sdgdsg",
+                        "number": "0",
+                        "price": "100.00"
+                    }
+                ]
+            },
+            {
+                "name": "玩转地球",
+                "value": "16",
+                "classliy": {
+                    "name": "玩",
+                    "value": "3"
+                },
+                "fare": [
+                    {
+                        "value": "32",
+                        "name": "大碗餐",
+                        "info": "成人",
+                        "number": "0",
+                        "price": "10.00"
+                    },
+                    {
+                        "value": "33",
+                        "name": "三号",
+                        "info": "小孩",
+                        "number": "0",
+                        "price": "12220.00"
+                    }
+                ]
+            }
+        ],
+        "OrderItems": {
+            "1": [
+                {
+                    "6": [
+                        {
+                            "1": [
+                                {
+                                    "1": {
+                                        "price": "2000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "2": {
+                                        "price": "800.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "6": [
+                        {
+                            "1": [
+                                {
+                                    "1": {
+                                        "price": "2000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "2": {
+                                        "price": "800.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "6": [
+                        {
+                            "1": [
+                                {
+                                    "1": {
+                                        "price": "2000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "2": {
+                                        "price": "800.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "2": [
+                {
+                    "6": [
+                        {
+                            "1": [
+                                {
+                                    "1": {
+                                        "price": "2000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "2": {
+                                        "price": "800.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "8": [
+                                {
+                                    "13": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "6": [
+                                {
+                                    "8": {
+                                        "price": "100.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "3": [
+                {
+                    "6": [
+                        {
+                            "7": [
+                                {
+                                    "9": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "10": {
+                                        "price": "100.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "12": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "8": [
+                                {
+                                    "13": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "6": [
+                                {
+                                    "8": {
+                                        "price": "100.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "6": [
+                        {
+                            "16": [
+                                {
+                                    "32": {
+                                        "price": "10.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "33": {
+                                        "price": "12220.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "main": {
+            "type": [
+                {
+                    "classliy": [
+                        {
+                            "name": "吃",
+                            "value": "1"
+                        },
+                        {
+                            "name": "玩",
+                            "value": "3"
+                        }
+                    ],
+                    "name": "成人"
+                },
+                {
+                    "classliy": [
+                        {
+                            "name": "吃",
+                            "value": "1"
+                        }
+                    ],
+                    "name": "儿童"
+                },
+                {
+                    "classliy": [
+                        {
+                            "name": "吃",
+                            "value": "1"
+                        }
+                    ],
+                    "name": "sdgdsg"
+                },
+                {
+                    "classliy": [
+                        {
+                            "name": "吃",
+                            "value": "1"
+                        }
+                    ],
+                    "name": "大人"
+                },
+                {
+                    "classliy": [
+                        {
+                            "name": "吃",
+                            "value": "1"
+                        },
+                        {
+                            "name": "玩",
+                            "value": "3"
+                        }
+                    ],
+                    "name": "小孩"
+                },
+                {
+                    "classliy": [
+                        {
+                            "name": "吃",
+                            "value": "1"
+                        }
+                    ],
+                    "name": "大海"
+                }
+            ],
+            "room": [
+                {
+                    "classliy": [
+                        {
+                            "name": "住",
+                            "value": "2"
+                        }
+                    ],
+                    "name": "2人间",
+                    "number": "2"
+                }
+            ]
+        }
+    }
+}

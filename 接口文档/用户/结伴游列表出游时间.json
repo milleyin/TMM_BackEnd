@@ -1,0 +1,211 @@
+//结伴游审核前列表===================审核前
+// 模块/方法：
+// index.php?r=api/shops/group_before
+
+
+{
+  "status": 1,
+  "code": 0,
+  "msg": "正确",
+  "data": {
+    "page": {
+      "prev": "",
+      "selected": "",
+      "next": "",
+      "count": 1,
+      "page": "page",
+      "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/group_before",
+      "selectedPage": 1
+    },
+    "list_data": [
+      {
+        "value": "82",
+        "link": "http://test.365tmm.net/tmm/index.php?r=api/group/view&id=82",
+        "name": "777游",
+        "info": "777",
+        "image": "http://test.365tmm.net/uploads/shops/group/20150925/litimg_app/46175604f8d5a53e21.24367166.png",
+        "classliy": {
+          "name": "结伴游",
+          "value": "3"
+        },
+        "type": {
+          "name": "结伴游",
+          "value": 1
+        },
+        "group": {
+          "group_status": "0",
+          "group_name": "结伴中"
+        }
+      },
+      {
+        "value": "80",
+        "link": "http://test.365tmm.net/tmm/index.php?r=api/group/view&id=80",
+        "name": "a结伴游",
+        "info": "8",
+        "image": "http://test.365tmm.net/uploads/shops/group/20150925/litimg_app/31315604c1bb37b9f1.06779361.png",
+        "classliy": {
+          "name": "结伴游",
+          "value": "3"
+        },
+        "type": {
+          "name": "结伴游",
+          "value": 1
+        },
+        "group": {
+          "group_status": "0",
+          "group_name": "结伴中"
+        }
+      },
+      {
+        "value": "73",
+        "link": "http://test.365tmm.net/tmm/index.php?r=api/group/view&id=73",
+        "name": "app创建线路73结伴游",
+        "info": "",
+        "image": "",
+        "classliy": {
+          "name": "结伴游",
+          "value": "3"
+        },
+        "type": {
+          "name": "结伴游",
+          "value": 1
+        },
+        "group": {
+          "group_status": "-2",
+          "group_name": "待审核或审核未通过"
+        }
+      }
+    ],
+    "search": [
+      {
+        "name": "心情",
+        "value": "1",
+        "son": [
+          {
+            "name": "好",
+            "value": "3",
+            "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=3"
+          }
+        ]
+      }
+    ]
+
+  }
+}
+
+//结伴游审核后列表=================审核后
+// 模块/方法：
+// index.php?r=api/shops/group_after
+// 20150926164131
+// http://192.168.0.20/tmm/index.php?r=api/shops/group_after
+
+// submit_link   提交链接
+{
+  "status": 1,
+  "code": 0,
+  "msg": "正确",
+  "data": {
+    "page": {
+      "prev": "",
+      "selected": "http://test.365tmm.net/tmm/index.php?r=api/shops/Group_after",
+      "next": "http://test.365tmm.net/tmm/index.php?r=api/shops/Group_after&page=2",
+      "selectedPage": 1,
+      "count": 2,
+      "page": "page",
+      "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/Group_after"
+    },
+    "list_data": [
+      {
+        "value": "82",
+        "link": "http://test.365tmm.net/tmm/index.php?r=api/group/view&id=82",
+        "name": "777游",
+        "info": "777",
+        "image": "http://test.365tmm.net/uploads/shops/group/20150925/litimg_app/46175604f8d5a53e21.24367166.png",
+        "classliy": {
+          "name": "3",
+          "value": "结伴游"
+        },
+        "type": {
+          "name": "结伴游",
+          "value": 1
+        },
+        "group": {
+          "group_status": "0",
+          "group_name": "结伴中"
+        },
+        "submit_link": "http://test.365tmm.net/tmm/index.php?r=api/OrderOrganizer/submit&id=17"    
+      },
+      {
+        "value": "82",
+        "link": "http://test.365tmm.net/tmm/index.php?r=api/group/view&id=82",
+        "name": "777游",
+        "info": "777",
+        "image": "http://test.365tmm.net/uploads/shops/group/20150925/litimg_app/46175604f8d5a53e21.24367166.png",
+        "classliy": {
+          "name": "3",
+          "value": "结伴游"
+        },
+        "type": {
+          "name": "结伴游",
+          "value": 1
+        },
+        "group": {
+          "group_status": "0",
+          "group_name": "结伴中"
+        },
+        "submit_link": "http://test.365tmm.net/tmm/index.php?r=api/OrderOrganizer/submit&id=18"
+      },
+      {
+        "value": "82",
+        "link": "http://test.365tmm.net/tmm/index.php?r=api/group/view&id=82",
+        "name": "777游",
+        "info": "777",
+        "image": "http://test.365tmm.net/uploads/shops/group/20150925/litimg_app/46175604f8d5a53e21.24367166.png",
+        "classliy": {
+          "name": "3",
+          "value": "结伴游"
+        },
+        "type": {
+          "name": "结伴游",
+          "value": 1
+        },
+        "group": {
+          "group_status": "0",
+          "group_name": "结伴中"
+        },
+        "submit_link": "http://test.365tmm.net/tmm/index.php?r=api/OrderOrganizer/submit&id=20"
+      }
+    ]
+  }
+}
+
+
+
+//结伴游列表提交出游时间=================提交出游时间
+// 模块/方法：
+// index.php?r=api/OrderOrganizer/submit&id=20
+
+//   POST
+
+//出游时间
+ group_time  = '2015-09-30'
+// CSRF 码  
+
+
+//  返回 
+{
+  "status": 1,
+  "code": 0,
+  "msg": "正确",
+  "data": {
+    "status": 1
+  }
+}
+
+genrsa -out rsa_private_key.pem 1024
+
+rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
+
+pkcs8 -topk8 -inform PEM -in rsa_private_key.pem -outform PEM -nocrypt
+
+zdfoygjwo2j8o3giwmzep2p1leu9hfkn

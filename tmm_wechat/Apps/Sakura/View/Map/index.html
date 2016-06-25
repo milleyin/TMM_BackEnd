@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, minimum-scale=1, user-scalable=yes, minimal-ui">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="wap-font-scale" content="no" />
+<meta name="format-detection" content="telephone=no" />
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<meta name="description" content="">
+<meta name="author" content="">
+<title>电子地图</title>
+<link rel="stylesheet" href="__CSS__/map.css">
+</head>
+<body>
+    <div id="mapDiv">
+        <img src="__IMG__/map.jpg" id="map" usemap="#bigmap">
+        <map id="bigmap" name="bigmap">
+            <area shape="rect" coords="1560,800,1750,950" href="{:U('map/road')}" alt="樱花大道">
+            <area shape="rect" coords="1430,1220,1600,1360" href="{:U('map/fog')}" alt="森林雾峡">
+            <area shape="rect" coords="1230,1380,1430,1520" href="{:U('map/waterfall')}" alt="高山流水">
+            <area shape="rect" coords="550,1250,800,1400" href="{:U('map/plaza')}" alt="哥特广场">
+        </map>
+    </div>
+</body>
+</html>

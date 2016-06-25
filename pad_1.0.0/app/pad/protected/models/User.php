@@ -1,0 +1,184 @@
+<?php
+
+/**
+ * This is the model class for table "{{user}}".
+ *
+ * The followings are the available columns in table '{{user}}':
+ * @property string $id
+ * @property string $openid
+ * @property string $name
+ * @property string $up_time
+ * @property string $add_time
+ * @property integer $status
+ */
+class User extends ActiveRecord
+{
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return '{{user}}';
+    }
+
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('id, openid', 'required'),
+            array('status', 'numerical', 'integerOnly'=>true),
+            array('id', 'length', 'max'=>20),
+            array('openid', 'length', 'max'=>128),
+            array('name', 'length', 'max'=>32),
+            array('up_time, add_time', 'length', 'max'=>10),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('id, openid, name, up_time, add_time, status', 'safe', 'on'=>'search'),
+        );
+    }
+
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'User_Role'=>array(self::BELONGS_TO, 'Role', 'id'),
+        );
+    }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'id' => 'ID',
+            'openid' => '微信ID',
+            'name' => '昵称',
+            'up_time' => '修改时间',
+            'add_time' => '注册时间',
+            'status' => '状态',
+        );
+    }
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+    public function search()
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria = new CDbCriteria;
+
+        $criteria->compare('id', $this->id,true);
+        $criteria->compare('openid', $this->openid,true);
+        $criteria->compare('name', $this->name,true);
+        $this->timeSearch('up_time', $criteria);
+        $this->timeSearch('add_time', $criteria);
+        if ($this->status != self::_STATUS_DELETED)
+            $criteria->compare('status', '<>' . self::_STATUS_DELETED);
+        $criteria->compare('status', $this->status);
+
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+            'pagination'=>array(
+                'pageSize'=>10,
+            ),
+            'sort'=>array(
+                'defaultOrder'=>'t.id desc',
+                /*
+                'attributes'=>array(
+                    'id'=>array(
+                        'desc'=>'id desc',
+                    ),
+                ),
+                */
+            ),
+        ));
+    }
+
+    /**
+     * 创建用户
+     * @param $openid String 微信id
+     * @param $name String 微信昵称
+     * @return bool
+     *
+     * @author     Moore Mo
+     */
+    public function createUser($openid, $name) {
+        $criteria = new CDbCriteria;
+        $criteria->addColumnCondition(array('openid' => $openid));
+        $model = $this->find($criteria);
+        if ($model)
+            return true;
+        $transaction = $this->dbConnection->beginTransaction();
+        try {
+            // 先创建角色
+            $roleModel = new Role();
+            if ($roleModel->createRole(Role::ROLE_TYPE_USER)) {
+                // 创建用户
+                $this->id = $roleModel->id;
+                $this->openid = $openid;
+                $this->name = $name;
+                if (! $this->save()) {
+                    throw new Exception('用户创建失败');
+                }
+                // 更新角色操作id
+                $roleModel->manager_id = $roleModel->id;
+                if ( ! $roleModel->save()) {
+                    throw new Exception('用户创建失败');
+                }
+                $transaction->commit();
+            } else {
+                throw new Exception('用户创建失败');
+            }
+        } catch (Exception $e) {
+            $transaction->rollback();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return User the static model class
+     */
+    public static function model($className=__CLASS__)
+    {
+        return parent::model($className);
+    }
+    
+    /**
+     * 保存之前的操作
+     * (non-PHPdoc)
+     * @see CActiveRecord::beforeSave()
+     */
+    public function beforeSave()
+    {
+        if (parent::beforeSave())
+        {
+            if ($this->getIsNewRecord())
+                $this->up_time = $this->add_time = time();
+            return true;
+        }
+        return false;
+    }
+}

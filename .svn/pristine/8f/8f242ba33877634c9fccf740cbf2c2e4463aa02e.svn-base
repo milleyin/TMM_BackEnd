@@ -1,0 +1,153 @@
+<?php
+/**
+ * UserIdentity represents the data needed to identity a user.
+ * It contains the authentication method that checks if the provided
+ * data can identity the user.
+ */
+class UserIdentity extends CUserIdentity
+{
+    /**
+     * 角色状态异常 代码
+     * @var unknown
+     */
+    const ERROR_ROLE_STATUS_INVALID = 3;
+    /**
+     * 体验店状态异常 代码
+     * @var unknown
+     */
+    const ERROR_STORE_STATUS_INVALID = 4;
+    /**
+     * 屏的状态被禁用了 代码
+     * @var unknown
+     */
+    const ERROR_PAD_STATUS_INVALID = 5;
+    /**
+     * 序列号被其他账号绑定了 代码
+     * @var unknown
+     */
+    const ERROR_NUMBER_INVALID = 6;
+     
+    /**
+     * 角色唯一ID
+     * @var integer
+     */
+    private $_id;
+    /**
+     * 设备序列号
+     * @var string
+     */
+    public $number;
+    /**
+     * 网卡地址
+     * @var string
+     */
+    public  $mac;
+    /**
+     * 角色数据
+     * @var ActiveRecord
+     */
+    private $_model;
+    /**
+     * 展示屏的数据
+     * @var unknown
+     */
+    public $_padModel;
+    
+	/**
+	 * Authenticates a user.
+	 * The example implementation makes sure if the username and password
+	 * are both 'demo'.
+	 * In practical applications, this should be changed to authenticate
+	 * against some persistent user identity storage (e.g. database).
+	 * @return boolean whether authentication succeeds.
+	 */
+	public function authenticate()
+	{
+	    $criteria = new CDbCriteria;
+	    $criteria->with = array(
+	            'Store_Role',
+	    );
+	    $criteria->addColumnCondition(array('`t`.`phone`'=>$this->username));
+	    $this->_model = Store::model()->find($criteria);
+	    
+		if ( !isset($this->_model->phone) || $this->_model->phone !== $this->username)
+			$this->errorCode = self::ERROR_USERNAME_INVALID;
+		//删除的 提示 用户名或密码错误
+		elseif ($this->_model->Store_Role->status == Role::_STATUS_DELETED)
+		    $this->errorCode = self::ERROR_PASSWORD_INVALID;
+		elseif ($this->_model->status == Store::_STATUS_DELETED)
+		     $this->errorCode = self::ERROR_PASSWORD_INVALID;
+		//密码错误 错误码 用户名或密码错误
+		elseif(Password::model()->validatePassword($this->_model->id, Password::PASSWORD_TYPE_LOGIN, $this->password) !== Password::PASSWORD_PASS)
+		    $this->errorCode = self::ERROR_PASSWORD_INVALID;
+	   //账户禁用 错误码 该账户已被禁用
+		elseif ($this->_model->Store_Role->status != Role::_STATUS_NORMAL)
+		    $this->errorCode = self::ERROR_ROLE_STATUS_INVALID;
+		elseif ($this->_model->status != Store::_STATUS_NORMAL)
+		    $this->errorCode = self::ERROR_STORE_STATUS_INVALID;
+		else
+		{
+		    $this->_padModel = Pad::model()->find('number=:number AND status!=:status', array(':number'=>$this->number, 'status'=>Pad::_STATUS_DELETED));
+		    if ($this->_padModel)
+		    {
+		        if ($this->_padModel->store_id == $this->_model->id)
+		        {
+		            // 有展示屏 且 当前体验店 状态正常 错误码 没有错误
+		            if ($this->_padModel->status == Pad::_STATUS_NORMAL)
+		                 $this->errorCode  = self::ERROR_NONE;
+		            // 有展示屏 且 当前体验店 状态禁用 错误码 展示屏已被禁用
+		            elseif ($this->_padModel->status == Pad::_STATUS_DISABLE)
+		                $this->errorCode  = self::ERROR_PAD_STATUS_INVALID;
+		        }
+		        else
+		          $this->errorCode  = self::ERROR_NUMBER_INVALID;	        
+		    }
+		    else
+		    {
+		        $this->_padModel = new Pad;
+		        $data = array(
+	                'number'=>$this->number,
+		            'name'=>$this->number,
+		            'mac'=>$this->mac,
+		        );
+		        //绑定展示屏成功 错误码 没有错误
+		        if ($this->_padModel->createPad($data, $this->_model->id))
+		            $this->errorCode  = self::ERROR_NONE;
+		        //绑定展示屏失败 用户名或密码错误
+		        else 
+		            $this->errorCode = self::ERROR_PASSWORD_INVALID;
+		    }
+		    //错误码 没有的时候 赋值登录唯一
+		    if ($this->errorCode == self::ERROR_NONE)
+		        $this->_id = $this->_model->id;
+		}
+		return $this->errorCode == self::ERROR_NONE;
+	}
+	
+	/**
+	 * 返回登录唯一标示id
+	 * @see CUserIdentity::getId()
+	 */
+	public function getId()
+	{
+	    return $this->_id;
+	}
+	
+	/**
+	 * 返回数据模型
+	 */
+	public function getModel()
+	{
+	    return $this->_model;
+	}
+	
+	/**
+	 * 保存持久数据
+	 * (non-PHPdoc)
+	 * @see CBaseUserIdentity::getPersistentStates()
+	 */
+	public function getPersistentStates()
+	{
+	    return array('padId'=>$this->_padModel->id, 'padName'=>$this->_padModel->name, 'padNumber'=>$this->_padModel->number);
+	}
+}

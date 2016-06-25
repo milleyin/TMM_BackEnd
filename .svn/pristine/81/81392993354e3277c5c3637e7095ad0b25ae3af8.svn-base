@@ -1,0 +1,29 @@
+<?php
+/**
+ * 测试的
+ */
+return CMap::mergeArray(
+	require(dirname(__FILE__).'/main.php'),
+	array(
+		'components'=>array(
+			'fixture'=>array(
+				'class'=>'system.test.CDbFixtureManager',
+			),
+			'log'=>array(
+				'class'=>'CLogRouter',
+				'routes'=>array(
+					array(
+						'class'=>'FileLogRoute',
+						'levels'=>'error, warning, info',
+						'logFile'=> 'error/test/' . date('Y-m-d') . '.log',
+					),
+					array(
+						'class'=>'CWebLogRoute',
+						'levels'=>'error, warning, trace',
+						'categories'=>'system.db.*',
+					),
+				),
+			),
+		),
+	)
+);

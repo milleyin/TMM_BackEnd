@@ -1,0 +1,17 @@
+//分享   （访问地址）
+
+// 模块/方法：
+// index.php?r=site/share&share={share_id}&type={type}
+
+
+//{type} == 1 (默认)
+//{share_id}====商品ID
+//{type} == 2 (必传)
+//{share_id}====项目ID
+//{type} == 3 (必传)
+//{share_id}====链接ID
+
+
+// 传值方式：
+// GET
+

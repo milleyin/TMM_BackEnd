@@ -1,0 +1,183 @@
+<?php 
+	if (isset($model->Thrand_Pro[0]->Pro_Thrand_Dot) && !empty($model->Thrand_Pro[0]->Pro_Thrand_Dot))
+		$item_arr = Pro::circuit_info($model->Thrand_Pro,'Pro_Thrand_Dot');
+	else
+		$item_arr = array();
+	$data_array = isset($item_arr['data_arr']) && $item_arr['data_arr'] ? $item_arr['data_arr'] : array();
+	$info_array = isset($item_arr['info_arr']) && $item_arr['info_arr'] ? $item_arr['info_arr'] : array();
+	//$this->p_r($data_array);
+?>
+<div id="selected_dot">
+	<?php 
+		$day = 1;
+		if ( !empty($data_array))
+		{
+			foreach ($data_array as $key=>$data_dot_sort)
+			{
+				for($day; $day<$key; $day++)
+				{
+	?>
+					<div class="day_info" <?php echo $day==1 ? 'style="border: 1px dashed red"' : '';?>>
+						<div class="day_name" data-sort="<?php echo CHtml::encode($day);?>" title="点击选择操作天数"><?php echo CHtml::encode(Pro::item_swithc($day)); ?></div>
+						<div class="dot_info none">
+							待添加
+						</div>
+					</div>
+	<?php 
+				}
+				$day = $key;
+	?>
+	<div class="day_info" <?php echo $day==1 ? 'style="border: 1px dashed red"' : '';?>>
+		<div class="day_name" data-sort="<?php echo CHtml::encode($day);?>" title="点击选择操作天数"><?php echo CHtml::encode(Pro::item_swithc($key)); ?></div>	
+			<?php
+				foreach ($data_dot_sort as $key_dot=>$data_dot)
+				{
+					foreach ($data_dot as $dot_id => $data_items)
+					{
+			?>
+		<div class="dot_info">
+			<div class="dot_name">
+				<span class="name">景点名称：</span>
+				<?php echo CHtml::encode($info_array['dot_data'][$dot_id]->name); ?>
+				<?php
+					if ($info_array['dot_data'][$dot_id]->status != Shops::status_online)
+					{
+				?>
+						<span style="color: red;">（已<?php echo Shops::$_status[$info_array['dot_data'][$dot_id]->status];?>）</span>
+				<?php
+					}
+				?>
+			</div>
+			<div class="dot_delete" title="点击删除">X</div>
+			<hr>
+				<?php
+						foreach ($data_items as $sort => $items)
+						{
+				?>
+			<div class="item_info">
+				<div class="item_top">
+					<div class="item_number">
+						<?php echo CHtml::encode($sort+1);?>
+					</div>
+					<div class="item_img">
+						<?php 
+								if (isset($items->Pro_Items->Items_ItemsImg[0]))
+								{
+									foreach ($items->Pro_Items->Items_ItemsImg as $img)
+									{
+										if ($this->file_exists_uploads($img->img))
+										{
+											echo Yii::app()->controller->show_img($img->img, '', '', array(
+													'title'=>$items->Pro_Items->Items_StoreContent->Content_Store->phone . ' [' .
+													$items->Pro_Items->Items_StoreContent->name . ']'
+											));
+											break;
+										}
+									}
+								}
+						?>
+					</div>
+					<div class="item_conent">
+						<div class="item_title">
+							<span class="name">项目名称：</span> 
+							<span class="item_name">
+								<?php echo CHtml::encode($items->Pro_Items->name); ?>
+							</span>
+							<?php
+								if($items->Pro_Items->status != Items::status_online)
+								{
+									?>
+									<span style="color: red">（已<?php echo Items::$_status[$items->Pro_Items->status];?>）</span>
+									<?php
+								}
+							?>
+							<input class="item_input" type="hidden" name="<?php echo 'Pro['.$key.']['.$key_dot.']['.$dot_id.']['.$sort.']';?>" value="<?php echo $items->Pro_Items->id;?>">
+							<span class="item_classliy">
+								<?php echo CHtml::encode($items->Pro_Items->Items_ItemsClassliy->name); ?>
+							</span>
+						</div>
+						<div class="item_address">
+							<span class="name">项目地址：</span> 
+							    <?php 
+					    			echo CHtml::encode(
+								    				$items->Pro_Items->Items_area_id_p_Area_id->name.
+													$items->Pro_Items->Items_area_id_m_Area_id->name.
+													$items->Pro_Items->Items_area_id_c_Area_id->name.
+													$items->Pro_Items->address
+											);
+								?>
+						</div>
+					</div>
+				</div>
+				<div class="fare_info">
+					<span class="fare_title">已选价格</span>
+					<div class="fare_list">
+						<ul>
+						<?php
+								if ($items->Pro_Items->Items_ItemsClassliy->append == 'Hotel')
+								{
+									foreach ($items->Pro_ProFare as $fare_key=>$ProFare)
+									{
+						?>
+							<li>
+								<span title="套房类型" ><?php echo CHtml::encode($ProFare->ProFare_Fare->name);?></span>
+								<span title="入住人数"><?php echo CHtml::encode($ProFare->ProFare_Fare->info);?></span>
+								<span title="房间大小"><?php echo CHtml::encode($ProFare->ProFare_Fare->number);?></span>
+								<span title="价格金额"><?php echo CHtml::encode($ProFare->ProFare_Fare->price);?></span>
+								<span class="fare_delete" title="点击删除" >X</span>
+								<input class="fare_input" type="hidden" name="<?php echo 'ProFare['.$key.']['.$key_dot.']['.$dot_id.']['.$sort.']['.$items->Pro_Items->id.']['.$fare_key.']';?>" value="<?php echo $ProFare->ProFare_Fare->id;?>">
+							</li>
+							<?php
+									}
+								}
+								else
+								{
+									foreach ($items->Pro_ProFare as $fare_key=>$ProFare)
+									{
+							?>
+							<li>
+								<span title="套餐名称"><?php echo CHtml::encode($ProFare->ProFare_Fare->name);?></span>
+								<span title="套餐类型"><?php echo CHtml::encode($ProFare->ProFare_Fare->info);?></span>
+								<span title="价格金额"><?php echo CHtml::encode($ProFare->ProFare_Fare->price);?></span>
+								<span class="fare_delete" title="点击删除">X</span>
+								<input class="fare_input" type="hidden" name="<?php echo 'ProFare['.$key.']['.$key_dot.']['.$dot_id.']['.$sort.']['.$items->Pro_Items->id.']['.$fare_key.']';?>" value="<?php echo $ProFare->ProFare_Fare->id;?>">
+							</li>
+							<?php
+									}
+								}
+							?>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<?php 
+						}
+			?>
+		</div>	
+		<?php 
+					}
+				}
+		?>
+	</div>
+	<?php
+				$day++;
+			}
+		}
+	?>
+	<div class="add_day" title="添加日程">
+		+
+	</div>
+</div>
+<div class="selecting">
+	<img src="<?php echo Yii::app()->request->baseUrl; ?>/images/admin/box.png">
+</div>
+<div id="list_dot" >
+	<div id="dot_top">
+	<?php 
+		$this->renderPartial('_form/_name/dot', array(
+			'dotModel'=>$dotModel,
+			'day'=>$day,
+		)); 
+	?>	
+	</div>
+</div>

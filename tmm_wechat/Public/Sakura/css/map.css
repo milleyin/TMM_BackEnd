@@ -1,0 +1,20 @@
+html,body{
+    margin: 0;
+    padding: 0;
+}
+#mapDiv {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    background-color: #095F70;
+    -webkit-overflow-scrolling:touch;
+}
+#map {
+    border: 0;
+    zoom: 0.3;
+}
+area{
+    outline: none;
+}

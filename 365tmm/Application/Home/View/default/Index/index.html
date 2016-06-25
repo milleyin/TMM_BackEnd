@@ -1,0 +1,64 @@
+<extend name="Base/common"/>
+<block name="body">
+    <div class="banner">
+        <div class="big-img img1"></div>
+    </div>
+    <div class="content con-index">
+        <div class="intro">
+            <h2 class="item-title">田觅觅介绍<span class="title-desc">About us</span></h2>
+            <div class="intro-desc">田觅觅——特色乡村心入口。把城里人带到乡村去，把农产品卖到城里来。</div>
+            <div class="intro-img">
+                <img src="__IMG__/business-model.png" alt="田觅觅商业模式">
+            </div>
+        </div>
+        <div class="service">
+            <h2 class="item-title">服务介绍<span class="title-desc">Services provided</span></h2>
+            <div class="service-desc">
+                <div class="service-item">
+                    <p class="img"><i class="icon-service1"></i></p>
+                    <p class="tit">制定农旅一体化解决方案</p>
+                    <p class="txt">整合当地优势资源制定适合当地农旅发展的整套解决方案</p>
+                </div>
+                <div class="service-item">
+                    <p class="img"><i class="icon-service2"></i></p>
+                    <p class="tit">农旅资源营销推广</p>
+                    <p class="txt">结合自身优势资源实现农旅资源多渠道营销推广</p>
+                </div>
+                <div class="service-item">
+                    <p class="img"><i class="icon-service3"></i></p>
+                    <p class="tit">产品研发与技术支持</p>
+                    <p class="txt">对各类型用户提供产品研发及技术支持服务</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="news">
+            <h2 class="item-title">新闻动态<span class="title-desc">Ours news</span></h2>
+            <div class="news-desc">
+                <volist name="articleList" id="article" offset="0" length="4">
+                <span class="news-item">
+                  <a href="{:U('index/detail?id='.$article['id'])}"><img src="__ROOT__{$article.cover_path}" alt="{$article.title}"></a>
+                  <span class="tit"><a href="{:U('index/detail?id='.$article['id'])}">{$article.title}</a></span>
+                  <span class="abstract">{$article.description|msubstr=0,60}</span>
+                  <span class="date">{$article.update_time|date='Y-m-d',###}</span>
+                </span>&nbsp;
+                </volist>
+
+
+                <span class="justify_fix"></span>
+            </div>
+        </div>
+
+        <div class="case">
+            <h2 class="item-title">特色乡村案例<span class="title-desc">Ours case</span></h2>
+            <div class="case-desc">
+                <span class="case-item"><img src="__IMG__/case-1.png" alt=""><span class="tit">广东省</span></span>
+                <span class="case-item"><img src="__IMG__/case-2.png" alt=""><span class="tit">深圳市大鹏新区</span></span>
+                <span class="case-item"><img src="__IMG__/case-3.png" alt=""><span class="tit">江南小镇</span></span>
+                <span class="case-item"><img src="__IMG__/case-4.png" alt=""><span class="tit">南昆山生态养生之旅</span></span>
+                <span class="justify_fix"></span>
+            </div>
+        </div>
+    </div>
+    <span class="icon-to-top"></span>
+</block>

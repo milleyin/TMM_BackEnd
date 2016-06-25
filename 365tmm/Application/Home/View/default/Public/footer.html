@@ -1,0 +1,15 @@
+
+    <!-- 底部
+    ================================================== -->
+    <div class="footer">
+        <p class="link"></p>
+        <p class="copyright">Copyright © 2016 深圳市田觅觅信息科技有限公司&nbsp;&nbsp;<a href="http://www.miitbeian.gov.cn" target="_blank">{:C('WEB_SITE_ICP')}</a></p>
+    </div>
+
+<include file="Public/var"/>
+<block name="script"></block> <!-- 用于加载js代码 -->
+<!-- 页面footer钩子，一般用于加载插件JS文件和JS代码 -->
+{:hook('pageFooter', 'widget')}
+<div class="hidden"><!-- 用于加载统计代码等隐藏元素 -->
+	<block name="hidden"></block>
+</div>

@@ -1,0 +1,155 @@
+<?php
+namespace app\admin\controllers;
+
+use AdminModulesController;
+
+/**
+ * @author Changhai Zhan
+ *	创建时间：2016-06-01 15:27:50 */
+class RoleController extends AdminModulesController
+{
+	/**
+	 * 当前操作模型的名称
+	 * @var string
+	 */
+	public $_modelName = 'Role';
+	
+	/**
+	 * 管理
+	 */
+	public function actionAdmin()
+	{
+		$model = new \Role('search');
+		//清除默认值
+		$model->unsetAttributes();
+		if (isset($_GET['Role']))
+			$model->attributes = $_GET['Role'];
+
+		$this->render('admin', array(
+			'model'=>$model,
+		));
+	}
+	
+	/**
+	 * 查看
+	 * @param integer $id
+	 */
+	public function actionView($id)
+	{
+		$this->render('view', array(
+			'model'=>$this->loadModelByPk($id),
+		));
+	}
+
+	/**
+	 * 创建
+	 * @return Success page "view"
+	 */
+	public function actionCreate()
+	{
+		$model = new \Role;
+
+		$model->scenario = 'create';
+		$this->ajaxVerify($model, 'role-form');
+
+		if (isset($_POST['Role']))
+		{
+			$model->attributes = $_POST['Role'];
+			if ($model->save())
+				$this->redirect(array('view', 'id'=>$model->id));
+		}
+
+		$this->render('create', array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * 更新
+	 * @param integer $id
+	 * @return Success page "view"
+	 */
+	public function actionUpdate($id)
+	{
+		$model = $this->loadModelByPk($id);
+
+		$model->scenario = 'update';
+		$this->ajaxVerify($model, 'role-form');
+
+		if (isset($_POST['Role']))
+		{
+			$model->attributes = $_POST['Role'];
+			if ($model->save())
+				$this->redirect(array('view', 'id'=>$model->id));
+		}
+
+		$this->render('update', array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * 删除
+	 * @param integer $id the ID of the model to be deleted
+	 * @return Success page "admin"
+	 */
+	public function actionDelete($id)
+	{
+		$this->loadModelByPk($id, '`status`=:status', array(':status'=>\Role::_STATUS_DISABLE))->updateByPk($id, array('status'=>\Role::_STATUS_DELETED));
+		
+		if ( !isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+	
+	/**
+	 * 禁用
+	 * @param integer $id the ID of the model to be deleted
+	 * @return Success page "admin"
+	 */
+	public function actionDisable($id)
+	{
+		$this->loadModelByPk($id, '`status`=:status', array(':status'=>\Role::_STATUS_NORMAL))->updateByPk($id, array('status'=>\Role::_STATUS_DISABLE));
+		
+		if ( !isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+	
+	/**
+	 * 激活
+	 * @param integer $id the ID of the model to be deleted
+	 * @return Success page "admin"
+	 */
+	public function actionStart($id)
+	{
+		$this->loadModelByPk($id, '`status`=:status', array(':status'=>\Role::_STATUS_DISABLE))->updateByPk($id, array('status'=>\Role::_STATUS_NORMAL));
+		
+		if ( !isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+	
+	/**
+	 * 还原
+	 * @param integer $id the ID of the model to be deleted
+	 * @return Success page "admin"
+	 */
+	public function actionRestore($id)
+	{
+		$this->loadModelByPk($id, '`status`=:status', array(':status'=>\Role::_STATUS_DELETED))->updateByPk($id, array('status'=>\Role::_STATUS_DISABLE));
+		
+		if ( !isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+	
+	/**
+	 * 清除记录
+	 * @param integer $id the ID of the model to be deleted
+	 * @return Success page "admin"
+	 */
+	public function actionClear($id)
+	{
+		$this->loadModelByPk($id, '`status`=:status', array(':status'=>\Role::_STATUS_DELETED))->delete();
+		
+		if ( !isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+}

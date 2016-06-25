@@ -1,0 +1,246 @@
+//我发去的活动 报名（下单）列表
+//链接 index.php?r=api/order/view&id=value
+//GET
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "actives": {
+            "list_img": "http://test.365tmm.net/uploads/shops/actives/20151105/5008563af9fccb1786.75615021.jpg",
+            "list_info": "11111111111",
+            "actives_status": {
+                "name": "进行中",
+                "value": "1"
+            },
+            "number": "20",
+            "order_number": "18",
+            "value": "59",
+            "link": "http://localhost/tmm/index.php?r=api/actvies/view&id=59"
+        },
+        "go_time": "2015-11-06",
+        "value": "41",
+        "order_no": "MJ201511050041",
+        "order_price": {
+            "name": "订单总价",
+            "value": "169.42"
+        },
+        "user_price_fact": {
+            "name": "服务费/人",
+            "value": "10.00"
+        },
+        "user_go_count": {
+            "name": "出游人数",
+            "value": "1"
+        },
+        "action_time": {
+            "start_time": "2015-11-03",
+            "end_time": "2015-11-07",
+            "add_time": "2015-11-05 15:31:11"
+        },
+        "retinue": [
+            {
+                "is_main": "1",
+                "name": "马晓松1",
+                "value": "10",
+                "link": "http://localhost/tmm/index.php?r=api/retinue/view&id=10"
+            }
+        ],
+        "items_fare": {
+            "1": [
+                [
+                    {
+                        "name": "广宁竹海",
+                        "value": "57",
+                        "link": "http://localhost/tmm/index.php?r=api/play/view&id=57",
+                        "classliy": {
+                            "name": "玩",
+                            "value": "3"
+                        },
+                        "fare": [
+                            {
+                                "name": "特价门票",
+                                "info": "儿童",
+                                "number": "0",
+                                "room_number": "0",
+                                "price": "1.69",
+                                "count": "0.00"
+                            }
+                        ]
+                    }
+                ],
+                [
+                    {
+                        "name": "放鸡岛",
+                        "value": "56",
+                        "link": "http://localhost/tmm/index.php?r=api/play/view&id=56",
+                        "classliy": {
+                            "name": "玩",
+                            "value": "3"
+                        },
+                        "fare": [
+                            {
+                                "name": "特价门票",
+                                "info": "成人",
+                                "number": "1",
+                                "room_number": "0",
+                                "price": "20.50",
+                                "count": "20.50"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "茂名海岸",
+                        "value": "55",
+                        "link": "http://localhost/tmm/index.php?r=api/play/view&id=55",
+                        "classliy": {
+                            "name": "玩",
+                            "value": "3"
+                        },
+                        "fare": [
+                            {
+                                "name": "特价门票",
+                                "info": "儿童",
+                                "number": "0",
+                                "room_number": "0",
+                                "price": "0.59",
+                                "count": "0.00"
+                            }
+                        ]
+                    }
+                ]
+            ],
+            "2": [
+                [
+                    {
+                        "name": "溪头村",
+                        "value": "33",
+                        "link": "http://localhost/tmm/index.php?r=api/play/view&id=33",
+                        "classliy": {
+                            "name": "玩",
+                            "value": "3"
+                        },
+                        "fare": [
+                            {
+                                "name": "特价门票",
+                                "info": "儿童",
+                                "number": "0",
+                                "room_number": "0",
+                                "price": "34.75",
+                                "count": "0.00"
+                            }
+                        ]
+                    }
+                ],
+                [
+                    {
+                        "name": "大埔蜜柚",
+                        "value": "29",
+                        "link": "http://localhost/tmm/index.php?r=api/eat/view&id=29",
+                        "classliy": {
+                            "name": "吃",
+                            "value": "1"
+                        },
+                        "fare": [
+                            {
+                                "name": "特价套餐",
+                                "info": "成人",
+                                "number": "1",
+                                "room_number": "0",
+                                "price": "34.47",
+                                "count": "34.47"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "瑞锦酒店",
+                        "value": "31",
+                        "link": "http://localhost/tmm/index.php?r=api/hotel/view&id=31",
+                        "classliy": {
+                            "name": "住",
+                            "value": "2"
+                        },
+                        "fare": [
+                            {
+                                "name": "单人间套房",
+                                "info": "100",
+                                "number": "1",
+                                "room_number": "1",
+                                "price": "34.99",
+                                "count": "34.99"
+                            }
+                        ]
+                    }
+                ]
+            ],
+            "3": [
+                [
+                    {
+                        "name": "大埔蜜柚",
+                        "value": "29",
+                        "link": "http://localhost/tmm/index.php?r=api/eat/view&id=29",
+                        "classliy": {
+                            "name": "吃",
+                            "value": "1"
+                        },
+                        "fare": [
+                            {
+                                "name": "特价套餐",
+                                "info": "成人",
+                                "number": "1",
+                                "room_number": "0",
+                                "price": "34.47",
+                                "count": "34.47"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "瑞锦酒店",
+                        "value": "31",
+                        "link": "http://localhost/tmm/index.php?r=api/hotel/view&id=31",
+                        "classliy": {
+                            "name": "住",
+                            "value": "2"
+                        },
+                        "fare": [
+                            {
+                                "name": "单人间套房",
+                                "info": "100",
+                                "number": "1",
+                                "room_number": "1",
+                                "price": "34.99",
+                                "count": "34.99"
+                            }
+                        ]
+                    }
+                ]
+            ]
+        },
+        "status": {
+            "pay_type": {
+                "name": "支付宝",
+                "value": "1"
+            },
+            "order_status": {
+                "name": "已付款",
+                "value": "2"
+            },
+            "status_go": {
+                "name": "确认出游",
+                "value": "2"
+            },
+            "centre_status": {
+                "name": "不可支付",
+                "value": "-1"
+            },
+            "pay_status": {
+                "name": "已支付",
+                "value": "1"
+            },
+            "order_type": {
+                "name": "活动(旅游)",
+                "value": "3"
+            }
+        }
+    }
+}

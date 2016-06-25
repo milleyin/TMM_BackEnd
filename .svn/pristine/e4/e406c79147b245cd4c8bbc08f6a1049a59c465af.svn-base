@@ -1,0 +1,74 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__STATIC__/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+</block>
+<block name="body">
+    <div class="container" style="padding-top: 30px;">
+        <div class="alert alert-success" role="alert" id="success" style="display: none;">
+            发送短信通知成功，请勿重复发送...
+        </div>
+        <div class="alert alert-warning" role="alert" id="warning" style="display: none;">
+            发送短信通知失败，请重新发送...
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item">今日售票：{$info.daySellCount}张，普通票：{$info.daySellNormalCount}张，夜樱票：{$info.daySellYYCount}张。</li>
+            <li class="list-group-item success">今日兑票：{$info.dayConsumeCount}张，普通票：{$info.dayConsumeNormalCount}张，夜樱票：{$info.dayConsumeYYCount}张。</li>
+            <li class="list-group-item">今日售票金额：{$info.daySellTotalPrice}元，普通票：{$info.daySellNormalTotalPrice}元，夜樱票：{$info.daySellYYTotalPrice}元。</li>
+            <li class="list-group-item warning">今日兑票金额：{$info.dayConsumeTotalPrice}元，普通票：{$info.dayConsumeNormalTotalPrice}元，夜樱票：{$info.dayConsumeYYTotalPrice}元。</li>
+            <li class="list-group-item"></li>
+            <li class="list-group-item danger">至今总售票：{$info.sellCount}张，总兑票：{$info.consumeCount}张。</li>
+            <li class="list-group-item">总计金额：{$info.sellTotalPrice}元，总兑票金额：{$info.consumeTotalPrice}元。</li>
+            <li class="list-group-item">
+                <button type="button" class="btn btn-primary navbar-btn" id="send">
+                    发送短信通知
+                </button>
+            </li>
+        </ul>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function() {
+            function sendTime() {
+                var count = 60;
+                var countdown = setInterval(CountDown, 1000);
+
+                function CountDown() {
+                    $("#send").html('已发送 <font style="color:#ff0f0f;">' + count + '</font>秒');
+                    if (count == 0) {
+                        $("#send").html("发送短信通知");
+                        clearInterval(countdown);
+                        isSend = false;
+                        $('#success').hide();
+                        $("#send").attr('disabled', false);
+                    }
+                    count--;
+                }
+            }
+
+            var isSend = false;
+            $('#send').on('click', function() {
+                if (isSend) {
+                    return false;
+                }
+                var _this = $(this);
+                _this.attr('disabled', 'disabled');
+                $.post("{:U('Index/YH845b7e3e626a3dafdd74e56a40561731')}", function(data) {
+                    if (data == 1) {
+                        $('#success').show();
+                        isSend = true;
+                        sendTime();
+                    } else {
+                        var $warning = $('#warning');
+                        $warning.show();
+                        setTimeout(function() {
+                            $warning.hide();
+                            _this.attr('disabled', false);
+                        }, 2000);
+                    }
+
+                });
+            });
+        });
+    </script>
+</block>

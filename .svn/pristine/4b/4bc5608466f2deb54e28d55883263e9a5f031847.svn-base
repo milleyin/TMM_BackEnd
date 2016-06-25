@@ -1,0 +1,373 @@
+<?php
+/* @var $this CashController */
+/* @var $model Cash */
+
+$this->breadcrumbs = array(
+	'垃圾回收页',
+);
+?>
+<h1>垃圾回收页 Cashes</h1>
+
+<?php
+  $Confirmation= "你确定执行此项操作？";
+	if(Yii::app()->request->enableCsrfValidation)
+	{
+		$csrfTokenName = Yii::app()->request->csrfTokenName;
+		$csrfToken = Yii::app()->request->csrfToken;
+		$csrf = "\n\t\tdata:{ '$csrfTokenName':'$csrfToken'},";
+	}else
+		$csrf = '';
+$click_alert=<<<"EOD"
+function(){ 
+	if(!confirm("$Confirmation")) return false; 
+	var th=this;  
+	var afterDelete=function(link,success,data){ if(success) alert(data);};  
+	$.fn.yiiGridView.update('cash-grid',{  
+	type:'POST',
+	url:$(this).attr('href'),$csrf
+	success:function(data){
+	$.fn.yiiGridView.update('cash-grid');  
+	   afterDelete(th,true,data);  
+	},
+	error:function(XHR){
+	   return afterDelete(th,false,XHR);
+	}
+  });
+    return false;
+}
+EOD;
+
+$click=<<<"EOD"
+function() {  
+	if(!confirm("$Confirmation")) return false;
+	var th = this,
+	afterDelete = function(){};
+	jQuery('#cash-grid').yiiGridView('update', {
+		type: 'POST',
+		url: jQuery(this).attr('href'),$csrf
+		success: function(data) {
+			jQuery('#cash-grid').yiiGridView('update');
+			afterDelete(th, true, data);
+		},
+		error: function(XHR) {
+			return afterDelete(th, false, XHR);
+		}
+});
+    return false;
+}
+EOD;
+
+$this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'cash-grid',
+	'dataProvider'=>$model,
+	'enableHistory'=>true,
+	'columns'=>array(
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'id',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("id").":".$data->id
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'cash_type',
+				'value'=>'$data::$_cash_type[$data->cash_type]',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("cash_type").":".$data::$_cash_type[$data->cash_type]
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'cash_id',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("cash_id").":".$data->cash_id
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'admin_id_first',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("admin_id_first").":".$data->admin_id_first
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'remark_first',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("remark_first").":".$data->remark_first
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'first_time',
+				'type'=>'datetime',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("first_time").":".Yii::app()->format->FormatDate($data->first_time)
+				'),
+		),
+		/*
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'admin_id_double',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("admin_id_double").":".$data->admin_id_double
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'remark_double',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("remark_double").":".$data->remark_double
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'double_time',
+				'type'=>'datetime',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("double_time").":".Yii::app()->format->FormatDate($data->double_time)
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'admin_id_submit',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("admin_id_submit").":".$data->admin_id_submit
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'remark_submit',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("remark_submit").":".$data->remark_submit
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'submit_time',
+				'type'=>'datetime',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("submit_time").":".Yii::app()->format->FormatDate($data->submit_time)
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'money',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("money").":".$data->money
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'price',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("price").":".$data->price
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'fee_price',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("fee_price").":".$data->fee_price
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'fact_price',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("fact_price").":".$data->fact_price
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'bank_card_id',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("bank_card_id").":".$data->bank_card_id
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'bank_id',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("bank_id").":".$data->bank_id
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'bank_name',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("bank_name").":".$data->bank_name
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'bank_branch',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("bank_branch").":".$data->bank_branch
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'bank_code',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("bank_code").":".$data->bank_code
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'bank_type',
+				'value'=>'$data::$_bank_type[$data->bank_type]',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("bank_type").":".$data::$_bank_type[$data->bank_type]
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'bank_identity',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("bank_identity").":".$data->bank_identity
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'cash_status',
+				'value'=>'$data::$_cash_status[$data->cash_status]',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("cash_status").":".$data::$_cash_status[$data->cash_status]
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'audit_status',
+				'value'=>'$data::$_audit_status[$data->audit_status]',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("audit_status").":".$data::$_audit_status[$data->audit_status]
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'pay_type',
+				'value'=>'$data::$_pay_type[$data->pay_type]',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("pay_type").":".$data::$_pay_type[$data->pay_type]
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'pay_time',
+				'type'=>'datetime',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("pay_time").":".Yii::app()->format->FormatDate($data->pay_time)
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'add_time',
+				'type'=>'datetime',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("add_time").":".Yii::app()->format->FormatDate($data->add_time)
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'up_time',
+				'type'=>'datetime',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("up_time").":".Yii::app()->format->FormatDate($data->up_time)
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'status',
+				'value'=>'$data::$_status[$data->status]',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("status").":".$data::$_status[$data->status]
+				'),
+		),
+		*/
+		array(
+			'class'=>'CButtonColumn',
+			'header'=>'操 作',
+			'template'=>'{view}{restore}{delete}',
+			'buttons'=>array(
+					'view'=>array(
+						'options'=>array('style'=>'padding:0 8px 0 0;'),
+					),
+					'restore'=>array(
+						'label'=>'还原',
+						'url'=>'Yii::app()->createUrl("/operator/cash/restore", array("id"=>$data->id))',
+						'click'=>$click,
+						'options'=>array('style'=>'padding:0 8px 0 0;'),
+					),
+					'delete'=>array(
+						'label'=>'彻底删除',
+						'options'=>array('style'=>'padding:0 8px 0 0;'),
+						'url'=>'Yii::app()->createUrl("/operator/cash/clear", array("id"=>$data->id))',			
+					),
+			),
+			'headerHtmlOptions'=>array('style'=>'text-align:center;width:150px;'),
+		),
+	),
+)); 
+?>

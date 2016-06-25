@@ -1,0 +1,219 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/vote.css" rel="stylesheet">
+</block>
+<block name="body">
+    <div class="index-container">
+        <div class="tmm-search-from">
+            <form class="weui_search_outer tmm_search_outer" id="searchForm" action="{:U('vote/findRacing')}" method="post">
+                <div class="weui_search_inner tmm_search_inner">
+                    <i class="weui_icon_search"></i>
+                    <input type="search" class="weui_search_input tmm_search_input" id="search_input" placeholder="请输入编号或名字查找" name="keyword">
+                    <a href="javascript:" class="weui_icon_clear" id="search_clear"></a>
+                </div>
+            </form>
+        </div>
+        <img src="__IMG__/ns_banner.png" alt="" width="100%" height="100%">
+        <div class="index-main">
+            <div class="sub-top clearfix">
+                <div class="sub-left">
+                    <span class="num">{$userNum}</span>
+                    <span class="desc">已报名人数</span>
+                </div>
+                <div class="sub-right">
+                    <span class="num">{$voteNum}</span>
+                    <span class="desc">投票人数</span>
+                </div>
+            </div>
+            <div class="sub-bottom">
+                <if condition="$isApply == true ">
+                    <a href="{:U('vote/detail', array('id'=>$racingId))}" class="index-btn">
+                        我的参赛
+                    </a>
+                <else/>
+                    <if condition="$isEnd == true ">
+                        <a href="javascript:;" class="index-btn disable-btn">
+                            活动已结束
+                        </a>
+                    <else/>
+                        <a href="{:U('vote/apply')}" class="index-btn">
+                            我要报名
+                        </a>
+                    </if>
+                </if>
+
+                <span class="sub-bottom-desc">
+                    <a href="{:U('vote/rewards')}">查看奖品及参赛规则</a>
+                </span>
+            </div>
+        </div>
+        <div class="index-bottom">
+            <ul class="tab-ul clearfix">
+                <li class="<eq name='type' value='1'>active<else/></eq>">
+                    <a href="{:U('vote/index', array('type'=>1))}">最新参赛</a>
+                </li>
+                <li class="<eq name='type' value='2'>active<else/></eq>">
+                    <a href="{:U('vote/index', array('type'=>2))}">投票排行</a>
+                </li>
+            </ul>
+            <div class="img-wrap">
+                <ul id="racing-container" class="img-ul clearfix">
+                    <li class="img-item-size"></li>
+                <volist name="racingList" id="vo">
+                    <li class="img-item">
+                        <div class="item-box">
+                            <a href="{:U('vote/detail', array('id'=>$vo['id']))}">
+                                <img class="racing-img" src="__ROOT__/{$vo.racingImg}" alt="">
+                            </a>
+                            <div class="item-title">
+                                <span class="racing-No">{$vo.id}</span>
+                                <span class="racing-name">{$vo.nickname}</span>
+                            </div>
+                            <div class="item-poll">
+                                <span class="racing-poll">{$vo.poll}</span>票
+                            </div>
+                            <div class="btn-wrap">
+                                <a href="javascript:;" class="apply-btn" data-id="{$vo.id}">
+                                    投票
+                                </a>
+                                <img src="__IMG__/heart.png" alt="heart" />
+                            </div>
+                        </div>
+                    </li>
+                </volist>
+                </ul>
+            </div>
+            <div id="loading" class="loading-wrap">
+                <span id="loading-text" class="loading">加载中，请稍后...</span>
+            </div>
+        </div>
+        <div class="go-top" style="display: none"></div>
+    </div>
+</block>
+<block name="script">
+    <script src="__STATIC__/masonry.min.js"></script>
+    <script src="__STATIC__/imagesLoaded.min.js"></script>
+    <script>
+
+        $(function() {
+            var page = parseInt("{$page}");
+            var type = "{$type}";
+            var $loading = $("#loading");
+            var $loadingText = $('#loading-text');
+            var $container = $('#racing-container');
+
+            $container.masonry({
+                columnWidth: '.img-item-size',
+                itemSelector: '.img-item',
+                percentPosition: true
+            });
+            var flag = false;
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 500) {
+                    $('.go-top').fadeIn();
+                } else {
+                    $('.go-top').fadeOut();
+                }
+                if(flag) return;
+                if($(document).scrollTop() >= $(document).height() - $(window).height()) {
+                    $loadingText.html('加载中，请稍后...');
+                    $loading.show();
+                    flag = true;
+                    //页面拖到底部了
+                    var html = '';
+                    $.ajax({
+                        type: "GET",
+                        url: "{:U('home/vote/getMoreRacing/type/"+type+"/p/"+page+"')}",
+                        success: function(data) {
+                            if (data.length > 0) {
+                                for(var i in data){
+                                    var url = "{:U('home/vote/detail/id/"+data[i].id+"')}";
+                                    html += '<li class="img-item">'
+                                            + '<div class="item-box">'
+                                            + '<a href="'+url+'">'
+                                            + '<img class="racing-img" src="__ROOT__/' + data[i].racingImg + '" alt="">'
+                                            + '</a>'
+                                            + '<div class="item-title">'
+                                            + '<span class="racing-No">'+data[i].id+'</span>'
+                                            + '<span class="racing-name">'+data[i].nickname+'</span>'
+                                            + '</div>'
+                                            + '<div class="item-poll">'
+                                            + '<span class="racing-poll">'+data[i].poll+'</span>票'
+                                            +'</div>'
+                                            +'<div class="btn-wrap">'
+                                            +'<a href="javascript:;" class="apply-btn" data-id="'+ data[i].id +'">投票</a>'
+                                            + '<img src="__IMG__/heart.png" alt="heart" /></div>';
+                                }
+                                var $newElems = $(html).appendTo($container);
+                                $newElems.imagesLoaded(function(){
+                                    $container.append( $newElems ).masonry( 'appended', $newElems );
+                                });
+                                page = page+1;
+                                $loadingText.html('加载完成');
+                            } else {
+                                $loadingText.html('没有更多数据了...');
+
+                            }
+                            $loading.fadeOut('slow', function() {
+                                $loadingText.html('加载中，请稍后...');
+                            });
+                            flag = false;
+
+                        }
+                    });
+                }
+            });
+
+            $('.go-top').on("click", function() {
+                $("body, html").animate({
+                    scrollTop: 0
+                }, '500');
+            });
+
+            $('#racing-container').on('click', '.apply-btn', function() {
+                var _this = $(this);
+                var id = _this.attr('data-id');
+                $.ajax({
+                    type: "POST",
+                    url: "{:U('vote/vote')}",
+                    data: {'id':id},
+                    success: function(data) {
+                        Utils.showToast(data.info);
+                        if (data.status == 1) {
+                            var $racingPoll =  _this.closest('.img-item').find('.racing-poll');
+                            $racingPoll.html(parseInt($racingPoll.html()) + 1);
+                        } else if (data.status == 2) {
+                            window.location.href = "{:U('vote/follow')}";
+                        }
+                    }
+                });
+            });
+
+            $('#search_clear').on('click', function() {
+                $('#search_input').val('');
+            });
+
+            $('#searchForm').submit(function() {
+                var keyword = $("#search_input").val();
+                if ($.trim(keyword) == "") {
+                    Utils.showToast('请输入编号或名字查找');
+                    return false;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "{:U('vote/findRacing')}",
+                    data: {'keyword':keyword},
+                    success: function(response) {
+                        if (response.status == 1) {
+                            window.location.href = "{:U('home/vote/detail/id/" + response.data.id + "')}";
+                        } else {
+                            Utils.showToast(response.info);
+                        }
+                    }
+                });
+                $("#search_input").blur();
+                return false;
+            });
+        });
+    </script>
+</block>

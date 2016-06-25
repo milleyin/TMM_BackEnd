@@ -1,0 +1,8 @@
+2016/05/30 18:50:27 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "user/dfsdfdsf"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('user/dfsdfdsf')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/user/dfsdfdsf
+---

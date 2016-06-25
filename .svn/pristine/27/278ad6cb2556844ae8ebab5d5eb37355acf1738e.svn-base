@@ -1,0 +1,46 @@
+<extend name="Base/common"/>
+<block name="body">
+    <div class="banner">
+        <div class="big-img img4"></div>
+    </div>
+    <div class="content con-product con-mon">
+        <div class="item left">
+            <div class="item-wrap">
+                <img src="__IMG__/mon1.png" alt="" class="showImg">
+                <div class="desc">
+                    <h2>灵活管理资源</h2>
+                    <p>当地资源部门组成区域运营商，平台分配运营商区域权限，统一管理所在区域供应商以及供应商的农旅资源。</p>
+                    <ul class="desc-icon">
+                        <li><em class="icon-icon2"></em></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="item right">
+            <div class="item-wrap">
+                <img src="__IMG__/mon2.png" alt="" class="showImg">
+                <div class="desc">
+                    <h2>轻松完成区域运营</h2>
+                    <p>提供完善的分销体系功能、营销管理功能（如红包功能、优惠券功能、代金券功能等方式进行营销以及各种促销功能）轻松帮助运营商销售农旅资源。</p>
+                    <ul class="desc-icon">
+                        <li><em class="icon-icon1"></em></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="item left">
+            <div class="item-wrap">
+                <img src="__IMG__/mon3.png" alt="" class="showImg">
+                <div class="desc">
+                    <h2>运营收入即时监控</h2>
+                    <p>平台即时将运营商管辖区域的供应商订单收入存入钱包，运营商可随时登录平台查看农旅资源收益及详情，从而更好地规划运营方案。</p>
+                    <ul class="desc-icon">
+                        <li><em class="icon-icon3"></em></li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <span class="icon-to-top"></span>
+</block>

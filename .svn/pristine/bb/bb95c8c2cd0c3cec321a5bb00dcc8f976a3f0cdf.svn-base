@@ -1,0 +1,115 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__STATIC__/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__CSS__/manage.css" rel="stylesheet">
+</block>
+<block name="body">
+    <div class="container-fluid" style="padding-top: 30px;">
+        <div class="alert alert-success" role="alert" id="success" style="display: none;">
+            修改成功
+        </div>
+        <div class="alert alert-warning" role="alert" id="warning" style="display: none;">
+
+        </div>
+        <p class="bg-info" style="padding: 10px 0;text-align: center;">樱花女神票数管理</p>
+        <div class="table-responsive manage-table">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>昵称</th>
+                    <th>联系电话</th>
+                    <th>排名</th>
+                    <th>票数</th>
+                    <th>参赛时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <empty name="list">
+                    <tr>
+                        <td colspan="7">暂无数据...</td>
+                    </tr>
+
+                    <else />
+
+                    <foreach name="list" item="vo" >
+                        <tr>
+                            <td>{$vo.id}</td>
+                            <td>{$vo.nickname}</td>
+                            <td>{$vo.mobile}</td>
+                            <td>{$key + 1}</td>
+                            <td>
+                                <input type="text" name="title" class="poll_{$vo.id}" value="{$vo.poll}" data-val="{$vo.poll}">
+                            </td>
+                            <td>{$vo.racing_time|date='Y-m-d H:i:s',###}</td>
+                            <td>
+                                <a href="{:U('manage/YHce17343327e1f32c7ef72356581db73c',array('id'=>$vo['id']))}" class="btn btn-info">详情</a>
+                                <a href="javascript:;" class="btn btn-primary save" data-id="{$vo.id}">保存</a>
+                            </td>
+                        </tr>
+                    </foreach>
+                </empty>
+                </tbody>
+            </table>
+            <nav style="text-align: center;">
+
+                    {$page}
+
+            </nav>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function() {
+            $('.save').on('click', function() {
+                var $this = $(this);
+                var id = $this.data('id');
+                var $poll = $('.poll_' + id);
+                var oldVal = $poll.data('val');
+                var newVal = $poll.val();
+                var flag = false;
+                var isSubmit = false;
+                if (newVal != oldVal) {
+                    if (newVal < oldVal) {
+                        if (! confirm('修改的票数小于原来的票数，确定修改吗？')) {
+                            return false;
+                        } else {
+                            flag = true;
+                            isSubmit = true;
+                        }
+                    }
+                    // 已经提示过一次，不再提示
+                    if (! flag) {
+                        isSubmit = confirm('确定修改吗？');
+                    }
+                    
+                    if (isSubmit) {
+                        $.ajax({
+                            type: "POST",
+                            url: "{:U('manage/YHbfc40e8ff7b7bab483f3ddef2dd4e445')}",
+                            data: {'id':id, 'poll':newVal},
+                            success: function(data) {
+                                if (data.status == 1) {
+                                $('#success').show();
+                                window.location.href = "{:U('manage/YH827fac2fa9ae514611ac06490873eb41')}"
+                                } else {
+                                    var $warning = $('#warning');
+                                    $warning.html(data.info);
+                                    $warning.show();
+                                    setTimeout(function() {
+                                        $warning.html('');
+                                        $warning.hide();
+                                    }, 1000);
+                                }
+                            }
+                        });
+                    }
+                }
+                
+            });
+        });
+    </script>
+</block>

@@ -1,0 +1,106 @@
+<?php
+namespace Litchi\Controller;
+
+/**
+ * Class IndexController
+ * @package Litchi\Controller
+ *
+ * @author Moore Mo
+ */
+class IndexController extends CommonController {
+
+    public function index() {
+        // 荔枝文化链接(1田觅觅2天美)
+        $linkArr = array(
+            1 => 'http://mp.weixin.qq.com/s?__biz=MzA5ODM1Njk4OA==&mid=505950417&idx=1&sn=28eb9a67e5c358d1684d5e4e261fa59a#rd',
+            2 => 'http://mp.weixin.qq.com/s?__biz=MzA5ODM1Njk4OA==&mid=505950417&idx=1&sn=28eb9a67e5c358d1684d5e4e261fa59a#rd'
+            //2 => 'http://mp.weixin.qq.com/s?__biz=MzA5MTY3NTIxMA==&mid=2664891037&idx=1&sn=a93febb37175f9109a7bcd57b54f2f8a&scene=1&srcid=0509eaez3Y3FYR9ob2QGtflm#rd'
+        );
+
+        $this->assign('link', $linkArr[$this->fromType]);
+        $this->assign('title', '天美荔枝文化节');
+        $this->display('index');
+    }
+
+    /**
+     * 购买记录
+     */
+    public function record() {
+
+        $lzTicketOrderModel = M('LzTicketOrder');
+        $lzOrderModel = D('LzOrder');
+        $lzCardModel = M('LzCard');
+
+        // 电子门票总订单id数组
+        $ticketOrderIdArr = $lzOrderModel->where(array('wechatid' => $this->wechatid, 'type' => 1, 'order_status' => array('neq', $lzOrderModel::order_status_pay_not)))->getField('id', true);
+        if ($ticketOrderIdArr) {
+            $orderIds = implode(',', $ticketOrderIdArr);
+
+            // 未使用的电子门票数
+            $noUseTicketCount = $lzTicketOrderModel->where(array('order_id' => array('in', $orderIds), 'wechatid' => $this->wechatid, 'is_enter' => 0))->count();
+        } else {
+            $noUseTicketCount = 0;
+        }
+
+        // 卡券总订单id数组
+        $cardOrderIdArr = $lzOrderModel->where(array('wechatid' => $this->wechatid, 'type' => 2, 'order_status' => array('neq', $lzOrderModel::order_status_pay_not)))->getField('id', true);
+        if ($cardOrderIdArr) {
+            $orderIds = implode(',', $cardOrderIdArr);
+
+            // 赠送未使用的电子门票数
+            $noUseFreeTicketCount = $lzTicketOrderModel->where(array('order_id' => array('in', $orderIds), 'wechatid' => $this->wechatid, 'is_enter' => 0))->count();
+
+            // 未使用卡券数
+            $noUseCardCount = $lzCardModel->where(array('order_id' => array('in', $orderIds), 'wechatid' => $this->wechatid, 'is_carry' => 0))->count();
+
+            // 已快递卡券
+            $expressCardCount = $lzCardModel->where(array('order_id' => array('in', $orderIds), 'wechatid' => $this->wechatid, 'carry_type' => 1))->count();
+        } else {
+            $noUseFreeTicketCount = 0;
+            $noUseCardCount = 0;
+            $expressCardCount = 0;
+        }
+
+        $this->assign('noUseTicketCount', ($noUseTicketCount + $noUseFreeTicketCount));
+        $this->assign('noUseCardCount', $noUseCardCount);
+        $this->assign('expressCardCount', $expressCardCount);
+        $this->assign('title', '购买记录');
+        $this->display('record');
+    }
+
+    /**
+     * 纸质门票扫描领券链接
+     */
+    public function ticket() {
+        if ($this->wxUserInfo['subscribe'] != 1) {
+            $this->redirect('Index/scanFollow', array('fromType' => $this->fromType));
+        } else {
+            header('Location: ' . 'http://wap.koudaitong.com/v2/ump/promocard/fetch?alias=1fxajhcu4');
+        }
+    }
+
+    /**
+     * 纸质卡券扫描领券链接
+     */
+    public function card() {
+        if ($this->wxUserInfo['subscribe'] != 1) {
+            $this->redirect('Index/scanFollow', array('fromType' => $this->fromType));
+        } else {
+            header('Location: ' . 'http://wap.koudaitong.com/v2/ump/promocard/fetch?alias=dgjbnpdv');
+        }
+    }
+
+    /**
+     * 关注公众号
+     */
+    public function follow() {
+        $this->display('follow');
+    }
+
+    /**
+     * 扫描关注公众号
+     */
+    public function scanFollow() {
+        $this->display('scanFollow');
+    }
+}

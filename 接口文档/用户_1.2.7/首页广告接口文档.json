@@ -1,0 +1,646 @@
+
+//首页相关接口文档
+//包含：横幅专题列表、横幅专题广告列表、热销专题列表、热销专题广告列表、觅趣专题列表、觅趣专题广告列表、周边专题列表、周边专题广告列表等（广告详细页 按之前约定）
+
+//<<<<<<<<<<<<<我<<<<<<<<<<<<<<<<<<<是<<<<<<<<<<<<<分<<<<<<<<<<<<<<<<<割<<<<<<<<<<<<<<<<<<<<线<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//横幅专题列表 、热销专题列表
+
+// UEL /index.php?r=api/ad/index&type={type}
+
+//差数说明 可选
+//默认 type=0 含义 0 => APP横幅专题 1 => 热销专题 其他参数报错
+
+// GET 请求 无需登录 
+ 
+//正确的 可能为空 list_data
+//默认 type=0
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {																	//分页数组  不再解释
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://www.tmm.cn/index.php?r=api/ad/index",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "name": "首页横幅广告",												//专题名称
+                "info": "首页横幅广告",												//专题广告语
+                "link": "http://test2.365tmm.net/index.php?r=api/ad/list&id=1",		//专题下广告链接
+                "value": "1",														//专题ID
+                "sort": "10",														//专题排序
+                "img": "http://test2.365tmm.net/uploads/ad/20160418/litimg_app/445857143f636f1922.81679467.jpg",	//专题图片
+                "type": {
+                    "name": "APP横幅",												//专题类型名
+                    "value": "0"													//专题类型值 
+                }
+            }
+        ]
+    }
+}
+//type=1
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://www.tmm.cn/index.php?r=api/ad/index&type=1",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "name": "热销专题一",
+                "info": "热销专题一",
+                "link": "http://test2.365tmm.net/index.php?r=api/ad/list&id=3",
+                "value": "3",
+                "sort": "10",
+                "img": "http://test2.365tmm.net/uploads/ad/20160418/litimg_app/231957143ffc5df8b2.08552880.jpg",
+                "type": {
+                    "name": "热销专题",
+                    "value": "1"
+                }
+            }
+        ]
+    }
+}
+//错误的返回值
+{
+    "status": 0,
+    "code": 50006,
+    "msg": "没有相关数据",
+    "data": []
+}
+
+//<<<<<<<<<<<<<我<<<<<<<<<<<<<<<<<<<是<<<<<<<<<<<<<分<<<<<<<<<<<<<<<<<割<<<<<<<<<<<<<<<<<<<<线<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//横幅专题广告列表 、热销专题广告列表
+
+// UEL /index.php?r=api/ad/list&id={id}&type={type}
+
+//差数说明 可选 id 默认空 可选 type默认0 ；可传{0,1} 0 => APP横幅专题 1 => 热销专题 其他参数报错 
+//说明 id 表示查询专题下的广告  type表示查询改类型下第一个专题下的广告 （可用于首页横幅等）
+//当id参数不等空 则 type 参数值无效
+
+// GET 请求 无需登录 
+
+//使用默认参数 同等于 type = 0 id = ''  返回结果是 APP横幅专题类型下第一个专题类型下的广告
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {																								//分页数组
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://www.tmm.cn/index.php?r=api/ad/list",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "name": "推荐商品",																				//广告名
+                "info": "推荐商品",																				//广告语
+                "link": "http://test.sdsg.com",																	//广告链接
+                "value": "2",																					//广告ID
+                "sort": "1",																					//广告排序
+                "img": "http://test2.365tmm.net/uploads/ad/20160418/litimg_app/310557143fb977eee1.60580641.jpg",//广告图片
+                "parent": {																						//该广告的广告专题
+                    "id": "1",																					//广告专题ID
+                    "name": "首页横幅广告",																		//广告专题名称
+                    "info": "首页横幅广告"																		//广告专题说明
+                },
+                "link_type": {																					//链接类型
+                    "name": "外链",																				//链接类型名
+                    "info": "外链",																				//链接类型说明
+                    "value": "8"																				//链接类型ID
+                },
+                "type": {																						//归属专题类型
+                    "name": "APP横幅",																			//专题类型名
+                    "value": "0"																				//专题类型值
+                }
+            }
+        ]
+    }
+}
+
+//使用type=1 返回结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://www.tmm.cn/index.php?r=api/ad/list&type=1",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "name": "麻辣香菇",
+                "info": "麻辣香菇",
+                "link": "https://m.com",
+                "value": "4",
+                "sort": "20",
+                "img": "http://test2.365tmm.net/uploads/ad/20160418/litimg_app/1922571440357c49f8.68452880.jpg",
+                "parent": {
+                    "id": "3",
+                    "name": "热销专题一",
+                    "info": "热销专题一"
+                },
+                "link_type": {
+                    "name": "有赞外链",
+                    "info": "有赞外链",
+                    "value": "7"
+                },
+                "type": {
+                    "name": "热销专题",
+                    "value": "1"
+                }
+            }
+        ]
+    }
+}
+
+//直接通过 专题列表链接过来
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://www.tmm.cn/tmm/index.php?r=api/ad/list&id=3",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "name": "麻辣香菇",
+                "info": "麻辣香菇",
+                "link": "https://m.com",
+                "value": "4",
+                "sort": "20",
+                "img": "http://test2.365tmm.net/tmm/uploads/ad/20160418/litimg_app/1922571440357c49f8.68452880.jpg",
+                "parent": {
+                    "id": "3",
+                    "name": "热销专题一",
+                    "info": "热销专题一"
+                },
+                "link_type": {
+                    "name": "有赞外链",
+                    "info": "有赞外链",
+                    "value": "7"
+                },
+                "type": {
+                    "name": "热销专题",
+                    "value": "1"
+                }
+            }
+        ]
+    }
+}
+//错误的返回值
+{
+    "status": 0,
+    "code": 50006,
+    "msg": "没有相关数据",
+    "data": []
+}
+
+//<<<<<<<<<<<<<我<<<<<<<<<<<<<<<<<<<是<<<<<<<<<<<<<分<<<<<<<<<<<<<<<<<割<<<<<<<<<<<<<<<<<<<<线<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//觅趣专题列表、觅趣专题广告列表、周边专题列表、周边专题广告列表等
+
+// UEL index.php?r=api/shops/column&type={type}&id={id}
+
+//差数说明 可选 id 默认空 可选 type默认0 ；可传{0,1} 0 =>觅趣专题 1 =>周边专题 其他参数报错 
+//说明 id 表示查询专题下的广告  type表示查询该类型下的广告专题列表
+//即 id 等于空 传type 或 默认type 值 返回 该类型下的广告专题列表 id 不为空 返回 返回该广告专题下的广告列表
+
+//当id参数不等空 则 type 参数值无效
+
+// GET 请求 无需登录 
+
+//默认 type=0
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://www.tmm.cn/index.php?r=api/shops/column",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "name": "觅趣专题一",
+                "info": "觅趣专题一",
+                "img": "http://www.tmm.cn/uploads/ad/20160418/litimg_app/99855714405fd3f328.21485415.jpg",
+                "link": "http://www.tmm.cn/index.php?r=api/shops/column&id=5",
+                "value": "5",
+                "sort": "10",
+                "type": {
+                    "name": "觅趣专题",
+                    "value": "2"
+                },
+                "distance": ""
+            },
+            {
+                "name": "觅趣专题二",
+                "info": "觅趣专题二",
+                "img": "http://www.tmm.cn/uploads/ad/20160418/litimg_app/6879571480bfd02a02.18101699.jpg",
+                "link": "http://www.tmm.cn/index.php?r=api/shops/column&id=7",
+                "value": "7",
+                "sort": "20",
+                "type": {
+                    "name": "觅趣专题",
+                    "value": "2"
+                },
+                "distance": ""
+            },
+            {
+                "name": "觅趣专题三",
+                "info": "觅趣专题二",
+                "img": "http://www.tmm.cn/uploads/ad/20160418/litimg_app/6672571480d0a78940.24693421.jpg",
+                "link": "http://www.tmm.cn/index.php?r=api/shops/column&id=8",
+                "value": "8",
+                "sort": "30",
+                "type": {
+                    "name": "觅趣专题",
+                    "value": "2"
+                },
+                "distance": ""
+            }
+        ]
+    }
+}
+//上面广告专题下的广告
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://www.tmm.cn/index.php?r=api/shops/column&id=5",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "day_num": 1,
+                "collect_count": "0",
+                "value": "109",
+                "price": "1086.25",
+                "down": "264",
+                "brow": "47",
+                "share": "1",
+                "praise": "1",
+                "link": "http://www.tmm.cn/index.php?r=api/actives/view&id=109",
+                "name": "太累了空",
+                "info": "sdfnglkdfgksdfnlgsdf ",
+                "image": "http://test2.365tmm.net/uploads/shops/actives/20160322/513856f0f0ae722f09.59596834.jpg",
+                "share_image": "http://test2.365tmm.net/uploads/shops/actives/20160322/513856f0f0ae722f09.59596834.jpg",
+                "classliy": {
+                    "name": "觅趣",
+                    "value": "3"
+                },
+                "type": {
+                    "name": "觅趣",
+                    "value": "3"
+                },
+                "actives": {
+                    "actives_status": {
+                        "name": "报名中",
+                        "value": "1"
+                    },
+                    "actives_time": {
+                        "start_time": "2016-03-24",
+                        "end_time": "2016-03-31",
+                        "go_time": "出游日期未定",
+                        "value": 0
+                    },
+                    "number": {
+                        "name": "觅趣人数",
+                        "value": "8"
+                    },
+                    "order_number": {
+                        "name": "剩余报名人数",
+                        "value": "8",
+                        "sign": 0
+                    },
+                    "tour_price": {
+                        "name": "服务费/人",
+                        "value": "85.00"
+                    },
+                    "tour_count": {
+                        "name": "报名统计",
+                        "value": "0"
+                    },
+                    "order_count": {
+                        "name": "付款统计",
+                        "value": "0"
+                    },
+                    "actives_type": {
+                        "name": "觅趣",
+                        "value": "0"
+                    },
+                    "actives_pay_type": {
+                        "name": "自费",
+                        "value": "0"
+                    }
+                },
+                "distance": ""
+            }
+        ]
+    }
+}
+
+// type=1
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://www.tmm.cn/index.php?r=api/shops/column&type=1",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "name": "周边专题一",
+                "info": "周边专题一",
+                "img": "http://www.tmm.cn/uploads/ad/20160418/litimg_app/465557144077d37783.21394736.png",
+                "link": "http://www.tmm.cn/index.php?r=api/shops/column&id=6",
+                "value": "6",
+                "sort": "10",
+                "type": {
+                    "name": "周边专题",
+                    "value": "3"
+                },
+                "distance": ""
+            }
+        ]
+    }
+}
+//上面广告专题下的广告
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://www.tmm.cn/index.php?r=api/shops/column&id=6",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "day_num": 0,
+                "collect_count": "1",
+                "value": "114",
+                "price": "0.00",
+                "down": "363",
+                "brow": "7",
+                "share": "1",
+                "praise": "1",
+                "link": "http://www.tmm.cn/index.php?r=api/dot/view&id=114",
+                "name": "半免费景点",
+                "info": "的免费空间阿萨德法艰苦比赛大开发",
+                "image": "http://test2.365tmm.net/uploads/shops/dot/20160324/734156f39d36b68732.39133929.png",
+                "share_image": "http://test2.365tmm.net/uploads/shops/dot/20160324/734156f39d36b68732.39133929.png",
+                "classliy": {
+                    "name": "境点",
+                    "value": "1"
+                },
+                "type": {
+                    "name": "景点",
+                    "value": "1"
+                },
+                "actives": [],
+                "distance": ""
+            },
+            {
+                "day_num": 2,
+                "collect_count": "2",
+                "value": "115",
+                "price": "1724.77",
+                "down": "530",
+                "brow": "4",
+                "share": "1",
+                "praise": "1",
+                "link": "http://www.tmm.cn/index.php?r=api/thrand/view&id=115",
+                "name": "半免费线路",
+                "info": "s都发生地方撒旦发射的",
+                "image": "http://test2.365tmm.net/uploads/shops/thrand/20160324/124556f39d00ab24a9.40710658.jpg",
+                "share_image": "http://test2.365tmm.net/uploads/shops/thrand/20160324/124556f39d00ab24a9.40710658.jpg",
+                "classliy": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "type": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "actives": [],
+                "distance": ""
+            },
+            {
+                "day_num": 0,
+                "collect_count": "0",
+                "value": "113",
+                "price": "0.00",
+                "down": "172",
+                "brow": "3",
+                "share": "1",
+                "praise": "1",
+                "link": "http://www.tmm.cn/index.php?r=api/dot/view&id=113",
+                "name": "免费景点",
+                "info": "position:absolute;right:16px;",
+                "image": "http://test2.365tmm.net/uploads/shops/dot/20160324/580156f39bff7b83d1.39467156.png",
+                "share_image": "http://test2.365tmm.net/uploads/shops/dot/20160324/580156f39bff7b83d1.39467156.png",
+                "classliy": {
+                    "name": "境点",
+                    "value": "1"
+                },
+                "type": {
+                    "name": "景点",
+                    "value": "1"
+                },
+                "actives": [],
+                "distance": ""
+            },
+            {
+                "day_num": 1,
+                "collect_count": "3",
+                "value": "28",
+                "price": "1297.33",
+                "down": "218",
+                "brow": "2",
+                "share": "1",
+                "praise": "1",
+                "link": "http://www.tmm.cn/index.php?r=api/thrand/view&id=28",
+                "name": "线路8",
+                "info": "的广泛的分公司大法国队杀风格",
+                "image": "http://test2.365tmm.net/uploads/shops/thrand/20160313/922756e53ce960ae77.90478499.jpg",
+                "share_image": "http://test2.365tmm.net/uploads/shops/thrand/20160313/922756e53ce960ae77.90478499.jpg",
+                "classliy": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "type": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "actives": [],
+                "distance": ""
+            },
+            {
+                "day_num": 0,
+                "collect_count": "0",
+                "value": "88",
+                "price": "25.16",
+                "down": "279",
+                "brow": "45",
+                "share": "1",
+                "praise": "1",
+                "link": "http://www.tmm.cn/index.php?r=api/dot/view&id=88",
+                "name": "景点测试1",
+                "info": "ccccccccccccccccc",
+                "image": "http://test2.365tmm.net/uploads/shops/dot/20160322/466256f0a9931bd0b3.19054125.jpg",
+                "share_image": "http://test2.365tmm.net/uploads/shops/dot/20160322/466256f0a9931bd0b3.19054125.jpg",
+                "classliy": {
+                    "name": "境点",
+                    "value": "1"
+                },
+                "type": {
+                    "name": "景点",
+                    "value": "1"
+                },
+                "actives": [],
+                "distance": ""
+            },
+            {
+                "day_num": 1,
+                "collect_count": "0",
+                "value": "32",
+                "price": "1126.92",
+                "down": "589",
+                "brow": "80",
+                "share": "1",
+                "praise": "1",
+                "link": "http://www.tmm.cn/index.php?r=api/thrand/view&id=32",
+                "name": "线路11",
+                "info": "行程V型共富新村vcxvxcvcxv",
+                "image": "http://test2.365tmm.net/uploads/shops/thrand/20160313/378356e53dbad34787.07782909.jpg",
+                "share_image": "http://test2.365tmm.net/uploads/shops/thrand/20160313/378356e53dbad34787.07782909.jpg",
+                "classliy": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "type": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "actives": [],
+                "distance": ""
+            },
+            {
+                "day_num": 1,
+                "collect_count": "1",
+                "value": "31",
+                "price": "2434.08",
+                "down": "294",
+                "brow": "1",
+                "share": "1",
+                "praise": "1",
+                "link": "http://www.tmm.cn/index.php?r=api/thrand/view&id=31",
+                "name": "线路10",
+                "info": "啥地方撒旦发送到发送到",
+                "image": "http://test2.365tmm.net/uploads/shops/thrand/20160313/99556e53da478b2d2.78037646.jpg",
+                "share_image": "http://test2.365tmm.net/uploads/shops/thrand/20160313/99556e53da478b2d2.78037646.jpg",
+                "classliy": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "type": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "actives": [],
+                "distance": ""
+            },
+            {
+                "day_num": 1,
+                "collect_count": "4",
+                "value": "27",
+                "price": "521.28",
+                "down": "284",
+                "brow": "1",
+                "share": "1",
+                "praise": "1",
+                "link": "http://www.tmm.cn/index.php?r=api/thrand/view&id=27",
+                "name": "线路7",
+                "info": "退运费提供个地方官",
+                "image": "http://test2.365tmm.net/uploads/shops/thrand/20160313/273456e53c01571e82.95419168.jpg",
+                "share_image": "http://test2.365tmm.net/uploads/shops/thrand/20160313/273456e53c01571e82.95419168.jpg",
+                "classliy": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "type": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "actives": [],
+                "distance": ""
+            }
+        ]
+    }
+}
+
+
+
+//错误的返回值
+{
+    "status": 0,
+    "code": 50006,
+    "msg": "没有相关数据",
+    "data": []
+}

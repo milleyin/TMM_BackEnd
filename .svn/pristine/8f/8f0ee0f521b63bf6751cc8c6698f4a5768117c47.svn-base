@@ -1,0 +1,58 @@
+//name 我发起的活动 列表
+//链接 index.php?r=api/orderActives/index
+//GET
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=api/orderActives/index",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "collect_count": "0",
+                "value": "1",
+                "link": "http://localhost/tmm/index.php?r=api/orderActives/view&id=1",
+                "list": {
+                    "value": "",
+                    "link": ""
+                },
+				"type": "1",
+                "update": {
+                    "link": "",
+                    "value": ""
+                },
+                "name": "旅游活动",
+                "info": "一个完整的旅游活动",
+                "image": "http://test.365tmm.net/uploads/shops/thrand/20151015/7658561f09ac8edac8.00437204.jpg",
+                "actives_type": {
+                    "name": "觅趣",
+                    "value": "0"
+                },
+                "actives_status": {
+                    "name": "活动结束",
+                    "value": "2"
+                },
+                "audit_status": {
+                    "name": "审核通过",
+                    "value": "1"
+                },
+                "go_time": "2015-11-07",
+                "set_go_time": {
+                    "value": "",
+                    "link": ""
+                },
+                "start_time": "2015-10-31",
+                "end_time": "2015-11-04"
+            }
+        ],
+        "search_name": "search_info"
+    }
+}

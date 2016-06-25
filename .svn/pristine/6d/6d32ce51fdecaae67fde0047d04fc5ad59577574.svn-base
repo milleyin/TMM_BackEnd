@@ -1,0 +1,127 @@
+.<extend name="Base/back"/>
+<block name="style">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+    </style>
+</block>
+<block name="body">
+    <body>
+    <include file="Public/back-nav"/>
+
+    <div class="container-fluid" style="padding-top: 30px;">
+        <form id="ticket-form" class="form-inline" method="get" action="{:U('Back/ticketOrderList')}">
+            <div class="form-group">
+                <label>订单号</label>
+                <input type="text" class="form-control" name="orderNo" placeholder="输入订单号" value="{$searchArr.orderNo}">
+            </div>
+            <div class="form-group">
+                <label>购买手机</label>
+                <input type="text" class="form-control" name="mobile" placeholder="输入购买手机" value="{$searchArr.mobile}">
+            </div>
+            <div class="form-group">
+                <label>购买渠道</label>
+                <select class="form-control" name="fromType">
+                    <option value="" <eq name="searchArr.fromType" value="">selected<else/></eq> >全部</option>
+                    <option value="1" <eq name="searchArr.fromType" value="1">selected<else/></eq> >田觅觅</option>
+                    <option value="2" <eq name="searchArr.fromType" value="2">selected<else/></eq> >天美</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>类型</label>
+                <select class="form-control" name="ticketType">
+                    <option value="" <eq name="searchArr.ticketType" value="">selected<else/></eq> >全部</option>
+                    <option value="1" <eq name="searchArr.ticketType" value="1">selected<else/></eq> >妃子笑</option>
+                    <option value="2" <eq name="searchArr.ticketType" value="2">selected<else/></eq> >桂味/糯米糍</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>购买时间</label>
+                <input type="text" class="form-control" name="startTime" placeholder="" value="{$searchArr.startTime}"  onClick="WdatePicker()">
+                至
+                <input type="text" class="form-control" name="endTime" placeholder="" value="{$searchArr.endTime}"  onClick="WdatePicker()">
+            </div>
+            <button type="submit" class="btn btn-default">查找</button>
+        </form>
+        <div class="container-fluid" style="padding-top: 10px;">
+            <span style="margin-right: 10px;">订单总量：{$totalOrder|default='0'}</span>
+            <span style="margin-right: 10px;">购买总量：{$totalNumber|default='0'}</span>
+            <span style="margin-right: 10px;">支付总费用：{$totalPrice|default='0.00'}</span>
+        </div>
+        <div class="table-responsive manage-table" style="margin-top: 10px;">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>订单号</th>
+                    <th>微信交易号</th>
+                    <th>购买手机</th>
+                    <th>购买渠道</th>
+                    <th>类型</th>
+                    <td>单价</td>
+                    <th>购买数量</th>
+                    <th>支付费用(元)</th>
+                    <th>购买时间</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <empty name="ticketOrderList">
+                    <tr>
+                        <td colspan="10">暂无数据...</td>
+                    </tr>
+
+                    <else />
+
+                    <volist name="ticketOrderList" id="vo" >
+                        <tr>
+                            <td>{$vo.id}</td>
+                            <td>{$vo.order_no}</td>
+                            <td>{$vo.transaction_id}</td>
+                            <td>{$vo.mobile}</td>
+                            <td>
+                                <eq name="vo.from_type" value="1">
+                                    田觅觅
+                                </eq>
+                                <eq name="vo.from_type" value="2">
+                                    天美
+                                </eq>
+                            </td>
+                            <td>
+                                <eq name="vo.ticket_id" value="1">
+                                    妃子笑
+                                </eq>
+                                <eq name="vo.ticket_id" value="2">
+                                    桂味/糯米糍
+                                </eq>
+                            </td>
+                            <td>{$vo.price}</td>
+                            <td>{$vo.number}</td>
+                            <td>
+                                {$vo.total_price}
+                            </td>
+                            <td>
+                                {$vo.add_time|date='Y/m/d H:i:s', ###}
+                            </td>
+                        </tr>
+                    </volist>
+                </empty>
+
+                </tbody>
+            </table>
+            <nav style="text-align: center;">
+
+                {$page}
+
+            </nav>
+        </div>
+    </div>
+    </body>
+</block>
+<block name="script">
+    <script src="__STATIC__/datepicker/WdatePicker.js"></script>
+    <script>
+
+    </script>
+</block>

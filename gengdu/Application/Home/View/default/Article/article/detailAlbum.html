@@ -1,0 +1,102 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="container-fluid gdu-container-fluid">
+        <div class="row show-grid grid-no-border gdu-row-fluid">
+            <div class="col-xs-12 col-md-12 gdu-col-fluid">
+                <div class="swiper-container gdu-swiper-container-special" id="gdu-special-albumn-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide gdu-special-slide-cover">
+                            <img src="__ROOT__{$info.detail_icon_path}" alt="__ROOT__{$info.title}">
+                            <div class="gdu-special-slide-cover-img">
+                                <img src="__ROOT__{$info.rand_path}" alt="头图" width="350" height="350">
+                                <span class="gdu-special-img-nums">
+                                  共{$picCount}张图片
+                                </span>
+                            </div>
+                            <div class="gdu-special-slide-content">
+                                <h1 class="gdu-special-slide-title">{$info.title}</h1>
+                                <div class="gdu-special-slide-options">
+                                    <span class="gdu-special-slide-time">{$info.update_time|date='Y-m-d',###}</span>
+                                    <span>{$category.title}</span>
+                                </div>
+                                <p>
+                                    {$info.description}
+                                </p>
+                            </div>
+                        </div>
+                        <volist name="picList" id="pic" offset="0" key="k">
+                        <div class="swiper-slide">
+                            <div class="container">
+                                <h3>{$pic.pic_title}</h3>
+                                <div class="row">
+                                    <div class="col-xs-8 col-sm-8 col-md-9">
+                                        <img src="__ROOT__{$pic.path}" alt="{$pic.pic_title}">
+                                    </div>
+                                    <div class="col-xs-4 col-sm-4 col-md-3">
+                                        <div class="gdu-page-num-info">
+                                            <p class="gdu-curNum">{$k}</p>
+                                            <p class="gdu-allNum">{$picCount}</p>
+                                        </div>
+                                        <p class="gdu-introduction">
+                                            {$pic.pic_description}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </volist>
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next" id="gdu-next"></div>
+                    <div class="swiper-button-prev" id="gdu-prev"></div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12">
+                <!-- If we need pagination -->
+                <div class="gdu-swiper-pagination-special">
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+        <!--/row-->
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(function() {
+            $('body').addClass('gdu-special-albumn-body');
+            var paginationWidth = 50;
+            $(window).resize(function() {
+                $("#gdu-special-albumn-container").css("height", $(window).height() - 220);
+                // 计算页码
+                paginationWidth = $(window).width() / $('.swiper-slide').length;
+                if (paginationWidth > 50) {
+                    paginationWidth = 50;
+                }
+                console.log('paginationWidth...', paginationWidth);
+            }).resize();
+
+            var mySwiper = new Swiper('.gdu-swiper-container-special', {
+                // Optional parameters
+                direction: 'horizontal',
+                simulateTouch: false,
+                keyboardControl: true,
+                mousewheelControl: true,
+                pagination: '.gdu-swiper-pagination-special',
+                paginationClickable: true,
+                paginationBulletRender: function(index, className) {
+                    return '<li class="' + className + '" style="width:' + paginationWidth + 'px;">' + (index + 1) + '<i></i></li>';
+                }
+            });
+
+            $('body')
+                    .on('click', '#gdu-prev', function() {
+                        mySwiper.slidePrev();
+                    })
+                    .on('click', '#gdu-next', function() {
+                        mySwiper.slideNext();
+                    });
+        });
+    </script>
+</block>

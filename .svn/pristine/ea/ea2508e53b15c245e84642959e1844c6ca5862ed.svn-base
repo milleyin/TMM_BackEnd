@@ -1,0 +1,109 @@
+.<extend name="Base/back"/>
+<block name="style">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+    </style>
+</block>
+<block name="body">
+    <body>
+    <include file="Public/back-nav"/>
+
+    <div class="container-fluid" style="padding-top: 30px;">
+        <form id="ticket-form" class="form-inline" method="get" action="{:U('Back/ticketList')}">
+            <div class="form-group">
+                <input id="mobile" type="text" class="form-control" name="mobile" placeholder="输入手机号查找" value="{$keyword['mobile']}">
+            </div>
+            <div class="form-group">
+                <label>荔枝品种：</label>
+                <select class="form-control" name="ticketType">
+                    <option value="" <eq name="keyword['ticketType']" value="">selected<else/></eq> >全部</option>
+                    <option value="1" <eq name="keyword['ticketType']" value="1">selected<else/></eq> >妃子笑</option>
+                    <option value="2" <eq name="keyword['ticketType']" value="2">selected<else/></eq> >桂味/糯米糍</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>购票方式：</label>
+                <select class="form-control" name="type">
+                    <option value="" <eq name="keyword['type']" value="">selected<else/></eq> >全部</option>
+                    <option value="1" <eq name="keyword['type']" value="1">selected<else/></eq> >自购</option>
+                    <option value="2" <eq name="keyword['type']" value="2">selected<else/></eq> >赠票</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>使用状态：</label>
+                <select class="form-control" name="isEnter">
+                    <option value="" <eq name="keyword['isEnter']" value="">selected<else/></eq> >全部</option>
+                    <option value="0" <eq name="keyword['isEnter']" value="0">selected<else/></eq> >未使用</option>
+                    <option value="1" <eq name="keyword['isEnter']" value="1">selected<else/></eq> >已使用</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">查找</button>
+            <a id="excel" href="javascript:;" class="btn btn-default">导出Excel</a>
+        </form>
+        <div class="table-responsive manage-table" style="margin-top: 10px;">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>手机号</th>
+                    <th>名称</th>
+                    <th>类别</th>
+                    <th>入园门票</th>
+                    <th>状态</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <empty name="ticketOrderList">
+                    <tr>
+                        <td colspan="5">暂无数据...</td>
+                    </tr>
+
+                    <else />
+
+                    <volist name="ticketOrderList" id="vo" >
+                        <tr>
+                            <td>{$vo.mobile}</td>
+                            <td>{$vo.ticketInfo.name}</td>
+                            <td>
+                                <eq name="vo.type" value="1">
+                                    自购
+                                </eq>
+                                <eq name="vo.type" value="2">
+                                    赠票
+                                </eq>
+                            </td>
+                            <td>{$vo.nums}</td>
+                            <td>
+                                <eq name="vo.is_enter" value="0">
+                                    <span style="color: #c0a264;">未使用</span>
+                                </eq>
+                                <eq name="vo.is_enter" value="1">
+                                    <span style="color: #f012be;">已使用</span>
+                                </eq>
+                            </td>
+                        </tr>
+                    </volist>
+                </empty>
+
+                </tbody>
+            </table>
+            <nav style="text-align: center;">
+
+                {$page}
+
+            </nav>
+        </div>
+    </div>
+    </body>
+</block>
+<block name="script">
+<script>
+    $(function() {
+        $('#excel').click(function() {
+            window.location.href = "__MODULE__/Back/ticketList?action=excel&" + $('#ticket-form').serialize();
+        });
+    });
+</script>
+</block>

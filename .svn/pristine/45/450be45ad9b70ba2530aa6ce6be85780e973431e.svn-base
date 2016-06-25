@@ -1,0 +1,547 @@
+
+// 模块/方法：
+// 域名/index.php?r=api/shops/index 首页链接
+// 传值方式：
+// GET
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+		//分页有二种方式
+		//1、 直接访问链接 （上页 下页  空表示没有）
+		//2、 通过拼接链接 基本链接 & 页码参数名 = 需要访问的页数 
+        "page": {
+            "prev": "",//上一页
+            "selected": "http://test.365tmm.net/tmm/index.php?r=api/shops/index",//当前页
+            "next": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&page=2",//下一页
+            "selectedPage": 1,//当前的页码
+            "count": 7,//总计有多少页
+            "page": "page",//页码参数名
+            "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index"//分页基础链接
+        },
+		//列表页的数据
+        "list_data": [
+            {
+                "link": "http://test.365tmm.net/tmm/index.php?r=api/dot/view&id=9",//图片、名称、简介等链接
+                "name": "龙哥请吃饭！！！！",	//名称
+                "info": "",						//简介
+                "image": "",					//列表图片链接
+                "classliy": {
+                    "name": "点",				// 商品类型 参考
+                    "value": "1"				//用来判断的值 详情页模板 或其他
+                },
+                "type": {
+                    "name": "自助游",			//显示 是自助游 或 结伴游
+                    "value": 0					// 用来判断的值
+                }
+            },
+            {
+                "link": "http://test.365tmm.net/tmm/index.php?r=api/dot/view&id=13",
+                "name": "大海要吃饭",
+                "info": "",
+                "image": "http://test.365tmm.net",
+                "classliy": {
+                    "name": "点",
+                    "value": "1"
+                },
+                "type": {
+                    "name": "自助游",
+                    "value": 0
+                }
+            },
+            {
+                "link": "http://test.365tmm.net/tmm/index.php?r=api/dot/view&id=12",
+                "name": "大海要吃饭",
+                "info": "",
+                "image": "http://test.365tmm.net",
+                "classliy": {
+                    "name": "点",
+                    "value": "1"
+                },
+                "type": {
+                    "name": "自助游",
+                    "value": 0
+                }
+            }
+        ],
+		//tags 搜索 有二种 
+		//一种 直接访问链接
+		//二种 拼接链接 首页链接 & {对象 search_tags的值} = 点击的标签分类 value 
+		// 名称搜索 
+		// 拼接链接 首页链接 &{对象search_info的值}=输入的文字
+        "search": [
+            {
+                "name": "心情",
+                "value": "6",
+                "son": [
+                    {
+                        "name": "随心",
+                        "value": "13",
+                        "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=13"
+                    },
+                    {
+                        "name": "舒心",
+                        "value": "12",
+                        "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=12"
+                    },
+                    {
+                        "name": "开心",
+                        "value": "11",
+                        "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=11"
+                    }
+                ]
+            },
+            {
+                "name": "出发地",
+                "value": "7",
+                "son": [
+                    {
+                        "name": "广州",
+                        "value": "15",
+                        "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=15"
+                    },
+                    {
+                        "name": "北京",
+                        "value": "14",
+                        "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=14"
+                    }
+                ]
+            },
+            {
+                "name": "目的地",
+                "value": "8",
+                "son": [
+                    {
+                        "name": "广东",
+                        "value": "17",
+                        "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=17"
+                    },
+                    {
+                        "name": "四川",
+                        "value": "19",
+                        "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=19"
+                    },
+                    {
+                        "name": "云南",
+                        "value": "18",
+                        "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=18"
+                    }
+                ]
+            },
+            {
+                "name": "主题",
+                "value": "9",
+                "son": [
+                    {
+                        "name": "亲子",
+                        "value": "20",
+                        "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=20"
+                    },
+                    {
+                        "name": "探险",
+                        "value": "22",
+                        "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=22"
+                    },
+                    {
+                        "name": "大海",
+                        "value": "21",
+                        "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=21"
+                    }
+                ]
+            },
+            {
+                "name": "出行季",
+                "value": "10",
+                "son": [
+                    {
+                        "name": "冬季",
+                        "value": "26",
+                        "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=26"
+                    },
+                    {
+                        "name": "春季",
+                        "value": "23",
+                        "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=23"
+                    },
+                    {
+                        "name": "秋季",
+                        "value": "25",
+                        "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=25"
+                    },
+                    {
+                        "name": "夏季",
+                        "value": "24",
+                        "link": "http://test.365tmm.net/tmm/index.php?r=api/shops/index&search_tags=24"
+                    }
+                ]
+            }
+        ],
+        "search_tags": "search_tags",//tags 搜索 参数名
+        "search_info": "search_info",//名称 搜索 参数名
+		"add_order_dot": "add_order_dot=add_order_dot"//订单 继续添加点 附带的参数
+    }
+}
+
+// 模块/方法：2.0.0
+// 域名/index.php?r=api/shops/index 首页链接
+// 传值方式：
+// GET
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "http://localhost/tmm/index.php?r=api/shops/index",
+            "next": "http://localhost/tmm/index.php?r=api/shops/index&page=2",
+            "selectedPage": 1,
+            "count": 4,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=api/shops/index"
+        },
+        "list_data": [
+            {
+                "collect_count": "0",
+                "value": "40",
+                "link": "http://localhost/tmm/index.php?r=api/actives/view&id=40",
+                "name": "旅游活动",
+                "info": "一个完整的旅游活动",
+                "image": "http://test.365tmm.net/uploads/shops/thrand/20151015/7658561f09ac8edac8.00437204.jpg",
+                "classliy": {
+                    "name": "活动",
+                    "value": "3"
+                },
+                "type": {
+                    "name": "觅趣",
+                    "value": "3"
+                },
+                "actives": {
+                    "actives_status": {
+                        "name": "进行中",
+                        "value": "1"
+                    },
+                    "actives_type": {
+                        "name": "活动(旅游)",
+                        "value": "0"
+                    }
+                }
+            },
+            {
+                "collect_count": "6",
+                "value": "32",
+                "link": "http://localhost/tmm/index.php?r=api/dot/view&id=32",
+                "name": "广宁竹海",
+                "info": "中国面积最大的竹林",
+                "image": "http://test.365tmm.net/uploads/shops/dot/20150930/2210560ba5ca9ac206.54461898.jpg",
+                "classliy": {
+                    "name": "点",
+                    "value": "1"
+                },
+                "type": {
+                    "name": "景点",
+                    "value": "1"
+                },
+                "actives": []
+            },
+            {
+                "collect_count": "0",
+                "value": "38",
+                "link": "http://localhost/tmm/index.php?r=api/thrand/view&id=38",
+                "name": "深圳住",
+                "info": "列表简介列表简介",
+                "image": "http://test.365tmm.net/uploads/shops/thrand/20151015/2994561fca26f3f875.63603957.png",
+                "classliy": {
+                    "name": "线",
+                    "value": "2"
+                },
+                "type": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "actives": []
+            },
+            {
+                "collect_count": "0",
+                "value": "37",
+                "link": "http://localhost/tmm/index.php?r=api/thrand/view&id=37",
+                "name": "深圳吃",
+                "info": "我是列表简介",
+                "image": "http://test.365tmm.net/uploads/shops/thrand/20151015/1604561fc992e6dc21.73322583.jpg",
+                "classliy": {
+                    "name": "线",
+                    "value": "2"
+                },
+                "type": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "actives": []
+            },
+            {
+                "collect_count": "0",
+                "value": "36",
+                "link": "http://localhost/tmm/index.php?r=api/dot/view&id=36",
+                "name": "商品点",
+                "info": "111",
+                "image": "http://test.365tmm.net/uploads/shops/dot/20151015/2398561fa11ec41b76.50966757.jpg",
+                "classliy": {
+                    "name": "点",
+                    "value": "1"
+                },
+                "type": {
+                    "name": "景点",
+                    "value": "1"
+                },
+                "actives": []
+            },
+            {
+                "collect_count": "5",
+                "value": "31",
+                "link": "http://localhost/tmm/index.php?r=api/dot/view&id=31",
+                "name": "浪漫海岸",
+                "info": "享受海风轻抚丝发的感觉",
+                "image": "http://test.365tmm.net/uploads/shops/dot/20150930/1122560ba643e9c734.16015826.jpg",
+                "classliy": {
+                    "name": "点",
+                    "value": "1"
+                },
+                "type": {
+                    "name": "景点",
+                    "value": "1"
+                },
+                "actives": []
+            },
+            {
+                "collect_count": "0",
+                "value": "35",
+                "link": "http://localhost/tmm/index.php?r=api/thrand/view&id=35",
+                "name": "洱海二日游",
+                "info": "我是列表简介",
+                "image": "http://test.365tmm.net/uploads/shops/thrand/20151015/8482561f923e1c5627.68489468.jpg",
+                "classliy": {
+                    "name": "线",
+                    "value": "2"
+                },
+                "type": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "actives": []
+            },
+            {
+                "collect_count": "0",
+                "value": "34",
+                "link": "http://localhost/tmm/index.php?r=api/thrand/view&id=34",
+                "name": "一条完整的线",
+                "info": "一条完整的线列表简介",
+                "image": "http://test.365tmm.net/uploads/shops/thrand/20151015/7658561f09ac8edac8.00437204.jpg",
+                "classliy": {
+                    "name": "线",
+                    "value": "2"
+                },
+                "type": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "actives": []
+            },
+            {
+                "collect_count": "1",
+                "value": "33",
+                "link": "http://localhost/tmm/index.php?r=api/dot/view&id=33",
+                "name": "泥沟村(测)",
+                "info": "泥沟村（内部测试）",
+                "image": "http://test.365tmm.net/uploads/shops/dot/20151009/683656176863ea9082.81540483.png",
+                "classliy": {
+                    "name": "点",
+                    "value": "1"
+                },
+                "type": {
+                    "name": "景点",
+                    "value": "1"
+                },
+                "actives": []
+            },
+            {
+                "collect_count": "3",
+                "value": "30",
+                "link": "http://localhost/tmm/index.php?r=api/dot/view&id=30",
+                "name": "粤北古村文化",
+                "info": "与岭南水乡不同的独特的粤北建筑",
+                "image": "http://test.365tmm.net/uploads/shops/dot/20150930/956560ba283536ff0.57302326.jpg",
+                "classliy": {
+                    "name": "点",
+                    "value": "1"
+                },
+                "type": {
+                    "name": "景点",
+                    "value": "1"
+                },
+                "actives": []
+            }
+        ],
+        "search": [
+            {
+                "name": "心情",
+                "value": "1",
+                "sort": "1",
+                "son": [
+                    {
+                        "name": "无趣",
+                        "value": "22",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=22"
+                    },
+                    {
+                        "name": "压抑",
+                        "value": "3",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=3"
+                    },
+                    {
+                        "name": "迷茫",
+                        "value": "21",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=21"
+                    },
+                    {
+                        "name": "开心",
+                        "value": "2",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=2"
+                    }
+                ]
+            },
+            {
+                "name": "主题",
+                "value": "17",
+                "sort": "2",
+                "son": [
+                    {
+                        "name": "探险",
+                        "value": "19",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=19"
+                    },
+                    {
+                        "name": "人文",
+                        "value": "24",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=24"
+                    },
+                    {
+                        "name": "亲子",
+                        "value": "18",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=18"
+                    },
+                    {
+                        "name": "放松",
+                        "value": "23",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=23"
+                    },
+                    {
+                        "name": "自然",
+                        "value": "20",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=20"
+                    }
+                ]
+            },
+            {
+                "name": "出发地",
+                "value": "4",
+                "sort": "3",
+                "son": [
+                    {
+                        "name": "广州",
+                        "value": "15",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=15"
+                    },
+                    {
+                        "name": "梅州",
+                        "value": "16",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=16"
+                    },
+                    {
+                        "name": "深圳",
+                        "value": "5",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=5"
+                    },
+                    {
+                        "name": "珠海",
+                        "value": "26",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=26"
+                    }
+                ]
+            },
+            {
+                "name": "目的地",
+                "value": "6",
+                "sort": "4",
+                "son": [
+                    {
+                        "name": "梅州",
+                        "value": "8",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=8"
+                    },
+                    {
+                        "name": "茂名",
+                        "value": "30",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=30"
+                    },
+                    {
+                        "name": "深圳",
+                        "value": "14",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=14"
+                    },
+                    {
+                        "name": "广州",
+                        "value": "7",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=7"
+                    },
+                    {
+                        "name": "清远",
+                        "value": "27",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=27"
+                    },
+                    {
+                        "name": "佛山",
+                        "value": "31",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=31"
+                    }
+                ]
+            },
+            {
+                "name": "出行季",
+                "value": "9",
+                "sort": "5",
+                "son": [
+                    {
+                        "name": "春",
+                        "value": "10",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=10"
+                    },
+                    {
+                        "name": "秋",
+                        "value": "12",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=12"
+                    },
+                    {
+                        "name": "夏",
+                        "value": "11",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=11"
+                    },
+                    {
+                        "name": "冬",
+                        "value": "13",
+                        "link": "http://localhost/tmm/index.php?r=api/shops/index&search_tags=13"
+                    }
+                ]
+            }
+        ],
+        "search_tags": "search_tags",
+        "search_info": "search_info",
+        "add_order_dot": "add_order_dot",
+        "select_dot_thrand": [
+            "all",
+            "dot",
+            "thrand",
+            "actives"
+        ]
+    }
+}

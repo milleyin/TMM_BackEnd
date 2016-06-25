@@ -1,0 +1,386 @@
+<?php
+Yii::app()->clientScript->registerScript('search', "
+$('.search-form form').submit(function() {
+	$('#items-grid').yiiGridView('update', {
+		data: $(this).serialize()
+	});
+	return false;
+});
+function getObject(select) {
+	if ( !select) {
+		select = '#selected_items .seleced_item';
+	}
+	return jQuery(select);
+}
+function geEq(_this) {
+	return _this.parent().parent().parent().index();
+}
+function remove(eq) {
+	return getObject().eq(eq).remove();
+}
+function getHtml(eq) {
+	return getObject().eq(eq).html();
+}
+function setHtml(eq, html) {
+	return getObject().eq(eq).html(html);
+}
+function swap(eq1,eq2) {
+	var html1 = getHtml(eq1);
+	var html2 = getHtml(eq2);
+	setHtml(eq1, html2);
+	setHtml(eq2, html1);
+}
+function getSelectIds() {
+	var data = new Array();
+	jQuery('.form input[name=\'Pro[][items_id]\']').each(function () {
+		data.push($(this).val());
+	});
+	return data;
+}
+function getListIds() {
+	var data = new Array();
+	jQuery('.select').each(function () {
+		item = eval('(' + jQuery(this).attr('href') + ')');
+		data.push(item.id);
+	});
+	return data;
+}
+function setDelectShow(id) {
+	var data = getListIds();
+	var eq = jQuery.inArray(id, data);
+	if (eq != -1) {
+		jQuery('.select').eq(eq).show();
+	}
+}
+function setSelectedHide() {
+	var selected = getSelectIds();
+	var list = getListIds();
+	var eq,_this;
+	if (selected) {
+		jQuery.each(selected, function(i,id) {
+			eq = jQuery.inArray(id, list);
+			if (eq != -1) {
+				_this = jQuery('.select').eq(eq);
+				if (_this.css('display') != 'none') {
+				 	_this.hide();
+				}
+			}
+		}); 
+	}
+}
+jQuery('body').on('click','.up',function() {
+	var eq =geEq(jQuery(this));	
+	if (eq==0) {
+		alert('已经是第一个了！');
+		setSelectedHide();
+		return false;	
+	}
+	swap(eq, eq-1);
+	setSelectedHide();
+	return false;
+});
+jQuery('body').on('click','.down',function() {
+	var eq = geEq(jQuery(this));
+	if (eq == (jQuery('#selected_items').children().length-1)) {
+		setSelectedHide();
+		alert('已经是最后一个了！');
+		return false;
+	}
+	swap(eq, eq+1);
+	setSelectedHide();
+	return false;
+});
+jQuery('body').on('click','.remove',function() {
+	var eq = geEq(jQuery(this));
+	var id = getObject().eq(eq).find('.item_id input').val();
+	remove(eq);
+	var data = getSelectIds();
+ 	if (data == '')
+ 	{
+		var none = jQuery('#none').prop('outerHTML');
+		jQuery('#none').remove();
+		jQuery('#selected_items').append(none);
+		jQuery('#none').show();
+	}
+	setSelectedHide();
+	setDelectShow(id);
+});
+	setSelectedHide();
+");
+Yii::app()->clientScript->registerScript('re-install-date-picker', "
+function reinstallDatePicker(id, data) {
+	jQuery('#pub_time_date').datepicker(jQuery.extend({showMonthAfterYear:false},jQuery.datepicker.regional['zh-CN'],{'maxDate':'new date()','dateFormat':'yy-mm-dd','showOn':'focus','showOtherMonths':true,'selectOtherMonths':true,'changeMonth':true,'changeYear':true,'showButtonPanel':true}));
+	jQuery('#add_time_date').datepicker(jQuery.extend({showMonthAfterYear:false},jQuery.datepicker.regional['zh-CN'],{'maxDate':'new date()','dateFormat':'yy-mm-dd','showOn':'focus','showOtherMonths':true,'selectOtherMonths':true,'changeMonth':true,'changeYear':true,'showButtonPanel':true}));
+	jQuery('#up_time_date').datepicker(jQuery.extend({showMonthAfterYear:false},jQuery.datepicker.regional['zh-CN'],{'maxDate':'new date()','dateFormat':'yy-mm-dd','showOn':'focus','showOtherMonths':true,'selectOtherMonths':true,'changeMonth':true,'changeYear':true,'showButtonPanel':true}));
+	setSelectedHide();
+}
+");
+$click=<<<"EOD"
+function() {
+	$("#view_item").load(jQuery(this).attr('href')+" #content");
+	$("#view_item").dialog("open");
+    return false;
+}
+EOD;
+
+$html=<<<"EOD"
+<div class="seleced_item">\
+	<div class="item_img">\
+		{{img}}\
+	</div>\
+	<div class="item_coment">\
+		<span class="name">名称：</span>\
+		<span>\
+			 {{name}}\
+		</span>\
+		<span class="classliy">\
+			{{classliy}}\
+		</span>\
+		<div class="address">\
+			<span class="name">地址：</span>\
+				{{address}}\
+		</div>\
+		<div class="item_coment_mark">\
+			<input type="button" value="上移" class="up">\
+			<input type="button" value="下移" class="down">\
+			<input type="button" value="删除" class="remove">\
+		</div>\
+	</div>\
+	<div class="item_id" class="display: none;">\
+		<input name="Pro[][items_id]" value="{{id}}" type="hidden">\
+	</div>\
+	<hr class="hr">\
+</div>
+EOD;
+
+$number = Yii::app()->params['shops_dot_items_number'];
+
+$clickSelect=<<<"EOD"
+function() {
+	var item = $.parseJSON(jQuery(this).attr('href'));
+	if (item)
+	{
+		var data = new Array();
+		jQuery('.form input[name=\'Pro[][items_id]\']').each(function () {
+			data.push($(this).val());
+		});
+		if (data == "")
+		{
+			jQuery("#none").hide();
+			var none = jQuery("#selected_items").html();
+			jQuery("#selected_items").html("");
+			jQuery("#tab1").append(none);
+		}
+		if (jQuery.inArray(item.id, data) != -1) {
+			alert('该项目已添加！');
+			setSelectedHide();
+			return false;
+		}
+		if (data.length+1 > $number)
+		{
+			alert('一个景点最多只能有 $number 个项目');
+			setSelectedHide();
+			return false;
+		}
+		var html = '$html';
+		html = html.replace(new RegExp('{{img}}', 'g'), item.img);
+		html = html.replace(new RegExp('{{name}}', 'g'), item.name);
+		html = html.replace(new RegExp('{{classliy}}', 'g'), item.classliy);
+		html = html.replace(new RegExp('{{address}}', 'g'), item.address);
+		html = html.replace(new RegExp('{{id}}', 'g'), item.id);
+		jQuery('#selected_items').append(html);
+		setSelectedHide();
+	}
+	return false;
+}
+EOD;
+
+$this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'items-grid',
+	'dataProvider'=>$itemsModel->searchCreateDot(),
+	'enableHistory'=>true,
+	'afterAjaxUpdate' => 'reinstallDatePicker',
+	'filter'=>$itemsModel,
+	'columns'=>array(
+		array(
+				'class'=>'CButtonColumn',
+				'header'=>'操 作',
+				'template'=>'{view}{select}',
+				'buttons'=>array(
+						'view'=>array(
+								'label'=>'查看',
+								'click'=>$click,
+								'options'=>array('style'=>'padding:0 8px 0 0;'),
+								'url'=>'Yii::app()->createUrl("/admin/tmm_".$data->Items_ItemsClassliy->admin."/view", array("id"=>$data->id))',
+						),
+						'select'=>array(
+								'label'=>'选择',
+								'click'=>$clickSelect,
+								'options'=>array('style'=>'padding:0 8px 0 0;'),
+								'url'=>function ($data){
+									$return = array();
+									$return['id'] = $data->id;
+									$return['name'] = $data->name;
+									$return['classliy'] = $data->Items_ItemsClassliy->name;
+									$return['img'] = '';
+									foreach ($data->Items_ItemsImg as $img)
+									{
+										if (file_exists($img->img))
+										{
+											$return['img'] = Yii::app()->controller->show_img($img->img, '', '', array(
+													'title'=>$data->Items_StoreContent->Content_Store->phone . ' [' . $data->Items_StoreContent->name . ']'
+											));
+											break;
+										}
+									}
+									$return['address'] = $data->Items_area_id_p_Area_id->name . $data->Items_area_id_m_Area_id->name . $data->Items_area_id_c_Area_id->name . $data->address;
+									return json_encode($return);
+								},
+						),
+				),
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				//'filter'=>,
+				'name'=>'id',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:25px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("id").":".$data->id
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'filter'=>ItemsClassliy::data('name',array()),
+				'name'=>'c_id',
+				'value'=>'$data->Items_ItemsClassliy->name',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:40px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;','title'=>'
+						$data->getAttributeLabel("Items_ItemsClassliy.info")."：".$data->Items_ItemsClassliy->info . "\n" .
+						$data->getAttributeLabel("start_work").":".$data->start_work	. "\n" .
+						$data->getAttributeLabel("end_work").":".$data->end_work ."\n" .
+						$data->getAttributeLabel("down").":".$data->down
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				//'filter'=>,
+				'name'=>'name',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("name")."：".$data->name
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'agent_id',
+				'value'=>'$data->Items_agent->phone',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:60px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;','title'=>'
+					$data->getAttributeLabel("Items_agent.firm_name")."：".$data->Items_agent->firm_name
+			'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'store_id',
+				'value'=>'$data->Items_StoreContent->Content_Store->phone',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;','title'=>'
+					$data->getAttributeLabel("Items_StoreContent.name")."：".$data->Items_StoreContent->name
+			'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'filter'=>Area::data_array_name('',array()),
+				'name'=>'area_id_p',
+				'value'=>'(isset($data->area_id_p) && $data->area_id_p != 0 )? $data->Items_area_id_p_Area_id->name:"未选择"',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("area_id_p")."：".(isset($data->area_id_p) && $data->area_id_p != 0 )? $data->Items_area_id_p_Area_id->name:"未选择"
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'filter'=>Area::data_array_name($itemsModel->area_id_p,array(),false),
+				'name'=>'area_id_m',
+				'value'=>'(isset($data->area_id_m) && $data->area_id_m != 0 )? $data->Items_area_id_m_Area_id->name:"未选择"',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("area_id_m")."：".(isset($data->area_id_m) && $data->area_id_m != 0 )? $data->Items_area_id_m_Area_id->name:"未选择"
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'filter'=>Area::data_array_name($itemsModel->area_id_m,array(),false),
+				'name'=>'area_id_c',
+				'value'=>'(isset($data->area_id_c) && $data->area_id_c != 0 )? $data->Items_area_id_c_Area_id->name:"未选择"',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:60px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;','title'=>'
+						$data->getAttributeLabel("address")."：". ((isset($data->area_id_p) && $data->area_id_p != 0 ) ? $data->Items_area_id_p_Area_id->name ." " : "未选择") .
+						((isset($data->area_id_m) && $data->area_id_m != 0 )? $data->Items_area_id_m_Area_id->name ." " :"未选择") .
+						((isset($data->area_id_c) && $data->area_id_c != 0 )? $data->Items_area_id_c_Area_id->name ." " :"未选择") .
+						$data->address 
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'filter'=>$this->widget('zii.widgets.jui.CJuiDatePicker',array(
+						'language'=>'zh-CN',
+						'model'=>$itemsModel,
+						'attribute'=>'up_time',
+						'value'=>date('Y-m-d'),
+						'options'=>array(
+								'maxDate'=>'new date()',
+								'dateFormat'=>'yy-mm-dd',
+								'showOn' => 'focus',
+								'showOtherMonths' => true,
+								'selectOtherMonths' => true,
+								'changeMonth' => true,
+								'changeYear' => true,
+								'showButtonPanel' => true,
+						),
+						'htmlOptions'=>array(
+								'id' =>'up_time_date',
+						),
+					),true),
+				'name'=>'up_time',
+				'type'=>'datetime',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:60px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;','title'=>'
+					$data->getAttributeLabel("up_time").":".Yii::app()->format->FormatDate($data->up_time)
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'filter'=>$itemsModel::$_free_status,
+				'name'=>'free_status',
+				'value'=>'$data::$_free_status[$data->free_status]',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:60px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("free_status").":".$data::$_free_status[$data->free_status]
+				'),
+		),
+	),
+));
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+		'id'=>'view_item',					//弹窗ID
+		'options'=>array(					//传递给JUI插件的参数
+				'title'=>'查看项目',
+				'autoOpen'=>false,		//是否自动打开
+				'width'=>'70%',				//宽度
+				'height'=>800,				//高度
+				'modal' =>true,
+		),
+));
+$this->endWidget();
+?>

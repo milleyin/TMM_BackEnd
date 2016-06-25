@@ -1,0 +1,817 @@
+<?php
+namespace Litchi\Controller;
+use Common\Library\Util\SMS;
+use Common\Model\SmsModel;
+use Think\Controller;
+
+/**
+ * Class CardController
+ * @package Litchi\Controller
+ *
+ * @author Moore Mo
+ */
+class CardController extends CommonController {
+    /**
+     * 购买荔枝首页
+     */
+    public function index() {
+        $this->isFollow();
+        $comboList = M('LzCombo')->where(array('status' => 1))->select();
+        // 荔枝预售链接(1田觅觅2天美)
+        $linkArr = array(
+            1 => array(
+                'fzLink' => 'https://wap.koudaitong.com/v2/goods/3evcjthdc5evr',
+                'gwLink' => 'https://wap.koudaitong.com/v2/goods/2fmlmqebl5o7b',
+                'nmLink' => 'https://wap.koudaitong.com/v2/showcase/goods?alias=3ez2siy0zhifb'
+            ),
+            2 => array(
+                'fzLink' => 'https://wap.koudaitong.com/v2/goods/1yhijsdp3k17r',
+                'gwLink' => 'https://wap.koudaitong.com/v2/goods/3nnyegvtydmqv',
+                'nmLink' => 'https://wap.koudaitong.com/v2/goods/2ogg07el2da1z'
+            )
+        );
+        $this->assign('comboList', $comboList);
+        $this->assign('linkList', $linkArr[$this->fromType]);
+        $this->assign('title', '购买荔枝');
+        $this->display('index');
+    }
+
+    /**
+     * 购买页面
+     */
+    public function buy() {
+        $id = max(intval(I('get.id')), 0);
+        if (! $id) {
+            $this->error('非法访问');
+        }
+
+        $comboInfo = M('LzCombo')->where(array('id'=> $id, 'status' => 1))->find();
+
+        if (empty($comboInfo)) {
+            $this->error('无此套餐信息');
+        }
+
+        $this->assign('comboInfo', $comboInfo);
+        $this->assign('title', $comboInfo['name']);
+        $this->display('buy');
+    }
+
+    /**
+     * 购买荔枝下单
+     */
+    public function order() {
+        $model = M();
+        $lzUserModel = M('LzUser');
+        $lzComboModel = M('LzCombo');
+        $lzCardModel = M('LzCard');
+        $lzOrderModel = D('LzOrder');
+        $lzTicketOrderModel = M('LzTicketOrder');
+
+        $mobile = I('post.mobile', '', 'trim');
+        $code = I('post.code', '', 'trim');
+        $comboId = max(intval(I('post.id')), 0);
+        $number = I('post.number', '', 'trim');
+        $total_price = I('post.total_price', '', 'trim');
+
+        if (! $comboId) {
+            $this->error('非法操作');
+        }
+
+        if (! isMobile($mobile)) {
+            $this->error('手机号 无效');
+        }
+
+        if (! (is_numeric($code) && strlen($code) == 6) ) {
+            $this->error('短信验证码 无效');
+        }
+
+        if (! (is_numeric($number) && $number >= 1) ) {
+            $this->error('订单购买数量 无效');
+        }
+
+        $comboInfo = $lzComboModel->where(array('id'=> $comboId))->find();
+
+        if (empty($comboInfo)) {
+            $this->error('订单商品 不存在');
+        }
+
+        if (! (is_numeric($total_price) && ($number * $comboInfo['price'] == $total_price)) ) {
+            $this->error('订单总价 无效');
+        }
+
+        // 查询用户信息
+        $userInfo = $lzUserModel->where(array('mobile' => $mobile, 'wechatid' => $this->wechatid))->find();
+        if(! $userInfo) {
+            $this->error('手机号 无效');
+        }
+
+        if (! $this->_checkCode($mobile, $code, SmsModel::litchi_buy_card)) {
+            $this->error('验证码 不正确');
+        }
+
+        // 总订单数据
+        $orderData = array(
+            'wechatid' => $this->wechatid,
+            'mobile' => $mobile,
+            'type' => 2, // 2 卡券
+            'ticket_id' => $comboId,
+            'price' => $comboInfo['price'],
+            'number' => $number,
+            'total_price' => $total_price,
+            'up_time' => time(),
+            'add_time' => time(),
+            'from_type' => $this->fromType
+        );
+
+        // 开户事务
+        $model->startTrans();
+        try {
+            // 创建主订单
+            $orderId = $lzOrderModel->add($orderData);
+            if (! $orderId) {
+                throw new \Exception('创建订单 失败');
+            }
+            // 创建订单编号
+            if ( ! $lzOrderModel->where(array('id' => $orderId))->setField('order_no', $lzOrderModel->getOrderNo($orderId)) ) {
+                throw new \Exception("更新订单编号 失败");
+            }
+
+            // 创建卡券
+            for ($i = 0; $i < $number; $i++) {
+                // 卡券数据
+                $data[] = array(
+                    'order_id' => $orderId,
+                    'card_no' => $this->_getCardNo(),
+                    'wechatid' => $this->wechatid,
+                    'mobile' => $mobile,
+                    'type' => 1, // 1电子卡
+                    'name' => $comboInfo['name'],
+                    'description' => $comboInfo['description'],
+                    'combo_id' => $comboInfo['id'],
+                    'card_price' => $comboInfo['price'],
+                    'start_time' => $comboInfo['start_time'],
+                    'end_time' => $comboInfo['end_time'],
+                    'add_time' => time(),
+                    'from_type' => $this->fromType
+                );
+            }
+            // 批量生成卡券
+            $result = $lzCardModel->addAll($data);
+            if (! $result) {
+                throw new \Exception('创建订单 失败');
+            }
+
+            // 如果有赠票，则创建所赠的电子门票订单数据
+            if ($comboInfo['free_id'] !=0 && $comboInfo['free_number'] != 0) {
+                $ticketInfo = M('LzTicket')->where(array('id' => $comboInfo['free_id']))->find();
+                $ticketNumber = $number * 3;
+                for ($i = 0; $i < $ticketNumber; $i++) {
+                    // 电子门票订单数据
+                    $ticketData[] = array(
+                        'order_id' => $orderId,
+                        'wechatid' => $this->wechatid,
+                        'mobile' => $mobile,
+                        'type' => 2, // 2赠送
+                        'ticket_id' => $ticketInfo['id'],
+                        'ticket_price' => $ticketInfo['price'],
+                        'add_time' => time(),
+                        'is_valid' => 0,
+                        'from_type' => $this->fromType
+                    );
+                }
+                // 批量生成卡券
+                $result = $lzTicketOrderModel->addAll($ticketData);
+                if (! $result) {
+                    throw new \Exception('创建订单 失败');
+                }
+            }
+
+            // 更新用户状态
+            $userInfo = $lzUserModel->where(array('mobile' => $mobile, 'wechatid' => $this->wechatid))->find();
+            if ($userInfo['status'] != 1) {
+                if ( ! $lzUserModel->where(array('mobile' => $mobile, 'wechatid' => $this->wechatid))->setField('status', 1) ) {
+                    throw new \Exception("更新用户状态 失败");
+                }
+            }
+
+            // 提交事务
+            $model->commit();
+            // 创建订单成功，跳转到支付页面
+            $this->redirect('Order/pay', array('id' => $orderId));
+
+        } catch (\Exception $e) {
+            $model->rollback();
+            $this->error($e->getMessage());
+        }
+
+    }
+
+    /**
+     * 购买成功页面
+     */
+    public function paySuccess() {
+        $orderId = max(intval(I('get.id')), 0);
+        if (! $orderId) {
+            $this->error('非法访问');
+        }
+
+        $lzOrderModel = D('LzOrder');
+
+        // 支付成功的订单信息(卡券)
+        $orderInfo = $lzOrderModel->where(array('id' => $orderId, 'wechatid' => $this->wechatid, 'type' => 2, 'order_status' => $lzOrderModel::order_status_pay_yes))->find();
+        if (empty($orderInfo)) {
+            $this->error('非法访问');
+        }
+
+        $comboInfo = M('LzCombo')->where(array('id' => $orderInfo['ticket_id']))->find();
+
+        // 赠送的电子门票订单信息
+        $ticketOrderInfo = M('LzTicketOrder')->where(array('order_id' => $orderId, 'wechatid' => $this->wechatid, 'type' => 2))->find();
+        if (!empty($ticketOrderInfo)) {
+            // 电子门票信息
+            $ticketInfo = M('LzTicket')->where(array('id'=> $ticketOrderInfo['ticket_id'], 'status' => 1))->find();
+            $ticketNumber = M('LzTicketOrder')->where(array('order_id' => $orderId, 'wechatid' => $this->wechatid, 'type' => 2))->count();
+        }
+
+        $this->assign('orderInfo', $orderInfo);
+        $this->assign('comboInfo', $comboInfo);
+        $this->assign('ticketInfo', $ticketInfo);
+        $this->assign('ticketNumber', $ticketNumber);
+        $this->assign('title', '购买成功');
+        $this->display('paySuccess');
+    }
+
+    /**
+     * 我的卡券
+     */
+    public function myCard() {
+        $lzCardModel = M('LzCard');
+        $cardList = array();
+        $lzOrderModel = D('LzOrder');
+        // 总订单id数组
+        $orderIdArr = $lzOrderModel->where(array('wechatid' => $this->wechatid, 'order_status' => array('eq', $lzOrderModel::order_status_pay_yes)))->getField('id', true);
+        if ($orderIdArr) {
+            $orderIds = implode(',', $orderIdArr);
+            // 电子门票订单信息
+            $cardList = $lzCardModel->where(array('wechatid' => $this->wechatid, 'order_id' => array('in', $orderIds)))->select();
+        }
+
+        $this->assign('cardList', $cardList);
+        $this->assign('title', '我的卡券');
+        $this->display('myCard');
+    }
+
+    /**
+     * 邮寄卡券的物流信息
+     */
+    public function cardLogistics() {
+        $cardId = max(intval(I('get.id')), 0);
+        if (! $cardId) {
+            $this->error('非法访问');
+        }
+
+        // 选择邮寄的卡券
+        $cardInfo = M('LzCard')->where(array('id' => $cardId, 'wechatid' => $this->wechatid, 'carry_type' => 1))->find();
+        if (empty($cardInfo)) {
+            $this->error('非法访问');
+        }
+
+        // 物流信息
+        $logisticsList = M('LzLogistics')->where(array('card_id' => $cardInfo['id'], 'wechatid' => $this->wechatid, 'is_valid' => 1))->select();
+
+        $this->assign('logisticsList', $logisticsList);
+        $this->assign('title', '物流信息');
+        $this->display('cardLogistics');
+    }
+
+    /**
+     * 邮寄荔枝
+     */
+    public function mailing() {
+        $cardId = max(intval(I('get.id')), 0);
+        if (! $cardId) {
+            $this->error('非法访问');
+        }
+
+        $cardInfo = M('LzCard')->where(array('id' => $cardId, 'wechatid' => $this->wechatid, 'is_carry' => 0))->find();
+        if (empty($cardInfo)) {
+            $this->error('非法访问');
+        }
+
+        $this->assign('cardInfo', $cardInfo);
+        $this->assign('title', '我要邮寄');
+        $this->display('mailing');
+    }
+
+    /**
+     * 编辑邮寄荔枝
+     */
+    public function editMailing() {
+        $orderId = max(intval(I('get.id')), 0);
+        if (! $orderId) {
+            $this->error('非法访问');
+        }
+
+        $lzOrderModel = D('LzOrder');
+        $lzCardModel = M('LzCard');
+        $lzLogisticsModel = M('LzLogistics');
+
+        // 物流订单信息
+        $orderInfo = $lzOrderModel->where(array('id' => $orderId, 'wechatid' => $this->wechatid, 'type' => 3, 'order_status' => $lzOrderModel::order_status_pay_not))->find();
+        if (empty($orderInfo)) {
+            $this->error('非法访问');
+        }
+
+        // 邮寄关联的卡信息
+        $cardInfo = $lzCardModel->where(array('id' => $orderInfo['ticket_id'], 'wechatid' => $this->wechatid, 'is_carry' => 0))->find();
+        if (empty($cardInfo)) {
+            $this->error('非法访问');
+        }
+
+        // 收货人信息
+        $addressList = $lzLogisticsModel->where(array('order_id' => $orderInfo['id'], 'wechatid' => $this->wechatid))->select();
+
+        $this->assign('orderId', $orderId);
+        $this->assign('cardInfo', $cardInfo);
+        $this->assign('addressList', $addressList);
+        $this->assign('specs_id', $addressList[0]['specs_id']);
+        $this->assign('title', '我要邮寄');
+        $this->display('editMailing');
+    }
+
+    /**
+     * 物流下单
+     */
+    public function logistics() {
+        // 广东省id
+        $gdProvinceId = 2184;
+
+        $cardId = max(intval(I('post.card_id')), 0);
+        $specsId = max(intval(I('post.specs_id')), 0);
+        $cneeArr = I('post.cnee');
+        $phoneArr = I('post.phone');
+        $numberArr = I('post.number');
+        $provinceArr = I('post.province');
+        $cityArr = I('post.city');
+        $areaArr = I('post.area');
+        $addressArr = I('post.address');
+
+        $model = M();
+        $lzOrderModel = D('LzOrder');
+        $lzLogisticsModel = M('LzLogistics');
+
+        if (! $cardId) {
+            $this->error('非法访问');
+        }
+        if (! $specsId) {
+            $this->error('非法访问');
+        }
+        // 卡券信息 未提果才能进行邮寄
+        $cardInfo = M('LzCard')->where(array('id' => $cardId, 'wechatid' => $this->wechatid, 'is_carry' => 0))->find();
+        if (empty($cardInfo)) {
+            $this->error('非法访问');
+        }
+        // 规格信息
+        $specsInfo = M('LzSpecs')->where(array('id' => $specsId))->find();
+        if (empty($specsInfo)) {
+            $this->error('非法访问');
+        }
+
+        // 验证提交的总箱数
+        $totalNumber = 0;
+        foreach ($numberArr as $val) {
+            $totalNumber += $val;
+        }
+        if ($totalNumber < $specsInfo['number']) {
+            $this->error('必须购满' . $specsInfo['number'] . '箱');
+        }
+        if ($totalNumber > $specsInfo['number']) {
+            $this->error('超过限定购买的箱数');
+        }
+
+        // 校验收货信息
+        if ( (! $this->_checkArray($cneeArr)) || (! $this->_checkArray($phoneArr))
+            || (! $this->_checkArray($provinceArr)) || (! $this->_checkArray($cityArr))
+            || (! $this->_checkArray($areaArr)) || (! $this->_checkArray($addressArr))) {
+            $this->error('收货信息填写不完整');
+        }
+
+        // 计算物流订单总价
+        $arrLen = count($cneeArr);
+        $totalPrice = 0.00;
+        for ($i = 0; $i < $arrLen; $i++) {
+            $totalPrice += ($provinceArr[$i] == $gdProvinceId ? $specsInfo['in_freight'] * $numberArr[$i] : $specsInfo['out_freight'] * $numberArr[$i]);
+        }
+
+        // 总订单数据
+        $orderData = array(
+            'wechatid' => $this->wechatid,
+            'mobile' => $cardInfo['mobile'],
+            'type' => 3, // 3 物流
+            'ticket_id' => $cardInfo['id'],
+            'price' => 0.00,
+            'number' => $arrLen,
+            'total_price' => $totalPrice,
+            'up_time' => time(),
+            'add_time' => time(),
+            'from_type' => $this->fromType
+        );
+
+        // 开户事务
+        try {
+            // 创建主订单
+            $orderId = $lzOrderModel->add($orderData);
+            if (! $orderId) {
+                throw new \Exception('创建订单 失败');
+            }
+            // 创建订单编号
+            if ( ! $lzOrderModel->where(array('id' => $orderId))->setField('order_no', $lzOrderModel->getOrderNo($orderId)) ) {
+                throw new \Exception("更新订单编号 失败");
+            }
+
+            // 物流订单数据
+            for ($i = 0; $i < $arrLen; $i++) {
+                $logisticsData[] = array(
+                    'order_id' => $orderId,
+                    'wechatid' => $this->wechatid,
+                    'card_id' => $cardInfo['id'],
+                    'card_no' => $cardInfo['card_no'],
+                    'mobile' => $cardInfo['mobile'],
+                    'number' => $numberArr[$i],
+                    'cnee' => $cneeArr[$i],
+                    'phone' => $phoneArr[$i],
+                    'province' => $provinceArr[$i],
+                    'city' => $cityArr[$i],
+                    'area' => $areaArr[$i],
+                    'address' => $addressArr[$i],
+                    'is_outside' => $provinceArr[$i] == $gdProvinceId ? 0 : 1,
+                    'specs_id' => $specsInfo['id'],
+                    'freight' => $provinceArr[$i] == $gdProvinceId ? $specsInfo['in_freight'] : $specsInfo['out_freight'],
+                    'total_freight' => $provinceArr[$i] == $gdProvinceId ? $specsInfo['in_freight'] * $numberArr[$i] : $specsInfo['out_freight'] * $numberArr[$i],
+                    'add_time' => time(),
+                    'from_type' => $this->fromType
+                );
+            }
+            // 插入收货人数据
+            $result = $lzLogisticsModel->addAll($logisticsData);
+            if (! $result) {
+                throw new \Exception('创建订单 失败');
+            }
+
+            // 提交事务
+            $model->commit();
+            // 创建订单成功，跳转到支付页面
+            $this->redirect('Card/addressList', array('id' => $orderId, 'fromType' => $this->fromType));
+        } catch (\Exception $e) {
+            $model->rollback();
+            $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     *  编辑物流下单
+     */
+    public function editLogistics() {
+        // 广东省id
+        $gdProvinceId = 2184;
+
+        $orderId = max(intval(I('post.order_id')), 0);
+        $cardId = max(intval(I('post.card_id')), 0);
+        $specsId = max(intval(I('post.specs_id')), 0);
+        $cneeArr = I('post.cnee');
+        $phoneArr = I('post.phone');
+        $numberArr = I('post.number');
+        $provinceArr = I('post.province');
+        $cityArr = I('post.city');
+        $areaArr = I('post.area');
+        $addressArr = I('post.address');
+
+        $model = M();
+        $lzOrderModel = D('LzOrder');
+        $lzLogisticsModel = M('LzLogistics');
+
+        if (! $orderId) {
+            $this->error('非法访问');
+        }
+        if (! $cardId) {
+            $this->error('非法访问');
+        }
+        if (! $specsId) {
+            $this->error('非法访问');
+        }
+        // 物流订单信息
+        $orderInfo = $lzOrderModel->where(array('id' => $orderId, 'wechatid' => $this->wechatid, 'type' => 3, 'order_status' => $lzOrderModel::order_status_pay_not))->find();
+        if (empty($orderInfo)) {
+            $this->error('非法访问');
+        }
+
+        // 卡券信息
+        $cardInfo = M('LzCard')->where(array('id' => $cardId, 'wechatid' => $this->wechatid, 'is_carry' => 0))->find();
+        if (empty($cardInfo)) {
+            $this->error('非法访问');
+        }
+        // 规格信息
+        $specsInfo = M('LzSpecs')->where(array('id' => $specsId))->find();
+        if (empty($specsInfo)) {
+            $this->error('非法访问');
+        }
+
+        // 验证提交的总箱数
+        $totalNumber = 0;
+        foreach ($numberArr as $val) {
+            $totalNumber += $val;
+        }
+        if ($totalNumber < $specsInfo['number']) {
+            $this->error('必须一次性购买' . $specsInfo['number'] . '箱');
+        }
+        if ($totalNumber > $specsInfo['number']) {
+            $this->error('超过限定购买的箱数');
+        }
+
+        // 校验收货信息
+        if ( (! $this->_checkArray($cneeArr)) || (! $this->_checkArray($phoneArr))
+            || (! $this->_checkArray($provinceArr)) || (! $this->_checkArray($cityArr))
+            || (! $this->_checkArray($areaArr)) || (! $this->_checkArray($addressArr))) {
+            $this->error('收货信息填写不完整');
+        }
+
+        // 计算物流订单总价
+        $arrLen = count($cneeArr);
+        $totalPrice = 0.00;
+        for ($i = 0; $i < $arrLen; $i++) {
+            $totalPrice += ($provinceArr[$i] == $gdProvinceId ? $specsInfo['in_freight'] * $numberArr[$i] : $specsInfo['out_freight'] * $numberArr[$i]);
+        }
+
+        // 总订单数据
+        $orderData = array(
+            'ticket_id' => $cardInfo['id'],
+            'price' => 0.00,
+            'number' => $arrLen,
+            'total_price' => $totalPrice,
+            'up_time' => time()
+        );
+
+        // 开户事务
+        try {
+            // 修改主订单
+            $saveOrderInfoResult = $lzOrderModel->where(array('id' => $orderInfo['id']))->save($orderData);
+            if (! $saveOrderInfoResult) {
+                throw new \Exception('创建订单 失败');
+            }
+
+            // 删除物流订单数据
+            $deleteLogisticsResult = $lzLogisticsModel->where(array('order_id' => $orderInfo['id']))->delete();
+            if (! $deleteLogisticsResult) {
+                throw new \Exception('创建订单 失败');
+            }
+
+            // 物流订单数据
+            for ($i = 0; $i < $arrLen; $i++) {
+                $logisticsData[] = array(
+                    'order_id' => $orderInfo['id'],
+                    'wechatid' => $this->wechatid,
+                    'card_id' => $cardInfo['id'],
+                    'card_no' => $cardInfo['card_no'],
+                    'mobile' => $cardInfo['mobile'],
+                    'number' => $numberArr[$i],
+                    'cnee' => $cneeArr[$i],
+                    'phone' => $phoneArr[$i],
+                    'province' => $provinceArr[$i],
+                    'city' => $cityArr[$i],
+                    'area' => $areaArr[$i],
+                    'address' => $addressArr[$i],
+                    'is_outside' => $provinceArr[$i] == $gdProvinceId ? 0 : 1,
+                    'specs_id' => $specsInfo['id'],
+                    'freight' => $provinceArr[$i] == $gdProvinceId ? $specsInfo['in_freight'] : $specsInfo['out_freight'],
+                    'total_freight' => $provinceArr[$i] == $gdProvinceId ? $specsInfo['in_freight'] * $numberArr[$i] : $specsInfo['out_freight'] * $numberArr[$i],
+                    'add_time' => time(),
+                    'from_type' => $orderInfo['from_type']
+                );
+            }
+            // 插入收货人数据
+            $result = $lzLogisticsModel->addAll($logisticsData);
+            if (! $result) {
+                throw new \Exception('创建订单 失败');
+            }
+
+            // 提交事务
+            $model->commit();
+            // 创建订单成功，跳转到支付页面
+            $this->redirect('Card/addressList', array('id' => $orderId, 'fromType' => $orderInfo['from_type']));
+        } catch (\Exception $e) {
+            $model->rollback();
+            $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * 收货人列表
+     */
+    public function addressList() {
+        $orderId = max(intval(I('get.id')), 0);
+        if (! $orderId) {
+            $this->error('非法访问');
+        }
+        $lzOrderModel = D('LzOrder');
+        // 物流订单信息
+        $orderInfo = $lzOrderModel->where(array('id' => $orderId, 'wechatid' => $this->wechatid, 'type' => 3, 'order_status' => $lzOrderModel::order_status_pay_not))->find();
+        if (empty($orderInfo)) {
+            $this->error('非法访问');
+        }
+
+        // 收货人信息
+        $addressList = M('LzLogistics')->where(array('order_id' => $orderInfo['id'], 'wechatid' => $this->wechatid))->select();
+
+        $this->assign('addressList', $addressList);
+        $this->assign('orderInfo', $orderInfo);
+        $this->assign('title', '确认物流订单');
+        $this->display('addressList');
+    }
+
+    /**
+     * 物流订单支付
+     */
+    public function logisticsPaySuccess() {
+        $orderId = max(intval(I('get.id')), 0);
+        if (! $orderId) {
+            $this->error('非法访问');
+        }
+
+        $lzOrderModel = D('LzOrder');
+        $lzLogisticsModel = M('LzLogistics');
+
+        // 支付成功的订单信息(物流)
+        $orderInfo = $lzOrderModel->where(array('id' => $orderId, 'wechatid' => $this->wechatid, 'type' => 3, 'order_status' => $lzOrderModel::order_status_pay_yes))->find();
+        if (empty($orderInfo)) {
+            $this->error('非法访问');
+        }
+
+        // 收货人信息
+        $logisticsList = $lzLogisticsModel->where(array('order_id' => $orderId, 'wechatid' => $this->wechatid))->select();
+
+        $this->assign('logisticsList', $logisticsList);
+        $this->assign('title', '支付成功');
+        $this->display('logisticsPaySuccess');
+    }
+
+    /**
+     * 检验数组是否不全为空
+     * @param $arr
+     * @return bool
+     */
+    private function _checkArray($arr) {
+        $isOk = true;
+        foreach ($arr as $val) {
+            $val = trim($val);
+            if (empty($val)) {
+                $isOk = false;
+            }
+        }
+        return $isOk;
+    }
+
+    /**
+     * 获取地区
+     */
+    public function getRegion() {
+        $api = A('Common/Api');
+        $back = $api->getRegion();
+        $this->ajaxReturn($back);
+    }
+
+    /**
+     * 获取手机验证码（购买门票）
+     */
+    public function sendSmsCode() {
+        ! IS_AJAX && $this->error('非法访问');
+        $back = new \stdClass();
+        $return = false;
+
+        $mobile = I('post.mobile', '', 'trim');
+        if (isMobile($mobile) && $this->_register($mobile))
+        {
+            // 查询用户信息
+            $userInfo = M('LzUser')->where(array('mobile' => $mobile, 'wechatid' => $this->wechatid))->find();
+            if($userInfo)
+            {
+                $params_v = array(
+                    'sms_id' => $userInfo['id'],
+                    'sms_type' =>  SmsModel::send_user,
+                    'role_id' => $userInfo['id'],
+                    'role_type' =>  SmsModel::send_user,
+                    'sms_use' => SmsModel::litchi_buy_card,
+                );
+                $userBuyCardConf = C('USER_BUY_CARD');
+                if(SMS::is_send($mobile, $params_v, $userBuyCardConf['number'], $userBuyCardConf['interval']))
+                {
+                    $code = rand(100000,999999);
+                    $params = array(
+                        'sms_id' => $userInfo['id'],
+                        'sms_type' =>  SmsModel::send_user,
+                        'role_id' => $userInfo['id'],
+                        'role_type' =>  SmsModel::send_user,
+                        'sms_use' => SmsModel::litchi_buy_card,
+                        'code' => $code,
+                        'sms_source' => SmsModel::source_weixin,
+                        'login_address' => '',
+                        'sms_error' =>  $userBuyCardConf['error'],
+                        'end_time' => time() + $userBuyCardConf['time'],
+                    );
+                    $return = SMS::send($mobile, $params, strtr($userBuyCardConf['content'], array('{code}'=>$code)));
+                }
+            }
+        }
+
+        if ($return) {
+            $back->status = 1;
+            $back->prompt = '发送成功';
+        } else {
+            $back->status = 0;
+            $back->prompt = '发送失败';
+        }
+
+        $this->ajaxReturn($back);
+    }
+
+    /**
+     * 注册用户
+     * @param $mobile 手机号
+     * @return bool
+     */
+    private function _register($mobile)
+    {
+        // 查询用户信息
+        $lzUserModel = M('LzUser')->where(array('mobile' => $mobile, 'wechatid' => $this->wechatid))->find();
+
+        if($lzUserModel) {
+            return true;
+        } else {
+            $model = M('LzUser');
+            $data = array(
+                'mobile' => $mobile,
+                'wechatid' => $this->wechatid,
+                'add_time' => time(),
+                'status' => 0,//表示发送短信的用户 没有验证过的
+            );
+            $uid = $model->add($data);
+            if ($uid) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * 检验卡号的唯一性
+     * @return 产生的随机字符串
+     */
+    private function _getCardNo() {
+        $cardNo = $this->_getRandStr();
+        $cardInfo = M('LzCard')->where(array('card_no' => $cardNo))->find();
+        if ($cardInfo) {
+            $cardNo = $this->_getCardNo();
+        }
+
+        return $cardNo;
+    }
+
+    /**
+     *
+     * 产生随机字符串，不长于6位
+     * @param int $length
+     * @return 产生的随机字符串
+     */
+    private function _getRandStr($length = 6)
+    {
+        $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
+        $str ="";
+        for ( $i = 0; $i < $length; $i++ )  {
+            $str .= substr($chars, mt_rand(0, strlen($chars)-1), 1);
+        }
+        return $str;
+    }
+
+    /**
+     * 验证短信验证码
+     * @param $mobile 手机号
+     * @param $code 短信验证码
+     * @param $use 短信用途
+     * @return bool
+     */
+    private function _checkCode($mobile, $code, $use) {
+        // 查询用户信息
+        $userInfo = M('LzUser')->where(array('mobile' => $mobile, 'wechatid' => $this->wechatid))->find();
+        if(!$userInfo)
+            return false;
+        $params=array(
+            'sms_id' => $userInfo['id'],
+            'sms_type' =>  SmsModel::send_user,
+            'role_id' => $userInfo['id'],
+            'role_type' =>  SmsModel::send_user,
+            'sms_use' => $use,
+        );
+        return SMS::verifycode($mobile, $params, $code);
+    }
+}

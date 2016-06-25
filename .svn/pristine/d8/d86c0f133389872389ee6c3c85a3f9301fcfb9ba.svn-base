@@ -1,0 +1,160 @@
+// 其它被保人
+{
+  "order": {
+    "orderId": 151013280606,
+    "status": 0,
+    "goodsPrice": 7.00,
+    "postFee": 0,
+    "handlingFee": 0.0,
+    "loginId": -1,
+    "singleServiceCharge": 0,
+    "orderBalanceMode": "1",
+    "discountAmt": 0,
+    "fullSubAmt": 0,
+    "pointsDeducAmt": 0
+  }
+}
+
+// 本人投保
+{
+  "order": {
+    "orderId": 151013280632,
+    "status": 0,
+    "goodsPrice": 7.00,
+    "postFee": 0,
+    "handlingFee": 0.0,
+    "loginId": -1,
+    "singleServiceCharge": 0,
+    "orderBalanceMode": "1",
+    "discountAmt": 0,
+    "fullSubAmt": 0,
+    "pointsDeducAmt": 0
+  }
+}
+
+// 多个被投保人
+{
+  "order": {
+    "orderId": 151013280634,
+    "status": 0,
+    "goodsPrice": 28.00,
+    "postFee": 0,
+    "handlingFee": 0.0,
+    "loginId": -1,
+    "singleServiceCharge": 0,
+    "orderBalanceMode": "1",
+    "discountAmt": 0,
+    "fullSubAmt": 0,
+    "pointsDeducAmt": 0
+  }
+}
+
+{
+  "order": {
+    "orderId": 151013280636,
+    "status": 0,
+    "goodsPrice": 28.00,
+    "postFee": 0,
+    "handlingFee": 0.0,
+    "loginId": -1,
+    "singleServiceCharge": 0,
+    "orderBalanceMode": "1",
+    "discountAmt": 0,
+    "fullSubAmt": 0,
+    "pointsDeducAmt": 0
+  }
+}
+
+
+{
+  "order": {
+    "orderId": 151013280638,
+    "status": 0,
+    "goodsPrice": 35.00,
+    "postFee": 0,
+    "handlingFee": 0.0,
+    "loginId": -1,
+    "singleServiceCharge": 0,
+    "orderBalanceMode": "1",
+    "discountAmt": 0,
+    "fullSubAmt": 0,
+    "pointsDeducAmt": 0
+  }
+}
+
+
+
+
+{
+  "order": {
+    "orderId": 151013280636,
+    "goodsPrice": 28,
+    "postFee": 0,
+    "handlingFee": 0,
+    "orderConfirmTime": "2015-10-13 16:37:17",
+    "loginId": -1,
+    "singleServiceCharge": 0,
+    "orderBalanceMode": "1",
+    "discountAmt": 0,
+    "fullSubAmt": 0,
+    "pointsDeducAmt": 0
+  }
+}
+
+stdClass Object
+(
+    [order] => stdClass Object
+        (
+            [orderId] => 151014280870
+            [status] => 0
+            [goodsPrice] => 21
+            [postFee] => 0
+            [handlingFee] => 0
+            [loginId] => -1
+            [singleServiceCharge] => 0
+            [orderBalanceMode] => 1
+            [discountAmt] => 0
+            [fullSubAmt] => 0
+            [pointsDeducAmt] => 0
+        )
+
+)
+
+
+stdClass Object
+(
+    [order] => stdClass Object
+        (
+            [orderId] => 151014280872
+            [status] => 0
+            [goodsPrice] => 21
+            [postFee] => 0
+            [handlingFee] => 0
+            [loginId] => -1
+            [singleServiceCharge] => 0
+            [orderBalanceMode] => 1
+            [discountAmt] => 0
+            [fullSubAmt] => 0
+            [pointsDeducAmt] => 0
+        )
+
+)
+
+stdClass Object
+(
+    [order] => stdClass Object
+        (
+            [orderId] => 151015281096
+            [status] => 0
+            [goodsPrice] => 21
+            [postFee] => 0
+            [handlingFee] => 0
+            [loginId] => -1
+            [singleServiceCharge] => 0
+            [orderBalanceMode] => 1
+            [discountAmt] => 0
+            [fullSubAmt] => 0
+            [pointsDeducAmt] => 0
+        )
+
+)

@@ -1,0 +1,42 @@
+<?php
+   $form = $this->beginWidget('CActiveForm', array(
+     			'id'=>'login-form',
+     			//'enableAjaxValidation'=>true,
+     			'enableClientValidation'=>true,
+     			'focus'=>array($model,'phone'),			 
+     			'clientOptions'=>array(
+     					'validateOnSubmit'=>true
+     			)
+     	));
+     ?>
+    <h1>设置新密码</h1>
+    
+     <div class="row">
+   		<?php 
+	   		echo $form->textField($model, 'sms', array('placeholder'=>'短信验证码'));
+	   		echo $form->error($model, 'sms', array(), false);	
+   		?>
+   	</div>
+
+    <div class="row">
+        <?php 
+	        echo $form->passwordField($model, 'new_pwd', array('placeholder'=>'新密码'));
+	        echo $form->error($model, 'new_pwd', array(), false);
+        ?>
+   </div>
+   		
+   <div class="row">
+        <?php 
+	        echo $form->passwordField($model, 'confirm_pwd', array('placeholder'=>'确认密码'));
+	        echo $form->error($model, 'confirm_pwd', array(), false);
+        ?>
+   </div>
+    
+    <div class="hint">
+   		<?php echo CHtml::link('返回登录', array('/operator/login/index',), array('class'=>'pwd'));?>
+    </div>
+    
+   <div class="buttons">
+        <?php echo CHtml::submitButton('保存', array('style'=>'cursor:pointer'));?>
+	</div>
+   <?php $this->endWidget();?>

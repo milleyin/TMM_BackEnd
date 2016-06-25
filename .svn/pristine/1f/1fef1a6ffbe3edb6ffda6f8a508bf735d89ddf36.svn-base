@@ -1,0 +1,116 @@
+@CHARSET "UTF-8";
+#thrand_content
+{
+    padding: 20px 0 0 0;
+    min-width:1500px;
+}
+.thrand_title
+{
+	height: 50px;
+    line-height: 70px;
+    border-bottom: 3px solid #C9E0ED;
+    border-radius: 5px;
+}
+.thrand_title span
+{
+	height: 50px;
+    background-color: #C9E0ED;
+    font-weight: 700;
+    padding: 8px;
+    border-radius: 5px;    
+    font-size:16px;
+}
+.day_list 
+{
+	
+}
+.day_info
+{
+	width:100%;
+	background-color: #E5F1F4;
+	margin: 10px 0;
+	padding: 5px;
+	border-radius: 8px;
+}
+.day_content
+{
+	color: #c8a063;
+    font-size: 12px;
+    padding: 10px 5px;
+    width: 12px;
+    background: #2e2928;
+    float: left;
+    height: auto;
+    border-radius: 5px;
+    line-height: normal;
+    margin: 10px 10px 0 0;
+}
+.dot_content 
+{
+	padding:0 0 5px 0;
+	font-size: 16px;
+	font-weight: 700;
+}
+.dot_list 
+{
+	float: left;
+	padding: 20px 10px;
+	border-right: 1px solid #C9E0ED;
+	min-width:700px;
+	font-size: 14px;
+}
+.item_info
+{
+	padding: 10px;
+	background: #F8F8F8;
+	margin: 10px 0;	
+	border-radius: 8px;
+	font-weight: 700;
+}
+.item_info .list_title,.item_info .list_address,.item_info .list_store
+{
+	padding: 5px 0;
+}
+.list_classliy
+{
+	float: right;
+    font-weight: 900;
+    font-size: 30px;
+    line-height: 30px;
+    height: 30px;
+    padding: 5px;
+    margin: 0;
+    color: white;
+    background-color: black;
+    border-radius: 5px;
+}
+.list_fare
+{
+	border: 1px dashed #d0860e;
+	margin: 20px 0 0 0;
+	padding: 15px 10px 10px 10px;
+}
+.fare_title
+{
+	position: relative;
+	float:left;
+    top: -30px;
+    left: 10px;
+    width: 80px;
+    height: 30px;
+    font-size: 14px;
+    line-height: 30px;
+    color: #403a39;
+    border: 1px dashed #d0860e;
+    background: #fcf1df;
+    text-align: center;
+}
+.day_right 
+{
+	padding: 20px 10px;
+	float: left;
+}
+.name
+{
+	font-weight: 500;
+}

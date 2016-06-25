@@ -1,0 +1,177 @@
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "name": "点的名称",
+        "value": "1",
+        "classliy": {
+            "name": "点",
+            "value": "1"
+        },
+        "items_fare": [
+            {
+                "name": "松德股份多少",
+                "value": "8",
+                "classliy": {
+                    "name": "住",
+                    "value": "2"
+                },
+                "fare": [
+                    {
+                        "value": "13",
+                        "name": "叔叔婶婶",
+                        "info": "2",
+                        "number": "2",
+                        "price": "1000.00"
+                    }
+                ]
+            },
+            {
+                "name": "吃 谁不会啊 订单",
+                "value": "1",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "1",
+                        "name": "大碗餐",
+                        "info": "成人",
+                        "number": "0",
+                        "price": "2000.00"
+                    },
+                    {
+                        "value": "2",
+                        "name": "小碗餐",
+                        "info": "儿童",
+                        "number": "0",
+                        "price": "800.00"
+                    }
+                ]
+            },
+            {
+                "name": "的粉丝粉丝的第三方",
+                "value": "10",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "15",
+                        "name": "大碗餐",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "10000.00"
+                    },
+                    {
+                        "value": "16",
+                        "name": "小碗餐",
+                        "info": "小孩",
+                        "number": "0",
+                        "price": "110.00"
+                    },
+                    {
+                        "value": "17",
+                        "name": "四号",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1110.00"
+                    },
+                    {
+                        "value": "18",
+                        "name": "突击",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1000.00"
+                    },
+                    {
+                        "value": "19",
+                        "name": "不知道",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1000.00"
+                    }
+                ]
+            }
+        ],
+        "OrderItems": [
+            [
+                {
+                    "1": [
+                        {
+                            "8": [
+                                {
+                                    "13": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "1": [
+                                {
+                                    "1": {
+                                        "price": "2000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "2": {
+                                        "price": "800.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "10": [
+                                {
+                                    "15": {
+                                        "price": "10000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "16": {
+                                        "price": "110.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "17": {
+                                        "price": "1110.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "18": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "19": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        ]
+    }
+}

@@ -1,0 +1,36 @@
+<!-- 导航条
+================================================== -->
+<div class="header">
+    <div class="header-wrap">
+        <h1 class="logo">田觅觅<a href="{:U('index/index')}"><img src="__IMG__/logo@2x.png" alt="田觅觅"></a></h1>
+        <ul class="navbar">
+            <li class="<eq name='Think.const.ACTION_NAME' value='index'>list selected<else/>list</eq>" data-showSub="0"><a class="list-link" href="{:U('index/index')}">首页</a></li>
+            <li class="<in name='Think.const.ACTION_NAME' value='user,store,mon'>list selected<else/>list</in>" data-showSub="1">
+                <a class="list-link">产品介绍</a>
+                <div class="subnav">
+                    <div class="sub-bg"></div>
+                    <div class="sub-list product">
+                        <a href="{:U('index/user')}"><i class="icon-mobile"></i>用户端 APP</a>
+                        <a href="{:U('index/store')}"><i class="icon-mobile"></i>商家端 APP</a>
+                        <a style="margin-right: 180px;" href="{:U('index/mon')}"><i class="icon-pc"></i>运营商平台</a>
+                    </div>
+                </div>
+            </li>
+            <li class="<in name='Think.const.ACTION_NAME' value='supplier,operators,standard'>list selected<else/>list</in>" data-showSub="2">
+                <a class="list-link">招商入驻</a>
+                <div class="subnav">
+                    <div class="sub-bg"></div>
+                    <div class="sub-list merchant">
+                        <a href="{:U('index/supplier')}">供应商入驻</a>
+                        <a style="margin-right: 350px;" href="{:U('index/operators')}">运营商入驻</a>
+                    </div>
+                </div>
+            </li>
+            <li class="<in name='Think.const.ACTION_NAME' value='news,detail'>list selected<else/>list</in>" data-showSub="3"><a class="list-link" href="{:U('index/news')}">新闻动态</a></li>
+            <li class="<eq name='Think.const.ACTION_NAME' value='about'>list selected<else/>list</eq>" data-showSub="3"><a class="list-link" href="{:U('index/about')}">关于我们</a></li>
+            <li class="<eq name='Think.const.ACTION_NAME' value='join'>list selected<else/>list</eq>" data-showSub="3"><a class="list-link" href="{:U('index/join')}">加入我们</a></li>
+            <span class="slider-box"></span>
+        </ul>
+    </div>
+
+</div>

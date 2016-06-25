@@ -1,0 +1,266 @@
+// 备注：凡是POST请求的，都需要先请求一下GET，拿到CSRF码，请求格式为
+// 模块/方法：
+// api/xx/xxx (同要POST请求的url)
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取CSRF
+
+// 参数 &csrf=csrf
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "csrf": {
+            "TMM_CSRF": "5d2694695c6989098c22879610e3fd007294f67c"
+        }
+    }
+}
+
+// 模块/方法：
+// index.php?r=api/account/my_burse
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取我的钱包
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        // 收入总额
+        "total": "99999.00",
+        // 可提现金额
+        "money": "55555.00",
+        // 已提现金额
+        "cash_count": "3000.00",
+        // 冻结金额
+        "no_money": "500.00"
+    }
+}
+
+
+
+
+// 模块/方法：
+// index.php?r=api/cash/index
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取提现申请记录
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": { // 分页信息
+            "prev": "", // 上一页的链接
+            // 当前页的链接
+            "selected": "http://test.365tmm.net/index.php?r=store/store_cash/index",
+            // 下一页的链接
+            "next": "http://test.365tmm.net/index.php?r=store/store_cash/index&page=2",
+            "selectedPage": 1, // 当前第几页
+            "count": 2, // 页数
+            "page": "page", // 参数名
+            // 分页基础链接
+            "link": "http://test.365tmm.net/index.php?r=store/store_cash/index"
+        },
+        "list_data": [ // 提现申请记录列表
+            {
+                "price": "10000.00", // 提现金额
+                "remark_first": "初审理由", // 备注(初)
+                "remark_double": "复审理由", // 备注(复)
+                "remark_submit": "最终确认的理由", // 备注(确认)
+                "cash_status": { // 付款状态
+                    "value": "1", //
+                    "name": "成功" // 
+                },
+                "deposit_status": { // 审核状态
+                    "value": "6", // 
+                    "name": "驳回" //
+                },
+                "add_time": "2015/09/06 12:54:35", // 添加时间
+                "up_time": "2015/09/06 12:54:35" // 更新时间
+            }
+        ]
+    }
+}
+
+
+
+// 模块/方法：
+// index.php?r=api/cash/create
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        用户提现
+
+// 参数
+&csrf=csrf
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "data": {
+            "bank_name": "沫沫", // 银行用户名
+            "bank_code": "324234234234", // 银行帐号
+            "bank_info": "工商银行", // 银行名称
+            "bank_branch": "科苑支行" // 银行支行
+			"is_default": "是", // 是否默认
+			"bank_info": "信用卡", // 1=信用卡 2=借记卡
+        },
+        "csrf": {
+            "TMM_CSRF": "8af6cc3910d6a3a801761e7450db8d72a9c5fc3e"
+        }
+    }
+}
+
+// 错误  无绑定银行帐号时
+{
+    "status": 0,
+    "code": 50006,
+    "msg": "没有相关数据",
+    "data": {}
+}
+
+
+// 模块/方法：
+// index.php?r=api/cash/captcha_cash
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        用户提现，获取短信验证码
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": []
+}
+
+
+
+// 模块/方法：
+// index.php?r=api/cash/create
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        用户提现
+
+// 参数
+{
+  "Cash": {
+    "sms": "sape", // 短信验证
+	"price":10.00 //提现金额
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+
+
+// 结果
+// 正确
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": []
+}
+
+// 错误
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "Cash_msg": [
+            "未绑定银行帐号"
+        ],
+        "Cash_status": [
+            "001"
+        ]
+    }
+}
+
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "Cash_msg": [
+            "提现金额不足"
+        ],
+        "Cash_status": [
+            "002"
+        ]
+    }
+}
+
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "Cash_msg": [
+            "金额数目出错"
+        ],
+        "Cash_status": [
+            "003"
+        ]
+    }
+}
+
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "Cash_msg": [
+            "还有没处理完的提现申请"
+        ],
+        "Cash_status": [
+            "004"
+        ]
+    }
+}
+
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "Cash_msg": [
+            "提现失败"
+        ],
+        "Cash_status": [
+            "005"
+        ]
+    }
+}

@@ -1,0 +1,122 @@
+@CHARSET "UTF-8";
+.items_list{
+	width:700px;
+	float:left;
+	margin-left:80px;
+}
+.items_search{
+	width:auto;
+	overflow: hidden;
+	padding: 0 0 10px 10px;
+	background: #A9A9A9;
+	color: white;
+	font-size: 14px;
+	font-weight: 900;
+}
+.items_search input,.items_search select{
+	padding-left: 5px;
+	font-size: 14px;
+	border-radius: 5px;
+}
+.items_search .row{
+	margin:5px 0 0 0;
+}
+.items_search span input{
+	padding-left: 5px;
+	font-size: 12px;
+	border-radius: 5px;
+	height: 16px;
+	width: 130px;
+}
+.items_search .buttons input {
+	font-size: 14px;
+	font-weight: 900;
+	height: auto;
+	width: 165px;
+	cursor: pointer;
+	border-radius: 12px;
+	color: white;
+	padding: 2px 0;
+	background: #21AA37;
+	width: 100px;
+	margin:0 0 0 10px;
+}
+.view{
+	background:#F2F2F2;
+}
+.view .list_left{
+	float: left;
+	width:400px;
+	padding-left:5px;
+}
+.view .list_title{
+	height: 30px;
+	line-height: 30px;
+}
+.view .list_name{
+	font-size: 14px;
+	font-weight: 900;
+}
+.view .list_classliy{
+	margin-left:10px;
+	padding:1px 3px;
+	font-size: 16px;
+	background: black;
+	font-weight: 900;
+	color: white;
+}
+.view .list_address,.view .list_store{
+	font-size: 12px;
+	font-weight: 400;
+	width:auto;
+	width:350px;
+	line-height: 20px;
+	word-wrap:break-word;
+}
+.view .list_address span,.view .list_store span{
+	margin-right:10px;
+	font-weight: 600;
+}	
+.view .list_img{
+	float:left;
+	margin:0;
+}
+.view .list_img img{
+	height:80px;
+	width:80px;
+}
+.view .list_right{
+	 float:right;
+	 padding: 5px;
+}
+.view .list_right input{
+	padding:5px 15px;
+	cursor: pointer;
+	border-radius: 12px;
+	font-size: 16px;
+	background-color:#930000;
+	font-weight: 900;
+	color: white;
+}
+.view .list_right input:hover{
+	background-color: #ED1C24;
+}
+.view .list_fare{
+	background:white;
+	border:1px dotted black;
+	width:410px;
+	padding: 0 5px 10px 5px;
+	margin-left:5px;
+}
+.view .list_fare span{
+	position:relative;
+	top:-10px;
+	font-size: 16px;
+	background-color:white;
+	font-weight: 900;
+	padding:2px 5px;
+}
+
+
+
+

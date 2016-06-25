@@ -1,0 +1,103 @@
+2016/05/30 10:06:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "favicon.ico"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('favicon.ico')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/favicon.ico
+HTTP_REFERER=http://pad.cn/login/index.html
+---
+2016/05/30 17:53:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "favicon.ico"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('favicon.ico')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/favicon.ico
+HTTP_REFERER=http://pad.cn/login/index.html
+---
+2016/05/30 18:46:35 [error] [exception.CException] exception 'CException' with message '属性 "UserModule.ipFilters" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:173
+Stack trace:
+#0 D:\wamp\www\pad\framework\base\CModule.php(520): CComponent->__set('ipFilters', Array)
+#1 D:\wamp\www\pad\framework\base\CModule.php(86): CModule->configure(Array)
+#2 D:\wamp\www\pad\framework\YiiBase.php(206): CModule->__construct('user', NULL, Array)
+#3 D:\wamp\www\pad\framework\base\CModule.php(282): YiiBase::createComponent('application.mod...', 'user', NULL, Array)
+#4 D:\wamp\www\pad\framework\web\CWebApplication.php(337): CModule->getModule('user')
+#5 D:\wamp\www\pad\framework\web\CWebApplication.php(276): CWebApplication->createController('user')
+#6 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('user')
+#7 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#8 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#9 {main}
+REQUEST_URI=/user
+---
+2016/05/30 18:47:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/user/css/main/main.css"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/user/css/main/main.css
+HTTP_REFERER=http://pad.cn/user
+---
+2016/05/30 18:47:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/user/css/main/form.css"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/user/css/main/form.css
+HTTP_REFERER=http://pad.cn/user
+---
+2016/05/30 18:47:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/user/css/main/last.css"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/user/css/main/last.css
+HTTP_REFERER=http://pad.cn/user
+---
+2016/05/30 18:47:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/user/css/main/screen.css"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/user/css/main/screen.css
+HTTP_REFERER=http://pad.cn/user
+---
+2016/05/30 18:47:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/user/css/main/print.css"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/user/css/main/print.css
+HTTP_REFERER=http://pad.cn/user
+---
+2016/05/30 18:47:38 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/user/images/logo.png"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/user/images/logo.png
+HTTP_REFERER=http://pad.cn/user
+---
+2016/05/30 18:47:38 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "assets/themes/html/user/css/main/last.css"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('assets/themes/h...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/assets/themes/html/user/css/main/last.css
+HTTP_REFERER=http://pad.cn/user
+---
+2016/05/30 18:50:27 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "user/dfsdfdsf"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('user/dfsdfdsf')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/user/dfsdfdsf
+---

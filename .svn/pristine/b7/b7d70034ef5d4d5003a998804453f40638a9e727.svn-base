@@ -1,0 +1,46 @@
+
+//URL /index.php?r=api/area/set&id={城市ID 县（区）ID}
+
+//GET 请求 无需登录
+
+//存在错误
+
+{
+    "status": 1,																			//设置时可能 会不存在的地址 则设置失败 0
+    "code": 0,
+    "msg": "正确",	
+    "data": {																				//设置成功的数据
+        "address_info": {																	//地址的信息
+            "name": "深圳",																	//城市 县（区）名称
+			"value": "2211",																//城市 县（区） ID
+            "city": {																		//城市
+                "name": "深圳",																//名称
+                "value": "2211"																//ID
+            },			
+            "province": {																	//省
+                "name": "广东省",															//名称
+                "value": "2184"																//ID
+            },
+            "district": {																	//县（区）
+                "name": "",																	//名称 设置城市时  为空
+                "value": ""																	//ID 设置城市时  为空
+            },
+            "counties_link": "http://localhost/tmm/index.php?r=api/area/counties&id=2211", 	//设置县（区）时  该链接不存在 表示有链接表示城市 没有链接表示设置的是置县（区）
+            "address": "广东省深圳",														//格式化地址 
+            "location": {																	//经纬度
+                "location": "114.085945,22.546999",											//经纬度格式化		
+                "lng": "114.085945",														//经度
+                "lat": "22.546999"															//纬度
+            }
+        }
+    }
+}
+
+//设置错误返回
+
+{
+    "status": 0,
+    "code": 50006,
+    "msg": "没有相关数据",
+    "data": {}
+}

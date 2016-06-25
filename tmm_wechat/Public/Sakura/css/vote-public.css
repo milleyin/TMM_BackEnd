@@ -1,0 +1,39 @@
+body, button, input, select, textarea {font-size: 14px;font-family: arial,\5b8b\4f53,Microsoft YaHei; }
+body{margin: 0 auto;min-width: 320px;max-width: 640px;height: 100%;background-color: #E6E6E6;}
+/* 关注公众号 */
+.public-wrap {
+    padding-top: 10px;
+    text-align:center;
+    height: 100%;
+}
+.public-code {
+    margin: 0 auto;
+}
+.public-fingerprint {
+    padding-left: 25%;
+    height: 77px;
+    line-height: 77px;
+    text-align: center;
+}
+.public-fingerprint img, .public-fingerprint span{
+    float: left;
+}
+
+.public-tip {
+    margin: 10px 0;
+    font-size: 15px;
+    font-weight: 800;
+    color: #ff4c52;
+}
+.public-desc {
+    width: 70%;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    text-align: left;
+}
+.public-desc li {
+    list-style: none;
+    padding: 3px 0;
+    font-size: 14px;
+    line-height: 20px;
+}

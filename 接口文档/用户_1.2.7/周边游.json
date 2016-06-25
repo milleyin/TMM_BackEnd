@@ -1,0 +1,145 @@
+//周边游相关文档
+
+// UEL /index.php?r=api/shops/nearby
+
+// get 请求 无需登录
+
+//返回值
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "http://localhost/tmm/index.php?r=api/shops/nearby",
+            "next": "http://localhost/tmm/index.php?r=api/shops/nearby&page=2",
+            "selectedPage": 1,
+            "count": 9,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=api/shops/nearby"
+        },
+        "list_data": [
+            {
+                "day_num": 1,
+                "collect_count": "1",
+                "value": "163",
+                "price": 100.5,
+                "down": "162",
+                "brow": "11",
+                "share": "1",
+                "praise": "2",
+                "link": "http://localhost/tmm/index.php?r=api/thrand/view&id=163",
+                "name": "非免费线路",
+                "info": "非免费线路非免费线路非免费线路非免费线路非免费线路",
+                "image": "http://test2.365tmm.net/uploads/shops/thrand/20151204/30256614e269a6760.94772729.jpg",
+                "share_image": "http://test2.365tmm.net/uploads/shops/thrand/20151204/30256614e269a6760.94772729.jpg",
+                "classliy": {
+                    "name": "线",
+                    "value": "2"
+                },
+                "type": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "distance": ""
+            },
+            {
+                "day_num": 1,
+                "collect_count": "0",
+                "value": "162",
+                "price": 0,
+                "down": "130",
+                "brow": "6",
+                "share": "4",
+                "praise": "1",
+                "link": "http://localhost/tmm/index.php?r=api/thrand/view&id=162",
+                "name": "免费线路",
+                "info": "免费线路免费线路免费线路免费线路",
+                "image": "http://test2.365tmm.net/uploads/shops/thrand/20151204/534056614df87ae509.73303418.jpg",
+                "share_image": "http://test2.365tmm.net/uploads/shops/thrand/20151204/534056614df87ae509.73303418.jpg",
+                "classliy": {
+                    "name": "线",
+                    "value": "2"
+                },
+                "type": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "distance": ""
+            },
+            {
+                "day_num": 0,
+                "collect_count": "0",
+                "value": "179",
+                "price": "0.10",
+                "down": "31",
+                "brow": "4",
+                "share": "1",
+                "praise": "1",
+                "link": "http://localhost/tmm/index.php?r=api/dot/view&id=179",
+                "name": "景点20151215",
+                "info": "景点介绍",
+                "image": "http://test2.365tmm.net/uploads/shops/dot/20151215/8287566fd9e1445634.08612927.jpg",
+                "share_image": "http://test2.365tmm.net/uploads/shops/dot/20151215/8287566fd9e1445634.08612927.jpg",
+                "classliy": {
+                    "name": "点",
+                    "value": "1"
+                },
+                "type": {
+                    "name": "景点",
+                    "value": "1"
+                },
+                "distance": ""
+            },
+            {
+                "day_num": 0,
+                "collect_count": "2",
+                "value": "160",
+                "price": "0.00",
+                "down": "371",
+                "brow": "1",
+                "share": "1",
+                "praise": "3",
+                "link": "http://localhost/tmm/index.php?r=api/dot/view&id=160",
+                "name": "半免费景点",
+                "info": "半免费景点半免费景点半免费景点半免费景点半免费景点",
+                "image": "http://test2.365tmm.net/uploads/shops/dot/20151211/6521566a7925ed2fa8.51228584.jpg",
+                "share_image": "http://test2.365tmm.net/uploads/shops/dot/20151211/6521566a7925ed2fa8.51228584.jpg",
+                "classliy": {
+                    "name": "点",
+                    "value": "1"
+                },
+                "type": {
+                    "name": "景点",
+                    "value": "1"
+                },
+                "distance": ""
+            },
+            {
+                "day_num": 1,
+                "collect_count": "0",
+                "value": "26",
+                "price": 300.9,
+                "down": "599",
+                "brow": "3",
+                "share": "1",
+                "praise": "0",
+                "link": "http://localhost/tmm/index.php?r=api/thrand/view&id=26",
+                "name": "最美的自己",
+                "info": "看到大旗头村成片的岭南特色镬耳房，是否勾起你依稀的记忆？",
+                "image": "http://test2.365tmm.net/uploads/shops/thrand/20151211/5610566a76bd819f31.35165237.jpg",
+                "share_image": "http://test2.365tmm.net/uploads/shops/thrand/20151211/5610566a76bd819f31.35165237.jpg",
+                "classliy": {
+                    "name": "线",
+                    "value": "2"
+                },
+                "type": {
+                    "name": "线路",
+                    "value": "2"
+                },
+                "distance": ""
+            }
+        ]
+    }
+}

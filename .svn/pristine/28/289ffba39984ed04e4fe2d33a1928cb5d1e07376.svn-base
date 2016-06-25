@@ -1,0 +1,909 @@
+2016/06/05 10:04:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "favicon.ico"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('favicon.ico')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/favicon.ico
+HTTP_REFERER=http://pad.cn/
+---
+2016/06/05 10:23:51 [error] [php] Array to string conversion (D:\wamp\www\pad\framework\db\schema\CDbCommandBuilder.php:377)
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\modules\admin\components\AdminWebUser.php(40): Role->updateLoginStatus()
+#1 D:\wamp\www\pad\framework\web\auth\CWebUser.php(246): AdminWebUser->afterLogin()
+#2 D:\wamp\www\pad\app\pad\protected\modules\admin\models\AdminLoginForm.php(89): AdminWebUser->login()
+#3 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\LoginController.php(47): AdminLoginForm->login()
+#4 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\LoginController->actionIndex()
+#5 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#6 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\LoginController->runAction()
+#7 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\LoginController->runActionWithFilters()
+#8 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\LoginController->run()
+#9 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#10 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#11 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/login/index.html
+2016/06/05 10:39:13 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 10:39:18 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 10:40:10 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 10:40:23 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 10:40:45 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:25:33 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:25:37 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:27:54 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:27:55 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:27:56 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:28:13 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:28:30 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:28:57 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:29:16 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:30:08 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:30:09 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:30:18 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:30:23 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:30:30 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:31:13 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:31:53 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 11:32:02 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 12:06:10 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 12:06:13 [error] [exception.CException] exception 'CException' with message '属性 "PhoneValidator.allowEmpty" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\extensions\validators\PhoneValidator.php(16): CComponent->__get('allowEmpty')
+#1 D:\wamp\www\pad\framework\validators\CValidator.php(201): PhoneValidator->validateAttribute(Object(Store), 'phone')
+#2 D:\wamp\www\pad\framework\base\CModel.php(159): CValidator->validate(Object(Store), NULL)
+#3 D:\wamp\www\pad\framework\web\widgets\CActiveForm.php(987): CModel->validate(NULL)
+#4 D:\wamp\www\pad\app\pad\protected\components\Controller.php(208): CActiveForm::validate(Array)
+#5 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(65): Controller->ajaxVerify(Array, 'store-form')
+#6 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\StoreController->actionCreate()
+#7 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('create')
+#11 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/store/cre...')
+#12 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#13 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#14 {main}
+REQUEST_URI=/admin/store/create.html
+HTTP_REFERER=http://pad.cn/admin/store/create.html
+---
+2016/06/05 12:06:14 [error] [exception.CException] exception 'CException' with message '属性 "PhoneValidator.allowEmpty" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\extensions\validators\PhoneValidator.php(16): CComponent->__get('allowEmpty')
+#1 D:\wamp\www\pad\framework\validators\CValidator.php(201): PhoneValidator->validateAttribute(Object(Store), 'phone')
+#2 D:\wamp\www\pad\framework\base\CModel.php(159): CValidator->validate(Object(Store), NULL)
+#3 D:\wamp\www\pad\framework\web\widgets\CActiveForm.php(987): CModel->validate(NULL)
+#4 D:\wamp\www\pad\app\pad\protected\components\Controller.php(208): CActiveForm::validate(Array)
+#5 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(65): Controller->ajaxVerify(Array, 'store-form')
+#6 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\StoreController->actionCreate()
+#7 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('create')
+#11 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/store/cre...')
+#12 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#13 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#14 {main}
+REQUEST_URI=/admin/store/create.html
+HTTP_REFERER=http://pad.cn/admin/store/create.html
+---
+2016/06/05 12:06:15 [error] [exception.CException] exception 'CException' with message '属性 "PhoneValidator.allowEmpty" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\extensions\validators\PhoneValidator.php(16): CComponent->__get('allowEmpty')
+#1 D:\wamp\www\pad\framework\validators\CValidator.php(201): PhoneValidator->validateAttribute(Object(Store), 'phone')
+#2 D:\wamp\www\pad\framework\base\CModel.php(159): CValidator->validate(Object(Store), NULL)
+#3 D:\wamp\www\pad\framework\web\widgets\CActiveForm.php(987): CModel->validate(NULL)
+#4 D:\wamp\www\pad\app\pad\protected\components\Controller.php(208): CActiveForm::validate(Array)
+#5 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(65): Controller->ajaxVerify(Array, 'store-form')
+#6 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\StoreController->actionCreate()
+#7 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('create')
+#11 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/store/cre...')
+#12 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#13 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#14 {main}
+REQUEST_URI=/admin/store/create.html
+HTTP_REFERER=http://pad.cn/admin/store/create.html
+---
+2016/06/05 12:06:15 [error] [exception.CException] exception 'CException' with message '属性 "PhoneValidator.allowEmpty" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\extensions\validators\PhoneValidator.php(16): CComponent->__get('allowEmpty')
+#1 D:\wamp\www\pad\framework\validators\CValidator.php(201): PhoneValidator->validateAttribute(Object(Store), 'phone')
+#2 D:\wamp\www\pad\framework\base\CModel.php(159): CValidator->validate(Object(Store), NULL)
+#3 D:\wamp\www\pad\framework\web\widgets\CActiveForm.php(987): CModel->validate(NULL)
+#4 D:\wamp\www\pad\app\pad\protected\components\Controller.php(208): CActiveForm::validate(Array)
+#5 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(65): Controller->ajaxVerify(Array, 'store-form')
+#6 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\StoreController->actionCreate()
+#7 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('create')
+#11 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/store/cre...')
+#12 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#13 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#14 {main}
+REQUEST_URI=/admin/store/create.html
+HTTP_REFERER=http://pad.cn/admin/store/create.html
+---
+2016/06/05 12:06:16 [error] [exception.CException] exception 'CException' with message '属性 "PhoneValidator.allowEmpty" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\extensions\validators\PhoneValidator.php(16): CComponent->__get('allowEmpty')
+#1 D:\wamp\www\pad\framework\validators\CValidator.php(201): PhoneValidator->validateAttribute(Object(Store), 'phone')
+#2 D:\wamp\www\pad\framework\base\CModel.php(159): CValidator->validate(Object(Store), NULL)
+#3 D:\wamp\www\pad\framework\web\widgets\CActiveForm.php(987): CModel->validate(NULL)
+#4 D:\wamp\www\pad\app\pad\protected\components\Controller.php(208): CActiveForm::validate(Array)
+#5 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(65): Controller->ajaxVerify(Array, 'store-form')
+#6 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\StoreController->actionCreate()
+#7 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('create')
+#11 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/store/cre...')
+#12 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#13 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#14 {main}
+REQUEST_URI=/admin/store/create.html
+HTTP_REFERER=http://pad.cn/admin/store/create.html
+---
+2016/06/05 12:06:24 [error] [exception.CException] exception 'CException' with message '属性 "PhoneValidator.allowEmpty" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\extensions\validators\PhoneValidator.php(16): CComponent->__get('allowEmpty')
+#1 D:\wamp\www\pad\framework\validators\CValidator.php(201): PhoneValidator->validateAttribute(Object(Store), 'phone')
+#2 D:\wamp\www\pad\framework\base\CModel.php(159): CValidator->validate(Object(Store), NULL)
+#3 D:\wamp\www\pad\framework\web\widgets\CActiveForm.php(987): CModel->validate(NULL)
+#4 D:\wamp\www\pad\app\pad\protected\components\Controller.php(208): CActiveForm::validate(Array)
+#5 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(65): Controller->ajaxVerify(Array, 'store-form')
+#6 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\StoreController->actionCreate()
+#7 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('create')
+#11 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/store/cre...')
+#12 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#13 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#14 {main}
+REQUEST_URI=/admin/store/create.html
+HTTP_REFERER=http://pad.cn/admin/store/create.html
+---
+2016/06/05 12:08:45 [error] [php] Object of class Store could not be converted to string (D:\wamp\www\pad\app\pad\protected\extensions\validators\PhoneValidator.php:24)
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\widgets\CActiveForm.php(987): Store->validate()
+#1 D:\wamp\www\pad\app\pad\protected\components\Controller.php(208): validate()
+#2 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(65): app\admin\controllers\StoreController->ajaxVerify()
+#3 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\StoreController->actionCreate()
+#4 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#5 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\StoreController->runAction()
+#6 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\StoreController->runActionWithFilters()
+#7 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\StoreController->run()
+#8 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#9 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#10 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/store/create.html
+2016/06/05 12:10:10 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 12:11:46 [error] [php] Trying to get property of non-object (D:\wamp\www\pad\framework\base\CComponent.php(612) : eval()'d code:1)
+Stack trace:
+#0 D:\wamp\www\pad\framework\zii\widgets\grid\CGridColumn.php(231): DataColumn->getDataCellContent()
+#1 D:\wamp\www\pad\app\pad\protected\extensions\rewrites\DataColumn.php(44): DataColumn->renderDataCellContent()
+#2 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(638): DataColumn->renderDataCell()
+#3 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(622): CGridView->renderDataCell()
+#4 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(578): CGridView->renderTableRow()
+#5 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(488): CGridView->renderTableBody()
+#6 D:\wamp\www\pad\framework\zii\widgets\CBaseListView.php(181): CGridView->renderItems()
+#7 unknown(0): CGridView->renderSection()
+#8 D:\wamp\www\pad\framework\zii\widgets\CBaseListView.php(164): preg_replace_callback()
+#9 D:\wamp\www\pad\framework\zii\widgets\CBaseListView.php(149): CGridView->renderContent()
+#10 D:\wamp\www\pad\framework\web\CBaseController.php(181): CGridView->run()
+#11 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\pad\admin.php(298): app\admin\controllers\PadController->widget()
+#12 D:\wamp\www\pad\framework\web\CBaseController.php(126): require()
+#13 D:\wamp\www\pad\framework\web\CBaseController.php(95): app\admin\controllers\PadController->renderInternal()
+#14 D:\wamp\www\pad\framework\web\CController.php(869): app\admin\controllers\PadController->renderFile()
+#15 D:\wamp\www\pad\framework\web\CController.php(782): app\admin\controllers\PadController->renderPartial()
+#16 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\PadController.php(30): app\admin\controllers\PadController->render()
+#17 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\PadController->actionAdmin()
+#18 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#19 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\PadController->runAction()
+#20 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\PadController->runActionWithFilters()
+#21 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\PadController->run()
+#22 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#23 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#24 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/pad/admin.html
+2016/06/05 12:12:24 [error] [php] Trying to get property of non-object (D:\wamp\www\pad\framework\base\CComponent.php(612) : eval()'d code:1)
+Stack trace:
+#0 D:\wamp\www\pad\framework\zii\widgets\grid\CGridColumn.php(231): DataColumn->getDataCellContent()
+#1 D:\wamp\www\pad\app\pad\protected\extensions\rewrites\DataColumn.php(44): DataColumn->renderDataCellContent()
+#2 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(638): DataColumn->renderDataCell()
+#3 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(622): CGridView->renderDataCell()
+#4 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(578): CGridView->renderTableRow()
+#5 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(488): CGridView->renderTableBody()
+#6 D:\wamp\www\pad\framework\zii\widgets\CBaseListView.php(181): CGridView->renderItems()
+#7 unknown(0): CGridView->renderSection()
+#8 D:\wamp\www\pad\framework\zii\widgets\CBaseListView.php(164): preg_replace_callback()
+#9 D:\wamp\www\pad\framework\zii\widgets\CBaseListView.php(149): CGridView->renderContent()
+#10 D:\wamp\www\pad\framework\web\CBaseController.php(181): CGridView->run()
+#11 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\pad\admin.php(298): app\admin\controllers\PadController->widget()
+#12 D:\wamp\www\pad\framework\web\CBaseController.php(126): require()
+#13 D:\wamp\www\pad\framework\web\CBaseController.php(95): app\admin\controllers\PadController->renderInternal()
+#14 D:\wamp\www\pad\framework\web\CController.php(869): app\admin\controllers\PadController->renderFile()
+#15 D:\wamp\www\pad\framework\web\CController.php(782): app\admin\controllers\PadController->renderPartial()
+#16 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\PadController.php(30): app\admin\controllers\PadController->render()
+#17 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\PadController->actionAdmin()
+#18 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#19 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\PadController->runAction()
+#20 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\PadController->runActionWithFilters()
+#21 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\PadController->run()
+#22 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#23 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#24 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/pad/admin.html
+2016/06/05 12:13:02 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 12:20:01 [error] [php] Trying to get property of non-object (D:\wamp\www\pad\framework\base\CComponent.php(612) : eval()'d code:1)
+Stack trace:
+#0 D:\wamp\www\pad\framework\zii\widgets\grid\CGridColumn.php(231): DataColumn->getDataCellContent()
+#1 D:\wamp\www\pad\app\pad\protected\extensions\rewrites\DataColumn.php(44): DataColumn->renderDataCellContent()
+#2 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(638): DataColumn->renderDataCell()
+#3 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(622): CGridView->renderDataCell()
+#4 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(578): CGridView->renderTableRow()
+#5 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(488): CGridView->renderTableBody()
+#6 D:\wamp\www\pad\framework\zii\widgets\CBaseListView.php(181): CGridView->renderItems()
+#7 unknown(0): CGridView->renderSection()
+#8 D:\wamp\www\pad\framework\zii\widgets\CBaseListView.php(164): preg_replace_callback()
+#9 D:\wamp\www\pad\framework\zii\widgets\CBaseListView.php(149): CGridView->renderContent()
+#10 D:\wamp\www\pad\framework\web\CBaseController.php(181): CGridView->run()
+#11 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\pad\admin.php(298): app\admin\controllers\PadController->widget()
+#12 D:\wamp\www\pad\framework\web\CBaseController.php(126): require()
+#13 D:\wamp\www\pad\framework\web\CBaseController.php(95): app\admin\controllers\PadController->renderInternal()
+#14 D:\wamp\www\pad\framework\web\CController.php(869): app\admin\controllers\PadController->renderFile()
+#15 D:\wamp\www\pad\framework\web\CController.php(782): app\admin\controllers\PadController->renderPartial()
+#16 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\PadController.php(30): app\admin\controllers\PadController->render()
+#17 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\PadController->actionAdmin()
+#18 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#19 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\PadController->runAction()
+#20 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\PadController->runActionWithFilters()
+#21 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\PadController->run()
+#22 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#23 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#24 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/pad/admin.html
+2016/06/05 12:24:58 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 12:25:00 [error] [exception.CException] exception 'CException' with message '属性 "Pad.name" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(145): CComponent->__get('name')
+#1 D:\wamp\www\pad\framework\web\helpers\CHtml.php(2729): CActiveRecord->__get('name')
+#2 D:\wamp\www\pad\framework\web\helpers\CHtml.php(2452): CHtml::resolveValue(Object(Pad), 'name')
+#3 D:\wamp\www\pad\framework\web\helpers\CHtml.php(1534): CHtml::activeInputField('text', Object(Pad), 'name', Array)
+#4 D:\wamp\www\pad\framework\web\widgets\CActiveForm.php(792): CHtml::activeTextField(Object(Pad), 'name', Array)
+#5 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\pad\_form.php(25): CActiveForm->textField(Object(Pad), 'name', Array)
+#6 D:\wamp\www\pad\framework\web\CBaseController.php(126): require('D:\wamp\www\pad...')
+#7 D:\wamp\www\pad\framework\web\CBaseController.php(95): CBaseController->renderInternal('D:\wamp\www\pad...', Array, true)
+#8 D:\wamp\www\pad\framework\web\CController.php(869): CBaseController->renderFile('D:\wamp\www\pad...', Array, true)
+#9 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\pad\create.php(13): CController->renderPartial('_form', Array)
+#10 D:\wamp\www\pad\framework\web\CBaseController.php(126): require('D:\wamp\www\pad...')
+#11 D:\wamp\www\pad\framework\web\CBaseController.php(95): CBaseController->renderInternal('D:\wamp\www\pad...', Array, true)
+#12 D:\wamp\www\pad\framework\web\CController.php(869): CBaseController->renderFile('D:\wamp\www\pad...', Array, true)
+#13 D:\wamp\www\pad\framework\web\CController.php(782): CController->renderPartial('create', Array, true)
+#14 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\PadController.php(67): CController->render('create', Array)
+#15 [internal function]: app\admin\controllers\PadController->actionCreate('2')
+#16 D:\wamp\www\pad\framework\web\actions\CAction.php(109): ReflectionMethod->invokeArgs(Object(app\admin\controllers\PadController), Array)
+#17 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(app\admin\controllers\PadController), Object(ReflectionMethod), Array)
+#18 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#19 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#20 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#21 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('create')
+#22 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/pad/creat...')
+#23 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#24 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#25 {main}
+REQUEST_URI=/admin/pad/create.html?id=2
+HTTP_REFERER=http://pad.cn/admin/store/admin.html
+---
+2016/06/05 12:25:02 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 12:25:48 [warning] [application] Failed to set unsafe attribute "name" of "Pad".
+2016/06/05 12:50:23 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 12:50:26 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 12:50:46 [error] [php] Illegal offset type in isset or empty (D:\wamp\www\pad\framework\db\ar\CActiveRecord.php:775)
+Stack trace:
+#0 unknown(0): app\admin\controllers\PadController->actionCreate()
+#1 D:\wamp\www\pad\framework\web\actions\CAction.php(109): ReflectionMethod->invokeArgs()
+#2 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#3 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#4 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\PadController->runAction()
+#5 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\PadController->runActionWithFilters()
+#6 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\PadController->run()
+#7 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#8 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#9 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/pad/create.html?id=2
+2016/06/05 12:54:44 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 12:54:49 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 12:56:27 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 13:02:27 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 13:04:15 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 13:05:03 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 13:27:56 [error] [exception.CException] exception 'CException' with message '属性 "Pad._state" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(145): CComponent->__get('_state')
+#1 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\pad\admin.php(223): CActiveRecord->__get('_state')
+#2 [internal function]: CBaseController->{closure}(Object(Pad), 0, Object(DataColumn))
+#3 D:\wamp\www\pad\framework\base\CComponent.php(617): call_user_func_array(Object(Closure), Array)
+#4 D:\wamp\www\pad\framework\zii\widgets\grid\CDataColumn.php(142): CComponent->evaluateExpression(Object(Closure), Array)
+#5 D:\wamp\www\pad\framework\zii\widgets\grid\CGridColumn.php(231): CDataColumn->getDataCellContent(0)
+#6 D:\wamp\www\pad\app\pad\protected\extensions\rewrites\DataColumn.php(44): CGridColumn->renderDataCellContent(0, Object(Pad))
+#7 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(638): DataColumn->renderDataCell(0)
+#8 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(622): CGridView->renderDataCell(Object(DataColumn), 0)
+#9 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(578): CGridView->renderTableRow(0)
+#10 D:\wamp\www\pad\framework\zii\widgets\grid\CGridView.php(488): CGridView->renderTableBody()
+#11 D:\wamp\www\pad\framework\zii\widgets\CBaseListView.php(181): CGridView->renderItems()
+#12 [internal function]: CBaseListView->renderSection(Array)
+#13 D:\wamp\www\pad\framework\zii\widgets\CBaseListView.php(164): preg_replace_callback('/{(\w+)}/', Array, '{summary}?{item...')
+#14 D:\wamp\www\pad\framework\zii\widgets\CBaseListView.php(149): CBaseListView->renderContent()
+#15 D:\wamp\www\pad\framework\web\CBaseController.php(181): CBaseListView->run()
+#16 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\pad\admin.php(317): CBaseController->widget('zii.widgets.gri...', Array)
+#17 D:\wamp\www\pad\framework\web\CBaseController.php(126): require('D:\wamp\www\pad...')
+#18 D:\wamp\www\pad\framework\web\CBaseController.php(95): CBaseController->renderInternal('D:\wamp\www\pad...', Array, true)
+#19 D:\wamp\www\pad\framework\web\CController.php(869): CBaseController->renderFile('D:\wamp\www\pad...', Array, true)
+#20 D:\wamp\www\pad\framework\web\CController.php(782): CController->renderPartial('admin', Array, true)
+#21 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\PadController.php(30): CController->render('admin', Array)
+#22 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\PadController->actionAdmin()
+#23 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#24 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#25 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#26 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('admin')
+#27 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/pad/admin')
+#28 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#29 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#30 {main}
+REQUEST_URI=/admin/pad/admin.html
+HTTP_REFERER=http://pad.cn/admin/pad/admin.html
+---
+2016/06/05 13:48:37 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 13:48:51 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 13:50:53 [error] [exception.CHttpException.403] exception 'CHttpException' with message '该序列号已绑定其他体验店：测试下' in D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\PadController.php:172
+Stack trace:
+#0 [internal function]: app\admin\controllers\PadController->actionRestore('2')
+#1 D:\wamp\www\pad\framework\web\actions\CAction.php(109): ReflectionMethod->invokeArgs(Object(app\admin\controllers\PadController), Array)
+#2 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(app\admin\controllers\PadController), Object(ReflectionMethod), Array)
+#3 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('restore')
+#7 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/pad/resto...')
+#8 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#9 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#10 {main}
+REQUEST_URI=/admin/pad/restore.html?ajax=pad-grid&id=2
+HTTP_REFERER=http://pad.cn/admin/pad/admin.html
+---
+2016/06/05 13:51:38 [error] [exception.CHttpException.403] exception 'CHttpException' with message '该序列号已绑定其他体验店：测试下' in D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\PadController.php:172
+Stack trace:
+#0 [internal function]: app\admin\controllers\PadController->actionRestore('2')
+#1 D:\wamp\www\pad\framework\web\actions\CAction.php(109): ReflectionMethod->invokeArgs(Object(app\admin\controllers\PadController), Array)
+#2 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(app\admin\controllers\PadController), Object(ReflectionMethod), Array)
+#3 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('restore')
+#7 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/pad/resto...')
+#8 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#9 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#10 {main}
+REQUEST_URI=/admin/pad/restore.html?ajax=pad-grid&id=2
+HTTP_REFERER=http://pad.cn/admin/pad/admin.html
+---
+2016/06/05 13:53:50 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:01:04 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:01:24 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:01:43 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:01:59 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:02:07 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:03:34 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:03:34 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:03:43 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:03:55 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:11:16 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:11:25 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:11:28 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:11:36 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:11:45 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:11:50 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:14:07 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:14:12 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:14:22 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:14:30 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:14:32 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:14:36 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 14:14:38 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/05 14:14:39 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/05 14:14:41 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/05 14:14:45 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/05 14:14:49 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/05 15:01:35 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 15:28:55 [error] [php] json_decode() expects parameter 1 to be string, array given (D:\wamp\www\pad\app\pad\protected\extensions\widget\ActiveFormJson.php:37)
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\themes\json\views\login\index.php(11): app\controllers\LoginController->endWidget()
+#1 D:\wamp\www\pad\framework\web\CBaseController.php(126): require()
+#2 D:\wamp\www\pad\framework\web\CBaseController.php(95): app\controllers\LoginController->renderInternal()
+#3 D:\wamp\www\pad\framework\web\CController.php(869): app\controllers\LoginController->renderFile()
+#4 D:\wamp\www\pad\framework\web\CController.php(782): app\controllers\LoginController->renderPartial()
+#5 D:\wamp\www\pad\app\pad\protected\controllers\LoginController.php(28): app\controllers\LoginController->render()
+#6 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\controllers\LoginController->actionIndex()
+#7 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#8 D:\wamp\www\pad\framework\web\CController.php(286): app\controllers\LoginController->runAction()
+#9 D:\wamp\www\pad\framework\web\CController.php(265): app\controllers\LoginController->runActionWithFilters()
+#10 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\controllers\LoginController->run()
+#11 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#12 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#13 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/login.html?testetdfdsfdsfsd
+2016/06/05 15:30:10 [error] [php] Object of class ActiveFormJson could not be converted to string (D:\wamp\www\pad\app\pad\protected\themes\json\views\login\index.php:11)
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(869): app\controllers\LoginController->renderFile()
+#1 D:\wamp\www\pad\framework\web\CController.php(782): app\controllers\LoginController->renderPartial()
+#2 D:\wamp\www\pad\app\pad\protected\controllers\LoginController.php(28): app\controllers\LoginController->render()
+#3 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\controllers\LoginController->actionIndex()
+#4 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#5 D:\wamp\www\pad\framework\web\CController.php(286): app\controllers\LoginController->runAction()
+#6 D:\wamp\www\pad\framework\web\CController.php(265): app\controllers\LoginController->runActionWithFilters()
+#7 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\controllers\LoginController->run()
+#8 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#9 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#10 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/login.html?testetdfdsfdsfsd
+2016/06/05 15:58:25 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "favicon.ico"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('favicon.ico')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/favicon.ico
+---
+2016/06/05 15:58:25 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "favicon.ico"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('favicon.ico')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/favicon.ico
+---
+2016/06/05 16:39:58 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'CSRF token 无法被验证.' in D:\wamp\www\pad\framework\web\CHttpRequest.php:1355
+Stack trace:
+#0 D:\wamp\www\pad\framework\base\CComponent.php(561): CHttpRequest->validateCsrfToken(Object(CEvent))
+#1 D:\wamp\www\pad\framework\base\CApplication.php(212): CComponent->raiseEvent('onBeginRequest', Object(CEvent))
+#2 D:\wamp\www\pad\framework\base\CApplication.php(183): CApplication->onBeginRequest(Object(CEvent))
+#3 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#4 {main}
+REQUEST_URI=/login.html
+---
+2016/06/05 16:40:18 [warning] [application] Failed to set unsafe attribute "'phone'" of "LoginForm".
+2016/06/05 16:40:18 [warning] [application] Failed to set unsafe attribute "'password'" of "LoginForm".
+2016/06/05 16:40:18 [warning] [application] Failed to set unsafe attribute "'number'" of "LoginForm".
+2016/06/05 16:40:33 [warning] [application] Failed to set unsafe attribute "'phone'" of "LoginForm".
+2016/06/05 16:40:33 [warning] [application] Failed to set unsafe attribute "'password'" of "LoginForm".
+2016/06/05 16:40:33 [warning] [application] Failed to set unsafe attribute "'number'" of "LoginForm".
+2016/06/05 16:40:45 [warning] [application] Failed to set unsafe attribute "'phone'" of "LoginForm".
+2016/06/05 16:40:45 [warning] [application] Failed to set unsafe attribute "'password'" of "LoginForm".
+2016/06/05 16:40:45 [warning] [application] Failed to set unsafe attribute "'number'" of "LoginForm".
+2016/06/05 16:41:42 [warning] [application] Failed to set unsafe attribute "'phone'" of "LoginForm".
+2016/06/05 16:41:42 [warning] [application] Failed to set unsafe attribute "'password'" of "LoginForm".
+2016/06/05 16:41:42 [warning] [application] Failed to set unsafe attribute "'number'" of "LoginForm".
+2016/06/05 17:56:38 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/05 17:57:04 [error] [php] Undefined index: Pad (D:\wamp\www\pad\app\pad\protected\models\Pad.php:218)
+Stack trace:
+#0 D:\wamp\www\pad\framework\validators\CInlineValidator.php(42): LoginForm->authenticate()
+#1 D:\wamp\www\pad\framework\validators\CValidator.php(201): CInlineValidator->validateAttribute()
+#2 D:\wamp\www\pad\framework\base\CModel.php(159): CInlineValidator->validate()
+#3 D:\wamp\www\pad\app\pad\protected\controllers\LoginController.php(24): LoginForm->validate()
+#4 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\controllers\LoginController->actionIndex()
+#5 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#6 D:\wamp\www\pad\framework\web\CController.php(286): app\controllers\LoginController->runAction()
+#7 D:\wamp\www\pad\framework\web\CController.php(265): app\controllers\LoginController->runActionWithFilters()
+#8 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\controllers\LoginController->run()
+#9 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#10 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#11 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/login.html
+2016/06/05 18:09:26 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'CSRF token 无法被验证.' in D:\wamp\www\pad\framework\web\CHttpRequest.php:1355
+Stack trace:
+#0 D:\wamp\www\pad\framework\base\CComponent.php(561): CHttpRequest->validateCsrfToken(Object(CEvent))
+#1 D:\wamp\www\pad\framework\base\CApplication.php(212): CComponent->raiseEvent('onBeginRequest', Object(CEvent))
+#2 D:\wamp\www\pad\framework\base\CApplication.php(183): CApplication->onBeginRequest(Object(CEvent))
+#3 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#4 {main}
+REQUEST_URI=/login.html
+---
+2016/06/05 18:11:08 [error] [php] Array to string conversion (D:\wamp\www\pad\app\pad\protected\controllers\LoginController.php:18)
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(286): app\controllers\LoginController->runAction()
+#1 D:\wamp\www\pad\framework\web\CController.php(265): app\controllers\LoginController->runActionWithFilters()
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\controllers\LoginController->run()
+#3 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#4 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#5 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/login.html
+2016/06/05 18:19:41 [error] [php] Undefined variable: model (D:\wamp\www\pad\app\pad\protected\themes\json\views\index\index.php:9)
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(869): app\controllers\IndexController->renderFile()
+#1 D:\wamp\www\pad\framework\web\CController.php(782): app\controllers\IndexController->renderPartial()
+#2 D:\wamp\www\pad\app\pad\protected\controllers\IndexController.php(20): app\controllers\IndexController->render()
+#3 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\controllers\IndexController->actionIndex()
+#4 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#5 D:\wamp\www\pad\framework\web\CController.php(286): app\controllers\IndexController->runAction()
+#6 D:\wamp\www\pad\framework\web\CController.php(265): app\controllers\IndexController->runActionWithFilters()
+#7 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\controllers\IndexController->run()
+#8 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#9 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#10 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/index/index.html
+2016/06/05 18:21:44 [error] [exception.CException] exception 'CException' with message '属性 "FrontWebUser.padName" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\auth\CWebUser.php(146): CComponent->__get('padName')
+#1 D:\wamp\www\pad\app\pad\protected\themes\json\views\index\index.php(6): CWebUser->__get('padName')
+#2 D:\wamp\www\pad\framework\web\CBaseController.php(126): require('D:\wamp\www\pad...')
+#3 D:\wamp\www\pad\framework\web\CBaseController.php(95): CBaseController->renderInternal('D:\wamp\www\pad...', NULL, true)
+#4 D:\wamp\www\pad\framework\web\CController.php(869): CBaseController->renderFile('D:\wamp\www\pad...', NULL, true)
+#5 D:\wamp\www\pad\framework\web\CController.php(782): CController->renderPartial('index', NULL, true)
+#6 D:\wamp\www\pad\app\pad\protected\controllers\IndexController.php(20): CController->render('index')
+#7 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\controllers\IndexController->actionIndex()
+#8 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#9 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#10 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('index')
+#12 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('index/index')
+#13 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#14 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#15 {main}
+REQUEST_URI=/index/index.html
+---
+2016/06/05 18:21:56 [error] [exception.CException] exception 'CException' with message '属性 "FrontWebUser.padId" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\auth\CWebUser.php(146): CComponent->__get('padId')
+#1 D:\wamp\www\pad\app\pad\protected\themes\json\views\index\index.php(5): CWebUser->__get('padId')
+#2 D:\wamp\www\pad\framework\web\CBaseController.php(126): require('D:\wamp\www\pad...')
+#3 D:\wamp\www\pad\framework\web\CBaseController.php(95): CBaseController->renderInternal('D:\wamp\www\pad...', NULL, true)
+#4 D:\wamp\www\pad\framework\web\CController.php(869): CBaseController->renderFile('D:\wamp\www\pad...', NULL, true)
+#5 D:\wamp\www\pad\framework\web\CController.php(782): CController->renderPartial('index', NULL, true)
+#6 D:\wamp\www\pad\app\pad\protected\controllers\IndexController.php(20): CController->render('index')
+#7 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\controllers\IndexController->actionIndex()
+#8 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#9 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#10 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('index')
+#12 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('index/index')
+#13 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#14 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#15 {main}
+REQUEST_URI=/index/index.html
+---
+2016/06/05 18:21:58 [error] [exception.CException] exception 'CException' with message '属性 "FrontWebUser.padId" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\auth\CWebUser.php(146): CComponent->__get('padId')
+#1 D:\wamp\www\pad\app\pad\protected\themes\json\views\index\index.php(5): CWebUser->__get('padId')
+#2 D:\wamp\www\pad\framework\web\CBaseController.php(126): require('D:\wamp\www\pad...')
+#3 D:\wamp\www\pad\framework\web\CBaseController.php(95): CBaseController->renderInternal('D:\wamp\www\pad...', NULL, true)
+#4 D:\wamp\www\pad\framework\web\CController.php(869): CBaseController->renderFile('D:\wamp\www\pad...', NULL, true)
+#5 D:\wamp\www\pad\framework\web\CController.php(782): CController->renderPartial('index', NULL, true)
+#6 D:\wamp\www\pad\app\pad\protected\controllers\IndexController.php(20): CController->render('index')
+#7 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\controllers\IndexController->actionIndex()
+#8 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#9 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#10 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('index')
+#12 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('index/index')
+#13 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#14 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#15 {main}
+REQUEST_URI=/index/index.html
+---
+2016/06/05 18:28:10 [error] [exception.CException] exception 'CException' with message '属性 "FrontWebUser.padId" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\auth\CWebUser.php(146): CComponent->__get('padId')
+#1 D:\wamp\www\pad\app\pad\protected\controllers\LoginController.php(20): CWebUser->__get('padId')
+#2 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\controllers\LoginController->actionIndex()
+#3 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('index')
+#7 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('login/index')
+#8 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#9 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#10 {main}
+REQUEST_URI=/login/index.html
+---
+2016/06/05 18:33:35 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'CSRF token 无法被验证.' in D:\wamp\www\pad\framework\web\CHttpRequest.php:1355
+Stack trace:
+#0 D:\wamp\www\pad\framework\base\CComponent.php(561): CHttpRequest->validateCsrfToken(Object(CEvent))
+#1 D:\wamp\www\pad\framework\base\CApplication.php(212): CComponent->raiseEvent('onBeginRequest', Object(CEvent))
+#2 D:\wamp\www\pad\framework\base\CApplication.php(183): CApplication->onBeginRequest(Object(CEvent))
+#3 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#4 {main}
+REQUEST_URI=/login.html
+---
+2016/06/05 18:33:37 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'CSRF token 无法被验证.' in D:\wamp\www\pad\framework\web\CHttpRequest.php:1355
+Stack trace:
+#0 D:\wamp\www\pad\framework\base\CComponent.php(561): CHttpRequest->validateCsrfToken(Object(CEvent))
+#1 D:\wamp\www\pad\framework\base\CApplication.php(212): CComponent->raiseEvent('onBeginRequest', Object(CEvent))
+#2 D:\wamp\www\pad\framework\base\CApplication.php(183): CApplication->onBeginRequest(Object(CEvent))
+#3 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#4 {main}
+REQUEST_URI=/login.html
+---
+2016/06/05 19:17:40 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "pad/state"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('pad/state')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/pad/state
+---
+2016/06/05 19:17:52 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "pad/state"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('pad/state')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/pad/state
+---

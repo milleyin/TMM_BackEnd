@@ -1,0 +1,673 @@
+<?php
+/**
+ * 
+ * @author Changhai Zhan
+ *	创建时间：2015-08-20 14:40:20 */
+class Tmm_dotController extends MainController
+{
+	/**
+	 * 默认操作数据模型
+	 * @var string
+	 */
+	public $_class_model='Dot';
+
+	/**
+	 * 查看详情
+	 * @param integer $id
+	 */
+	public function actionView($id)
+	{
+		$this->addCss(Yii::app()->baseUrl.'/css/admin/main/right/dot/view.css');
+		//条件
+		$criteria = new CDbCriteria;
+		//关系
+		$criteria->with = array(
+				'Dot_ShopsClassliy',
+				'Dot_Shops'=>array('with'=>array('Shops_Agent')),
+				'Dot_Pro'=>array(
+						'with'=>array(
+								'Pro_ItemsClassliy',
+								'Pro_Items'=>array(
+										'with'=>array(
+												'Items_agent',
+												'Items_StoreContent'=>array('select'=>'name','with'=>array('Content_Store'=>array('select'=>'phone'))),
+												'Items_Store_Manager',
+												'Items_area_id_p_Area_id',
+												'Items_area_id_m_Area_id',
+												'Items_area_id_c_Area_id',
+												'Items_ItemsImg',
+												'Items_Fare',
+										),
+								),
+						),
+				),
+		);
+		$criteria->order = '`Dot_Pro`.sort';
+
+		$model = $this->loadModel($id, $criteria);
+		$model->Dot_TagsElement = TagsElement::get_select_tags(TagsElement::tags_shops_dot, $id);
+		
+		$this->render('view', array(
+				'model'=>$model,
+		));
+	}
+
+	/**
+	 * 创建
+	 * $id 运营商id
+	 */
+	public function actionCreate($id)
+	{
+		//加载css文件
+		$this->addCss(Yii::app()->baseUrl.'/css/admin/main/right/dot/form.css');
+		$this->addCss(Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('zii.widgets.assets')).'/detailview/styles.css');
+		//实例化 附表
+		$model = new Dot;
+		//实例化 主表
+		$model->Dot_Shops = new Shops;
+		//设置验证规则
+		$model->Dot_Shops->scenario = 'create_dot';
+		//加载运营商
+		$this->_class_model = 'Agent';
+		$model->Dot_Shops->Shops_Agent = $this->loadModel($id, 'status=:status', array(':status'=>Agent::status_suc));
+		//多个项目  默认一个
+		$number = isset($_POST['Pro'][0]['items_id']) ? count($_POST['Pro']) : 1;
+		if ($number > Yii::app()->params['shops_dot_items_number'])
+			$number = Yii::app()->params['shops_dot_items_number'];
+		$model->Dot_Pro = $this->new_modes('Pro', 'create_dot', $number);
+		//ajax 动态验证
+		$this->_Ajax_Verify_Same(array_merge(array($model->Dot_Shops), $model->Dot_Pro), 'dot-form');	
+		//提交表单验证
+		if (isset($_POST['Shops']))
+		{
+			//主表赋值
+			$model->Dot_Shops->attributes = $_POST['Shops'];
+			//赋值 加验证
+			$prosValidate= $this->models_validate($model->Dot_Pro);
+			//验证通过	
+			if ($model->Dot_Shops->validate() && $prosValidate)
+			{
+				$transaction = $model->dbConnection->beginTransaction();
+				try
+				{
+					//设置属性						
+					$model->Dot_Shops->c_id = Shops::shops_dot;
+					//运营商
+					$model->Dot_Shops->agent_id = $model->Dot_Shops->Shops_Agent->id;
+					//默认下线
+					$model->Dot_Shops->status = Shops::status_offline;
+					//创建的默认未提交
+					$model->Dot_Shops->audit = Shops::audit_draft;
+					//处理图片链接
+					$model->Dot_Shops->cost_info = $this->admin_img_replace($model->Dot_Shops->cost_info);
+					//处理图片链接
+					$model->Dot_Shops->book_info = $this->admin_img_replace($model->Dot_Shops->book_info);
+					//保存 主要表
+					if ($model->Dot_Shops->save(false))
+					{
+						$model->id = $model->Dot_Shops->id;
+						$model->c_id = $model->Dot_Shops->c_id;
+						if ( !$model->save(false))
+							throw new Exception("添加觅境(点) 景点附表记录错误");
+						$itemsElement = array(
+								Items::items_eat=>TagsElement::tags_items_eat,
+								Items::items_hotel=>TagsElement::tags_items_hotel,
+								Items::items_play=>TagsElement::tags_items_play,
+						);
+						$element_ids = array();
+						foreach ($model->Dot_Pro as $key=>$proModel)
+						{		
+							$proModel->shops_id = $model->Dot_Shops->id;
+							$proModel->shops_c_id = $model->Dot_Shops->c_id;
+							$proModel->sort = $key;
+							if ( !$proModel->save(false))
+								throw new Exception("添加觅境(点) 景点选中的项目记录错误");
+ 							$element_ids[] = array($itemsElement[$proModel->c_id], $proModel->items_id);
+						}
+						//继承项目的tags
+						TagsElement::select_tags_ids_save(TagsElement::select_tags_all($element_ids), $model->id, TagsElement::tags_shops_dot, TagsElement::admin);
+						
+ 						$return = $this->log('创建觅境(点) 景点', ManageLog::admin, ManageLog::create);
+					}
+					else
+						throw new Exception("添加觅觅境(点) 景点主要表记录错误");
+					$transaction->commit();
+				}
+				catch(Exception $e)
+				{
+					$transaction->rollBack();
+					$this->error_log($e->getMessage(), ErrorLog::admin, ErrorLog::create, ErrorLog::rollback, __METHOD__);
+				}
+				if (isset($return) && $return)
+					$this->redirect(array('admin'));
+			}
+		}
+		
+		$this->render('create', array(
+			'model'=>$model,
+			'itemsModel'=>$this->itemsList()
+		));
+	}
+	
+	/**
+	 * 加载列表搜索页
+	 * @return Items
+	 */
+	public function itemsList()
+	{
+		$model = new Items('operatorSearch');
+		// 删除默认属性
+		$model->unsetAttributes();
+		if (isset($_GET['Items']))
+			$model->attributes = $_GET['Items'];
+		return $model;
+	}
+
+	/**
+	 * 更新
+	 * @param integer $id
+	 */
+	public function actionUpdate($id)
+	{
+	//加载css文件
+		$this->addCss(Yii::app()->baseUrl.'/css/admin/main/right/dot/form.css');
+		$this->addCss(Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('zii.widgets.assets')).'/detailview/styles.css');
+		//条件
+		$criteria = new CDbCriteria;
+		//关系
+		$criteria->with = array(
+			'Dot_Shops'=>array('with'=>array('Shops_Agent')),
+			'Dot_Pro'=>array(
+				'with'=>array(
+					'Pro_ItemsClassliy',
+					'Pro_Items'=>array(
+						'with'=>array(
+							'Items_StoreContent'=>array('select'=>'name','with'=>array('Content_Store'=>array('select'=>'phone'))),
+							'Items_area_id_p_Area_id',
+							'Items_area_id_m_Area_id',
+							'Items_area_id_c_Area_id',
+							'Items_ItemsImg',
+						),
+					),	
+				),
+			),
+		);
+		//不等于审核中
+		$criteria->compare('Dot_Shops.audit', '<>' . Shops::audit_pending);
+		//标准条件
+		$criteria->addColumnCondition(array(
+			'`Dot_Shops`.`status`'=>Shops::status_offline,
+		));
+		$criteria->order = '`Dot_Pro`.sort';
+		//加载数据
+		$model = $this->loadModel($id, $criteria);
+		//设置场景
+		$model->Dot_Shops->scenario = 'update_dot';
+		//记录pro原来的ids
+		$proIds = $this->listData($model->Dot_Pro, 'id', 'id');
+		//更新项目 提交
+		if (isset($_POST['Shops']))
+		{
+			//多个项目的个数 默认		
+			$number = isset($_POST['Pro'][0]['items_id']) ? count($_POST['Pro']) : 1;
+			if ($number > Yii::app()->params['shops_dot_items_number'])
+				$number = Yii::app()->params['shops_dot_items_number'];
+			//更新models
+			$model->Dot_Pro = $this->update_models($model->Dot_Pro, $number, 'update_dot', 'Pro');
+		}
+		else //设置价格场景
+			$this->set_scenarios($model->Dot_Pro, 'update_dot');
+		//ajax 动态验证
+		$this->_Ajax_Verify_Same(array_merge(array($model->Dot_Shops), $model->Dot_Pro), 'dot-form');	
+		//提交表单验证
+		if (isset($_POST['Shops']))
+		{
+			//主表赋值
+			$model->Dot_Shops->attributes = $_POST['Shops'];
+			//赋值 加验证
+			if (isset($_POST['Pro'][0]['items_id']))
+				$prosValidate= $this->models_validate($model->Dot_Pro);
+			else
+			{
+				$prosValidate = false;
+				$model->Dot_Pro[0]->addError('items_id', '选择项目 不可空白');
+			}
+			//验证通过
+			if ($model->Dot_Shops->validate() && $prosValidate)
+			{
+				$transaction = $model->dbConnection->beginTransaction();
+				try
+				{
+					//修改的默认未提交
+					$model->Dot_Shops->audit = Shops::audit_draft;
+					//处理图片链接
+					$model->Dot_Shops->cost_info = $this->admin_img_replace($model->Dot_Shops->cost_info);
+					//处理图片链接
+					$model->Dot_Shops->book_info = $this->admin_img_replace($model->Dot_Shops->book_info);
+					//保存 主要表
+					if ($model->Dot_Shops->save(false))
+					{
+						foreach ($model->Dot_Pro as $key=>$proModel)
+						{
+							$proModel->shops_id = $model->Dot_Shops->id;
+							$proModel->shops_c_id = $model->Dot_Shops->c_id;
+							$proModel->sort = $key;
+							if ( !$proModel->save(false))
+								throw new Exception("修改觅觅境(点) 景点选中的项目记录错误");
+							if (isset($proIds[$proModel->id]))
+								unset($proIds[$proModel->id]);
+						}
+						if ( !empty($proIds))
+						{
+							$deleteCriteria = new CDbCriteria;
+							$deleteCriteria->addInCondition('id', $proIds);
+							if ( !Pro::model()->deleteAll($deleteCriteria))
+								throw new Exception("修改觅境(点) 景点删除选中项目记录错误");
+						}			
+ 						$return = $this->log('修改觅境(点) 景点', ManageLog::admin, ManageLog::update);
+					}
+					else
+						throw new Exception("修改觅境(点)主要表记录错误");
+					$transaction->commit();
+				}
+				catch(Exception $e)
+				{
+					$transaction->rollBack();
+					$this->error_log($e->getMessage(), ErrorLog::admin, ErrorLog::update, ErrorLog::rollback, __METHOD__);
+				}
+				if (isset($return) && $return)
+					$this->redirect(array('admin'));
+			}
+		}
+
+		$this->render('update', array(
+			'model'=>$model,
+			'itemsModel'=>$this->itemsList()
+		));
+	}
+
+	/**
+	 * 提交审核
+	 * @param unknown $id
+	 */
+	public function actionConfirm($id)
+	{
+		//获取项目类型
+		$c_id=ShopsClassliy::getClass()->id;//点
+		$this->_class_model='Shops';
+		if($this->loadModel($id,'`status`=0 AND `c_id`=:c_id AND audit=:audit',array(':c_id'=>$c_id,':audit'=>Shops::audit_draft))->updateByPk($id,array('audit'=>Shops::audit_pending)))
+			$this->log('提交线路(点)审核',ManageLog::admin,ManageLog::update);	
+		if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : $this->back(true));
+	}
+	
+	/**
+	 * 删除
+	 * @param integer $id
+	 */
+	public function actionDelete($id)
+	{
+		//获取项目类型
+		$c_id=ShopsClassliy::getClass()->id;//点
+		$this->_class_model='Shops';
+		if($this->loadModel($id,'`status`=0 AND `c_id`=:c_id',array(':c_id'=>$c_id))->updateByPk($id,array('status'=>-1)))
+			$this->log('删除线路(点)',ManageLog::admin,ManageLog::delete);
+		if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : $this->back(true));
+	}
+	
+	/**
+	 * 还原
+	 * @param integer $id
+	 */
+	public function actionRestore($id)
+	{
+		//获取项目类型
+		$c_id=ShopsClassliy::getClass()->id;//点
+		$this->_class_model='Shops';
+		if($this->loadModel($id,'`status`=-1 AND `c_id`=:c_id',array(':c_id'=>$c_id))->updateByPk($id,array('status'=>0)))
+			$this->log('还原线路(点)',ManageLog::admin,ManageLog::update);
+
+		if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : $this->back(true));
+	}
+	
+	/**
+	 * 审核通过
+	 * @param integer $id
+	 */
+	public function actionPass($id)
+	{
+		$shops_classliy=ShopsClassliy::getClass();
+		//查看是否需要审核
+		$model=$this->loadModel($id,array(
+			'with'=>array('Dot_Shops'),
+			'condition'=>'t.c_id=:c_id AND Dot_Shops.status=0 AND Dot_Shops.audit=:audit',
+			'params'=>array(':c_id'=>$shops_classliy->id,':audit'=>Shops::audit_pending),
+		));
+	
+		$model->Dot_Shops->pub_time=time();
+		$model->Dot_Shops->audit=Shops::audit_pass;// 审核通过
+		$transaction=$model->dbConnection->beginTransaction();
+		try{
+				if($model->Dot_Shops->save(false)){
+					$audit=new AuditLog;
+					$audit->info=$model->Dot_Shops->name;
+					$audit->audit_who=AuditLog::admin;//记录 审核人 （审核人的id 在模型中）
+					$audit->audit_element=AuditLog::shops_dot;//记录 被审核的类型
+					$audit->element_id=$model->id;//记录 被审核id
+					$audit->audit=AuditLog::pass;//记录 审核通过
+					if($audit->save(false))
+						$return=$this->log('添加审核线路(点)记录',ManageLog::admin,ManageLog::create);
+					else
+						throw new Exception("添加审核日志错误");
+				}else
+						throw new Exception("审核通过保存错误");
+				$transaction->commit();
+		}
+		catch(Exception $e)
+		{
+			$transaction->rollBack();
+			$this->error_log($e->getMessage(),ErrorLog::admin,ErrorLog::create,ErrorLog::rollback,__METHOD__);
+		}
+		if(isset($return))
+			echo 1;
+		else 
+			echo '审核通过失败！';
+	}
+	
+	/**
+	 * 审核不通过
+	 * @param integer $id
+	 */
+	public function actionNopass($id){
+		//改变布局
+		$this->layout='/layouts/column_right_audit';
+		$model=new AuditLog;
+		
+		$model->scenario='create';
+		$shops_classliy=ShopsClassliy::getClass();
+		//查看是否需要审核
+		$model->Audit_Dot=$this->loadModel($id,array(
+				'with'=>array('Dot_Shops'),
+				'condition'=>'t.c_id=:c_id AND Dot_Shops.status=0 AND Dot_Shops.audit=:audit',
+				'params'=>array(':c_id'=>$shops_classliy->id,':audit'=>Shops::audit_pending),
+		));
+		$this->_Ajax_Verify($model,'audit-log-form');
+		
+		if(isset($_POST['AuditLog']))
+		{
+			$model->attributes=$_POST['AuditLog'];
+			$model->audit_who=AuditLog::admin;//记录 审核人 （审核人的id 在模型中）
+			$model->audit_element=AuditLog::shops_dot;//记录 被审核的
+			$model->element_id=$model->Audit_Dot->id;//记录 被审核id
+			$model->audit=AuditLog::nopass;//记录 审核不通过
+			if($model->validate()){
+				$transaction=$model->dbConnection->beginTransaction();
+				try
+				{
+					if($model->save(false))
+					{
+						$model->Audit_Dot->Dot_Shops->audit=Shops::audit_nopass;//审核不通过
+						if($model->Audit_Dot->Dot_Shops->save(false))
+							$return=$this->log('线路(点)审核不通过记录',ManageLog::admin,ManageLog::create);
+					}else
+						throw new Exception("添加线路(点)审核不通过日志错误");
+		
+					$transaction->commit();
+				}
+				catch(Exception $e)
+				{
+					$transaction->rollBack();
+					$this->error_log($e->getMessage(),ErrorLog::admin,ErrorLog::create,ErrorLog::rollback,__METHOD__);
+				}
+			}
+			if(isset($return))
+				$this->back();
+		}
+		$this->render('/tmm_auditLog/_nopass',array(
+				'model'=>$model,
+		));
+	}
+	
+	/**
+	 * 垃圾回收页
+	 */
+	public function actionIndex()
+	{
+		$criteria=new CDbCriteria;
+		$criteria->with=array(
+				'Dot_ShopsClassliy',
+				'Dot_Shops'=>array('with'=>array('Shops_Agent')),
+		);
+		$criteria->addColumnCondition(array('Dot_Shops.status'=>-1));
+		$model=new Dot;
+		$this->render('index',array(
+			'model'=>$model->search($criteria),
+		));
+	}
+	
+	/**
+	 *管理页
+	 */
+	public function actionAdmin()
+	{
+		$model=new Dot('search');
+		$model->Dot_Shops=new Shops('search');
+
+		$model->unsetAttributes();  // 删除默认属性
+		$model->Dot_Shops->unsetAttributes();  // 删除默认属性
+
+		if(isset($_GET['Dot']))
+			$model->attributes=$_GET['Dot'];
+		if(isset($_GET['Shops']))
+			$model->Dot_Shops->attributes=$_GET['Shops'];
+
+		$this->render('admin',array(
+			'model'=>$model,
+		));
+	}
+	
+	/**
+	 * 禁用
+	 * @param integer $id
+	 */
+	public function actionDisable($id)
+	{
+		//获取项目类型
+		$c_id=ShopsClassliy::getClass()->id;//点
+		$this->_class_model='Shops';
+		if($this->loadModel($id,'`status`=1 AND `c_id`=:c_id',array(':c_id'=>$c_id))->updateByPk($id,array('status'=>0)))
+			$this->log('下线线路(点)',ManageLog::admin,ManageLog::update);
+		if(!isset($_GET['ajax']))
+ 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : $this->back(true));
+	}
+	
+	/**
+	 * 激活
+	 * @param integer $id
+	 */
+	public function actionStart($id)
+	{
+		//获取项目类型
+		$c_id=ShopsClassliy::getClass()->id;//点
+		$this->_class_model='Shops';
+		if($this->loadModel($id,'`status`=0 AND `c_id`=:c_id AND `audit`=:audit AND `list_info`!=\'\'',array(':c_id'=>$c_id,':audit'=>Shops::audit_pass))->updateByPk($id,array('status'=>1)))
+			$this->log('上线线路(点)',ManageLog::admin,ManageLog::update);
+		 if(!isset($_GET['ajax']))
+ 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : $this->back(true));
+	}
+	
+	/**
+	 *选择标签的显示
+	 * @param unknown $id
+	 */
+	public function actionSelect($id)
+	{
+		$model=new Tags('search');
+		$model->unsetAttributes();  // 删除默认属性
+		if(isset($_GET['Tags']))
+			$model->attributes=$_GET['Tags'];
+		
+		$this->render('select',array(
+				'model'=>$model,
+				'select'=>$this->loadModel($id,array(
+						'with'=>array('Dot_Shops'),
+						'condition'=>'Dot_Shops.status=0 AND Dot_Shops.audit !=:audit AND Dot_Shops.c_id=:c_id',
+						'params'=>array(':audit'=>Shops::audit_pending,':c_id'=>ShopsClassliy::getClass()->id),
+				)),
+		));
+	}
+
+	/**
+	 * 标签选中操作
+	 * @param unknown $id
+	 * @param string $type
+	 */
+	public function actionTags($id)
+	{
+		if(isset($_POST['tag_ids']) && $_POST['tag_ids'] && isset($_POST['type']))
+		{
+			$type = $_POST['type'];
+			if(! is_array($_POST['tag_ids']))
+				$_POST['tag_ids']=array($_POST['tag_ids']);
+			$model=$this->loadModel($id,array(
+				'with'=>array('Dot_Shops'),
+						'condition'=>'Dot_Shops.status=0 AND Dot_Shops.audit !=:audit AND Dot_Shops.c_id=:c_id',
+						'params'=>array(':audit'=>Shops::audit_pending,':c_id'=>ShopsClassliy::getClass()->id),	
+			));
+			$tags_ids=Tags::filter_tags($_POST['tag_ids']);//安全过滤tags id
+			if($type=='yes'){
+				//过滤之前有的
+				$save_tags_id=TagsElement::not_select_tags_element($tags_ids,$id,TagsElement::tags_shops_dot);
+				$return=TagsElement::select_tags_ids_save($save_tags_id, $id, TagsElement::tags_shops_dot);
+			}else
+				$return=TagsElement::select_tags_ids_delete($tags_ids, $id, TagsElement::tags_shops_dot);
+			if($return)
+			{
+				if($type=='yes')
+					$this->log('线路(点)添加标签', ManageLog::admin,ManageLog::create);
+				else
+					$this->log('线路(点)去除标签', ManageLog::admin,ManageLog::clear);
+				echo 1;
+			}else
+				echo '操作过于频繁，请刷新页面从新选择！';
+		}else
+			echo '没有选中标签，请重新选择标签！';
+	}
+	
+	/**
+	 * 包装点
+	 * @param unknown $id
+	 */
+	public function actionPack($id)
+	{
+		$this->addCss(Yii::app()->baseUrl.'/css/admin/main/right/pack_items.css');
+		$shops_classliy=ShopsClassliy::getClass();
+		$model=$this->loadModel($id,array(
+			'with'=>array(
+				'Dot_Shops'=>array('with'=>array('Shops_Agent')),
+				'Dot_Pro'=>array('with'=>array(
+						'Pro_Items'=>array('with'=>array(
+							'Items_area_id_p_Area_id',
+							'Items_area_id_m_Area_id',
+							'Items_area_id_c_Area_id',
+							'Items_ItemsImg',
+							'Items_StoreContent'=>array('with'=>array('Content_Store')),
+							'Items_Store_Manager',
+							'Items_Fare',
+						)),				
+						'Pro_ItemsClassliy',
+				)),				
+			),
+			'condition'=>'t.c_id=:c_id AND Dot_Shops.status=0 AND Dot_Shops.audit=:audit',
+			'params'=>array(':c_id'=>$shops_classliy->id,':audit'=>Shops::audit_pass),
+			'order'=>'Dot_Pro.sort',
+		));
+		$model->Dot_Shops->scenario='pack_dot';
+		$this->set_scenarios($model->Dot_Pro, 'pack_dot');
+		//ajax验证
+		$this->_Ajax_Verify_Same(array_merge(array($model->Dot_Shops),$model->Dot_Pro),'dot-pack-form');
+		
+		if(isset($_POST['Shops']) && isset($_POST['Pro']) && count($_POST['Pro'])==count($model->Dot_Pro))
+		{
+			$this->_upload=Yii::app()->params['uploads_shops_dot'];
+			//获得需要的上传图片
+			$uploads = array('list_img','page_img');
+			//保存原来的
+			$data    = $this->upload_save_data($model->Dot_Shops, $uploads);
+			//过滤空白的值
+			$data=array_filter($data);
+			//获得参数
+			$model->Dot_Shops->attributes=$_POST['Shops'];
+			//过滤 数据id
+			$ids=$this->array_listData($_POST['Pro'],'id');
+			if(!empty($ids))
+				$ids = Pro::filter_pro($ids,$id);
+			//过滤 数据info
+			$infos = array_filter($this->array_listData($_POST['Pro'],'info'));//过滤空白的值
+			//验证是否为合法参数
+			if(count($model->Dot_Pro)==count($ids) && count($infos)==count($model->Dot_Pro))				
+				$pro_validate=true;
+			else
+				$pro_validate=false;		
+			//获取上传的
+			$files   = $this->upload($model->Dot_Shops,$uploads);
+			//看看是修改 还是创建
+			if(!empty($data))
+				$shop_validate_img=true;
+			else
+				$shop_validate_img=$this->upload_error($model->Dot_Shops, $files, $uploads);
+			//验证是否为合法参数
+			if($shop_validate_img)
+				$shop_validate = $model->Dot_Shops->validate();	
+			else 
+				$shop_validate=false;
+			//提前验证
+			if($pro_validate && $shop_validate && $shop_validate_img)
+			{
+				if(!empty($data))
+					//没有上传的赋值
+					$old_path=$this->upload_update_data($model->Dot_Shops, $data, $files);
+				
+				$transaction=$model->dbConnection->beginTransaction();
+				try{
+					if($model->Dot_Shops->save(false)){
+						if(!empty($data))
+						{
+							//保存新的
+							$this->upload_save($model->Dot_Shops, $files,true,4,array('pc','app','share'));
+							//删除原来的
+							$this->upload_delete($old_path);
+						}else
+							$this->upload_save($model->Dot_Shops, $files,true,4,array('pc','app','share'));
+						
+						$pro_array=array();
+						foreach ($ids as $key=>$id)
+							$pro_array[$id]=array('info'=>$infos[$key],'sort'=>$key);
+						foreach ($model->Dot_Pro as $Dot_Pro)
+						{
+							$pro=$pro_array[$Dot_Pro->id];
+							$Dot_Pro->info=$pro['info'];
+							$Dot_Pro->sort=$pro['sort'];
+							if(! $Dot_Pro->save())
+								throw new Exception("包装线路(点)保存选择项目记录错误");
+						}
+					}else
+						throw new Exception("包装线路(点)保存主记录错误");
+					$return=$this->log('包装线路(点)',ManageLog::admin,ManageLog::update);
+					$transaction->commit();
+				}
+				catch(Exception $e)
+				{
+					$transaction->rollBack();
+					$this->error_log($e->getMessage(),ErrorLog::admin,ErrorLog::create,ErrorLog::rollback,__METHOD__);
+				}
+				if(isset($return))
+					$this->back();
+			}
+		}
+
+		$this->render('pack',array('model'=>$model,));
+	}
+}

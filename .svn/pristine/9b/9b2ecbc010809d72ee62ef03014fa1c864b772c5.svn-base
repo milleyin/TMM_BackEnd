@@ -1,0 +1,50 @@
+<?php
+namespace Litchi\Controller;
+use Think\Controller;
+
+/**
+ * 公共控制器害
+ * Class CommonController
+ * @package Litchi\Controller
+ *
+ * @author Moore Mo
+ */
+class CommonController extends Controller {
+    /**
+     * @var String 微信id
+     */
+    protected $wechatid;
+    /**
+     * @var Array 微信用户信息
+     */
+    protected $wxUserInfo;
+    /**
+     * @var Int 渠道来源 1田觅觅2天美
+     */
+    protected $fromType;
+
+    public function _initialize() {
+        $this->wechatid = A('Common/Weixin')->getOpenid();
+        $this->wxUserInfo = A('Common/Weixin')->getWxUserInfo($this->wechatid);
+        $this->fromType = max(intval(I('request.fromType')), 0);
+        if (! in_array($this->fromType, array(1, 2))) {
+            $this->error('非法访问');
+        }
+
+        $this->assign('fromType', $this->fromType);
+        //$this->wechatid = 'o_CytuIwPE8e5yHoLQgPzXgRePTM';
+    }
+
+    /**
+     * 判断是否关注了公从号
+     */
+    protected function isFollow() {
+        // 如果渠道来源是 田觅觅才需要关注公众号
+        if ($this->fromType == 1) {
+            if ($this->wxUserInfo['subscribe'] != 1) {
+                $this->redirect('Index/follow', array('fromType' => $this->fromType));
+            }
+        }
+    }
+
+}

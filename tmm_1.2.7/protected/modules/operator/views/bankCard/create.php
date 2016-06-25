@@ -1,0 +1,13 @@
+<?php
+/* @var $this BankCardController */
+/* @var $model BankCard */
+
+$this->breadcrumbs = array(
+	Yii::app()->operator->name=>array('/operator/agent/own'),
+	'绑定银行卡',
+);
+?>
+
+<h1>绑定银行卡</h1>
+
+<?php $this->renderPartial('_form', array('model'=>$model, 'oldModel'=>$oldModel)); ?>

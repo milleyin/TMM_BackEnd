@@ -1,0 +1,193 @@
+<?php
+/**
+ * 订单定时任务
+ * @author Changhai Zhan
+ *	创建时间：2015-10-26 13:41:03
+ *	protected php yiic.php compatible 执行一次 兼容上个版本 订单状态
+ * */
+class CompatibleCommand  extends ConsoleCommand
+{
+	/**
+	 * 订单主要的定时任务
+	 * 点 、线 下单没有支付 订单过期 觅趣
+	 */
+	public function actionIndex()
+	{
+		$this->logText[]='START';
+		
+		$criteria =new CDbCriteria;
+		$criteria->addCondition('order_status !=:order_status');
+		$criteria->params[':order_status']=Order::order_status_store_yes;//待付款
+		$criteria->addColumnCondition(array(
+				'centre_status'=>Order::centre_status_yes,				//是否可以支付 可支付
+				'status'=>Order::status_yes,										//有效的订单 
+		));
+		$order=Order::model()->find($criteria);
+		if($order)
+		{
+			//开启事物
+			$transaction = $order->dbConnection->beginTransaction();
+			try{
+				$count=Order::model()->count($criteria);
+				if($count > 0)
+				{
+					$return = Order::model()->updateAll(array(
+						'centre_status'=>Order::centre_status_not,//不可支付
+					),$criteria);				
+					if($count != $return)
+						throw new Exception("兼容任务 保存改变MQ(觅境) 订单兼容支付状态失败");	
+					$this->logText[]='兼容任务 保存改变MQ(觅境) 订单兼容支付状态成功 NO. '.$return;
+				}
+				$transaction->commit();
+				}
+			catch (Exception $e)
+			{
+				$transaction->rollBack();
+				$this->logText[]=$e->getMessage();
+				$this->logText[]='END';
+				return self::return_error;
+			}
+		}else
+			$this->logText[]='NONE';
+		$this->logText[]='END';
+		return self::correct;
+	}
+	
+	/**
+	 * 点线接单 后 改为可支付
+	 * @throws Exception
+	 * @return string
+	 */
+	public function actionOrder()
+	{
+		$this->logText[]='START';
+	
+		$criteria =new CDbCriteria;
+		$criteria->addCondition('`order_type` =:dot OR `order_type`=:thrand');
+		$criteria->params[':dot']=Order::order_type_dot;//点
+		$criteria->params[':thrand']=Order::order_type_thrand;//线
+		$criteria->addCondition('order_status =:order_status');
+		$criteria->params[':order_status']=Order::order_status_store_yes;//待付款
+		$criteria->addColumnCondition(array(
+				'centre_status'=>Order::centre_status_not,				//是否可以支付 不可支付
+				'status'=>Order::status_yes,										//有效的订单
+		));
+		$order=Order::model()->find($criteria);
+		if($order)
+		{
+			//开启事物
+			$transaction = $order->dbConnection->beginTransaction();
+			try{
+				$count=Order::model()->count($criteria);
+				if($count > 0)
+				{
+					$return = Order::model()->updateAll(array(
+							'centre_status'=>Order::centre_status_yes,//可支付
+					),$criteria);
+					if($count != $return)
+						throw new Exception("兼容任务 保存改变MQ(觅境) 订单兼容支付状态失败");
+					$this->logText[]='兼容任务 保存改变MQ(觅境) 订单兼容支付状态成功 NO. '.$return;
+				}
+				$transaction->commit();
+			}
+			catch (Exception $e)
+			{
+				$transaction->rollBack();
+				$this->logText[]=$e->getMessage();
+				$this->logText[]='END';
+				return self::return_error;
+			}
+		}else
+			$this->logText[]='NONE';
+		$this->logText[]='END';
+		return self::correct;
+	}
+	
+	/**
+	 * 取消出游的兼容
+	 */
+	public function actionCancel()
+	{
+		$this->logText[]='START';		
+		$criteria =new CDbCriteria;
+		$criteria->addCondition('status_go !=:status_go_no OR pay_status !=:pay_status_past');
+		$criteria->params[':status_go_no']=Order::status_go_no;					//取消出游
+		$criteria->params[':pay_status_past']=Order::pay_status_past;			//取消支付
+		$criteria->addColumnCondition(array(
+				'order_status'=>Order::order_status_store_undo,						//是否取消了订单
+				//'status'=>Order::status_yes,														//有效的订单
+		));
+		$order=Order::model()->find($criteria);
+		if($order)
+		{
+			//开启事物
+			$transaction = $order->dbConnection->beginTransaction();
+			try{
+				$count=Order::model()->count($criteria);
+				if($count > 0)
+				{
+					$return = Order::model()->updateAll(array(
+							'status_go'=>Order::status_go_no,//取消出游
+							'pay_status'=>Order::pay_status_past,//取消支付
+							'up_time'=>time(),
+					),$criteria);
+					if($count != $return)
+						throw new Exception("兼容任务 保存改变MQ(觅境) 订单兼容取消订单状态失败");
+					$this->logText[]='兼容任务 保存改变MQ(觅境) 订单兼容取消订单状态成功 NO. '.$return;
+				}
+				$transaction->commit();
+			}
+			catch (Exception $e)
+			{
+				$transaction->rollBack();
+				$this->logText[]=$e->getMessage();
+				$this->logText[]='END';
+				return self::return_error;
+			}
+		}else
+			$this->logText[]='NONE';
+		$this->logText[]='END';
+		return self::correct;
+	}
+	
+	/**
+	 * 更新地址中的拼音
+	 * @return string
+	 */
+	public function actionArea()
+	{
+		$this->logText[]='START';	
+		
+		Yii::import('ext.Pinyin.Pinyin');		
+		$models=Area::model()->findAll();
+				
+		foreach ($models as $model)
+		{
+			$nid=Pinyin::encode($model->name);
+			if($nid != $model->nid)
+				$this->logText[]='id:['.$model->id.'] result:['.Area::model()->updateByPk($model->id, array('nid'=>$nid)).']';			
+		}
+		
+		$this->logText[]='END';
+		return self::correct;
+	}
+	
+	
+// 	public function actionP()
+// 	{
+// 		for ($i=0; $i<5000;$i++)
+// 		{
+// 			$model = new Privilege;
+// 			$model->code = $this->is();
+// 			$model->save(false);
+// 		}
+// 	}
+	
+// 	public function is()
+// 	{
+// 		$code = mt_rand(10000000,99999999);
+// 		if(Privilege::model()->find('code=:code',array(':code'=>$code)))
+// 				return $this->is();
+// 		return $code;
+// 	}
+}

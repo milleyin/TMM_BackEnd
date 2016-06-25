@@ -1,0 +1,6 @@
+<?php
+$imgList = array();
+foreach ($model as $imgObj) {
+    $imgList[] = $imgObj->attributes;
+}
+echo json_encode($imgList);

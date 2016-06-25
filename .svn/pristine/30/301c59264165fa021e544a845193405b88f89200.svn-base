@@ -1,0 +1,776 @@
+<?php
+
+/**
+ * This is the model class for table "{{bank_card}}".
+ *
+ * The followings are the available columns in table '{{bank_card}}':
+ * @property string $id
+ * @property string $manage_id
+ * @property integer $manage_who
+ * @property string $card_type
+ * @property string $card_id
+ * @property string $user_id
+ * @property string $store_id
+ * @property string $agent_id
+ * @property string $bank_id
+ * @property string $bank_name
+ * @property string $bank_branch
+ * @property string $bank_code
+ * @property string $bank_type
+ * @property integer $sort
+ * @property integer $is_default
+ * @property integer $is_verify
+ * @property string $add_time
+ * @property string $up_time
+ * @property integer $status
+ * @property string $bank_identity
+ */
+class BankCard extends CActiveRecord
+{
+	/**
+	 * 管理员
+	 */
+	const admin = 1;
+	/**
+	 * 代理商
+	 */
+	const agent = 2;
+	/**
+	 * 商家
+	 */
+	const store = 3;
+	/**
+	 * 用户
+	 */
+	const user  = 4;
+	/**
+	 * 解释字段 manage_who 的含义
+	 * @var array
+	 */
+	public static $_manage_who=array(1=>'管理员', 2=>'代理商', 3=>'商家', 4=>'用户');
+	/**
+	 * 解释字段 manage_who 的 模块名 用来获取当前登录ID
+	 * @var array
+	 */
+	public static $_manage_modules=array(1=>'admin', 2=>'operator', 3=>'store', 4=>'api');
+	/**
+	 * 解释字段 manage_module 的关联关系名 含义
+	 * @var array
+	 */
+	public static $__manage_type=array(1=>'BankCard_Admin',2=>'BankCard_Agent',3=>'BankCard_StoreUser',4=>'BankCard_User');
+	/**
+	 * 解释字段 manage_module 的关联关系名 含义
+	 * @var array
+	 */
+	public static $__manage_type_name=array(1=>'username', 2=>'phone', 3=>'phone', 4=>'phone');
+	/**
+	 * 解释字段 card_type 的含义
+	 * @var array
+	 */
+	public static $_card_type=array(2=>'运营商', 3=>'供应商',4=>'用户');
+	/**
+	 * 解释字段 $__card_type 的关联关系名 含义
+	 * @var array
+	 */
+	public static $__card_type=array(2=>'BankCard_AgentCard',3=>'BankCard_StoreUserCard',4=>'BankCard_UserCard');
+	/**
+	 * 解释字段 manage_module 的关联关系名 含义
+	 * @var array
+	 */
+	public static $__card_type_name=array(1=>'username',2=>'phone',3=>'phone',4=>'phone');
+	/**
+	 * 银行类型====储蓄卡
+	 */
+	const bank_type_deposit = 0;
+	/**
+	 * 银行类型====信用卡
+	 */
+	const bank_type_credit = 1;
+	/**
+	 * 银行类型====商家
+	 */
+	const bank_type_debit= 2;
+	/**
+	 * 解释字段 $_bank_type 的含义
+	 * @var array
+	 */
+	public static $_bank_type=array(
+		0=>'储蓄卡',
+		1=>'信用卡',
+		2=>'借记卡',
+	);
+	/**
+	 * 默认类型====默认
+	 */
+	const is_default_yes = 0;
+	/**
+	 * 默认类型====非默认
+	 */
+	const is_default_no= -1;
+	/**
+	 * 解释字段 $_is_default 的含义
+	 * @var array
+	 */
+	public static $_is_default=array(
+		-1=>'非默认',
+		0=>'默认',
+	);
+	/**
+	 * 验证类型====验证无效
+	 */
+	const is_verify_no = -1;
+	/**
+	 * 验证类型====没有验证
+	 */
+	const is_verify_null = 0;
+	/**
+	 * 验证类型====验证有效
+	 */
+	const is_verify_yes = 1;
+	/**
+	 * 解释字段 $_is_verify 的含义
+	 * @var array
+	 */
+	public static $_is_verify=array(
+		-1=>'验证无效',
+		0=>'没有验证',
+		1=>'验证有效'
+	);
+	/**
+	 * 删除
+	 */
+	const status_del = -1;
+	/**
+	 * 禁用
+	 */
+	const status_dis = 0;
+	/**
+	 * 正常
+	 */
+	const status_suc = 1;
+	/**
+	 * 解释字段 status 的含义
+	 * @var array
+	 */
+	public static $_status=array(-1=>'删除','禁用','正常');
+	/**
+	 * 搜索的时间类型
+	 * @var array
+	 */
+	public $search_time_type;
+	/**
+	 *	解释搜索类型时间的含义 search_time_type
+	 * @var string
+	 */
+	public static $_search_time_type=array('add_time','up_time'); 
+	/**
+	 *	解释搜索类型时间 search_time_type 的字段搜索
+	 * @var string
+	 */
+	public $__search_time_type=array('添加时间','更新时间');
+	/**
+	 * 搜索开始的时间
+	 * @var string
+	 */
+	public $search_start_time;
+	/**
+	 * 搜索结束的时间
+	 * @var string
+	 */
+	public $search_end_time;
+	
+	/**
+	 * 获取短信
+	 * @var unknown
+	 */
+	public $sms;
+	
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return '{{bank_card}}';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+			//array('manage_id, manage_who, card_type, card_id', 'required'),
+			array('manage_who, sort, is_default, is_verify, status', 'numerical', 'integerOnly'=>true),
+			array('manage_id, card_type, card_id, user_id, store_id, agent_id, bank_id, bank_type', 'length', 'max'=>11),
+			//array('bank_name', 'length', 'max'=>20),
+			//array('bank_branch', 'length', 'max'=>100),
+			array('bank_name', 'length', 'max'=>8),
+			array('bank_branch', 'length', 'max'=>12),
+			array('bank_code', 'length', 'max'=>50),
+			array('add_time, up_time', 'length', 'max'=>10),
+			
+			//array('','safe','on'=>'create,update'),
+			//array('','unsafe','on'=>'create,update'),			
+			//更新银行卡
+			array('bank_id', 'ext.Validator.Validator_bank'),
+			array('is_default', 'in','range'=>array_keys(self::$_is_default)),
+			array('bank_identity', 'ext.Validator.Validator_identity'),
+			array('bank_type', 'in', 'range'=>array_keys(self::$_bank_type)),
+			array('bank_code', 'match', 'pattern'=>'/^(\d{16}|\d{19})$/', 'message'=>'不是有效的银行卡号.'),
+			
+			array('sms', 'required', 'on'=>'save'),	
+			array('sms', 'validatorSms', 'on'=>'save'),
+			array('sms', 'safe', 'on'=>'save'),
+			array('bank_identity,search_time_type,search_start_time,search_end_time,id, manage_id, manage_who, card_type, card_id, user_id, store_id, agent_id, bank_id, bank_name, bank_branch, bank_code, bank_type, sort, is_default, is_verify, add_time, up_time, status', 'unsafe', 'on'=>'save'),
+				
+			//设置银行信息
+			array('bank_id,bank_name,bank_branch,bank_code','required','on'=>'create, update'),
+			array('bank_id,bank_name,bank_branch,bank_code,bank_type,is_default,bank_identity', 'safe', 'on'=>'create,update'),
+			array('search_time_type,search_start_time,search_end_time,id, manage_id, manage_who, card_type, card_id, user_id, store_id, agent_id, sort,  add_time, up_time, status', 'unsafe', 'on'=>'create,update'),
+			
+			//设置银行信息=====用户 user
+			array('bank_id,bank_name,bank_branch,bank_code','required','on'=>'user_bank'),
+			array('bank_id,bank_name,bank_branch,bank_code,bank_type,is_default,bank_identity','safe','on'=>'user_bank'),
+			array('search_time_type,search_start_time,search_end_time,id, manage_id, manage_who, card_type, card_id, user_id, store_id, agent_id, sort,  add_time, up_time, status', 'unsafe', 'on'=>'user_bank'),
+			array('bank_id','ext.Validator.Validator_bank','on'=>'user_bank'),
+			//设置银行信息=====用户 store
+			array('bank_id,bank_name,bank_branch,bank_code','required','on'=>'store_bank'),
+			array('bank_id,bank_name,bank_branch,bank_code','safe','on'=>'store_bank'),
+			array('search_time_type,search_start_time,search_end_time,id, manage_id, manage_who, card_type, card_id, user_id, store_id, agent_id, sort,  add_time, up_time, status', 'unsafe', 'on'=>'store_bank'),
+			array('bank_id','ext.Validator.Validator_bank','on'=>'store_bank'),
+			// The following rule is used by search().
+			// @todo Please remove those attributes that should not be searched.
+			array('bank_identity,search_time_type,search_start_time,search_end_time,id, manage_id, manage_who, card_type, card_id, user_id, store_id, agent_id, bank_id, bank_name, bank_branch, bank_code, bank_type, sort, is_default, is_verify, add_time, up_time, status', 'safe', 'on'=>'search'),
+		);
+	}
+
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+			//管理员的操作
+			'BankCard_Admin'=>array(self::BELONGS_TO,'Admin','manage_id'),
+			//代理商的操作
+			'BankCard_Agent'=>array(self::BELONGS_TO,'Agent','manage_id'),
+			//商家的操作
+			'BankCard_StoreUser'=>array(self::BELONGS_TO,'StoreUser','manage_id'),
+			//用户的操作
+			'BankCard_User'=>array(self::BELONGS_TO,'User','manage_id'),
+			//管理员的银行卡管理
+			'BankCard_AdminCard'=>array(self::BELONGS_TO,'Admin','card_id'),
+			//代理商的银行卡管理
+			'BankCard_AgentCard'=>array(self::BELONGS_TO,'Agent','card_id'),
+			//商家的银行卡管理
+			'BankCard_StoreUserCard'=>array(self::BELONGS_TO,'StoreUser','card_id'),
+			//用户的银行卡管理
+			'BankCard_UserCard'=>array(self::BELONGS_TO,'User','card_id'),
+			// 关联银行表
+			'BankCard_Bank'=>array(self::BELONGS_TO,'Bank','bank_id'),
+
+		);
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'id' => '主键',
+			'manage_id' => '操作者',
+			'manage_who' => '操作角色类型',
+			'card_type' => '角色类型',
+			'card_id' => '角色账号',
+			'user_id' => '归属用户',
+			'store_id' => '归属商家',
+			'agent_id' => '归属代理商',
+			'bank_id' => '开户银行',
+			'bank_name' => '开户姓名',
+			'bank_branch' => '开户支行',
+			'bank_code' => '银行账号',
+			'bank_type' => '银行类型',
+			'bank_identity'=>'开户身份证',
+			'sort' => '排序',
+			'is_default' => '是否默认',
+			'is_verify' => '是否验证',
+			'add_time' => '创建时间',
+			'up_time' => '更新时间',
+			'status' => '状态',
+			'search_time_type'=>'时间类型',
+			'search_start_time'=>'开始时间',
+			'search_end_time'=>'结束时间',
+		);
+	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 *
+	 * Typical usecase:
+	 * - Initialize the model fields with values from filter form.
+	 * - Execute this method to get CActiveDataProvider instance which will filter
+	 * models according to data in model fields.
+	 * - Pass data provider to CGridView, CListView or any similar widget.
+	 *
+	 * @return CActiveDataProvider the data provider that can return the models
+	 * based on the search/filter conditions.
+	 */
+	public function search($criteria='')
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+		if($criteria ===''){
+			$criteria=new CDbCriteria;
+
+			$criteria->with = array(
+				'BankCard_Bank',
+				'BankCard_AdminCard'=>array('select'=>'username'),
+				'BankCard_AgentCard'=>array('select'=>'phone'),
+				'BankCard_StoreUserCard'=>array('select'=>'phone'),
+				'BankCard_UserCard'=>array('select'=>'phone'),
+				'BankCard_Admin'=>array('select'=>'username'),
+				'BankCard_Agent'=>array('select'=>'phone'),
+				'BankCard_StoreUser'=>array('select'=>'phone'),
+				'BankCard_User'=>array('select'=>'phone'),
+			);
+
+			$criteria->compare('t.status','<>-1');
+			if($this->search_time_type != '' && isset($this->__search_time_type[$this->search_time_type]))
+			{
+				if($this->search_start_time !='' && $this->search_end_time !='')
+					$criteria->addBetweenCondition('t.'.$this->__search_time_type[$this->search_time_type],strtotime($this->search_start_time),strtotime($this->search_end_time)+3600*24-1);
+				elseif($this->search_start_time !='' && $this->search_end_time =='')
+					$criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'>='.strtotime($this->search_start_time));
+				elseif($this->search_start_time =='' && $this->search_end_time !='')
+					$criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'<=' . (strtotime($this->search_end_time)+3600*24-1));
+			}
+			$criteria->compare('t.id',$this->id,true);
+			//最后操作者
+			$criteria->compare('t.manage_who',$this->manage_who);
+			if (isset( self::$_manage_who[$this->manage_who],self::$__manage_type[$this->manage_who],self::$__manage_type_name[$this->manage_who]))
+			{
+				$relation=self::$__manage_type[$this->manage_who];
+				$name=self::$__manage_type_name[$this->manage_who];
+				$criteria->compare($relation.'.'.$name,$this->manage_id,true);
+			}
+			elseif($this->manage_id != NULL)
+			{
+				$criteria->params[':manage_id_like']='%'.strtr($this->manage_id,array('%'=>'\%', '_'=>'\_', '\\'=>'\\\\')).'%';
+				$criteria->params[':manage_id']=$this->manage_id;
+				$conditions = array('`t`.`manage_id`=:manage_id');
+				$relations=self::$__manage_type;
+				foreach ($relations as $type=>$relation)
+				{
+					if(isset(self::$__manage_type_name[$type]))
+						$conditions[] = '(`t`.`manage_who`='.$type.' AND `'.$relation.'`.`'.self::$__manage_type_name[$type].'` LIKE :manage_id_like)';
+				}
+				$criteria->addCondition(implode(' OR ', $conditions));
+			}		
+			//谁的银行卡
+			$criteria->compare('t.card_type',$this->card_type);
+			if (isset( self::$_card_type[$this->card_type],self::$__card_type[$this->card_type],self::$__card_type_name[$this->card_type]))
+			{
+				$relation=self::$__card_type[$this->card_type];
+				$name=self::$__card_type_name[$this->card_type];
+				$criteria->compare($relation.'.'.$name,$this->card_id,true);
+			}
+			elseif($this->card_id != NULL)
+			{
+				$criteria->params[':card_id_like']='%'.strtr($this->card_id,array('%'=>'\%', '_'=>'\_', '\\'=>'\\\\')).'%';
+				$criteria->params[':card_id']=$this->card_id;
+				$conditions = array('`t`.`card_id`=:card_id');
+				$relations=self::$__card_type;
+				foreach ($relations as $type=>$relation)
+				{
+					if(isset(self::$__card_type_name[$type]))
+						$conditions[] = '(`t`.`card_type`='.$type.' AND `'.$relation.'`.`'.self::$__card_type_name[$type].'` LIKE :card_id_like)';
+				}
+				$criteria->addCondition(implode(' OR ', $conditions));
+			}
+			
+			$criteria->compare('t.user_id',$this->user_id,true);
+			$criteria->compare('t.store_id',$this->store_id,true);
+			$criteria->compare('t.agent_id',$this->agent_id,true);
+			$criteria->compare('`t`.`bank_id`',$this->bank_id,true);
+			$criteria->compare('t.bank_name',$this->bank_name,true);
+			$criteria->compare('t.bank_branch',$this->bank_branch,true);
+			$criteria->compare('t.bank_code',$this->bank_code,true);
+			$criteria->compare('t.bank_type',$this->bank_type,true);
+			$criteria->compare('t.sort',$this->sort);
+			$criteria->compare('t.is_default',$this->is_default);
+			$criteria->compare('t.is_verify',$this->is_verify);
+			if($this->add_time != '')
+				$criteria->addBetweenCondition('t.add_time',strtotime($this->add_time),(strtotime($this->add_time)+3600*24-1));
+			if($this->up_time != '')
+				$criteria->addBetweenCondition('t.up_time',strtotime($this->up_time),(strtotime($this->up_time)+3600*24-1));
+			$criteria->compare('t.status',$this->status);
+		}
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+					'pageSize'=>Yii::app()->params['admin_pageSize'],
+			),
+			'sort'=>array(
+					'defaultOrder'=>'t.add_time desc', //设置默认排序
+			),
+		));
+	}
+
+	/**
+	 * 
+	 * @param string $criteria
+	 * @return CActiveDataProvider
+	 */
+	public function search_cark($criteria='')
+	{
+
+		$criteria=new CDbCriteria;
+
+		$criteria->with = array(
+			'BankCard_Bank',
+			'BankCard_AdminCard',
+			'BankCard_AgentCard',
+			'BankCard_StoreUserCard',
+			'BankCard_UserCard'
+		);
+
+		$criteria->compare('t.status','<>-1');
+		if($this->search_time_type != '' && isset($this->__search_time_type[$this->search_time_type]))
+		{
+			if($this->search_start_time !='' && $this->search_end_time !='')
+				$criteria->addBetweenCondition('t.'.$this->__search_time_type[$this->search_time_type],strtotime($this->search_start_time),strtotime($this->search_end_time)+3600*24-1);
+			elseif($this->search_start_time !='' && $this->search_end_time =='')
+				$criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'>='.strtotime($this->search_start_time));
+			elseif($this->search_start_time =='' && $this->search_end_time !='')
+				$criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'<=' . (strtotime($this->search_end_time)+3600*24-1));
+		}
+		$criteria->compare('t.id',$this->id,true);
+		$criteria->compare('t.manage_id',$this->manage_id,true);
+		$criteria->compare('t.manage_who',$this->manage_who);
+		$criteria->compare('t.card_type',$this->card_type,true);
+		$criteria->compare('t.user_id',$this->user_id,true);
+		$criteria->compare('t.store_id',$this->store_id,true);
+		$criteria->compare('t.agent_id',$this->agent_id,true);		
+		$criteria->compare('BankCard_Bank.name',$this->bank_id,true);		
+		$criteria->compare('t.bank_name',$this->bank_name,true);
+		$criteria->compare('t.bank_branch',$this->bank_branch,true);
+		$criteria->compare('t.bank_code',$this->bank_code,true);
+		$criteria->compare('t.bank_type',$this->bank_type,true);
+		$criteria->compare('t.sort',$this->sort);
+		$criteria->compare('t.is_default',$this->is_default);
+		$criteria->compare('t.is_verify',$this->is_verify);
+		if($this->add_time != '')
+			$criteria->addBetweenCondition('t.add_time',strtotime($this->add_time),(strtotime($this->add_time)+3600*24-1));
+		if($this->up_time != '')
+			$criteria->addBetweenCondition('t.up_time',strtotime($this->up_time),(strtotime($this->up_time)+3600*24-1));
+		$criteria->compare('t.status',$this->status);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>Yii::app()->params['admin_pageSize'],
+			),
+			'sort'=>array(
+				'defaultOrder'=>'t.add_time desc', //设置默认排序
+			),
+		));
+	}
+	/**
+	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param string $className active record class name.
+	 * @return BankCard the static model class
+	 */
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+	
+	/**
+	 * 保存之前的操作
+	 * @see CActiveRecord::beforeSave()
+	 */
+	public function beforeSave()
+	{
+		if(parent::beforeSave())
+		{		
+			if($this->isNewRecord)
+				$this->up_time=$this->add_time=time();
+			else
+				$this->up_time=time();			
+			return true;
+		}else
+			return false;
+	}
+	
+	/**
+	 * 获取操作者名字
+	 * @param unknown $model
+	 * @param unknown $type
+	 * @return string
+	 */
+	public static function getManageRoleName($model,$type)
+	{		
+		if(isset(self::$_manage_who[$type],self::$__manage_type[$type],self::$__manage_type_name[$type]))
+		{
+			$relation=self::$__manage_type[$type];
+			$name=self::$__manage_type_name[$type];	
+			return isset($model->$relation->$name) ? $model->$relation->$name : '未知角色';
+		}
+		return '未知角色';
+	}
+	
+	/**
+	 * 获取角色名称
+	 * @param unknown $model
+	 * @param unknown $type
+	 * @return string
+	 */
+	public static function getRoleName($model,$type)
+	{
+		if(isset(self::$_card_type[$type],self::$__card_type[$type],self::$__card_type_name[$type]))
+		{
+			$relation=self::$__card_type[$type];
+			$name=self::$__card_type_name[$type];
+			return isset($model->$relation->$name) ? $model->$relation->$name : '未知角色';
+		}
+		return '未知角色';
+	}
+
+	/**
+	 * 根据登录类型获取用户名或手机号
+	 * 兼容修改
+	 * @param $type
+	 * @param $data
+	 * @return string
+	 * 	public static $__card_type=array(1=>'BankCard_AdminCard',2=>'BankCard_AgentCard',3=>'BankCard_StoreUserCard',4=>'BankCard_UserCard');
+	 */
+	public static function card_type($type, $data) 
+	{
+		return self::getRoleName($data,$type);
+	}
+
+	/**
+	 * 设置操作银行卡的ID
+	 * @param int $type
+	 * @return string
+	 */
+	public static function set_card_type_id($type=4){
+
+		switch($type){
+			case self::agent :
+				$return = 'agent_id';break;
+			case self::store :
+				$return = 'store_id';break;
+			case self::user :
+				$return = 'user_id';break;
+			default :
+				$return = 'user_id';break;
+		}
+		return $return;
+	}
+
+	/**
+	 * 返回银行卡显示内容
+	 * @param $model
+	 * @return array
+	 */
+	public static function get_field_data($model){
+		$return = array();
+		if(!$model)
+			return $return;
+
+		$datas = array(
+			'id','bank_id','bank_name','bank_branch','bank_code','bank_type','bank_identity'
+		);
+
+		foreach($datas as $data)
+			$return[$data] = CHtml::encode($model->$data);
+
+		$return['bank_value'] = Bank::bank_data_find($return['bank_id']);
+
+		$return['bank_code']  = $return['bank_code'] ?$return['bank_code'] : '';
+		$return['bank_code_format']  = $return['bank_code'] ? self::set_number_black($return['bank_code']) : '';
+
+		$return['default'] = array(
+			'name'=>BankCard::$_is_default[$model->is_default],
+			'value'=>$model->is_default
+		);
+		$return['is_verify'] = array(
+			'name'=>BankCard::$_is_verify[$model->is_verify],
+			'value'=>$model->is_verify
+		);
+		$return['add_time'] = date('Y-m-d H:i:s',$model->add_time);
+
+		return $return;
+	}
+
+	/**
+	 * 将银行卡号格式化 （明文只显示最后4位，每割4位 加 空格）
+	 * @param $num
+	 * @param int $n
+	 * @return string
+	 */
+	public static function set_number_black($num,$n=4){
+
+			// 只保留后4们，其余打 *
+			$strs =  str_pad(substr_replace($num,"*",0,strlen($num)-$n),strlen($num),"*",STR_PAD_LEFT);
+
+			//后4们 明文， ** 1111
+			$str_be = substr($strs ,0,(strlen($strs) % $n));
+			$str_af = substr($strs ,(strlen($strs) % $n));
+
+		    $str =  chunk_split($str_af,$n," ");
+
+			$str_re =  $str_be.' '.$str;
+
+			unset($strs,$str_be,$str_af,$str);
+
+			return $str_re;
+	}
+	
+	/**
+	 * 获取银行卡
+	 * @param unknown $id
+	 * @param unknown $type
+	 */
+	public static function getBankCard($id, $type, $status=self::status_suc)
+	{
+		$criteria = new CDbcriteria();
+		$criteria->with = array(
+			'BankCard_Bank',
+			'BankCard_AdminCard',
+			'BankCard_AgentCard',
+			'BankCard_StoreUserCard',
+			'BankCard_UserCard'
+		);
+		$criteria->addColumnCondition(array(
+			'`t`.`card_id`' => Yii::app()->operator->id,
+			'`t`.`card_type`' => BankCard::agent,
+			'`t`.`status`'=>$status,
+		));
+		return BankCard::model()->find($criteria);
+	}
+	
+	/**
+	 *	获取字段名称
+	 * @param unknown $card_type
+	 * @return string
+	 */
+	public static function getRoleColumnName($card_type=self::user)
+	{
+		$RoleColumnNames = array(
+			self::agent=>'agent_id',
+			self::store=>'store_id',
+			self::user=>'user_id',
+		);
+		return isset($RoleColumnNames[$card_type]) ? $RoleColumnNames[$card_type] : null;
+	}
+	
+	/**
+	 * 
+	 * @param unknown $id	
+	 * @param unknown $type
+	 * @param unknown $data
+	 * @param unknown $manage 
+	 */
+	/**
+	 * 模型类型
+	 * @param model $model
+	 * @param array $data
+	 * @param array $card
+	 * @param array $manage
+	 * @return NULL|BankCard
+	 */
+	public static function setBankCard($model, $data, $card, $manage = array())
+	{
+		if (isset($card['card_type'], $card['card_id']) && (!!$roleColumnName = self::getRoleColumnName($card['card_type'])))
+		{
+			$model->scenario = 'create';
+			$model->attributes = $data;
+			$model->card_id = $card['card_id'];
+			$model->card_type = $card['card_type'];
+			$model->$roleColumnName = $card['card_id'];
+			if (isset($manage['manage_id'], $manage['manage_who']))
+			{
+				$model->manage_id = $manage['manage_id'];
+				$model->manage_who = $manage['manage_who'];
+			}
+			else
+			{
+				$model->manage_id = $card['card_id'];
+				$model->manage_who = $card['card_type'];
+			}
+		}
+		return $model;
+	}
+	
+	/**
+	 * 更新银行卡 之前有的改变状态
+	 * @param unknown $model
+	 * @return boolean
+	 */
+	public static function bankCardSave($model)
+	{
+		$model->scenario = 'create';
+		if ($model->validate())
+		{
+			$criteria = new CDbCriteria;
+			$criteria->addColumnCondition(array(
+				'card_type'=>$model->card_type,
+				'card_id'=>$model->card_id,
+				'status'=>self::status_suc,
+			));
+			self::model()->updateAll(array('status'=>self::status_del, 'up_time'=>time()));
+			return $model->save(false);
+		}
+		return false;
+	}
+	
+	public function sendSms($sms, $role, $phone, $bank)
+	{
+		if (isset($sms['sms_id'], $sms['sms_type'], $role['role_id'], $role['role_type']))
+		{
+			Yii::import('ext.Send_sms.Send_sms');
+			$params_v = array(
+				'sms_id'=>$sms['sms_id'],
+				'sms_type'=>$sms['sms_type'],
+				'role_id'=>$role['role_id'],
+				'role_type'=>$role['role_type'],
+				'sms_use'=>SmsLog::use_bank,
+			);
+			if (Send_sms::is_send($phone, $params_v, Yii::app()->params['sms'][$bank]['number'], Yii::app()->params['sms'][$bank]['interval']))
+			{
+				$code = rand(100000,999999);
+				$params = array(
+					'sms_id'=>$sms['sms_id'],
+					'sms_type'=>$sms['sms_type'],
+					'role_id'=>$role['role_id'],
+					'role_type'=>$role['role_type'],
+					'sms_use'=>SmsLog::use_bank,
+					'code'=>$code,
+					'sms_source'=>SmsLog::source_pc,
+					'login_address'=>'',
+					'sms_error'=>Yii::app()->params['sms'][$bank]['error'],
+					'end_time'=>time()+Yii::app()->params['sms'][$bank]['time'],
+				);
+				if (Send_sms::send($phone, $params, strtr(Yii::app()->params['sms'][$bank]['content'], array('{code}'=>$code))))
+					return true;
+				else
+					$this->addError('bank_code', '操作过于频繁，请稍后操作！');
+			}
+			else
+				$this->addError('bank_code', '操作过于频繁，请稍后操作！');
+		}
+		return false;
+	}
+	
+	public function validatorSms()
+	{
+		return true;
+	}
+}

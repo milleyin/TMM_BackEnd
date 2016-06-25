@@ -1,0 +1,13 @@
+<?php
+/* @var $this Tmm_activesController */
+/* @var $model Actives */
+
+$this->breadcrumbs=array(
+	'管理页'=>array('admin'),
+	'创建页',
+);
+?>
+
+<h1>创建 Actives</h1>
+
+<?php $this->renderPartial('_form', array('model'=>$model)); ?>

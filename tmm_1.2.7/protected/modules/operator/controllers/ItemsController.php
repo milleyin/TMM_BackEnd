@@ -1,0 +1,84 @@
+<?php
+/**
+ * 
+ * @author Changhai Zhan
+ *	创建时间：2016-04-01 10:41:30 */
+class ItemsController extends OperatorMainController
+{
+	/**
+	 * 默认操作数据模型
+	 * @var string
+	 */
+	public $_class_model = 'Items';
+	
+	/**
+	 *管理页
+	 */
+	public function actionAdmin($store_id='')
+	{
+		$model = new Items('operatorSearch');
+		$model->unsetAttributes();  // 删除默认属性
+		
+		if (isset($_GET['Items']))
+			$model->attributes = $_GET['Items'];
+		if ($store_id != '')
+			$model->store_id = '=' . $store_id;
+
+		$this->render('admin', array(
+			'model'=>$model,
+		));
+	}
+	
+	/**
+	 * 提交审核
+	 * @param unknown $id
+	 */
+	public function actionConfirm($id)
+	{
+		//加载项目修改审核状态
+		if ($this->loadModel($id, '`status`=:status AND audit=:audit AND agent_id=:agent_id', array(
+					':status'=>Items::status_offline,
+					':agent_id'=>Yii::app()->operator->id,
+					':audit'=>Items::audit_draft,
+				))->updateByPk($id, array('audit'=>Items::audit_pending, 'up_time'=>time()))
+			)
+			$this->log('提交项目审核', ManageLog::operator, ManageLog::update);
+	
+		if ( !isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : $this->back(true));
+	}
+	
+	/**
+	 * 下线
+	 * @param integer $id
+	 */
+	public function actionDisable($id)
+	{	
+		if ($this->loadModel($id, '`status`=:status AND agent_id=:agent_id', array(
+					':status'=>Items::status_online,
+					':agent_id'=>Yii::app()->operator->id,
+				))->updateByPk($id, array('status'=>Items::status_offline, 'up_time'=>time()))
+			)
+			$this->log('下线项目', ManageLog::operator, ManageLog::update);
+		if (!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : $this->back(true));
+	}
+	
+	/**
+	 * 上线
+	 * @param integer $id
+	 */
+	public function actionStart($id)
+	{
+		if ($this->loadModel($id, '`status`=:status AND `audit`=:audit AND agent_id=:agent_id', array(
+					':status'=>Items::status_offline,
+					':audit'=>Items::audit_pass,
+					':agent_id'=>Yii::app()->operator->id,
+				))->updateByPk($id, array('status'=>Items::status_online, 'up_time'=>time()))
+			)
+			$this->log('上线项目', ManageLog::operator, ManageLog::update);
+	 		
+		if (!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : $this->back(true));		
+	}
+}

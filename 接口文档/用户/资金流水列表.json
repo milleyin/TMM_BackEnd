@@ -1,0 +1,94 @@
+
+//	需要登录
+//  /index.php?r=api/accountLog/index 
+//  GET
+
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "http://localhost/tmm/index.php?r=api/accountLog/index",
+            "next": "http://localhost/tmm/index.php?r=api/accountLog/index&page=2",
+            "selectedPage": 1,
+            "count": 8,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=api/accountLog/index"
+        },
+        "list_data": [
+            {
+                "name": "订单收益",						//类型名字
+                "value": "13",							//类型编号
+                "use_money": "+0.00",					//操作金额
+                "add_time": "2015-12-21 12:28:30",		//创建时间
+                "money": "5572.42",						//操作后的余额
+				"account_no":""							//流水单号
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "use_money": "+0.00",
+                "add_time": "2015-12-21 12:28:30",
+                "money": "5572.42"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "use_money": "+0.00",
+                "add_time": "2015-12-21 12:28:30",
+                "money": "5572.42"
+            },
+            {
+                "name": "觅趣收益",
+                "value": "14",
+                "use_money": "+99.88",
+                "add_time": "2015-12-21 12:28:30",
+                "money": "5672.30"
+            },
+            {
+                "name": "觅趣收益",
+                "value": "14",
+                "use_money": "+33.33",
+                "add_time": "2015-12-21 12:21:26",
+                "money": "5572.42"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "use_money": "+0.00",
+                "add_time": "2015-12-21 12:21:26",
+                "money": "5572.42"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "use_money": "+0.00",
+                "add_time": "2015-12-21 12:20:50",
+                "money": "5539.09"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "use_money": "+0.00",
+                "add_time": "2015-12-21 12:20:03",
+                "money": "5539.09"
+            },
+            {
+                "name": "订单收益",
+                "value": "13",
+                "use_money": "+0.00",
+                "add_time": "2015-12-21 12:16:44",
+                "money": "5539.09"
+            },
+            {
+                "name": "觅趣收益",
+                "value": "14",
+                "use_money": "+100.55",
+                "add_time": "2015-12-21 10:32:32",
+                "money": "5539.09"
+            }
+        ]
+    }
+}

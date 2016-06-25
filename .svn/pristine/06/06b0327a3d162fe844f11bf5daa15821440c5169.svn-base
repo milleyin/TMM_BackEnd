@@ -1,0 +1,234 @@
+<?php
+namespace app\admin\controllers;
+
+use AdminModulesController;
+
+/**
+ * @author Changhai Zhan
+ *	创建时间：2016-06-01 15:25:40 */
+class PadController extends AdminModulesController
+{
+	/**
+	 * 当前操作模型的名称
+	 * @var string
+	 */
+	public $_modelName = 'Pad';
+	
+	/**
+	 * 管理
+	 */
+	public function actionAdmin()
+	{
+		$model = new \Pad('search');
+		//清除默认值
+		$model->unsetAttributes();
+		if (isset($_GET['Pad']))
+			$model->attributes = $_GET['Pad'];
+
+		$this->render('admin', array(
+			'model'=>$model,
+		));
+	}
+	
+	/**
+	 * 查看
+	 * @param integer $id
+	 */
+	public function actionView($id)
+	{
+	    $criteria = new \CDbCriteria;
+	    $criteria->with = array(
+	    	'Pad_Store'=>array('id, name'),
+	    );
+		$this->render('view', array(
+			'model'=>$this->loadModelByPk($id, $criteria),
+		));
+	}
+
+	/**
+	 * 创建
+	 * @return Success page "view"
+	 */
+	public function actionCreate($id)
+	{
+		$model = new \Pad;
+		
+		$this->_modelName = 'Store';
+		$model->Pad_Store = $this->loadModelByPk($id, 'status=:status', array(':status'=>\Store::_STATUS_NORMAL));
+
+		$model->scenario = 'create';
+		$this->ajaxVerify($model, 'pad-form');
+
+		if (isset($_POST['Pad']))
+		{
+			$model->attributes = $_POST['Pad'];
+			$model->store_id = $model->Pad_Store->id;
+			if ($model->validate())
+			{
+			    $transaction = $model->dbConnection->beginTransaction();
+			    try
+			    {
+			        if ($model->save(false))
+			        {
+			            $model->Pad_Store->pad_count = new \CDbExpression('`pad_count`+1');
+			            if ( !$model->Pad_Store->update('pad_count'))
+			                throw new \Exception('保存角色体验店表展示屏统计错误');
+			        }
+			        else
+			            throw new \Exception('保存展示屏表错误');
+			        $transaction->commit();
+			    }
+			    catch(\Exception $e)
+			    {
+			        $transaction->rollBack();
+			    }
+			    $this->redirect(array('view', 'id'=>$model->id));
+			}
+		}
+
+		$this->render('create', array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * 更新
+	 * @param integer $id
+	 * @return Success page "view"
+	 */
+	public function actionUpdate($id)
+	{
+	    $criteria = new \CDbCriteria;
+	    $criteria->with = array(
+	    	'Pad_Store',
+	    );
+		$model = $this->loadModelByPk($id, $criteria);
+
+		$model->scenario = 'update';
+		$this->ajaxVerify($model, 'pad-form');
+
+		if (isset($_POST['Pad']))
+		{
+			$model->attributes = $_POST['Pad'];
+			if ($model->save())
+				$this->redirect(array('view', 'id'=>$model->id));
+		}
+
+		$this->render('update', array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * 删除
+	 * @param integer $id the ID of the model to be deleted
+	 * @return Success page "admin"
+	 */
+	public function actionDelete($id)
+	{
+		$model = $this->loadModelByPk($id, '`status`=:status', array(':status'=>\Pad::_STATUS_DISABLE));		
+		$transaction = $model->dbConnection->beginTransaction();
+		try
+		{
+		    if ($model->updateByPk($id, array('status'=>\Pad::_STATUS_DELETED)))
+		    {
+		        if ( !\Store::model()->updateByPk($model->store_id, array('pad_count'=>new \CDbExpression('`pad_count`-1'))))
+		            throw new \Exception('保存角色体验店表展示屏统计错误');
+		    }
+		    else
+		        throw new \Exception('保存展示屏表错误');
+		    $transaction->commit();
+		}
+		catch(\Exception $e)
+		{
+		    $transaction->rollBack();
+		}
+		if ( !isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+	
+	/**
+	 * 禁用
+	 * @param integer $id the ID of the model to be deleted
+	 * @return Success page "admin"
+	 */
+	public function actionDisable($id)
+	{
+		$this->loadModelByPk($id, '`status`=:status', array(':status'=>\Pad::_STATUS_NORMAL))->updateByPk($id, array('status'=>\Pad::_STATUS_DISABLE));
+		
+		if ( !isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+	
+	/**
+	 * 激活
+	 * @param integer $id the ID of the model to be deleted
+	 * @return Success page "admin"
+	 */
+	public function actionStart($id)
+	{
+		$this->loadModelByPk($id, '`status`=:status', array(':status'=>\Pad::_STATUS_DISABLE))->updateByPk($id, array('status'=>\Pad::_STATUS_NORMAL));
+		
+		if ( !isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+	
+	/**
+	 * 还原
+	 * @param integer $id the ID of the model to be deleted
+	 * @return Success page "admin"
+	 */
+	public function actionRestore($id)
+	{
+		$model = $this->loadModelByPk($id, '`status`=:status', array(':status'=>\Pad::_STATUS_DELETED));
+		if ( !($padModel = $this->loadModel('number=:number AND status!=:status', array(':number'=>$model->number, ':status'=>\Pad::_STATUS_DELETED), false)))
+		{
+		    $transaction = $model->dbConnection->beginTransaction();
+		    try
+		    {
+		        if ($model->updateByPk($id, array('status'=>\Pad::_STATUS_DISABLE)))
+		        {
+		            if ( !\Store::model()->updateByPk($model->store_id, array('pad_count'=>new \CDbExpression('`pad_count`+1'))))
+		                throw new \Exception('保存角色体验店表展示屏统计错误');
+		        }
+		        else
+		            throw new \Exception('保存展示屏表错误');
+		        $transaction->commit();
+		    }
+		    catch(\Exception $e)
+		    {
+		        $transaction->rollBack();
+		    }
+		}
+		else
+		   echo '该序列号：', \CHtml::encode($model->number), ' 已绑定其他体验店：', \CHtml::encode($model->name);
+		if ( !isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+	
+	/**
+	 * 检测是否正常
+	 * @param integer $id the ID of the model to be deleted
+	 * @return Success page "admin"
+	 */
+	public function actionState($id)
+	{
+	    $this->loadModelByPk($id, '`status`=:status AND state=:state', array(':status'=>\Pad::_STATUS_NORMAL, ':state'=>\Pad::PAD_STATE_NORMAL))->updateByPk($id, array('state'=>\Pad::PAD_STATE_DETECTION));
+	
+	    if ( !isset($_GET['ajax']))
+	        $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+	
+// 	/**
+// 	 * 清除记录
+// 	 * @param integer $id the ID of the model to be deleted
+// 	 * @return Success page "admin"
+// 	 */
+// 	public function actionClear($id)
+// 	{
+// 		$this->loadModelByPk($id, '`status`=:status', array(':status'=>\Pad::_STATUS_DELETED))->delete();
+		
+// 		if ( !isset($_GET['ajax']))
+// 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+// 	}
+}

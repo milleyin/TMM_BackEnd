@@ -1,0 +1,22 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/style.css" rel="stylesheet">
+</block>
+<block name="body">
+    <div class="wrap">
+        <img src="__IMG__/1080.png" class="article">
+        <div class="activity-ticket">
+            <div class="ticket-info">
+                <a href="{:U('reserve', array('type'=>1))}">
+                    <img class="ticket-img ticket-img-left" src="__IMG__/ticket1.png" alt="普通票" >
+                </a>
+                <a href="{:U('reserve', array('type'=>2))}">
+                    <img class="ticket-img" src="__IMG__/ticket2.png" alt="夜樱票">
+                </a>
+            </div>
+            <p class="activity-desc">
+                免票对象：身高1.3米以下（含1.3米）的儿童，持老年证，持有效证件的军人，持残疾人证，持导游证均免票。
+            </p>
+        </div>
+    </div>
+</block>

@@ -1,0 +1,73 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__STATIC__/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__CSS__/manage.css" rel="stylesheet">
+</block>
+<block name="body">
+    <div class="container-fluid" style="padding-top: 30px;">
+        <div class="table-responsive manage-table">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>日期</th>
+                    <th class="danger">售票（张）</th>
+                    <th class="danger">售票金额（元）</th>
+                    <th class="info">售普通票（张）</th>
+                    <th class="info">售普通票金额（元）</th>
+                    <th class="success">售夜樱票（张）</th>
+                    <th class="success">售夜樱票金额（元）</th>
+                    <th class="danger">兑票（张）</th>
+                    <th class="danger">兑票金额（元）</th>
+                    <th class="info">兑普通票（张）</th>
+                    <th class="info">兑普通票金额（元）</th>
+                    <th class="success">兑夜樱票（张）</th>
+                    <th class="success">兑夜樱票金额（元）</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <empty name="info">
+                    <tr>
+                        <td colspan="13">暂无数据...</td>
+                    </tr>
+
+                    <else />
+
+                    <foreach name="info" item="vo" >
+                        <tr>
+                            <td>{$vo.days}</td>
+                            <td>{$vo.sell_number}</td>
+                            <td>{$vo.sell_price}</td>
+                            <td>{$vo.normal_number}</td>
+                            <td>{$vo.normal_price}</td>
+                            <td>{$vo.yy_number}</td>
+                            <td>{$vo.yy_price}</td>
+                            <td>{$vo.consume_number}</td>
+                            <td>{$vo.consume_price}</td>
+                            <td>{$vo.consume_normal_number}</td>
+                            <td>{$vo.consume_normal_price}</td>
+                            <td>{$vo.consume_yy_number}</td>
+                            <td>{$vo.consume_yy_price}</td>
+                        </tr>
+                    </foreach>
+
+                    <tr>
+                        <td colspan="13">
+                            总售票：{$totalArr.total_number} 张，
+                            总兑票：{$totalArr.total_consume_number} 张，
+                            总计金额：<?php echo number_format($totalArr['total_price'], 2); ?> 元，
+                            总兑票金额：<?php echo number_format($totalArr['total_consume_price'], 2); ?> 元
+                        </td>
+                    </tr>
+
+                </empty>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+    </script>
+</block>

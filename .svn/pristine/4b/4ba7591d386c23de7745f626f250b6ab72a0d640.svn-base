@@ -1,0 +1,27 @@
+<extend name="Base/common"/>
+<block name="style">
+
+</block>
+<block name="body">
+<body class="orderlist">
+    <div class="order-list">
+
+    <volist name="addressList" id="vo">
+        <div class="order-item">
+            <div class="top">收货人{$key + 1}</div>
+            <div class="content">
+                <div class="tit"><span class="name">{$vo.cnee}</span><span class="phone">{$vo.phone}</span></div>
+                <div class="num">{$vo.number}箱 X<eq name="vo.specs_id" value="1">5kg</eq><eq name="vo.specs_id" value="2">3kg</eq>
+                </div>
+                <div class="address">{$vo.province|getRegionName=###}{$vo.city|getRegionName=###}{$vo.area|getRegionName=###}<br>{$vo.address}</div>
+            </div>
+        </div>
+    </volist>
+        <div class="modify"> <a class="modify-people" href="{:U('Card/editMailing', array('id' => $orderInfo['id'],'fromType' => $fromType))}">修改收货人</a></div>
+    </div>
+
+
+    <div class="totalprice">邮寄费用 ￥<span class="price">{$orderInfo['total_price']}</span></div>
+    <a href="{:U('Order/pay', array('id'=>$orderInfo['id']))}" class="button">确认支付</a>
+</body>
+</block>

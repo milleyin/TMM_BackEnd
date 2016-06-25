@@ -1,0 +1,82 @@
+<?php
+/**
+ * 控制台总控制器
+ * @author Changhai Zhan
+ * php yiic.php CommandName ActionName --Option1=Value1 --Option2=Value2 ...
+ */
+class ConsoleCommand extends CConsoleCommand
+{
+	/**
+	 * 运行是正确的
+	 * @var unknown
+	 */
+	const right = 0;
+	/**
+	 * 运行是错误的
+	 * @var unknown
+	 */
+	const error = 1;
+	/**
+	 * 运行的日志
+	 * @var unknown
+	 */
+	public $logText = array();
+	
+	/**
+	 * 初始化
+	 * @see CConsoleCommand::init()
+	 */
+	public function init()
+	{
+		parent::init();
+	}
+	
+	/**
+	 * 之前
+	 * @see CConsoleCommand::beforeAction()
+	 */
+	public function beforeAction($action, $params)
+	{
+		if(parent::beforeAction($action, $params))
+		{
+			$this->logText[] = "##########################\r\n";
+			$this->logText[] = '[控制台开始] :' .$this->date_microtime();
+			return true;
+		}
+		else 
+			return false;
+	}
+	
+	/**
+	 * 之后
+	 * @see CConsoleCommand::afterAction()
+	 */
+	public function afterAction($action,$params,$exitCode=0)
+	{
+		$exitCode = parent::afterAction($action, $params, $exitCode);
+		$this->logText[] = '[控制台结束] :' .$this->date_microtime();
+		$logText = implode($this->logText, "\r\n");
+		$logText .= "\r\n##########################\r\n";
+		if ($exitCode != self::right)
+			Yii::log($logText, 'error', ucfirst($this->getName()).ucfirst($action));
+		else			
+			Yii::log($logText, 'info', ucfirst($this->getName()).ucfirst($action));
+		echo $logText;
+	}
+	
+	/**
+	 * 格式化时间戳，精确到毫秒，x代表毫秒
+	 * @param string $format
+	 * @param string $time
+	 * @param string $x
+	 * @return mixed date('Y-m-d H:i:s'):[0-9999]
+	 */
+	public function date_microtime($format='Y-m-d H:i:s:x', $x='x')
+	{
+		list($usec, $sec) = explode(' ', microtime());
+		$data = explode('.', ((float)$usec + (float)$sec));
+		list($usec, $sec) = isset($data[0], $data[1]) ? $data : array($data[0], 0);
+		$date = date($format, $usec);
+		return str_replace($x, $sec, $date);
+	}
+}

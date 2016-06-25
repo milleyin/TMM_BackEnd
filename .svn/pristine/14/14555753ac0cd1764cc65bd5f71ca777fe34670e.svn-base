@@ -1,0 +1,572 @@
+2016/06/03 10:47:27 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "favicon.ico"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('favicon.ico')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/favicon.ico
+HTTP_REFERER=http://pad.cn/admin/login/index.html
+---
+2016/06/03 11:32:26 [error] [php] Object of class Store could not be converted to string (D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php:52)
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\StoreController->runAction()
+#1 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\StoreController->runActionWithFilters()
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\StoreController->run()
+#3 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#4 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#5 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/store/create.html
+2016/06/03 17:17:11 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'CSRF token 无法被验证.' in D:\wamp\www\pad\framework\web\CHttpRequest.php:1355
+Stack trace:
+#0 D:\wamp\www\pad\framework\base\CComponent.php(561): CHttpRequest->validateCsrfToken(Object(CEvent))
+#1 D:\wamp\www\pad\framework\base\CApplication.php(212): CComponent->raiseEvent('onBeginRequest', Object(CEvent))
+#2 D:\wamp\www\pad\framework\base\CApplication.php(183): CApplication->onBeginRequest(Object(CEvent))
+#3 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#4 {main}
+REQUEST_URI=/admin/area/drop.html
+HTTP_REFERER=http://pad.cn/admin/store/create.html
+---
+2016/06/03 17:18:59 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "guii"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('guii')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/guii
+---
+2016/06/03 17:38:22 [error] [php] Missing argument 3 for CHtml::listOptions(), called in D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\AreaController.php on line 57 and defined (D:\wamp\www\pad\framework\web\helpers\CHtml.php:2487)
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#1 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\AreaController->runAction()
+#2 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\AreaController->runActionWithFilters()
+#3 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\AreaController->run()
+#4 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#5 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#6 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/area/drop.html
+2016/06/03 17:40:07 [error] [php] Missing argument 3 for CHtml::listOptions(), called in D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\AreaController.php on line 57 and defined (D:\wamp\www\pad\framework\web\helpers\CHtml.php:2487)
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#1 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\AreaController->runAction()
+#2 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\AreaController->runActionWithFilters()
+#3 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\AreaController->run()
+#4 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#5 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#6 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/area/drop.html
+2016/06/03 17:45:48 [error] [php] Only variables should be passed by reference (D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\AreaController.php:57)
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\AreaController->runAction()
+#1 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\AreaController->runActionWithFilters()
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\AreaController->run()
+#3 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#4 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#5 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/area/drop.html
+2016/06/03 18:43:27 [error] [exception.CDbException] exception 'CDbException' with message 'AR类 "Store" 的关联 "Store_Password" 设定了一个无效的外键 "role_id"。在数据表 "pad_store" 中没有这样的列。' in D:\wamp\www\pad\framework\db\ar\CActiveFinder.php:1101
+Stack trace:
+#0 D:\wamp\www\pad\framework\db\ar\CActiveFinder.php(1072): CJoinElement->joinOneMany(Object(CJoinElement), Array, Object(CJoinElement), Object(CJoinElement))
+#1 D:\wamp\www\pad\framework\db\ar\CActiveFinder.php(1317): CJoinElement->getJoinCondition()
+#2 D:\wamp\www\pad\framework\db\ar\CActiveFinder.php(795): CJoinQuery->join(Object(CJoinElement))
+#3 D:\wamp\www\pad\framework\db\ar\CActiveFinder.php(438): CJoinElement->buildQuery(Object(CJoinQuery))
+#4 D:\wamp\www\pad\framework\db\ar\CActiveFinder.php(68): CJoinElement->find(Object(CDbCriteria))
+#5 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(1361): CActiveFinder->query(Object(CDbCriteria), false)
+#6 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(1491): CActiveRecord->query(Object(CDbCriteria))
+#7 D:\wamp\www\pad\app\pad\protected\components\Controller.php(235): CActiveRecord->findByPk('2', Object(CDbCriteria), Array)
+#8 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(116): Controller->loadModelByPk('2', Object(CDbCriteria))
+#9 [internal function]: app\admin\controllers\StoreController->actionUpdate('2')
+#10 D:\wamp\www\pad\framework\web\actions\CAction.php(109): ReflectionMethod->invokeArgs(Object(app\admin\controllers\StoreController), Array)
+#11 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(app\admin\controllers\StoreController), Object(ReflectionMethod), Array)
+#12 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#13 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#14 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#15 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('update')
+#16 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/store/upd...')
+#17 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#18 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#19 {main}
+REQUEST_URI=/admin/store/update.html?id=2
+HTTP_REFERER=http://pad.cn/admin/store/admin.html
+---
+2016/06/03 18:45:19 [error] [exception.CDbException] exception 'CDbException' with message 'AR类 "Store" 的关联 "Store_Password" 设定了一个无效的外键 "role_id"。在数据表 "pad_store" 中没有这样的列。' in D:\wamp\www\pad\framework\db\ar\CActiveFinder.php:1101
+Stack trace:
+#0 D:\wamp\www\pad\framework\db\ar\CActiveFinder.php(1072): CJoinElement->joinOneMany(Object(CJoinElement), Array, Object(CJoinElement), Object(CJoinElement))
+#1 D:\wamp\www\pad\framework\db\ar\CActiveFinder.php(1317): CJoinElement->getJoinCondition()
+#2 D:\wamp\www\pad\framework\db\ar\CActiveFinder.php(795): CJoinQuery->join(Object(CJoinElement))
+#3 D:\wamp\www\pad\framework\db\ar\CActiveFinder.php(438): CJoinElement->buildQuery(Object(CJoinQuery))
+#4 D:\wamp\www\pad\framework\db\ar\CActiveFinder.php(68): CJoinElement->find(Object(CDbCriteria))
+#5 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(1361): CActiveFinder->query(Object(CDbCriteria), false)
+#6 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(1491): CActiveRecord->query(Object(CDbCriteria))
+#7 D:\wamp\www\pad\app\pad\protected\components\Controller.php(235): CActiveRecord->findByPk('2', Object(CDbCriteria), Array)
+#8 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(116): Controller->loadModelByPk('2', Object(CDbCriteria))
+#9 [internal function]: app\admin\controllers\StoreController->actionUpdate('2')
+#10 D:\wamp\www\pad\framework\web\actions\CAction.php(109): ReflectionMethod->invokeArgs(Object(app\admin\controllers\StoreController), Array)
+#11 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(app\admin\controllers\StoreController), Object(ReflectionMethod), Array)
+#12 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#13 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#14 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#15 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('update')
+#16 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/store/upd...')
+#17 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#18 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#19 {main}
+REQUEST_URI=/admin/store/update.html?id=2
+HTTP_REFERER=http://pad.cn/admin/store/admin.html
+---
+2016/06/03 18:45:21 [error] [exception.CDbException] exception 'CDbException' with message 'AR类 "Store" 的关联 "Store_Password" 设定了一个无效的外键 "role_id"。在数据表 "pad_store" 中没有这样的列。' in D:\wamp\www\pad\framework\db\ar\CActiveFinder.php:1101
+Stack trace:
+#0 D:\wamp\www\pad\framework\db\ar\CActiveFinder.php(1072): CJoinElement->joinOneMany(Object(CJoinElement), Array, Object(CJoinElement), Object(CJoinElement))
+#1 D:\wamp\www\pad\framework\db\ar\CActiveFinder.php(1317): CJoinElement->getJoinCondition()
+#2 D:\wamp\www\pad\framework\db\ar\CActiveFinder.php(795): CJoinQuery->join(Object(CJoinElement))
+#3 D:\wamp\www\pad\framework\db\ar\CActiveFinder.php(438): CJoinElement->buildQuery(Object(CJoinQuery))
+#4 D:\wamp\www\pad\framework\db\ar\CActiveFinder.php(68): CJoinElement->find(Object(CDbCriteria))
+#5 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(1361): CActiveFinder->query(Object(CDbCriteria), false)
+#6 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(1491): CActiveRecord->query(Object(CDbCriteria))
+#7 D:\wamp\www\pad\app\pad\protected\components\Controller.php(235): CActiveRecord->findByPk('2', Object(CDbCriteria), Array)
+#8 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(116): Controller->loadModelByPk('2', Object(CDbCriteria))
+#9 [internal function]: app\admin\controllers\StoreController->actionUpdate('2')
+#10 D:\wamp\www\pad\framework\web\actions\CAction.php(109): ReflectionMethod->invokeArgs(Object(app\admin\controllers\StoreController), Array)
+#11 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(app\admin\controllers\StoreController), Object(ReflectionMethod), Array)
+#12 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#13 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#14 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#15 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('update')
+#16 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/store/upd...')
+#17 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#18 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#19 {main}
+REQUEST_URI=/admin/store/update.html?id=2
+HTTP_REFERER=http://pad.cn/admin/store/admin.html
+---
+2016/06/03 18:45:35 [error] [php] Object of class Password could not be converted to string (D:\wamp\www\pad\framework\web\widgets\CActiveForm.php:562)
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CBaseController.php(95): app\admin\controllers\StoreController->renderInternal()
+#1 D:\wamp\www\pad\framework\web\CController.php(869): app\admin\controllers\StoreController->renderFile()
+#2 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\store\update.php(14): app\admin\controllers\StoreController->renderPartial()
+#3 D:\wamp\www\pad\framework\web\CBaseController.php(126): require()
+#4 D:\wamp\www\pad\framework\web\CBaseController.php(95): app\admin\controllers\StoreController->renderInternal()
+#5 D:\wamp\www\pad\framework\web\CController.php(869): app\admin\controllers\StoreController->renderFile()
+#6 D:\wamp\www\pad\framework\web\CController.php(782): app\admin\controllers\StoreController->renderPartial()
+#7 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(149): app\admin\controllers\StoreController->render()
+#8 unknown(0): app\admin\controllers\StoreController->actionUpdate()
+#9 D:\wamp\www\pad\framework\web\actions\CAction.php(109): ReflectionMethod->invokeArgs()
+#10 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#11 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#12 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\StoreController->runAction()
+#13 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\StoreController->runActionWithFilters()
+#14 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\StoreController->run()
+#15 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#16 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#17 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/store/update.html?id=2
+2016/06/03 19:06:13 [error] [exception.CException] exception 'CException' with message '属性 "Store.t.up_time" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(145): CComponent->__get('t.up_time')
+#1 D:\wamp\www\pad\app\pad\protected\extensions\rewrites\ActiveRecord.php(47): CActiveRecord->__get('t.up_time')
+#2 D:\wamp\www\pad\app\pad\protected\models\Store.php(134): ActiveRecord->timeSearch('t.up_time', Object(CDbCriteria))
+#3 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\store\admin.php(98): Store->search()
+#4 D:\wamp\www\pad\framework\web\CBaseController.php(126): require('D:\wamp\www\pad...')
+#5 D:\wamp\www\pad\framework\web\CBaseController.php(95): CBaseController->renderInternal('D:\wamp\www\pad...', Array, true)
+#6 D:\wamp\www\pad\framework\web\CController.php(869): CBaseController->renderFile('D:\wamp\www\pad...', Array, true)
+#7 D:\wamp\www\pad\framework\web\CController.php(782): CController->renderPartial('admin', Array, true)
+#8 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(30): CController->render('admin', Array)
+#9 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\StoreController->actionAdmin()
+#10 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#12 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('admin')
+#14 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/store/adm...')
+#15 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#16 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#17 {main}
+REQUEST_URI=/admin/store/admin.html
+HTTP_REFERER=http://pad.cn/admin/store/admin.html
+---
+2016/06/03 19:08:05 [error] [exception.CException] exception 'CException' with message '属性 "Store.t.up_time" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(145): CComponent->__get('t.up_time')
+#1 D:\wamp\www\pad\app\pad\protected\extensions\rewrites\ActiveRecord.php(51): CActiveRecord->__get('t.up_time')
+#2 D:\wamp\www\pad\app\pad\protected\models\Store.php(134): ActiveRecord->timeSearch('t.up_time', Object(CDbCriteria))
+#3 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\store\admin.php(98): Store->search()
+#4 D:\wamp\www\pad\framework\web\CBaseController.php(126): require('D:\wamp\www\pad...')
+#5 D:\wamp\www\pad\framework\web\CBaseController.php(95): CBaseController->renderInternal('D:\wamp\www\pad...', Array, true)
+#6 D:\wamp\www\pad\framework\web\CController.php(869): CBaseController->renderFile('D:\wamp\www\pad...', Array, true)
+#7 D:\wamp\www\pad\framework\web\CController.php(782): CController->renderPartial('admin', Array, true)
+#8 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(30): CController->render('admin', Array)
+#9 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\StoreController->actionAdmin()
+#10 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#12 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('admin')
+#14 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/store/adm...')
+#15 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#16 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#17 {main}
+REQUEST_URI=/admin/store/admin.html
+HTTP_REFERER=http://pad.cn/admin/store/admin.html
+---
+2016/06/03 19:08:06 [error] [exception.CException] exception 'CException' with message '属性 "Store.t.up_time" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(145): CComponent->__get('t.up_time')
+#1 D:\wamp\www\pad\app\pad\protected\extensions\rewrites\ActiveRecord.php(51): CActiveRecord->__get('t.up_time')
+#2 D:\wamp\www\pad\app\pad\protected\models\Store.php(134): ActiveRecord->timeSearch('t.up_time', Object(CDbCriteria))
+#3 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\store\admin.php(98): Store->search()
+#4 D:\wamp\www\pad\framework\web\CBaseController.php(126): require('D:\wamp\www\pad...')
+#5 D:\wamp\www\pad\framework\web\CBaseController.php(95): CBaseController->renderInternal('D:\wamp\www\pad...', Array, true)
+#6 D:\wamp\www\pad\framework\web\CController.php(869): CBaseController->renderFile('D:\wamp\www\pad...', Array, true)
+#7 D:\wamp\www\pad\framework\web\CController.php(782): CController->renderPartial('admin', Array, true)
+#8 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(30): CController->render('admin', Array)
+#9 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\StoreController->actionAdmin()
+#10 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#12 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('admin')
+#14 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/store/adm...')
+#15 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#16 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#17 {main}
+REQUEST_URI=/admin/store/admin.html
+HTTP_REFERER=http://pad.cn/admin/store/admin.html
+---
+2016/06/03 19:15:58 [info] [Store] 
+2016/06/03 19:16:09 [info] [Store] 
+2016/06/03 19:16:15 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:16:38 [info] [Store] array (
+  'province' => '21',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:16:48 [info] [Store] array (
+  'province' => '21',
+  'city' => '22',
+  'district' => '',
+)
+2016/06/03 19:16:50 [info] [Store] array (
+  'province' => '21',
+  'city' => '22',
+  'district' => '24',
+)
+2016/06/03 19:16:57 [info] [Store] array (
+  'province' => '439',
+  'city' => '22',
+  'district' => '24',
+)
+2016/06/03 19:17:32 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '24',
+)
+2016/06/03 19:17:48 [info] [Store] array (
+  'province' => '1',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:18:53 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:18:54 [info] [Store] array (
+  'province' => '1',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:18:55 [info] [Store] array (
+  'province' => '1',
+  'city' => '2',
+  'district' => '',
+)
+2016/06/03 19:18:56 [info] [Store] array (
+  'province' => '1',
+  'city' => '2',
+  'district' => '4',
+)
+2016/06/03 19:18:58 [info] [Store] array (
+  'province' => '561',
+  'city' => '2',
+  'district' => '4',
+)
+2016/06/03 19:19:00 [info] [Store] array (
+  'province' => '561',
+  'city' => '640',
+  'district' => '4',
+)
+2016/06/03 19:19:02 [info] [Store] array (
+  'province' => '561',
+  'city' => '640',
+  'district' => '643',
+)
+2016/06/03 19:19:04 [info] [Store] array (
+  'province' => '',
+  'city' => '640',
+  'district' => '643',
+)
+2016/06/03 19:19:06 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:19:08 [info] [Store] array (
+  'province' => '1',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:19:10 [info] [Store] array (
+  'province' => '61',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:19:11 [info] [Store] array (
+  'province' => '1',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:19:13 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:19:16 [info] [Store] array (
+  'province' => '40',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:19:17 [info] [Store] array (
+  'province' => '40',
+  'city' => '41',
+  'district' => '',
+)
+2016/06/03 19:19:18 [info] [Store] array (
+  'province' => '40',
+  'city' => '41',
+  'district' => '45',
+)
+2016/06/03 19:19:21 [info] [Store] array (
+  'province' => '690',
+  'city' => '41',
+  'district' => '45',
+)
+2016/06/03 19:25:13 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:25:14 [info] [Store] array (
+  'province' => '21',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:25:17 [info] [Store] array (
+  'province' => '21',
+  'city' => '22',
+  'district' => '',
+)
+2016/06/03 19:25:18 [info] [Store] array (
+  'province' => '21',
+  'city' => '22',
+  'district' => '24',
+)
+2016/06/03 19:25:20 [info] [Store] array (
+  'province' => '439',
+  'city' => '',
+  'district' => '24',
+)
+2016/06/03 19:25:58 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:25:59 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:25:59 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:26:00 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:26:00 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:26:00 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:26:01 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:26:02 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:26:06 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:26:10 [info] [Store] array (
+  'province' => '1',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:26:11 [info] [Store] array (
+  'province' => '1',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:26:12 [error] [php] Undefined variable: area (D:\wamp\www\pad\app\pad\protected\models\Store.php:131)
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CBaseController.php(95): app\admin\controllers\StoreController->renderInternal()
+#1 D:\wamp\www\pad\framework\web\CController.php(869): app\admin\controllers\StoreController->renderFile()
+#2 D:\wamp\www\pad\framework\web\CController.php(782): app\admin\controllers\StoreController->renderPartial()
+#3 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(30): app\admin\controllers\StoreController->render()
+#4 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\StoreController->actionAdmin()
+#5 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#6 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\StoreController->runAction()
+#7 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\StoreController->runActionWithFilters()
+#8 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\StoreController->run()
+#9 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#10 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#11 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/store/admin.html?Store%5Bid%5D=&Store%5Bphone%5D=&Store%5Bstore_name%5D=&Store%5Bname%5D=&Store%5Btelephone%5D=&Store%5Bpad_count%5D=&Store%5Bprovince%5D=1&Store%5Bcity%5D=2&Store%5Bdistrict%5D=&Store%5Bup_time%5D=&Store%5Badd_time%5D=&Store%5Bstatus%5D=&Store_page=1&Store_sort=city&ajax=store-grid
+2016/06/03 19:26:16 [error] [php] Undefined variable: area (D:\wamp\www\pad\app\pad\protected\models\Store.php:131)
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CBaseController.php(95): app\admin\controllers\StoreController->renderInternal()
+#1 D:\wamp\www\pad\framework\web\CController.php(869): app\admin\controllers\StoreController->renderFile()
+#2 D:\wamp\www\pad\framework\web\CController.php(782): app\admin\controllers\StoreController->renderPartial()
+#3 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(30): app\admin\controllers\StoreController->render()
+#4 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\StoreController->actionAdmin()
+#5 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#6 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\StoreController->runAction()
+#7 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\StoreController->runActionWithFilters()
+#8 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\StoreController->run()
+#9 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#10 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#11 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/store/admin.html?Store%5Bid%5D=&Store%5Bphone%5D=&Store%5Bstore_name%5D=&Store%5Bname%5D=&Store%5Btelephone%5D=&Store%5Bpad_count%5D=&Store%5Bprovince%5D=102&Store%5Bcity%5D=2&Store%5Bdistrict%5D=&Store%5Bup_time%5D=&Store%5Badd_time%5D=&Store%5Bstatus%5D=&Store_page=1&Store_sort=city&ajax=store-grid
+2016/06/03 19:26:39 [info] [Store] array (
+  'province' => '61',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:26:41 [info] [Store] array (
+  'province' => '61',
+  'city' => '62',
+  'district' => '',
+)
+2016/06/03 19:26:42 [info] [Store] array (
+  'province' => '1310',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:26:43 [info] [Store] array (
+  'province' => '1310',
+  'city' => '1334',
+  'district' => '',
+)
+2016/06/03 19:26:44 [info] [Store] array (
+  'province' => '1310',
+  'city' => '1334',
+  'district' => '1336',
+)
+2016/06/03 19:26:45 [info] [Store] array (
+  'province' => '1',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:26:53 [info] [Store] array (
+  'province' => '61',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:29:50 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:29:53 [info] [Store] array (
+  'province' => '102',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:29:54 [info] [Store] array (
+  'province' => '102',
+  'city' => '144',
+  'district' => '',
+)
+2016/06/03 19:29:55 [info] [Store] array (
+  'province' => '102',
+  'city' => '144',
+  'district' => '147',
+)
+2016/06/03 19:31:06 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:31:08 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:31:52 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:32:24 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:32:25 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:32:27 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:32:30 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:32:39 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:33:48 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:35:09 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:35:22 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)

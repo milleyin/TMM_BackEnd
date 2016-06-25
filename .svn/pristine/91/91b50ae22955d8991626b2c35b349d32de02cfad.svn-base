@@ -1,0 +1,18 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/style.css" rel="stylesheet">
+</block>
+<block name="body">
+    <div class="public-wrap">
+        <div class="public-tip">长按下方二维码继续购票</div>
+        <img class="public-code" src="__IMG__/code.jpg">
+        <ul class="public-desc">
+            <li>1、关注田觅觅微信公众号</li>
+            <li>2、点击菜单“成都樱花节”→“在线购票”</li>
+            <li>3、选择门票类型，在线支付</li>
+            <li>4、完成购票后妥善保存二维码，以便现场兑票入园</li>
+            <li>5、门票查询：点击菜单“成都樱花节”→“门票查询”</li>
+            <li>6、如有疑问，请致电客服400-019-7090</li>
+        </ul>
+    </div>
+</block>

@@ -1,0 +1,70 @@
+	/**
+	 *	商家确认状态   已接收被其他拒收
+	 * @var unknown
+	 */
+	const is_shops_yes_not=-3;
+	/**
+	 *  商家确认状态   待接收被其他拒收
+	 * @var unknown
+	 */
+	const is_shops_query_not=-2;
+	/**
+	 * 商家确认状态   已拒收
+	 * @var unknown
+	 */
+	const is_shops_store_not=-1;
+	/**
+	 *	商家确认状态   待接收
+	 * @var unknown
+	 */
+	const is_shops_store_query=0;
+	/**
+	 * 商家确认状态   已接收
+	 * @var unknown
+	 */
+	const is_shops_store_yes=1;
+	/**
+	 * 解释字段 is_shops 的含义
+	 * @var array
+	 */
+	public static $_is_shops=array(
+				-3=>'已接收(被其他拒收)',
+				-2=>'待接收(被其他拒收)',
+				-1=>'已拒收',
+				0=>'待接收',
+				1=>'已接收',
+	);
+	/***********************项目消费状态*****************************/
+	
+	/**
+	 *  无效
+	 * @var unknown
+	 */
+	const is_barcode_invalid=-2;
+	/**
+	 * 已过期
+	 * @var unknown
+	 */
+	const is_barcode_past=-1;
+	/**
+	 *  已消费
+	 * @var unknown
+	 */
+	const is_barcode_yes=0;
+	/**
+	 *  未消费 有效
+	 * @var unknown
+	 */
+	const is_barcode_valid=1;	
+	/**
+	 *  解释字段 is_barcode 的含义
+	 * @var unknown
+	 */
+	public static $_is_barcode=array(
+			-2=>'无效',
+			-1=>'已过期',
+			0=>'已消费',
+			1=>'未消费'		
+	);
+	
+	/**************************************************************************/

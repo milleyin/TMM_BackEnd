@@ -1,0 +1,14 @@
+<extend name="Base/common"/>
+<block name="style">
+</block>
+<block name="body">
+    <body>
+        <div class="qrcode">
+            <p class="title">长按以下二维码继续购买</p>
+            <img src="__IMG__/code.jpg">
+            <p class="txt">1、长按识别二维码图片，关注“田觅觅”公众号。</p>
+            <p class="txt">2、进入公众号后，点击菜单栏【荔枝文化节】打开活动页面，就可以继续购买了！</p>
+            <p class="txt">3、如有疑问，请致电客服400-019-7090</p>
+        </div>
+    </body>
+</block>

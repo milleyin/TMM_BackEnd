@@ -1,0 +1,276 @@
+<?php
+/* @var $this BankCardController */
+/* @var $model BankCard */
+
+$this->breadcrumbs = array(
+	'垃圾回收页',
+);
+?>
+<h1>垃圾回收页 Bank Cards</h1>
+
+<?php
+  $Confirmation= "你确定执行此项操作？";
+	if(Yii::app()->request->enableCsrfValidation)
+	{
+		$csrfTokenName = Yii::app()->request->csrfTokenName;
+		$csrfToken = Yii::app()->request->csrfToken;
+		$csrf = "\n\t\tdata:{ '$csrfTokenName':'$csrfToken'},";
+	}else
+		$csrf = '';
+$click_alert=<<<"EOD"
+function(){ 
+	if(!confirm("$Confirmation")) return false; 
+	var th=this;  
+	var afterDelete=function(link,success,data){ if(success) alert(data);};  
+	$.fn.yiiGridView.update('bank-card-grid',{  
+	type:'POST',
+	url:$(this).attr('href'),$csrf
+	success:function(data){
+	$.fn.yiiGridView.update('bank-card-grid');  
+	   afterDelete(th,true,data);  
+	},
+	error:function(XHR){
+	   return afterDelete(th,false,XHR);
+	}
+  });
+    return false;
+}
+EOD;
+
+$click=<<<"EOD"
+function() {  
+	if(!confirm("$Confirmation")) return false;
+	var th = this,
+	afterDelete = function(){};
+	jQuery('#bank-card-grid').yiiGridView('update', {
+		type: 'POST',
+		url: jQuery(this).attr('href'),$csrf
+		success: function(data) {
+			jQuery('#bank-card-grid').yiiGridView('update');
+			afterDelete(th, true, data);
+		},
+		error: function(XHR) {
+			return afterDelete(th, false, XHR);
+		}
+});
+    return false;
+}
+EOD;
+
+$this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'bank-card-grid',
+	'dataProvider'=>$model,
+	'enableHistory'=>true,
+	'columns'=>array(
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'id',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("id").":".$data->id
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'manage_id',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("manage_id").":".$data->manage_id
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'manage_who',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("manage_who").":".$data->manage_who
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'card_type',
+				'value'=>'$data::$_card_type[$data->card_type]',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("card_type").":".$data::$_card_type[$data->card_type]
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'card_id',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("card_id").":".$data->card_id
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'user_id',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("user_id").":".$data->user_id
+				'),
+		),
+		/*
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'store_id',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("store_id").":".$data->store_id
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'agent_id',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("agent_id").":".$data->agent_id
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'bank_id',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("bank_id").":".$data->bank_id
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'bank_name',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("bank_name").":".$data->bank_name
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'bank_branch',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("bank_branch").":".$data->bank_branch
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'bank_code',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("bank_code").":".$data->bank_code
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'bank_type',
+				'value'=>'$data::$_bank_type[$data->bank_type]',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("bank_type").":".$data::$_bank_type[$data->bank_type]
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'bank_identity',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("bank_identity").":".$data->bank_identity
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'sort',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("sort").":".$data->sort
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'is_default',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("is_default").":".$data->is_default
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'is_verify',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+	   				$data->getAttributeLabel("is_verify").":".$data->is_verify
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'add_time',
+				'type'=>'datetime',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("add_time").":".Yii::app()->format->FormatDate($data->add_time)
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'up_time',
+				'type'=>'datetime',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("up_time").":".Yii::app()->format->FormatDate($data->up_time)
+				'),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'name'=>'status',
+				'value'=>'$data::$_status[$data->status]',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>'
+					$data->getAttributeLabel("status").":".$data::$_status[$data->status]
+				'),
+		),
+		*/
+		array(
+			'class'=>'CButtonColumn',
+			'header'=>'操 作',
+			'template'=>'{view}{restore}{delete}',
+			'buttons'=>array(
+					'view'=>array(
+						'options'=>array('style'=>'padding:0 8px 0 0;'),
+					),
+					'restore'=>array(
+						'label'=>'还原',
+						'url'=>'Yii::app()->createUrl("/operator/bankCard/restore", array("id"=>$data->id))',
+						'click'=>$click,
+						'options'=>array('style'=>'padding:0 8px 0 0;'),
+					),
+					'delete'=>array(
+						'label'=>'彻底删除',
+						'options'=>array('style'=>'padding:0 8px 0 0;'),
+						'url'=>'Yii::app()->createUrl("/operator/bankCard/clear", array("id"=>$data->id))',			
+					),
+			),
+			'headerHtmlOptions'=>array('style'=>'text-align:center;width:150px;'),
+		),
+	),
+)); 
+?>

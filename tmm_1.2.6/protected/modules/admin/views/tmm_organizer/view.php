@@ -1,0 +1,198 @@
+<?php
+/* @var $this Tmm_organizerController */
+/* @var $model Organizer */
+if($model->Organizer_User->is_organizer)
+	$this->breadcrumbs=array(
+		'代理商管理页'=>array('admin'),
+		$model->Organizer_User->phone,
+	);
+else 
+	$this->breadcrumbs=array(
+			'用户管理页'=>array('/admin/tmm_user/admin'),
+			$model->Organizer_User->phone,
+	);
+?>
+<h1><?php echo $model->Organizer_User->is_organizer?'查看':'审核'?>代理商<font color='#eb6100'><?php echo CHtml::encode($model->Organizer_User->phone.($model->Organizer_User->audit == User::audit_nopass ? ' (未通过原因：' . AuditLog::get_audit_log(AuditLog::organizer,$model->id)->info.')' : ''));?></font></h1>
+
+<?php 		
+$this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		array(
+				'name'=>'id',
+		),
+		array(
+				'name'=>'Organizer_User.nickname',
+		),
+		array(
+				'name'=>'Organizer_User.gender',
+				'value'=>User::$_gender[$model->Organizer_User->gender],
+		),
+		array(
+				'name'=>'Organizer_User.phone',
+		),
+		array(
+				'name'=>'firm_name',
+		),
+		array(
+				'name'=>'firm_phone',
+		),
+		array(
+				'name'=>'firm_postcode',
+		),
+		array(
+				'name'=>'area_id_p',
+				'value'=>$model->Organizer_area_id_p_Area_id->name,
+		),
+		array(
+				'name'=>'area_id_m',
+				'value'=>$model->Organizer_area_id_m_Area_id->name,
+		),
+		array(
+				'name'=>'area_id_c',
+				'value'=>$model->Organizer_area_id_c_Area_id->name,
+		),
+		array(
+				'name'=>'address',
+		),
+		array(
+				'name'=>'law_name',
+		),
+		array(
+				'name'=>'law_identity',
+		),
+		array(
+				'name'=>'law_phone',
+		),
+		array(
+				'name'=>'bl_code',
+		),
+		array(
+				'name'=>'bl_img',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->bl_img),
+		),
+		array(
+				'name'=>'manage_name',
+		),
+		array(
+				'name'=>'manage_email',
+		),
+		array(
+				'name'=>'manage_phone',
+		),
+		array(
+				'name'=>'manage_identity',
+		),
+		array(
+				'name'=>'identity_begin',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->identity_begin),
+		),
+		array(
+				'name'=>'identity_after',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->identity_after),
+		),
+		array(
+				'name'=>'identity_hand',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->identity_hand),
+		),
+		array(
+				'name'=>'Organizer_Bank.name',
+				//'value'=>isset($model->Organizer_Bank->bank_id
+		),
+		array(
+				'name'=>'bank_name',
+		),
+		array(
+				'name'=>'bank_branch',
+		),
+		array(
+				'name'=>'bank_code',
+		),		
+		array(
+				'name'=>'income_count',
+		),
+		array(
+				'name'=>'cash',
+		),
+		array(
+				'name'=>'money',
+		),
+		array(
+				'name'=>'deposit',
+		),
+		array(
+				'name'=>'add_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'up_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'pass_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'status',
+				'value'=>$model::$_status[$model->status],
+		),
+	),
+)); 
+if($model->Organizer_User->audit == User::audit_pending && $model->Organizer_User->status==1)
+{
+	Yii::app()->clientScript->registerScript('search', "
+jQuery('body').on('click','#pass',function(){
+	if(!confirm('该用户是否审核通过，成为代理商！')) return false;
+	jQuery.ajax({
+		'cache':true,
+		'url':'".Yii::app()->createUrl('/admin/tmm_organizer/pass',array('id'=>$model->id))."',
+		'success':function(html){
+			if(html==1)
+				location.href = '".Yii::app()->createUrl('/admin/tmm_organizer/view',array('id'=>$model->id))."';
+			else
+				alert(html);
+		},
+	});
+	return false;
+});
+");
+?>
+	<p></p>
+	<div class="row">
+			<span class="buttons">
+				<?php	echo CHtml::Button('审核通过',array('id'=>'pass'));?>
+			</span>
+			<span class="buttons">
+				<?php	
+					echo CHtml::ajaxButton('审核不通过',array('/admin/tmm_organizer/nopass','id'=>$model->id),array(
+							//'update'=>'#audit',
+							'cache'=>true,
+							'success'=>'function(html){
+								jQuery("#audit").html(html);
+								$("#audit").dialog("open");
+								$("#audit").dialog({"title":"审核不通过"});
+							}',
+					));
+				?>
+			</span>
+	</div>
+	<?php	
+	$this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+			'id'=>'audit',//弹窗ID
+			'options'=>array(//传递给JUI插件的参数
+					'title'=>'审核',
+					'autoOpen'=>false,//是否自动打开
+					'width'=>'550px',//宽度
+					'height'=>'auto',//高度
+					'buttons'=>array(
+						//	'关闭'=>'js:function(){$(this).dialog("close");}',//关闭按钮
+					),
+			),
+	));
+	$this->endWidget();
+}
+?>	

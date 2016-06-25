@@ -1,0 +1,335 @@
+2016/06/03 19:16:38 [info] [Store] array (
+  'province' => '21',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:16:48 [info] [Store] array (
+  'province' => '21',
+  'city' => '22',
+  'district' => '',
+)
+2016/06/03 19:16:50 [info] [Store] array (
+  'province' => '21',
+  'city' => '22',
+  'district' => '24',
+)
+2016/06/03 19:16:57 [info] [Store] array (
+  'province' => '439',
+  'city' => '22',
+  'district' => '24',
+)
+2016/06/03 19:17:32 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '24',
+)
+2016/06/03 19:17:48 [info] [Store] array (
+  'province' => '1',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:18:53 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:18:54 [info] [Store] array (
+  'province' => '1',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:18:55 [info] [Store] array (
+  'province' => '1',
+  'city' => '2',
+  'district' => '',
+)
+2016/06/03 19:18:56 [info] [Store] array (
+  'province' => '1',
+  'city' => '2',
+  'district' => '4',
+)
+2016/06/03 19:18:58 [info] [Store] array (
+  'province' => '561',
+  'city' => '2',
+  'district' => '4',
+)
+2016/06/03 19:19:00 [info] [Store] array (
+  'province' => '561',
+  'city' => '640',
+  'district' => '4',
+)
+2016/06/03 19:19:02 [info] [Store] array (
+  'province' => '561',
+  'city' => '640',
+  'district' => '643',
+)
+2016/06/03 19:19:04 [info] [Store] array (
+  'province' => '',
+  'city' => '640',
+  'district' => '643',
+)
+2016/06/03 19:19:06 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:19:08 [info] [Store] array (
+  'province' => '1',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:19:10 [info] [Store] array (
+  'province' => '61',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:19:11 [info] [Store] array (
+  'province' => '1',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:19:13 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:19:16 [info] [Store] array (
+  'province' => '40',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:19:17 [info] [Store] array (
+  'province' => '40',
+  'city' => '41',
+  'district' => '',
+)
+2016/06/03 19:19:18 [info] [Store] array (
+  'province' => '40',
+  'city' => '41',
+  'district' => '45',
+)
+2016/06/03 19:19:21 [info] [Store] array (
+  'province' => '690',
+  'city' => '41',
+  'district' => '45',
+)
+2016/06/03 19:25:13 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:25:14 [info] [Store] array (
+  'province' => '21',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:25:17 [info] [Store] array (
+  'province' => '21',
+  'city' => '22',
+  'district' => '',
+)
+2016/06/03 19:25:18 [info] [Store] array (
+  'province' => '21',
+  'city' => '22',
+  'district' => '24',
+)
+2016/06/03 19:25:20 [info] [Store] array (
+  'province' => '439',
+  'city' => '',
+  'district' => '24',
+)
+2016/06/03 19:25:58 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:25:59 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:25:59 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:26:00 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:26:00 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:26:00 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:26:01 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:26:02 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:26:06 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:26:10 [info] [Store] array (
+  'province' => '1',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:26:11 [info] [Store] array (
+  'province' => '1',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:26:12 [error] [php] Undefined variable: area (D:\wamp\www\pad\app\pad\protected\models\Store.php:131)
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CBaseController.php(95): app\admin\controllers\StoreController->renderInternal()
+#1 D:\wamp\www\pad\framework\web\CController.php(869): app\admin\controllers\StoreController->renderFile()
+#2 D:\wamp\www\pad\framework\web\CController.php(782): app\admin\controllers\StoreController->renderPartial()
+#3 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(30): app\admin\controllers\StoreController->render()
+#4 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\StoreController->actionAdmin()
+#5 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#6 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\StoreController->runAction()
+#7 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\StoreController->runActionWithFilters()
+#8 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\StoreController->run()
+#9 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#10 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#11 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/store/admin.html?Store%5Bid%5D=&Store%5Bphone%5D=&Store%5Bstore_name%5D=&Store%5Bname%5D=&Store%5Btelephone%5D=&Store%5Bpad_count%5D=&Store%5Bprovince%5D=1&Store%5Bcity%5D=2&Store%5Bdistrict%5D=&Store%5Bup_time%5D=&Store%5Badd_time%5D=&Store%5Bstatus%5D=&Store_page=1&Store_sort=city&ajax=store-grid
+2016/06/03 19:26:16 [error] [php] Undefined variable: area (D:\wamp\www\pad\app\pad\protected\models\Store.php:131)
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CBaseController.php(95): app\admin\controllers\StoreController->renderInternal()
+#1 D:\wamp\www\pad\framework\web\CController.php(869): app\admin\controllers\StoreController->renderFile()
+#2 D:\wamp\www\pad\framework\web\CController.php(782): app\admin\controllers\StoreController->renderPartial()
+#3 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\StoreController.php(30): app\admin\controllers\StoreController->render()
+#4 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\StoreController->actionAdmin()
+#5 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#6 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\StoreController->runAction()
+#7 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\StoreController->runActionWithFilters()
+#8 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\StoreController->run()
+#9 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#10 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#11 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/store/admin.html?Store%5Bid%5D=&Store%5Bphone%5D=&Store%5Bstore_name%5D=&Store%5Bname%5D=&Store%5Btelephone%5D=&Store%5Bpad_count%5D=&Store%5Bprovince%5D=102&Store%5Bcity%5D=2&Store%5Bdistrict%5D=&Store%5Bup_time%5D=&Store%5Badd_time%5D=&Store%5Bstatus%5D=&Store_page=1&Store_sort=city&ajax=store-grid
+2016/06/03 19:26:39 [info] [Store] array (
+  'province' => '61',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:26:41 [info] [Store] array (
+  'province' => '61',
+  'city' => '62',
+  'district' => '',
+)
+2016/06/03 19:26:42 [info] [Store] array (
+  'province' => '1310',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:26:43 [info] [Store] array (
+  'province' => '1310',
+  'city' => '1334',
+  'district' => '',
+)
+2016/06/03 19:26:44 [info] [Store] array (
+  'province' => '1310',
+  'city' => '1334',
+  'district' => '1336',
+)
+2016/06/03 19:26:45 [info] [Store] array (
+  'province' => '1',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:26:53 [info] [Store] array (
+  'province' => '61',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:29:50 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:29:53 [info] [Store] array (
+  'province' => '102',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:29:54 [info] [Store] array (
+  'province' => '102',
+  'city' => '144',
+  'district' => '',
+)
+2016/06/03 19:29:55 [info] [Store] array (
+  'province' => '102',
+  'city' => '144',
+  'district' => '147',
+)
+2016/06/03 19:31:06 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:31:08 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:31:52 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:32:24 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:32:25 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:32:27 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:32:30 [info] [Store] array (
+  'province' => '',
+  'city' => '',
+  'district' => '',
+)
+2016/06/03 19:32:39 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:33:48 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:35:09 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)
+2016/06/03 19:35:22 [info] [Store] array (
+  'province' => NULL,
+  'city' => NULL,
+  'district' => NULL,
+)

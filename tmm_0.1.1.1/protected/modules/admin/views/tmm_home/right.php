@@ -1,0 +1,58 @@
+<?php
+$this->breadcrumbs = array(
+	//AdminType::_name(),
+	'我的账户信息'
+);
+?>
+<h1 style="width: 480px">用户名:<?php echo "&nbsp;&nbsp;<font color='#eb6100'>".CHtml::encode($model->username)."</font>"; ?></h1>
+<?php $this->widget('zii.widgets.CDetailView',array(
+	'data'=>$model,
+	'attributes'=>array(
+ 			'name',
+ 			'username',
+ 			'telephone',
+			array(
+					'name'=>'gender',
+					'value'=>$model::$_gender[$model->gender],
+			),
+			array(
+					'name'=>'d_id',
+					'value'=>$model->Admin_TypeValue->value,
+			),
+			array(
+					'name'=>'p_id',
+					'value'=>$model->p_id($model->p_id),
+			),
+			'mobile',
+			'extension',
+			'number',
+			'qq',
+			'email',
+			array(
+					'name'=>'login_time',
+					'type'=>'dateTime',
+			),
+			array(
+					'name'=>'last_login_time',
+					'type'=>'dateTime',
+			),
+			'login_ip',
+			'last_login_ip',
+			'login_count',
+			'error_count',
+			array(
+					'name'=>'up_time',
+					'type'=>'dateTime',
+			),
+			array(
+					'name'=>'add_time',
+					'type'=>'dateTime',
+			),
+			array(
+				'name'=>'notes',
+			),
+ 		),
+		//'htmlOptions'=>array('style'=>'width:800px;'),
+	)); 
+
+?>

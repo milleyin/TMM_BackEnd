@@ -1,0 +1,37 @@
+// 备注：凡是POST请求的，都需要先请求一下GET，拿到CSRF码，请求格式为
+// 模块/方法：
+// api/xx/xxx (同要POST请求的url)
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取CSRF
+
+// 参数 &csrf=csrf
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "csrf": {
+            "TMM_CSRF": "5d2694695c6989098c22879610e3fd007294f67c"
+        }
+    }
+}
+
+// 模块/方法：
+// index.php?r=store/store_orderItems/scancode
+
+// 传值方式：
+// POST  
+
+//功能描述：
+//        扫描传值 
+
+// 参数
+code='扫描值'
+// 结果
+// 成功

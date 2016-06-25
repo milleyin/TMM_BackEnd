@@ -1,0 +1,150 @@
+<?php
+/**
+ * 公众函数库
+ *
+ * @author Moore Mo
+ */
+/**
+ * php获取当前访问的完整url地址
+ * @return string
+ */
+function getCurUrl() {
+    $url = 'http://';
+    if (isset ( $_SERVER ['HTTPS'] ) && $_SERVER ['HTTPS'] == 'on') {
+        $url = 'https://';
+    }
+    if ($_SERVER ['SERVER_PORT'] != '80') {
+        $url .= $_SERVER ['HTTP_HOST'] . ':' . $_SERVER ['SERVER_PORT'] . $_SERVER ['REQUEST_URI'];
+    } else {
+        $url .= $_SERVER ['HTTP_HOST'] . $_SERVER ['REQUEST_URI'];
+    }
+    // 兼容后面的参数组装
+    if (stripos ( $url, '?' ) === false) {
+        $url .= '?t=' . time ();
+    }
+    return $url;
+}
+
+/**
+ * curl请求数据
+ * @param string $url url地址
+ * @return string $result 返回的数据
+ */
+function getCurl($url){ //get https的内容
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //不输出内容
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    return $result;
+}
+
+/**
+ * curl提交数据
+ * @param string $url url地址
+ * @param array $data post数据
+ * @return string $result 返回的数据
+ */
+function postCurl($url, $data) {
+    $curl = curl_init(); //启动一个CURL会话
+    curl_setopt($curl, CURLOPT_URL, $url); //要访问的地址
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); //对认证证书来源的检查
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 1); //从证书中检查SSL加密算法是否存在
+    curl_setopt($curl, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']); //模拟用户使用的浏览器
+    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1); //使用自动跳转
+    curl_setopt($curl, CURLOPT_AUTOREFERER, 1); //自动设置Referer
+    curl_setopt($curl, CURLOPT_POST, 1); //发送一个常规的Post请求
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $data); //Post提交的数据包
+    curl_setopt($curl, CURLOPT_COOKIEFILE, $GLOBALS['cookie_file']); //读取上面所储存的Cookie信息
+    curl_setopt($curl, CURLOPT_TIMEOUT, 30); //设置超时限制防止死循环
+    curl_setopt($curl, CURLOPT_HEADER, 0); //显示返回的Header区域内容
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); //获取的信息以文件流的形式返回
+    $tmpInfo = curl_exec($curl); //执行操作
+    if (curl_errno($curl)) {
+        return 'Errno'.curl_error($curl);
+    }
+    curl_close($curl); //关闭CURL会话
+    return $tmpInfo; //返回数据
+}
+
+/**
+ * 验证手机号
+ * @param $mobile 手机号
+ * @return bool
+ */
+function isMobile($mobile)
+{
+    if (!is_numeric($mobile))
+        return false;
+    return preg_match('#^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[^4]{1}\d{8}$|^17[0,6,7,8]{1}\d{8}$|^18[\d]{9}$#', $mobile) ? true : false;
+}
+
+/**
+ * @param $id
+ * @return \Think\Model
+ */
+
+/**
+ * 获取地区名称(省，市，区)
+ * @param $id
+ * @return mixed
+ */
+function getRegionName($id) {
+    return M('Region')->where(array('id' => $id))->getField('name');
+}
+
+/**
+ * 清空项目 缓存图片 已日期为目录的
+ * @param $path
+ */
+function clearTemp($path) {
+    if(is_dir($path))
+    {
+        $date = date('Y-m-d');
+        $filenameList = scandir($path);
+        $filenameList = array_slice($filenameList, 2);
+        foreach ($filenameList as $filename)
+        {
+            if($filename != $date && is_dir($path . '/' . $filename)) {
+                deleteDir($path . '/' . $filename);
+            }
+        }
+    }
+}
+
+/**
+ * 删除文件夹 及以下的所有文件和文件夹
+ * @param $dir
+ */
+function deleteDir($dir) {
+    if (is_dir($dir))
+    {
+        $filenameList = scandir($dir);
+        $filenameList = array_slice($filenameList, 2);
+        foreach ($filenameList as $filename)
+        {
+            if (is_dir($dir . '/' . $filename)) {
+                deletedir($dir . '/' . $filename);
+            } else {
+                unlink($dir . '/' . $filename);
+            }
+        }
+        rmdir($dir);
+    }
+}
+
+/**
+ * 获取随机字符串
+ * @param int $length
+ * @return string
+ */
+function createNonceStr($length = 16) {
+    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    $str = "";
+    for($i = 0; $i < $length; $i ++) {
+        $str .= substr ( $chars, mt_rand ( 0, strlen ( $chars ) - 1 ), 1 );
+    }
+    return $str;
+}

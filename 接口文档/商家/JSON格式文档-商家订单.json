@@ -1,0 +1,701 @@
+// 备注：凡是POST请求的，都需要先请求一下GET，拿到CSRF码，请求格式为
+// 模块/方法：
+// api/xx/xxx (同要POST请求的url)
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取CSRF
+
+// 参数 &csrf=csrf
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "csrf": {
+            "TMM_CSRF": "5d2694695c6989098c22879610e3fd007294f67c"
+        }
+    }
+}
+
+
+// 模块/方法：
+// index.php?r=store/store_order/index
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取自助游的订单列表 & 订单搜索
+
+// 参数
+	search_info=’搜索内容‘(要用搜索时 通过 get传值)
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": { // 分页信息
+            "prev": "", // 上一页的链接
+            // 当前页的链接
+            "selected": "http://test.365tmm.net/index.php?r=store/store_order/index",
+            // 下一页的链接
+            "next": "http://test.365tmm.net/index.php?r=store/store_order/index&page=2",
+            "selectedPage": 1, // 当前第几页
+            "count": 6, // 页数
+            "page": "page", // 参数名
+            // 分页基础链接
+            "link": "http://test.365tmm.net/index.php?r=store/store_order/index"
+        },
+        "list_data": [ // 列表数据
+            {
+                "value": "1", // 订单id
+                "order_no": "MJ2015092500030", // 订单编号
+                "shops_name": "点啊 ……", // 商品名称
+                "order_price": "400000.00", // 订单总价
+                "income": 0, // 收入
+                "items_count": "2", // 数量
+                // 缩略图
+                "shops_list_img": "http://test.365tmm.net/uploads/shops/dot/20150922/2921560156c4ae6200.33611715.jpg",
+                // 消费时间
+                "employ_time": "1970/01/01 08:00:00",
+                // 商品类别
+                "shops_type": {
+                    "value": "1", // 1点，2线，3结伴游
+                    "name": "点" // 名称
+                },
+                "status": { // 订单状态-3=>'已过期',-2=>'已退款',-1=>'已取消',0=>'待处理',1=>'待付款',2=>'已付款',3=>'已消费'
+                    "pay_type": {
+                        "name": "支付宝",
+                        "value": "1"
+                    },
+                    "order_status": {
+                        "name": "待处理",
+                        "value": "0"
+                    },
+                    "status_go": {
+                        "name": "出游日期未定",
+                        "value": "0"
+                    },
+                    "centre_status": {
+                        "name": "可支付",
+                        "value": "0"
+                    },
+                    "pay_status": {
+                        "name": "待支付",
+                        "value": "0"
+                    },
+                    "order_type": {
+                        "name": "自助游(点)",
+                        "value": "1"
+                    },
+                    "status": {
+                        "name": "有效订单",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "value": "1", // 订单id
+                "order_no": "MJ2015092500029",
+                "shops_name": "点啊 ……",
+                "order_price": "400000.00",
+                "income": 0,
+                "items_count": "2",
+                "shops_list_img": "http://test.365tmm.net/uploads/shops/dot/20150922/2921560156c4ae6200.33611715.jpg",
+                "employ_time": "1970/01/01 08:00:00",
+                "shops_type": {
+                    "value": "1",
+                    "name": "点"
+                },
+                "status": {
+                    "pay_type": {
+                        "name": "支付宝",
+                        "value": "1"
+                    },
+                    "order_status": {
+                        "name": "待处理",
+                        "value": "0"
+                    },
+                    "status_go": {
+                        "name": "出游日期未定",
+                        "value": "0"
+                    },
+                    "centre_status": {
+                        "name": "可支付",
+                        "value": "0"
+                    },
+                    "pay_status": {
+                        "name": "待支付",
+                        "value": "0"
+                    },
+                    "order_type": {
+                        "name": "自助游(点)",
+                        "value": "1"
+                    },
+                    "status": {
+                        "name": "有效订单",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "value": "1", // 订单id
+                "order_no": "MJ2015092500028",
+                "shops_name": "点啊 ……",
+                "order_price": "400000.00",
+                "income": 0,
+                "items_count": "2",
+                "shops_list_img": "http://test.365tmm.net/uploads/shops/dot/20150922/2921560156c4ae6200.33611715.jpg",
+                "employ_time": "1970/01/01 08:00:00",
+                "shops_type": {
+                    "value": "1",
+                    "name": "点"
+                },
+                "status": {
+                    "pay_type": {
+                        "name": "支付宝",
+                        "value": "1"
+                    },
+                    "order_status": {
+                        "name": "待处理",
+                        "value": "0"
+                    },
+                    "status_go": {
+                        "name": "出游日期未定",
+                        "value": "0"
+                    },
+                    "centre_status": {
+                        "name": "可支付",
+                        "value": "0"
+                    },
+                    "pay_status": {
+                        "name": "待支付",
+                        "value": "0"
+                    },
+                    "order_type": {
+                        "name": "自助游(点)",
+                        "value": "1"
+                    },
+                    "status": {
+                        "name": "有效订单",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "value": "1", // 订单id
+                "order_no": "MJ2015092500026",
+                "shops_name": "点啊 ……",
+                "order_price": "200000.00",
+                "income": 0,
+                "items_count": "1",
+                "shops_list_img": "http://test.365tmm.net/uploads/shops/dot/20150922/2921560156c4ae6200.33611715.jpg",
+                "employ_time": "1970/01/01 08:00:00",
+                "shops_type": {
+                    "value": "1",
+                    "name": "点"
+                },
+                "status": {
+                    "pay_type": {
+                        "name": "支付宝",
+                        "value": "1"
+                    },
+                    "order_status": {
+                        "name": "待处理",
+                        "value": "0"
+                    },
+                    "status_go": {
+                        "name": "出游日期未定",
+                        "value": "0"
+                    },
+                    "centre_status": {
+                        "name": "可支付",
+                        "value": "0"
+                    },
+                    "pay_status": {
+                        "name": "待支付",
+                        "value": "0"
+                    },
+                    "order_type": {
+                        "name": "自助游(点)",
+                        "value": "1"
+                    },
+                    "status": {
+                        "name": "有效订单",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "value": "1", // 订单id
+                "order_no": "MJ2015092500027",
+                "shops_name": "点啊 ……",
+                "order_price": "200000.00",
+                "income": 0,
+                "items_count": "1",
+                "shops_list_img": "http://test.365tmm.net/uploads/shops/dot/20150922/2921560156c4ae6200.33611715.jpg",
+                "employ_time": "1970/01/01 08:00:00",
+                "shops_type": {
+                    "value": "1",
+                    "name": "点"
+                },
+                "status": {
+                    "pay_type": {
+                        "name": "支付宝",
+                        "value": "1"
+                    },
+                    "order_status": {
+                        "name": "待处理",
+                        "value": "0"
+                    },
+                    "status_go": {
+                        "name": "出游日期未定",
+                        "value": "0"
+                    },
+                    "centre_status": {
+                        "name": "可支付",
+                        "value": "0"
+                    },
+                    "pay_status": {
+                        "name": "待支付",
+                        "value": "0"
+                    },
+                    "order_type": {
+                        "name": "自助游(点)",
+                        "value": "1"
+                    },
+                    "status": {
+                        "name": "有效订单",
+                        "value": "1"
+                    }
+                }
+            }
+        ]
+    }
+}
+
+// 模块/方法：
+// index.php?r=store/store_order/group_index
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取结伴游的订单列表
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "http://test.365tmm.net/index.php?r=store/store_order/index",
+            "next": "http://test.365tmm.net/index.php?r=store/store_order/index&page=2",
+            "selectedPage": 1,
+            "count": 6,
+            "page": "page",
+            "link": "http://test.365tmm.net/index.php?r=store/store_order/index"
+        },
+        "list_data": [
+            {
+                "value": "1", // 订单id
+                "order_no": "MJ2015092500030",
+                "shops_name": "点啊 ……",
+                "order_price": "400000.00",
+                "income": 0,
+                "items_count": "2",
+                "shops_list_img": "http://test.365tmm.net/uploads/shops/dot/20150922/2921560156c4ae6200.33611715.jpg",
+                "employ_time": "1970/01/01 08:00:00",
+                "shops_type": {
+                    "value": "1",
+                    "name": "点"
+                },
+                "status": {
+                    "pay_type": {
+                        "name": "支付宝",
+                        "value": "1"
+                    },
+                    "order_status": {
+                        "name": "待处理",
+                        "value": "0"
+                    },
+                    "status_go": {
+                        "name": "出游日期未定",
+                        "value": "0"
+                    },
+                    "centre_status": {
+                        "name": "可支付",
+                        "value": "0"
+                    },
+                    "pay_status": {
+                        "name": "待支付",
+                        "value": "0"
+                    },
+                    "order_type": {
+                        "name": "自助游(点)",
+                        "value": "1"
+                    },
+                    "status": {
+                        "name": "有效订单",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "value": "1", // 订单id
+                "order_no": "MJ2015092500029",
+                "shops_name": "点啊 ……",
+                "order_price": "400000.00",
+                "income": 0,
+                "items_count": "2",
+                "shops_list_img": "http://test.365tmm.net/uploads/shops/dot/20150922/2921560156c4ae6200.33611715.jpg",
+                "employ_time": "1970/01/01 08:00:00",
+                "shops_type": {
+                    "value": "1",
+                    "name": "点"
+                },
+                "status": {
+                    "pay_type": {
+                        "name": "支付宝",
+                        "value": "1"
+                    },
+                    "order_status": {
+                        "name": "待处理",
+                        "value": "0"
+                    },
+                    "status_go": {
+                        "name": "出游日期未定",
+                        "value": "0"
+                    },
+                    "centre_status": {
+                        "name": "可支付",
+                        "value": "0"
+                    },
+                    "pay_status": {
+                        "name": "待支付",
+                        "value": "0"
+                    },
+                    "order_type": {
+                        "name": "自助游(点)",
+                        "value": "1"
+                    },
+                    "status": {
+                        "name": "有效订单",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "value": "1", // 订单id
+                "order_no": "MJ2015092500028",
+                "shops_name": "点啊 ……",
+                "order_price": "400000.00",
+                "income": 0,
+                "items_count": "2",
+                "shops_list_img": "http://test.365tmm.net/uploads/shops/dot/20150922/2921560156c4ae6200.33611715.jpg",
+                "employ_time": "1970/01/01 08:00:00",
+                "shops_type": {
+                    "value": "1",
+                    "name": "点"
+                },
+                "status": {
+                    "pay_type": {
+                        "name": "支付宝",
+                        "value": "1"
+                    },
+                    "order_status": {
+                        "name": "待处理",
+                        "value": "0"
+                    },
+                    "status_go": {
+                        "name": "出游日期未定",
+                        "value": "0"
+                    },
+                    "centre_status": {
+                        "name": "可支付",
+                        "value": "0"
+                    },
+                    "pay_status": {
+                        "name": "待支付",
+                        "value": "0"
+                    },
+                    "order_type": {
+                        "name": "自助游(点)",
+                        "value": "1"
+                    },
+                    "status": {
+                        "name": "有效订单",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "value": "1", // 订单id
+                "order_no": "MJ2015092500026",
+                "shops_name": "点啊 ……",
+                "order_price": "200000.00",
+                "income": 0,
+                "items_count": "1",
+                "shops_list_img": "http://test.365tmm.net/uploads/shops/dot/20150922/2921560156c4ae6200.33611715.jpg",
+                "employ_time": "1970/01/01 08:00:00",
+                "shops_type": {
+                    "value": "1",
+                    "name": "点"
+                },
+                "status": {
+                    "pay_type": {
+                        "name": "支付宝",
+                        "value": "1"
+                    },
+                    "order_status": {
+                        "name": "待处理",
+                        "value": "0"
+                    },
+                    "status_go": {
+                        "name": "出游日期未定",
+                        "value": "0"
+                    },
+                    "centre_status": {
+                        "name": "可支付",
+                        "value": "0"
+                    },
+                    "pay_status": {
+                        "name": "待支付",
+                        "value": "0"
+                    },
+                    "order_type": {
+                        "name": "自助游(点)",
+                        "value": "1"
+                    },
+                    "status": {
+                        "name": "有效订单",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "value": "1", // 订单id
+                "order_no": "MJ2015092500027",
+                "shops_name": "点啊 ……",
+                "order_price": "200000.00",
+                "income": 0,
+                "items_count": "1",
+                "shops_list_img": "http://test.365tmm.net/uploads/shops/dot/20150922/2921560156c4ae6200.33611715.jpg",
+                "employ_time": "1970/01/01 08:00:00",
+                "shops_type": {
+                    "value": "1",
+                    "name": "点"
+                },
+                "status": {
+                    "pay_type": {
+                        "name": "支付宝",
+                        "value": "1"
+                    },
+                    "order_status": {
+                        "name": "待处理",
+                        "value": "0"
+                    },
+                    "status_go": {
+                        "name": "出游日期未定",
+                        "value": "0"
+                    },
+                    "centre_status": {
+                        "name": "可支付",
+                        "value": "0"
+                    },
+                    "pay_status": {
+                        "name": "待支付",
+                        "value": "0"
+                    },
+                    "order_type": {
+                        "name": "自助游(点)",
+                        "value": "1"
+                    },
+                    "status": {
+                        "name": "有效订单",
+                        "value": "1"
+                    }
+                }
+            }
+        ]
+    }
+}
+
+// 模块/方法：
+// index.php?r=store/store_order/view
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取订单详情
+
+// 参数
+$id=1
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "go_time": "2015-10-07", // 出游时间
+        "order_price": {  // 订单总价
+            "name": "订单总计",
+            "value": "400000.00"
+        },
+        "user_price_fact": { // 服务费
+            "name": "服务费/人",
+            "value": "0.00"
+        },
+        "user_go_count": { // 出游人数
+            "name": "出游人数",
+            "value": "1"
+        },
+        "retinue": [ // 随行人员
+            {
+                "is_main": "1", // 是否是主要联系人 1是,0不是
+                "name": "大海", // 姓名
+                "value": "1", // id
+                "gender": "1", // 性别 0保密 1男 2女
+                "phone": "15844455558", 
+                "identity": "360124199001140654" // 身份证号
+            }
+        ],
+        "items_fare": [ // 项目列表
+            {
+                "name": "吃 谁不会啊 订单",
+                "value": "1",
+                "link": "http://test.365tmm.net/index.php?r=store/store_eat/view&id=1",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "name": "大碗餐",
+                        "info": "成人",
+                        "number": "100",
+                        "price": "2000.00",
+                        "count": "200000.00"
+                    }
+                ]
+            },
+            {
+                "name": "吃 谁不会啊 订单",
+                "value": "1",
+                "link": "http://test.365tmm.net/index.php?r=store/store_eat/view&id=1",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+				"barcode": {
+				  "is_barcode": "-1",
+				  "barcode_name": "已过期",
+				  "employ_time": "",
+				  "barcode": "260216012940",
+				  "value": "2602",
+				},
+                "fare": [
+                    {
+                        "name": "大碗餐",
+                        "info": "成人",
+                        "number": "100",
+                        "price": "2000.00",
+                        "count": "200000.00"
+                    }
+                ]
+            }
+        ],
+        "order_no": "MJ2015092500030", // 订单编号
+        "add_time": "2015-09-25 10:09:06", // 创建时间
+        "up_time": "2015-09-25 10:09:06", // 处理时间
+        "pay_time": "1970-01-01 08:01:00", // 支付时间
+        "pay_type": { // 支付类型
+            "alipay": {
+                "name": "支付宝",
+                "value": 1
+            }
+        },
+        "status": { // 状态
+            "pay_type": { // 支付类型
+                "name": "支付宝",
+                "value": "1"
+            },
+            "order_status": { // 订单状态
+                "name": "待处理",
+                "value": "0"
+            },
+            "status_go": { // 出游状态
+                "name": "出游日期未定",
+                "value": "0"
+            },
+            "centre_status": { 
+                "name": "可支付",
+                "value": "0"
+            },
+            "pay_status": { // 支付状态
+                "name": "待支付",
+                "value": "0"
+            },
+            "order_type": { // 订单类型
+                "name": "自助游(点)",
+                "value": "1"
+            },
+            "status": { // 订单是否有效 0无效，1有效
+                "name": "有效订单",
+                "value": "1"
+            }
+        }
+    }
+}
+
+// 模块/方法：
+// index.php?r=store/store_order/items_index
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取订单中的项目列表
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://test.365tmm.net/index.php?r=store/store_order/items_index",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "items_value": "1", // 项目id
+                "items_name": "吃 谁不会啊 订单", // 项目名称
+                // 项目缩略图
+                "items_img": "http://test.365tmm.net/uploads/items/tmp/eat/20150922/27015601518f51ca19.39356580.png",
+                // 项目的总数
+                "items_count": "38",
+                // 项目的总收入
+                "items_push_count": "1465000.00"
+            }
+        ]
+    }
+}

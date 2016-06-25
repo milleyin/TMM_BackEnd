@@ -1,0 +1,1277 @@
+<?php
+/**
+ * 活动报名
+ * @author Changhai Zhan
+ *
+ */
+class AttendController extends ApiController
+{
+	/**
+	 * 默认操作数据模型
+	 * @var string
+	 */
+	public $_class_model='Attend';
+	
+	/**
+	 * 查看我参加活动详情
+	 * @param unknown $id
+	 */
+	public function actionView($id)
+	{
+		//条件
+		$criteria = new CDbCriteria;
+		//关系
+		$criteria->with = array(
+				'Attend_Attend',
+				'Attend_OrderActives'=>array(
+						'with'=>array(
+								'OrderActives_OrderItems',
+								'OrderActives_OrderItemsFare',
+								'OrderActives_User',
+								'OrderActives_Actives'=>array(
+										'with'=>array('Actives_Shops')
+								)
+						),
+				),
+		);
+		//标准条件
+		$criteria->addColumnCondition(array(
+				'`t`.`p_id`'=>0,											//父级
+				'`t`.`status`'=>Attend::status_suc,			//正常报名
+				'`t`.`user_id`'=>Yii::app()->api->id,			//谁参加的
+		));
+		//排序
+		$criteria->order = 'OrderActives_OrderItems.shops_day_sort,OrderActives_OrderItems.shops_half_sort,OrderActives_OrderItems.shops_sort';
+		//查询
+		$model = $this->loadModel($id,$criteria);
+		//输出数据
+		$return = array();
+		//活动ID
+		$return['actives_id'] = $model->Attend_OrderActives->OrderActives_Actives->id;
+		$return['name'] = CHtml::encode($model->Attend_OrderActives->OrderActives_Actives->Actives_Shops->name);
+		$return['list_info'] = CHtml::encode($model->Attend_OrderActives->OrderActives_Actives->Actives_Shops->list_info);
+		$return['page_info'] = CHtml::encode($model->Attend_OrderActives->OrderActives_Actives->Actives_Shops->page_info);
+		$return['price'] = Shops::get_price_num($model->Attend_OrderActives->OrderActives_Actives->id,'Actives',true);
+		$return['down'] = Shops::get_down($model->Attend_OrderActives->OrderActives_Actives->id,'Actives');
+		if ($model->Attend_OrderActives->OrderActives_Actives->is_open == Actives::is_open_yes)
+		{
+			$return['shops'] = array(
+					'value'=>$model->Attend_OrderActives->OrderActives_Actives->id,
+					'link'=>Yii::app()->params['app_api_domain'].Yii::app()->createUrl('/api/actives/view',array('id'=>$model->Attend_OrderActives->OrderActives_Actives->id)),
+			);
+		}
+		else if ($model->Attend_OrderActives->OrderActives_Actives->is_open == Actives::is_open_no)
+		{
+			$return['shops'] = array(
+					'value'=>$model->Attend_OrderActives->OrderActives_Actives->barcode,
+					'link'=>Yii::app()->params['app_api_domain'].Yii::app()->createUrl('/api/actives/view',array('id'=>$model->Attend_OrderActives->OrderActives_Actives->barcode)),
+			);
+		}
+		$img = $this->litimg_path($model->Attend_OrderActives->OrderActives_Actives->Actives_Shops->list_img);
+		$return['image'] = empty($img) ? '' : Yii::app()->params['admin_img_domain'].ltrim($img,'.');
+		//扫描 码
+		$return['actives_barcode']=$model->Attend_OrderActives->OrderActives_Actives->barcode;
+		//上 下线
+		$return['shops_status']=array(
+				'name'=>Shops::$_status[$model->Attend_OrderActives->OrderActives_Actives->Actives_Shops->status],
+				'value'=>$model->Attend_OrderActives->OrderActives_Actives->Actives_Shops->status,
+		);
+		//支付方式
+		$return['actives_pay_type'] = array(
+				'name'=>Actives::$_pay_type[$model->Attend_OrderActives->OrderActives_Actives->pay_type],
+				'value'=>$model->Attend_OrderActives->OrderActives_Actives->pay_type,
+		);
+		// 显示方式
+		$return['actives_is_open'] = array(
+				'name'=>Actives::$_is_open[$model->Attend_OrderActives->OrderActives_Actives->is_open],
+				'value'=>$model->Attend_OrderActives->OrderActives_Actives->is_open,
+		);
+		//活动类型
+		$return['actives'] = array(
+				'name'=>Actives::$_actives_type[$model->Attend_OrderActives->OrderActives_Actives->actives_type],
+				'value'=>$model->Attend_OrderActives->OrderActives_Actives->actives_type,
+		);
+		// 是否是组织者
+		$return['is_organizer'] = array(
+				'name'=>Actives::$_is_organizer[$model->Attend_OrderActives->OrderActives_Actives->is_organizer],
+				'value'=>$model->Attend_OrderActives->OrderActives_Actives->is_organizer,
+		);
+		//是否是发起创建的
+		$return['is_me'] = $model->founder_id == Yii::app()->api->id ? 1 : 0;
+		//取消报名
+		$return['delete'] = array(
+				'value'=>$return['is_me'] != 1 && $model->Attend_OrderActives->user_order_count == 0 && ($model->Attend_OrderActives->OrderActives_Actives->go_time == 0 || date('Y-m-d',$model->Attend_OrderActives->OrderActives_Actives->go_time) > date('Y-m-d')) ? $model->id : '',
+				'link'=>$return['is_me'] != 1 && $model->Attend_OrderActives->user_order_count == 0 && ($model->Attend_OrderActives->OrderActives_Actives->go_time == 0 || date('Y-m-d',$model->Attend_OrderActives->OrderActives_Actives->go_time) > date('Y-m-d')) ? Yii::app()->params['app_api_domain'].Yii::app()->createUrl('/api/attend/delete',array('id'=>$model->id)) : '',
+		);
+		$return['tour_type'] = array(
+				'name'=>Actives::$_tour_type[$model->Attend_OrderActives->OrderActives_Actives->tour_type],
+				'value'=>$model->Attend_OrderActives->OrderActives_Actives->tour_type,
+		);
+		if ($model->founder_id == Yii::app()->api->id && $model->Attend_OrderActives->OrderActives_Actives->go_time == 0)
+		{
+			//设置出游时间
+			$set_go_time = array(
+					'value'=>$model->Attend_OrderActives->id,
+					'link'=>Yii::app()->params['app_api_domain'].Yii::app()->createUrl('/api/orderActives/gotime',array('id'=>$model->Attend_OrderActives->id)),
+			);
+		}
+		//活动时间
+		$return['actives_time'] = array(
+				'go_time'=>$model->Attend_OrderActives->OrderActives_Actives->go_time == 0 ? '出游日期未定' : date('Y-m-d',$model->Attend_OrderActives->OrderActives_Actives->go_time),
+				'go_time_value'=>$model->Attend_OrderActives->OrderActives_Actives->go_time == 0 ? 0 : 1,
+				'set_go_time'=>isset($set_go_time) ? $set_go_time : '',
+				'add_time'=>date('Y-m-d H:i:s',$model->Attend_OrderActives->OrderActives_Actives->Actives_Shops->add_time),
+				'start_time'=>date('Y-m-d',$model->Attend_OrderActives->OrderActives_Actives->start_time),
+				'end_time'=>date('Y-m-d',$model->Attend_OrderActives->OrderActives_Actives->end_time),
+		);
+		//活动简介
+		$return['actives_info'] = array(
+				'remark'=>$model->Attend_OrderActives->OrderActives_Actives->remark,//CHtml::encode($model->Attend_OrderActives->OrderActives_Actives->remark),
+				'actives_no'=>$model->Attend_OrderActives->actives_no,
+				'number'=>array(
+						'name'=>'觅趣人数',
+						'value'=>$model->Attend_OrderActives->OrderActives_Actives->number,
+				),
+				'order_number'=>array(
+						'name'=>'剩余报名人数',
+						'value'=>$model->Attend_OrderActives->OrderActives_Actives->order_number,
+				),
+				'tour_price'=>array(
+						'name'=>'服务费/人',
+						'value'=>$model->Attend_OrderActives->OrderActives_Actives->tour_price,
+						'count'=>$this->money_floor($model->Attend_OrderActives->OrderActives_Actives->tour_price*$model->Attend_OrderActives->user_go_count),
+				),
+				'tour_count'=>array(
+						'name'=>'报名统计',
+						'value'=>$model->Attend_OrderActives->OrderActives_Actives->tour_count,
+				),
+				'order_count'=>array(
+						'name'=>'付款统计',
+						'value'=>$model->Attend_OrderActives->OrderActives_Actives->order_count,
+				),
+				'user_order_count'=>array(
+						'name'=>$model->Attend_OrderActives->getAttributeLabel('user_order_count'),
+						'value'=>$model->Attend_OrderActives->user_order_count,
+				),
+				'user_pay_count'=>array(
+						'name'=>$model->Attend_OrderActives->getAttributeLabel('user_pay_count'),
+						'value'=>$model->Attend_OrderActives->user_pay_count,
+				),
+				'user_submit_count'=>array(
+					'name'=>$model->Attend_OrderActives->getAttributeLabel('user_submit_count'),
+					'value'=>$model->Attend_OrderActives->user_submit_count,
+				),
+				'user_go_count'=>array(
+					'name'=>$model->Attend_OrderActives->getAttributeLabel('user_go_count'),
+					'value'=>$model->Attend_OrderActives->user_go_count,
+				),
+				'user_price_count'=>array(
+					'name'=>$model->Attend_OrderActives->getAttributeLabel('user_price_count'),
+					'value'=>$model->Attend_OrderActives->user_price_count,
+				),
+				'total'=>array(
+					'name'=>$model->Attend_OrderActives->getAttributeLabel('total'),
+					'value'=>$model->Attend_OrderActives->total,
+				),
+		);
+		if ( $model->founder_id == Yii::app()->api->id)
+		{
+			if ($model->Attend_OrderActives->user_order_count == 0) 		//没有创建订单
+			{
+				$return['actives_info']['order'] = array(
+						'link'=>Yii::app()->params['app_api_domain'].Yii::app()->createUrl('/api/attend/order'),
+						'value'=>$model->Attend_OrderActives->OrderActives_Actives->id,
+				);
+			}
+			else if ($model->Attend_OrderActives->user_pay_count == 0) //创建未支付
+			{
+				$orderModel = OrderActives::getOrderActivesFull($model->Attend_OrderActives->id);
+				if ($orderModel)
+				{
+					$return['actives_info']['order'] = array(
+							'link'=>Yii::app()->params['app_api_domain'].Yii::app()->createUrl('/api/order/payment'),
+							'value'=>$orderModel->id,
+					);
+				}
+			}
+			$return['actives_info']['attend_list'] = Yii::app()->params['app_api_domain'].Yii::app()->createUrl('/api/attend/list',array('id'=>$model->Attend_OrderActives->OrderActives_Actives->id));
+		}
+		else 
+		{
+			$attend = array();
+			foreach ($model->Attend_Attend as $Attend_Attend)
+			{
+				$attend[] = array(
+					'name'=>CHtml::encode($Attend_Attend->name),
+					'phone'=>$Attend_Attend->phone,
+					'is_people'=>array(
+							'name'=>Attend::$_is_people[$Attend_Attend->is_people],
+							'value'=>$Attend_Attend->is_people,
+					),
+					'gender'=>array(
+							'name'=>Attend::$_gender[$Attend_Attend->gender],
+							'value'=>$Attend_Attend->gender,
+					),
+				);
+			}
+			$return['actives_info']['attend_list'] = array(
+				'name'=>CHtml::encode($model->name),
+				'phone'=>$model->phone,
+				'number'=>$model->number,
+				'people'=>$model->people,
+				'children'=>$model->children,
+				'add_time'=>date('Y-m-d H:i:s', $model->add_time),
+				'is_people'=>array(
+						'name'=>Attend::$_is_people[$model->is_people],
+						'value'=>$model->is_people,
+				),
+				'gender'=>array(
+					'name'=>Attend::$_gender[$model->gender],
+					'value'=>$model->gender,
+				),
+				'son'=>$attend,
+			);		
+		}
+		//报名时间
+		$return['add_time'] = date('Y-m-d H:i:s',$model->add_time);
+		//活动状态
+		$return['actives_status'] = array(
+				'name'=>Actives::$_actives_status[$model->Attend_OrderActives->OrderActives_Actives->actives_status],
+				'value'=>$model->Attend_OrderActives->OrderActives_Actives->actives_status,
+		);
+		$return['audit_status'] = array(
+				'name'=>Shops::$_audit[$model->Attend_OrderActives->OrderActives_Actives->Actives_Shops->audit],
+				'value'=>$model->Attend_OrderActives->OrderActives_Actives->Actives_Shops->audit,
+		);
+		//活动详情
+		foreach ($model->Attend_OrderActives->OrderActives_OrderItems as $items)
+		{
+			if(!isset($items->OrderItems_ItemsClassliy))
+				$this->send_error(DATA_NULL);
+			//项目图片
+			$img = $this->litimg_path($items->items_img);
+			$return['items_fare'][$items->shops_day_sort][$items->shops_half_sort][$items->shops_sort] = array(
+					'name'=>CHtml::encode($items->items_name),
+					'value'=>$items->items_id,
+					'count'=>$items->total,
+					'image'=>empty($img)?'':Yii::app()->params['admin_img_domain'].ltrim($img,'.'),
+					'link'=>Yii::app()->params['app_api_domain'].Yii::app()->createUrl('/api/'.$items->OrderItems_ItemsClassliy->admin.'/view',array('id'=>$items->items_id)),
+					'classliy'=>array(
+							'name'=>$items->items_c_name,
+							'value'=>$items->items_c_id,
+					),
+					'address'=>CHtml::encode($items->items_address),
+			);
+			if($items->shops_half_sort == 0 && $items->shops_sort == 0)
+				$return['day_info'][$items->shops_day_sort] = $items->shops_info;
+				
+			if( !isset($items->OrderItems_OrderItemsFare) || empty($items->OrderItems_OrderItemsFare) || !is_array($items->OrderItems_OrderItemsFare))
+				$this->send_error(DATA_NULL);
+			foreach ($items->OrderItems_OrderItemsFare as $fare)
+			{
+				// 价格信息
+				$return['items_fare'][$items->shops_day_sort][$items->shops_half_sort][$items->shops_sort]['fare'][] = array(
+						'name' => CHtml::encode($fare->fare_name),
+						'info' =>CHtml::encode($fare->fare_info),
+						'room_number'=>$fare->fare_number,
+						'number' => $fare->number,
+						'price' => $fare->fare_price,
+						'count'=>$fare->total,
+				);
+			}
+		}
+		if(isset($return['actives_number']))
+			$return['actives_number'] = array_values($return['actives_number']);
+		
+		$this->send($return);
+	}
+	
+	/**
+	 * 我参加的活动（代付）列表
+	 */
+	public function actionIndex()
+	{
+		//条件
+		$criteria = new CDbCriteria;
+		//关系
+		$criteria->with = array(
+			'Attend_Attend',
+			'Attend_OrderActives'=>array(
+				'with'=>array(
+					'OrderActives_User',
+					'OrderActives_Actives'=>array(
+							'with'=>array('Actives_Shops')
+					)
+				),
+			),
+		);
+		//标准条件
+		$criteria->addColumnCondition(array(
+			'`t`.`p_id`'=>0,											//父级
+			'`t`.`status`'=>Attend::status_suc,			//正常报名
+			'`t`.`user_id`'=>Yii::app()->api->id,			//谁参加的
+		));
+		$criteria->order = '`t`.`add_time` desc';
+		//统计
+		$count = Attend::model()->count($criteria);
+		//输出数据
+		$return = array();
+		//分页设置
+		$return['page'] = $this->page($criteria, $count, Yii::app()->params['api_pageSize']['actives'], Yii::app()->params['app_api_domain']);
+		//根据条件查询
+		$models = Attend::model()->findAll($criteria);
+		//分页数据
+		$return['list_data'] = $this->index_data($models, Yii::app()->params['app_api_domain']);
+		//没有找到数据
+		if(empty($return['list_data']))
+		{
+			$return['list_data'] = array();
+			$return['null'] = '小觅已经很努力了！';
+		}
+		$this->send($return);
+	}
+	
+	/**
+	 * 我参加活动数据处理函数
+	 * @param unknown $models
+	 * @param unknown $domain
+	 */
+	public function index_data($models,$domain)
+	{
+		$return = array();
+		foreach ($models as $model)
+		{
+			$list = array();
+			$set_go_time = array();
+			// 活动名称
+			if (isset($model->Attend_OrderActives->OrderActives_Actives))
+				$actives = $model->Attend_OrderActives->OrderActives_Actives;
+			if (isset($model->Attend_OrderActives->OrderActives_Actives->Actives_Shops))
+				$shops = $model->Attend_OrderActives->OrderActives_Actives->Actives_Shops;
+			if (! (isset($actives,$shops) && $actives && $shops))
+			   return $return;
+			$list['shops_name'] = CHtml::encode($shops->name);
+			
+			$list['status'] = array(
+					'name'=>CHtml::encode(Shops::$_status[$model->Attend_OrderActives->OrderActives_Actives->Actives_Shops->status]),
+					'value'=>$model->Attend_OrderActives->OrderActives_Actives->Actives_Shops->status,
+			); 
+			//列表图片
+			$img = $this->litimg_path($shops->list_img);
+			if(file_exists($img))
+				$list['shops_img'] = Yii::app()->params['admin_img_domain'].ltrim($img, '.');
+			else
+			{
+				$img = $this->litimg_path($shops->page_img);
+				if (file_exists($img))
+					$list['shops_img'] = Yii::app()->params['admin_img_domain'].ltrim($img, '.');
+			}
+			//活动状态
+			$list['actives_status'] = array(
+					'name'=>Actives::$_actives_status[$actives->actives_status],
+					'value'=>$actives->actives_status,
+			);			
+			//是否是组织者
+			$list['is_organizer'] = array(
+					'name'=>Actives::$_is_organizer[$actives->is_organizer],
+					'value'=>$actives->is_organizer,
+			);
+			//是否是发起创建的
+			$list['is_me'] = $model->founder_id == Yii::app()->api->id ? 1 : 0;
+			if ( $model->founder_id == Yii::app()->api->id)
+			{
+				if ($model->Attend_OrderActives->user_order_count == 0) 		//没有创建订单
+				{
+					$list['order'] = array(
+							'type'=>0,
+							'link'=>Yii::app()->params['app_api_domain'].Yii::app()->createUrl('/api/attend/order'),
+							'value'=>$model->Attend_OrderActives->OrderActives_Actives->id,
+					);
+				}
+				else if ($model->Attend_OrderActives->user_pay_count == 0) //创建未支付
+				{
+					$orderModel = OrderActives::getOrderActivesFull($model->Attend_OrderActives->id);
+					if ($orderModel)
+					{
+						$list['order'] = array(
+								'type'=>1,
+								'link'=>Yii::app()->params['app_api_domain'].Yii::app()->createUrl('/api/order/payment'),
+								'value'=>$orderModel->id,
+						);
+					}
+				}
+				if ($actives->go_time == 0)
+				{
+					//设置出游时间
+					$set_go_time = array(
+							'value'=>$actives->go_time == 0 ? $model->Attend_OrderActives->id : '',
+							'link'=>$actives->go_time == 0 ? $domain.Yii::app()->createUrl('/api/orderActives/gotime',array('id'=>$model->Attend_OrderActives->id)):'',
+					);
+				}
+			}
+			//取消报名
+			$list['delete'] = array(
+				'value'=>$list['is_me'] != 1 && $model->Attend_OrderActives->user_order_count == 0 && ($actives->go_time == 0 || date('Y-m-d',$actives->go_time) > date('Y-m-d')) ? $model->id : '',
+				'link'=>$list['is_me'] != 1 && $model->Attend_OrderActives->user_order_count == 0 && ($actives->go_time == 0 || date('Y-m-d',$actives->go_time) > date('Y-m-d')) ? Yii::app()->params['app_api_domain'].Yii::app()->createUrl('/api/attend/delete',array('id'=>$model->id)) : '',
+			);
+			$list['actives_time'] = array(
+					'go_time'=>$actives->go_time == 0 ? '出游日期未定' : date('Y-m-d',$actives->go_time),
+					'go_time_value'=>$actives->go_time == 0 ? 0 : 1,
+					'set_go_time'=>isset($set_go_time) ? $set_go_time : '',
+			);
+			//ID
+			$list['value'] = $model->id;
+			//详情ID
+			$list['link'] = Yii::app()->params['app_api_domain'].Yii::app()->createUrl('/api/attend/view',array('id'=>$model->id));
+			//总数
+			$list['number'] = $model->number;
+			//成人 儿童
+			$list['people'] = $model->people;
+			$list['children'] = $model->children;
+			//报名人姓名
+			$list['name'] = CHtml::encode($model->name);
+			//报名时间
+			$list['add_time'] = date('Y-m-d H:i:s',$model->add_time);
+			$return[] = $list;
+		}
+		return $return;
+	}
+	
+	/**
+	 * 查看报名列表
+	 * @param unknown $id
+	 */
+	public function actionList($id)
+	{
+		$criteria = new CDbCriteria;
+		$criteria->with = array(				
+			'Attend_Attend',
+		);
+		//标准条件
+		$criteria->addColumnCondition(array(
+				'`t`.`p_id`'=>0,													//父类
+				'`t`.`founder_id`'=>Yii::app()->api->id,			//归属给发布者
+				'`t`.`actives_id`'=>$id,										//发布者的活动
+				'`t`.`status`'=>Attend::status_suc,					//正常报名的
+		));
+		//统计
+		$count = Attend::model()->count($criteria);
+		//输出数据
+		$return=array();
+		//分页设置
+		$return['page']=$this->page($criteria, $count, Yii::app()->params['api_pageSize']['attend'], Yii::app()->params['app_api_domain']);
+		//根据条件查询
+		$models = Attend::model()->findAll($criteria);
+		//分页数据
+		$return['list_data']=$this->list_data($models, Yii::app()->params['app_api_domain']);
+		//没有找到数据
+		if(empty($return['list_data']))
+		{
+			$return['list_data']=array();
+			$return['null']='小觅已经很努力了！';
+			$return['number'] = 0;
+			$return['people'] = 0;
+			$return['children'] = 0;
+		}
+		else 
+		{
+			$return['number'] = Attend::getColumnCount($id);
+			$return['people'] = Attend::getColumnCount($id,1);
+			$return['children'] = Attend::getColumnCount($id,2);		
+		}
+		$this->send($return);
+	}
+	
+	/**
+	 * 列表页的数据
+	 * @param unknown $models
+	 * @param unknown $domain
+	 */
+	public function list_data($models, $domain)
+	{
+		$return = array();
+		foreach ($models as $model)
+		{
+			$attend = array();
+			foreach ($model->Attend_Attend as $Attend_Attend)
+			{
+				$attend[] = array(
+						'name'=>CHtml::encode($Attend_Attend->name),
+						'phone'=>$Attend_Attend->phone,
+						'is_people'=>array(
+								'name'=>Attend::$_is_people[$Attend_Attend->is_people],
+								'value'=>$Attend_Attend->is_people,
+						),
+						'gender'=>array(
+								'name'=>Attend::$_gender[$Attend_Attend->gender],
+								'value'=>$Attend_Attend->gender,
+						),
+				);
+			}
+			$return[] = array(
+					'name'=>CHtml::encode($model->name),
+					'is_main'=>$model->founder_id == $model->user_id ? 1 : 0,
+					'setname'=>
+					$model->founder_id == $model->user_id &&
+					$model->Attend_OrderActives->user_order_count == 0
+					? Yii::app()->params['app_api_domain'].Yii::app()->createUrl('/api/attend/name',array('id'=>$model->actives_id)) : '',
+					'deletelink'=>
+					$model->founder_id != $model->user_id && 
+					$model->Attend_OrderActives->user_order_count ==0 
+					? Yii::app()->params['app_api_domain'].Yii::app()->createUrl('/api/attend/delete',array('id'=>$model->id)) : '',
+					'number'=>$model->number,
+					'people'=>$model->people,
+					'children'=>$model->children,
+					'phone'=>$model->phone,
+					'add_time'=>date('Y-m-d H:i:s', $model->add_time),
+					'is_people'=>array(
+							'name'=>Attend::$_is_people[$model->is_people],
+							'value'=>$model->is_people,
+					),
+					'gender'=>array(
+							'name'=>Attend::$_gender[$model->gender],
+							'value'=>$model->gender,
+					),
+					'son'=>$attend,
+			);
+		}
+		return $return;
+	}
+	
+	/**
+	 * 修改报名人姓名
+	 * @param unknown $id
+	 */
+	public function actionName($id)
+	{
+		if (isset($_POST['Attend']['name']))
+		{
+			if (! Actives::isCreateOrder($id))
+			{
+				$model = Attend::isSetPAttendName($id, Yii::app()->api->id,$_POST['Attend']['name']);
+				if ($model)
+				{
+					$model->scenario = 'update_p_name';
+					$model->attributes = $_POST['Attend'];
+					if ($model->save())
+						$this->send(array(
+							'status'=>STATUS_SUCCESS
+						));
+					else 
+						$this->send_error_form($model->getErrors());
+				}else 
+					$this->send_error_form(array('name'=>array('报名的名字已修改或觅趣不存在')));
+			}else 
+				$this->send_error_form(array('name'=>array('订单已提交不能修改')));
+		}
+		$this->send_csrf();
+	}
+	
+	/**
+	 * 短信验证码
+	 */
+	public function actionCaptcha_sms($id)
+	{
+		if (isset($_POST['phone']) && $_POST['phone'])
+		{
+			$model = new SmsApiLoginForm;
+			$model->scenario = 'attend';
+			$model->attributes = array('phone'=>$_POST['phone']);	
+			if($model->validate())
+			{
+				if($this->isActives($id))
+				{
+					if(!$this->isAttend($id,$_POST['phone']) && !$this->isSelfAttend($id,$_POST['phone']))
+					{
+						if($model->attend_sms())
+						{
+							//成功
+							$return=array(
+								'status'=>STATUS_SUCCESS,
+							);
+							$this->send($return);
+						}else
+							$this->send_error_form($model->get_error());
+					}else
+						$this->send_error_form(array('phone'=>array('该觅趣您已经报名了')));
+				}else
+					$this->send_error_form(array('phone'=>array('觅趣报名结束或觅趣暂不能报名')));
+			}else
+				$this->send_error_form($model->get_error());
+		}
+		$this->send_csrf();
+	}
+	
+	/**
+	 * 创建
+	 * $_POST['Attend'][0]=array(
+	 * 		'sms'=>
+	 * 		'people'=>
+	 * 		'children'=>
+	 * 		'name'=>
+	 * 		'phone'=>
+	 * 		'gender'=>
+	 * );
+	 * 	$_POST['Attend'][1]=array(
+	 * 		'is_people'=>
+	 * 		'name'=>
+	 * 		'phone'=>
+	 * 		'gender'=>
+	 * );
+	 * 	$_POST['Attend'][2]=array(
+	 * 		'is_people'=>
+	 * 		'name'=>
+	 * 		'phone'=>
+	 * 		'gender'=>
+	 * );
+	 * 
+	 * 
+	 */
+	public function actionCreate($id)
+	{
+		if (isset($_POST['Attend'][0]) && $_POST['Attend']) //
+		{	
+			//赋值
+			$models = $this->setSttributes();
+			//值的错误
+			$errors = $this->validate($models);
+			//过滤空的数组	
+			$filter = array_filter($errors);
+			//数据是否合法
+			if (empty($filter))
+			{
+				//活动是否能报名
+				if ($this->isActives($id))
+				{
+					$actives =  Actives::model()->find(array(
+							'with'=>'Actives_User',
+							'condition'=>'`t`.id=:id OR `t`.barcode=:id',
+							'params'=>array(':id'=>$id))
+					);
+					//默认举办者报名
+					if (! ($actives && $this->selfAttend($id, $actives->Actives_User->phone)))
+					{
+						$errors[0]['Attend_phone'][]= '举办者报名失败！';
+						$this->send_error_form($errors);
+					}
+					//短信验证码 是否错误
+					$error = $this->isValidate($models[0]->sms,$models[0]->phone);
+					if (! $this->isActives($id,$models[0]->number))
+					{
+						$errors[0]['Attend_phone'][]= '参加人数大于剩余人数';
+						$this->send_error_form($errors);
+					}
+					else if (!empty($error))
+					{
+						$errors[0] = $error;
+						$this->send_error_form($errors);
+					}
+					else if ($this->isSelfAttend($id, $models[0]->phone))
+					{
+						$errors[0]['Attend_phone'][]= '自己不用再报名了！';
+						$this->send_error_form($errors);
+					}
+					if ($this->register($models[0]->phone))	//注册
+					{
+						if ($this->login($models[0]->phone)) //帮助登陆
+						{
+							if (!$this->isAttend($id,$models[0]->phone)) //是否报名了
+							{
+								$criteria = new CDbCriteria;
+								$criteria->with = array(
+										'Actives_Shops',
+								);
+								//如果对外开放 可用 id 消费码 报名 如果没有开放 只能用消费报名
+								$criteria->addCondition('(`t`.`is_open`=:is_open_yes AND (`t`.`id`=:id OR `t`.`barcode`=:id)) OR (`t`.`is_open`=:is_open_no AND `t`.`barcode`=:id)');
+								$criteria->params[':is_open_yes'] = Actives::is_open_yes;
+								$criteria->params[':is_open_no'] = Actives::is_open_no;
+								$criteria->params[':id'] = $id;
+								//活动的条件
+								$criteria->compare('`t`.`order_number`', '>='.$models[0]->number);	//活动剩余数量
+								$criteria->compare('`t`.`start_time`', '<='.time());									//活动开始时间
+								$criteria->compare('`t`.`end_time`', '>'.(time()-3600*24));						//动活结束时间
+								$criteria->addCondition('`t`.`go_time`=0 OR `t`.`go_time`>:time');
+								$criteria->params[':time']=time();
+								$criteria->addColumnCondition(array(
+										'`t`.`pay_type`'=>Actives::pay_type_full,							//代付
+										'`t`.`actives_type`'=>Actives::actives_type_tour,				//活动分类（旅游）
+										'`t`.`actives_status`'=>Actives::actives_status_start,		//活动开始了
+										'`Actives_Shops`.`status`'=>Shops::status_online,			//上线
+										'`Actives_Shops`.`audit`'=>Shops::audit_pass,				//审核通过
+										'`Actives_Shops`.`is_sale`'=>Shops::is_sale_yes,				//可卖
+								));					
+								$model = Actives::model()->find($criteria);
+								if ($model)
+								{
+									//开启事物
+									$transaction = $model->dbConnection->beginTransaction();
+									try{
+										$model = Actives::model()->find($criteria);
+										if ($model)
+										{
+											if(! Actives::update_order_number($model->id,$models[0]->number))
+												throw new Exception("觅趣人数已卖完了");
+											if (!Actives::actives_tour_count_sign($model->id))//添加报名人数
+												throw new Exception("觅趣报名人数统计失败");
+											
+											foreach ($models as $k=>$attend)
+											{
+												$attend->actives_id = $model->id;
+												$attend->founder_id = $model->organizer_id;
+												$attend->user_id = Yii::app()->api->id;
+												if ($k != 0)
+													$attend->p_id = $models[0]->id;
+												if (! $attend->save())
+													throw new Exception("保存觅趣报名信息错误");
+											}																			
+										}else
+											throw new Exception("参加人数大于剩余人数");
+										$return=$this->log('觅趣报名成功',ManageLog::user,ManageLog::create);
+										$transaction->commit();
+									}
+									catch (Exception $e)
+									{
+										$transaction->rollBack();
+										$this->error_log($e->getMessage(),ErrorLog::user,ErrorLog::create,ErrorLog::rollback,__METHOD__);
+									}
+									if (isset($return) && $return)
+									{
+										//报名成功
+										$this->send(array(
+											'status'=>STATUS_SUCCESS,
+										));
+									}
+									else
+									{
+										$errors[0]['Attend_phone'][]= '报名失败';
+										$this->send_error_form($errors);
+									}
+								}
+								else
+								{
+									$errors[0]['Attend_phone'][]= '参加人数大于剩余人数';
+									$this->send_error_form($errors);
+								}
+							}
+							else
+							{
+								$errors[0]['Attend_phone'][]= '已报名';
+								$this->send_error_form($errors);
+							}
+						}
+						else
+						{
+							$errors[0]['Attend_phone'][]= '手机号登陆失败！';
+							$this->send_error_form($errors);
+						}
+					}
+					else 
+					{
+						$errors[0]['Attend_phone'][]= '手机号注册失败！';
+						$this->send_error_form($errors);
+					}
+				}
+				else 
+				{
+					$errors[0]['Attend_phone'][]= '觅趣不能报名';
+					$this->send_error_form($errors);
+				}
+			}else
+				$this->send_error_form($errors);
+		}
+		$this->send_csrf();
+	}
+	
+	/**
+	 * 活动是否能报名
+	 * @param unknown $id
+	 * @param string $isLogin
+	 * @return boolean
+	 */
+	public function isActives($id,$number=0)
+	{
+		$criteria = new CDbCriteria;
+		$criteria->with = array(
+				'Actives_Shops',
+		);
+		//如果对外开放 可用 id 消费码 报名 如果没有开放 只能用消费报名
+		$criteria->addCondition('(`t`.`is_open`=:is_open_yes AND (`t`.`id`=:id OR `t`.`barcode`=:id)) OR (`t`.`is_open`=:is_open_no AND `t`.`barcode`=:id)');
+		$criteria->params[':is_open_yes'] = Actives::is_open_yes;
+		$criteria->params[':is_open_no'] = Actives::is_open_no;
+		$criteria->params[':id'] = $id;
+		//活动的条件
+		if ($number == 0)
+			$criteria->compare('`t`.`order_number`', '>0');									//活动剩余数量
+		else
+			$criteria->compare('`t`.`order_number`', '>='.$number);					//活动剩余数量
+		$criteria->compare('`t`.`start_time`', '<='.time());									//活动开始时间
+		$criteria->compare('`t`.`end_time`', '>'.(time()-3600*24));						//动活结束时间
+		$criteria->addCondition('`t`.`go_time`=0 OR `t`.`go_time`>:time');
+		$criteria->params[':time']=time();
+		$criteria->addColumnCondition(array(
+				'`t`.`pay_type`'=>Actives::pay_type_full,							//代付
+				'`t`.`actives_type`'=>Actives::actives_type_tour,				//活动分类（旅游）
+				'`t`.`actives_status`'=>Actives::actives_status_start,		//活动开始了
+				'`Actives_Shops`.`status`'=>Shops::status_online,			//上线
+				'`Actives_Shops`.`audit`'=>Shops::audit_pass,				//审核通过
+				'`Actives_Shops`.`is_sale`'=>Shops::is_sale_yes,				//可卖
+		));		
+		$model = Actives::model()->find($criteria); //查到
+		if ($model)
+			return true;
+		
+		return false;
+	}
+	
+	/**
+	 * 是否报名
+	 * @param unknown $id
+	 */
+	public function isAttend($id,$phone,$isSelf=false)
+	{
+		$criteria = new CDbCriteria;
+		$criteria->with = array(
+			'Attend_Actives',
+		);
+		//如果对外开放 可用 id 消费码 报名 如果没有开放 只能用消费报名
+		$criteria->addCondition('(`Attend_Actives`.`is_open`=:is_open_yes AND (`Attend_Actives`.`id`=:id OR `Attend_Actives`.`barcode`=:id)) OR (`Attend_Actives`.`is_open`=:is_open_no AND `Attend_Actives`.`barcode`=:id)');
+		$criteria->params[':is_open_yes'] = Actives::is_open_yes;
+		$criteria->params[':is_open_no'] = Actives::is_open_no;
+		$criteria->params[':id'] = $id;
+		//报名的人
+		$criteria->addColumnCondition(array(
+			'`t`.`status`'=>Attend::status_suc,												//正常的			
+			'`t`.`p_id`'=>0,																				//父类
+		));
+		$criteria->addColumnCondition(array(
+			'`t`.`user_id`'=>$this->getUserID($phone),							//用户的
+		));
+		if ($isSelf)
+			$criteria->addCondition('`t`.`user_id`=`Attend_Actives`.`organizer_id`');
+		$model = Attend::model()->find($criteria);
+		if ($model)
+			return true;
+		return false;
+	}
+	
+	/**
+	 * 注册用户
+	 * @param unknown $phone
+	 * @return Ambigous <boolean, User>|boolean
+	 */
+	public function register($phone)
+	{
+		$model = User::model()->find('phone=:phone',array(':phone'=>$phone));
+		if(! $model)
+			return User::register($phone);
+		
+		return true;
+	}
+	
+	/**
+	 * 手机号登陆
+	 * @param unknown $phone
+	 * @return boolean
+	 */
+	public function login($phone)
+	{
+		if (User::model()->find('phone=:phone AND status=:status',array(':phone'=>$phone,'status'=>User::status_suc)))
+		{
+			if (Yii::app()->api->id)
+				Yii::app()->api->logout(false);
+			$model = new UserSmsLoginForm;
+			$model->phone = $phone;
+			return $model->login();
+		}			
+		return false;
+	}
+	
+	/**
+	 * 验证短信是否错误
+	 */
+	public function isValidate($sms,$phone)
+	{
+		$model = new Attend;
+		$model->scenario = 'validate_sms';
+		$model->attributes = array('sms'=>$sms,'phone'=>$phone);
+		if($model->validate() && $model->verifycode())
+			return array();
+		else
+			return $this->form_error($model);
+	}
+	
+	/**
+	 * 获取当前的场景
+	 * @param unknown $data
+	 * @return string|boolean
+	 */
+	public function getScenario($data)
+	{
+		if (isset($data['is_people']))
+		{
+			if ($data['is_people'] == Attend::is_people_yes)
+				return 'create_people';
+			else if ($data['is_people'] == Attend::is_people_not)
+				return 'create_children';
+		}
+		return '';
+	}
+	
+	/**
+	 * 赋值
+	 * @return boolean|multitype:Attend
+	 */
+	public function setSttributes()
+	{
+		$models = array();	
+		if (isset($_POST['Attend'][0]) && is_array($_POST['Attend']))
+		{
+			$i = 0;
+			foreach ($_POST['Attend'] as $k=>$v)
+			{
+				if($k == 0) //父类
+				{
+					$model = new Attend;
+					$model->scenario = 'create_p';
+					$model->attributes = $v;
+					$models[$k] = $model;
+				}
+				else if ($i == $k) //子类
+				{
+					$model = new Attend;
+					$model->scenario = $this->getScenario($v);
+					$model->attributes = $v;
+					$models[$k] = $model;
+				}
+				else 
+					return array();
+				$i++;
+			}
+		}
+		return $models;
+	}
+	
+	/**
+	 * 验证数据是否对
+	 * @param unknown $models
+	 */
+	public function validate($models)
+	{
+		$people = 0;
+		$children = 0;
+		$errors = array();
+		if(!empty($models) && isset($models[0]) && is_array($models))
+		{
+			$people = $models[0]->people;
+			$children = $models[0]->children;
+			$models[0]->number = $people + $children;
+			$errors = array();
+			foreach ($models as $model)
+			{
+				$model->validate();			
+				if ($model->is_people == Attend::is_people_yes)
+					$people--;
+				else if ($model->is_people == Attend::is_people_not)
+					$children--;
+				$errors[] = $this->form_error($model);
+			}
+		}
+		else
+			return $errors[]['Attend_phone'] = array('没有报名人信息');
+		if ($people != 0)
+			$errors[0]['Attend_people'][] = '添加的成人数量有误';
+		if($children != 0)
+			$errors[0]['Attend_children'][]= '添加的儿童数量有误';
+		return $errors;
+	}
+
+	/**
+	 * 删除报名
+	 * @param unknown $id
+	 */
+	public function actionDelete($id)
+	{	
+		$criteria = new CDbCriteria;
+		$criteria->with = array(
+				'Attend_Actives',
+				'Attend_Shops',
+				'Attend_Attend'
+		);
+		//不能删除自己
+		$criteria->addCondition('`t`.`user_id` != `t`.`founder_id`');
+		//用户 和 举办人 杜能删除
+		$criteria->addCondition('`t`.`user_id`=:user_id OR `t`.`founder_id`=:user_id');
+		$criteria->params[':user_id'] = Yii::app()->api->id;
+		//活动、商品 等条件
+		$criteria->addColumnCondition(array(
+				'`Attend_Shops`.`status`'=>Shops::status_online,									//上线
+				'`Attend_Shops`.`audit`'=>Shops::audit_pass,										//审核通过
+				'`Attend_Shops`.`is_sale`'=>Shops::is_sale_yes,										//可卖		
+				'`Attend_Actives`.`pay_type`'=>Actives::pay_type_full,							//代付
+				'`Attend_Actives`.`actives_type`'=>Actives::actives_type_tour,				//活动分类（旅游）
+				'`t`.`id`'=>$id,																							//报名记录ID
+				'`t`.`p_id`'=>0,																							//定级分类
+				'`t`.`status`'=>Attend::status_suc,															//正常状态			
+		));
+		//活动状态 开始 或 结束 
+		$criteria->addCondition('`Attend_Actives`.`actives_status`=:start OR `Attend_Actives`.`actives_status`=:end');
+		$criteria->params[':start'] =  Actives::actives_status_start;
+		$criteria->params[':end'] =  Actives::actives_status_end;
+		//活动出游状态 
+		$criteria->addCondition('`Attend_Actives`.`go_time`=0 OR `Attend_Actives`.`go_time`>:time');
+		$criteria->params[':time'] = time();
+		$model = Attend::model()->find($criteria);
+		if ($model)
+		{
+			if (! Actives::isCreateOrder($model->actives_id)) //没有创建订单
+			{
+				//开启事物
+				$transaction = $model->dbConnection->beginTransaction();
+				try{
+					$model = Attend::model()->find($criteria);
+					if ($model && !Actives::isCreateOrder($model->actives_id))
+					{
+						if ( Attend::model()->updateByPk($model->id, array('status'=>Attend::status_dis)))
+						{
+							$criteria_update = new CDbCriteria;
+							$criteria_update->addColumnCondition(array(
+								'p_id'=>$model->id,
+							));
+							$update_number= Attend::model()->updateAll(array('status'=>Attend::status_dis),
+								$criteria_update
+							);
+							if ($update_number != ($model->number -1) )
+								throw new Exception("更新报名子类出错");
+						}
+						else
+							throw new Exception("更新报名父类出错");		
+					}
+					else
+						throw new Exception("报名觅趣找不到");
+					if(! Actives::restore_order_number($model->actives_id,$model->number))
+						throw new Exception("还原报名人数");
+					if (!Actives::actives_tour_count_out($model->actives_id))	//添加报名人数
+						throw new Exception("还原觅趣报名人数统计失败");
+					$return=$this->log('取消觅趣报名成功',ManageLog::user,ManageLog::create);
+					$transaction->commit();
+				}
+				catch (Exception $e)
+				{
+					$transaction->rollBack();
+					$this->error_log($e->getMessage(),ErrorLog::user,ErrorLog::create,ErrorLog::rollback,__METHOD__);
+				}
+				if (isset($return) && $return)
+				{
+					//取消成功
+					$this->send(array(
+						'status'=>STATUS_SUCCESS,
+					));
+				}
+			}
+		}
+		$this->send(array('status'=>STATUS_FAIL));
+	}
+
+	/**
+	 * 自己报名
+	 * @param unknown $id
+	 */
+	public function selfAttend($id,$phone)
+	{
+		if($this->isActives($id)) //是否能报名
+		{
+			if (!$this->isAttend($id,$phone,true)) //是否报名了
+			{
+				$user_id = $this->getUserID($phone);
+				$criteria = new CDbCriteria;
+				$criteria->with = array(
+						'Actives_Shops',
+						'Actives_User',
+				);
+				//如果对外开放 可用 id 消费码 报名 如果没有开放 只能用消费报名
+				$criteria->addCondition('(`t`.`is_open`=:is_open_yes AND (`t`.`id`=:id OR `t`.`barcode`=:id)) OR (`t`.`is_open`=:is_open_no AND `t`.`barcode`=:id)');
+				$criteria->params[':is_open_yes'] = Actives::is_open_yes;
+				$criteria->params[':is_open_no'] = Actives::is_open_no;
+				$criteria->params[':id'] = $id;
+				//活动的条件
+				$criteria->compare('`t`.`order_number`', '>=1');									//活动剩余数量
+				$criteria->compare('`t`.`start_time`', '<='.time());									//活动开始时间
+				$criteria->compare('`t`.`end_time`', '>'.(time()-3600*24));						//动活结束时间
+				$criteria->addCondition('`t`.`go_time`=0 OR `t`.`go_time`>:time');
+				$criteria->params[':time']=time();
+				$criteria->addColumnCondition(array(					
+						'`t`.`organizer_id`'=>$user_id,											//自己的活动
+						'`t`.`pay_type`'=>Actives::pay_type_full,							//代付
+						'`t`.`actives_type`'=>Actives::actives_type_tour,				//活动分类（旅游）
+						'`t`.`actives_status`'=>Actives::actives_status_start,		//活动开始了
+						'`Actives_Shops`.`status`'=>Shops::status_online,			//上线
+						'`Actives_Shops`.`audit`'=>Shops::audit_pass,				//审核通过
+						'`Actives_Shops`.`is_sale`'=>Shops::is_sale_yes,				//可卖
+				));
+				$model = Actives::model()->find($criteria);
+				if ($model)
+				{
+					//开启事物
+					$transaction = $model->dbConnection->beginTransaction();
+					try{
+						$model = Actives::model()->find($criteria);
+						if ($model)
+						{
+							if(! Actives::update_order_number($model->id,1))
+								throw new Exception("觅趣人数已卖完了");
+							if (!Actives::actives_tour_count_sign($model->id))	//添加报名人数
+								throw new Exception("觅趣报名人数统计失败");
+							$attend = new Attend;
+							$attend->name = Attend::name_default; //默认报名
+							$attend->phone = $model->Actives_User->phone;
+							$attend->people = 1;
+							$attend->number = 1;
+							$attend->children = 0;
+							$attend->actives_id = $model->id;
+							$attend->founder_id = $model->organizer_id;
+							$attend->user_id = $model->organizer_id;
+							if (! $attend->save(false))
+								throw new Exception("保存觅趣报名信息错误");
+						}else
+							throw new Exception("参加人数大于剩余人数");
+						$return=$this->log('自己参加自己觅趣成功',ManageLog::user,ManageLog::create);
+						$transaction->commit();
+					}
+					catch (Exception $e)
+					{
+						$transaction->rollBack();
+						$this->error_log($e->getMessage(),ErrorLog::user,ErrorLog::create,ErrorLog::rollback,__METHOD__);
+					}
+					if (isset($return) && $return)
+						return true;	
+				}
+			}else
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 是否主办者是否报名了
+	 * @param unknown $phone
+	 * @return string
+	 */
+	public function isSelfAttend($id, $phone)
+	{
+		$model =  Actives::model()->find('id=:id OR barcode=:id',array(':id'=>$id));
+		if ($model)
+			return $model->organizer_id == $this->getUserID($phone);
+		return false;
+	}
+	
+	/**
+	 * 获取用户ID
+	 * @param unknown $phone
+	 * @return string
+	 */
+	public function getUserID($phone)
+	{
+		$model = User::model()->find('phone=:phone',array(':phone'=>$phone));
+		if ($model)
+			return $model->id;
+		return '';
+	}
+	
+	/**
+	 * 提交订单
+	 * 
+	 *  $_POST[Order][order_price] =
+	 *  $_POST[Order][go_time] =
+	 *  $_POST[OrderShops][shops_id] =
+	 *  可选 $_POST[Attend][name]=
+	 *  商品 上线 可卖 审核通过 
+	 * 活动
+	 */
+	public function actionOrder()
+	{
+		if (isset($_POST['Order'],$_POST['OrderShops']))
+		{		
+			$OrderShops = new OrderShops;
+			$OrderShops->scenario = 'actives_tour_full';
+			$OrderShops->attributes = $_POST['OrderShops'];			
+			if ($OrderShops->validate())
+			{
+				$model = new Order;
+				//赋值
+				$model->Order_OrderShops = array($OrderShops);
+				//设置场景
+				$model->scenario = $OrderShops->is_go_time ? 'actives_tour_full' : 'actives_tour_full_go_time';
+				$model->attributes = $_POST['Order'];
+				//服务费用
+				$model->user_price = $OrderShops->_user_price;
+				$model->user_price_fact = $OrderShops->_user_price;
+				// 全款的
+				$model->order_type = Order::order_type_actives_tour_full;
+				//总订单
+				$model->order_organizer_id = $OrderShops->_order_organizer_id;
+				//订单归属者
+				$model->user_id = $OrderShops->user_id;				
+				if ($model->validate())
+				{
+					//设置报名者姓名
+					if (isset($_POST['Attend']['name']) && $_POST['Attend']['name'])
+					{
+						$attend = Attend::isSetPAttendName($model->Order_OrderShops[0]->shops_id, Yii::app()->api->id,$_POST['Attend']['name']);
+						if ($attend)
+						{
+							$attend->scenario = 'update_p_name';
+							$attend->attributes = $_POST['Attend'];
+							if (! $attend->save())
+									$this->send_error_form($attend->getErrors());
+						}
+					}
+ 					//创建订单
+					if (Order::create_order($model))
+					{
+						$return=array(
+								'id'=>array(
+										'name'=>'订单ID',
+										'value'=>$model->id,
+								),
+								'order_no'=>array(
+										'value'=>$model->order_no,
+										'name'=>'订单号',
+								),
+								'order_type'=>array(
+										'value'=>$model->order_type,
+										'name'=>Order::$_order_type[$model->order_type],
+								),
+								'pay_type'=>array(
+										'name'=>Order::$_pay_type[$model->pay_type],
+										'value'=>$model->pay_type,
+								),
+								'order_status'=>array(
+										'name'=>Order::$_order_status[$model->order_status],
+										'value'=>$model->order_status,
+								),
+								'status_go'=>array(
+										'name'=>Order::$_status_go[$model->status_go],
+										'value'=>$model->status_go,
+								),
+								'centre_status'=>array(
+										'name'=>Order::$_centre_status[$model->centre_status],
+										'value'=>$model->centre_status,
+								),
+								'pay_status'=>array(
+										'name'=>Order::$_pay_status[$model->pay_status],
+										'value'=>$model->pay_status,
+								),
+						);
+						$return['link']=Yii::app()->params['app_api_domain'].Yii::app()->createUrl('/api/order/view',array('id'=>$model->id));
+						$this->send($return); //创建后发送消息
+					}else
+						$this->send_error_form(array(array('order_price'=>'事物错误')));
+				}else
+					$this->send_error_form($this->form_error($model));
+			}
+			else 
+				$this->send_error_form($this->form_error($OrderShops));
+		}
+		$this->send_csrf();
+	}
+}

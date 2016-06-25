@@ -1,0 +1,27 @@
+
+// UEL  index.php?r=api/farmOuter/share&url={url}
+
+// GET 请求 无需登录
+
+//存在错误 链接没有 返回错误  有则返回数据   （支持 原链接）
+
+
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "name": "生态淮山片",
+        "info": "野生山药，吸日月山川精华且未被污染",
+        "link": "http://wap.koudaitong.com/v2/goods/2xgdoewh0bw1j",
+        "image": "http://test2.365tmm.net/uploads/items/farm/outer/20151028/67025630b41d1e4355.36765190.jpg"
+    }
+}
+
+
+{
+    "status": 0,
+    "code": 50006,
+    "msg": "没有相关数据",
+    "data": []
+}

@@ -1,0 +1,69 @@
+<?php
+namespace app\user\controllers;
+
+use UserModulesController;
+
+/**
+ * Class IndexController
+ * @package app\user\controllers
+ *
+ * @author Moore Mo
+ */
+class IndexController extends UserModulesController
+{
+
+	/**
+	 * 验证抽奖机会
+	 * @param $chance
+	 */
+	public function actionIndex($chance)
+	{
+		$chance = array(
+			'store_id' => 1,
+			'pad_id' => 2,
+			'config_id' => 1
+		);
+
+		// 抽奖机会次数
+		$count = 0;
+
+		$model = new \Chance;
+
+		$model->scenario = 'create';
+
+		$chance['user_id'] = \Yii::app()->user->id;
+		$model->attributes = $chance;
+		if ($model->validate()) {
+			// 判断当天是否已经给用户添加过抽奖机会
+			$criteria = new \CDbCriteria;
+			$criteria->addColumnCondition(
+				array(
+					'user_id' => \Yii::app()->user->id,
+					'pad_id' => $chance['pad_id'],
+					'date_time' => strtotime(date('Y-m-d', time()))
+				)
+			);
+
+			// 当天没有添加过，则添加
+			if (! $model->find($criteria)) {
+				$configModel = new \Config;
+				$criteria = new \CDbCriteria;
+				$criteria->addColumnCondition(
+					array(
+						'pad_id' => $chance['pad_id'],
+					)
+				);
+				$configObj = $configModel->find($criteria);
+				if ($configObj) {
+					$model->count = $configObj->number;
+					$model->date_time = strtotime(date('Y-m-d', time()));
+					if ($model->save()) {
+						$count = $configObj->number;
+					}
+				}
+			}
+		}
+		// 关注成功，添加抽奖机会
+		$this->render('index', array('count' => $count));
+	}
+}

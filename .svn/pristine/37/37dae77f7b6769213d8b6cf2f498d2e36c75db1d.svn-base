@@ -1,0 +1,505 @@
+
+//报名下单
+//链接     /index.php?r=api/order/create  
+//POST
+
+//获取活动数据  /index.php?r=api/order/fare&id=value 
+//GET
+{
+  "status": 1,
+  "code": 0,
+  "msg": "正确",
+  "data": {
+    "name": "创建线222",
+    "value": "59",
+    "classliy": {
+      "name": "活动",
+      "value": "3"
+    },
+    "price": {
+      "name": "服务费/人",
+      "value": "10.00"
+    },
+    "tour_type": {
+      "name": "一条线",
+      "value": "1"
+    },
+    "actives_type": {
+      "name": "活动(旅游)",
+      "value": "0"
+    },
+    "number": {
+      "name": "活动数量",
+      "value": "20"
+    },
+    "order_number": {
+      "name": "剩余数量",
+      "value": "18"
+    },
+    "start_time": {
+      "name": "活动开始时间",
+      "value": "2015-11-03 00:00:00"
+    },
+    "end_time": {
+      "name": "活动结束时间",
+      "value": "2015-11-07 00:00:00"
+    },
+    "go_time": {
+      "name": "活动出游时间",
+      "value": "2015-11-06 00:00:00"
+    },
+    "remark": {
+      "name": "活动简介",
+      "value": "创建线2"
+    },
+    "dot_list": {
+      "1": [
+        {
+          "32": [
+            {
+              "name": "广宁竹海",
+              "value": "57",
+              "classliy": {
+                "name": "玩",
+                "value": "3"
+              },
+              "fare": [
+                {
+                  "value": "301",
+                  "name": "特价门票",
+                  "info": "儿童",
+                  "number": 0,
+                  "room_number": "0",
+                  "price": "1.69"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "31": [
+            {
+              "name": "放鸡岛",
+              "value": "56",
+              "classliy": {
+                "name": "玩",
+                "value": "3"
+              },
+              "fare": [
+                {
+                  "value": "302",
+                  "name": "特价门票",
+                  "info": "成人",
+                  "number": 0,
+                  "room_number": "0",
+                  "price": "20.50"
+                }
+              ]
+            },
+            {
+              "name": "茂名海岸",
+              "value": "55",
+              "classliy": {
+                "name": "玩",
+                "value": "3"
+              },
+              "fare": [
+                {
+                  "value": "303",
+                  "name": "特价门票",
+                  "info": "儿童",
+                  "number": 0,
+                  "room_number": "0",
+                  "price": "0.59"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "2": [
+        {
+          "25": [
+            {
+              "name": "溪头村",
+              "value": "33",
+              "classliy": {
+                "name": "玩",
+                "value": "3"
+              },
+              "fare": [
+                {
+                  "value": "304",
+                  "name": "特价门票",
+                  "info": "儿童",
+                  "number": 0,
+                  "room_number": "0",
+                  "price": "34.75"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "23": [
+            {
+              "name": "大埔蜜柚",
+              "value": "29",
+              "classliy": {
+                "name": "吃",
+                "value": "1"
+              },
+              "fare": [
+                {
+                  "value": "305",
+                  "name": "特价套餐",
+                  "info": "成人",
+                  "number": 0,
+                  "room_number": "0",
+                  "price": "34.47"
+                }
+              ]
+            },
+            {
+              "name": "瑞锦酒店",
+              "value": "31",
+              "classliy": {
+                "name": "住",
+                "value": "2"
+              },
+              "fare": [
+                {
+                  "value": "306",
+                  "name": "单人间套房",
+                  "info": "100",
+                  "number": 0,
+                  "room_number": "1",
+                  "price": "34.99"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "3": [
+        {
+          "23": [
+            {
+              "name": "大埔蜜柚",
+              "value": "29",
+              "classliy": {
+                "name": "吃",
+                "value": "1"
+              },
+              "fare": [
+                {
+                  "value": "307",
+                  "name": "特价套餐",
+                  "info": "成人",
+                  "number": 0,
+                  "room_number": "0",
+                  "price": "34.47"
+                }
+              ]
+            },
+            {
+              "name": "瑞锦酒店",
+              "value": "31",
+              "classliy": {
+                "name": "住",
+                "value": "2"
+              },
+              "fare": [
+                {
+                  "value": "308",
+                  "name": "单人间套房",
+                  "info": "100",
+                  "number": 0,
+                  "room_number": "1",
+                  "price": "34.99"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "OrderItems": {
+      "1": [
+        {
+          "32": [
+            {
+              "57": [
+                {
+                  "301": {
+                    "price": "1.69",
+                    "number": "0",
+                    "count": "0.00"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "31": [
+            {
+              "56": [
+                {
+                  "302": {
+                    "price": "20.50",
+                    "number": "0",
+                    "count": "0.00"
+                  }
+                }
+              ]
+            },
+            {
+              "55": [
+                {
+                  "303": {
+                    "price": "0.59",
+                    "number": "0",
+                    "count": "0.00"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "2": [
+        {
+          "25": [
+            {
+              "33": [
+                {
+                  "304": {
+                    "price": "34.75",
+                    "number": "0",
+                    "count": "0.00"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "23": [
+            {
+              "29": [
+                {
+                  "305": {
+                    "price": "34.47",
+                    "number": "0",
+                    "count": "0.00"
+                  }
+                }
+              ]
+            },
+            {
+              "31": [
+                {
+                  "306": {
+                    "price": "34.99",
+                    "number": "0",
+                    "count": "0.00"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "3": [
+        {
+          "23": [
+            {
+              "29": [
+                {
+                  "307": {
+                    "price": "34.47",
+                    "number": "0",
+                    "count": "0.00"
+                  }
+                }
+              ]
+            },
+            {
+              "31": [
+                {
+                  "308": {
+                    "price": "34.99",
+                    "number": "0",
+                    "count": "0.00"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "value": "59"
+    },
+    "OrderItemsFare": [
+      {
+        "info": "儿童",
+        "number": 0,
+        "is_room": 0
+      },
+      {
+        "info": "成人",
+        "number": 0,
+        "is_room": 1
+      }
+    ]
+  }
+}
+
+
+//提交数据
+
+{
+  "Order": {
+    "user_price": "20.00",
+    "order_type": "3",
+    "order_price": "179.42",
+    "son_order_count": "0",
+    "user_go_count": 1
+  },
+  "OrderRetinue": [
+    {
+      "is_main": "1",
+      "retinue_id": "13"
+    }
+  ],
+  "OrderItems": {
+    "1": [
+      {
+        "32": [
+          {
+            "57": [
+              {
+                "264": {
+                  "price": "1.69",
+                  "number": 0,
+                  "count": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "31": [
+          {
+            "56": [
+              {
+                "265": {
+                  "price": "20.50",
+                  "number": 1,
+                  "count": 20.5
+                }
+              }
+            ]
+          },
+          {
+            "55": [
+              {
+                "266": {
+                  "price": "0.59",
+                  "number": 0,
+                  "count": 0
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "25": [
+          {
+            "33": [
+              {
+                "267": {
+                  "price": "34.75",
+                  "number": 0,
+                  "count": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "23": [
+          {
+            "29": [
+              {
+                "268": {
+                  "price": "34.47",
+                  "number": 1,
+                  "count": 34.47
+                }
+              }
+            ]
+          },
+          {
+            "31": [
+              {
+                "269": {
+                  "price": "34.99",
+                  "number": 1,
+                  "count": 34.99
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "3": [
+      {
+        "23": [
+          {
+            "29": [
+              {
+                "270": {
+                  "price": "34.47",
+                  "number": 1,
+                  "count": 34.47
+                }
+              }
+            ]
+          },
+          {
+            "31": [
+              {
+                "271": {
+                  "price": "34.99",
+                  "number": 1,
+                  "count": 34.99
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "value": "40"
+  },
+  "OrderItemsFare": [
+    {
+      "info": "儿童",
+      "number": 0,
+      "is_room": 0
+    },
+    {
+      "info": "成人",
+      "number": 1,
+      "is_room": 1
+    }
+  ]
+}

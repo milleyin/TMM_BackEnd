@@ -1,0 +1,140 @@
+<div id="viewdot">
+	<div class="dot_content">
+		<span class="name">点名称：</span>
+		<span class="dot_name">
+		<?php echo CHtml::encode($model->Dot_Shops->name);?>
+		<?php 
+          	if ($model->Dot_Shops->status != Shops::status_online)
+          	{
+          ?>
+          <span style="color: red;">（已<?php echo Shops::$_status[$model->Dot_Shops->status]; ?>）</span>
+          <?php 
+          	}
+          ?>
+          </span>
+	</div>
+	<?php 
+		foreach ($model->Dot_Pro as $key=>$data)
+		{
+	?>
+	<div class="list_item">
+	  <div class="title">项目<?php echo Pro::num_han($key+1); ?></div>
+	  <hr>
+	  <div class="img">
+		  <?php 
+		  if (isset($data->Pro_Items->Items_ItemsImg[0]))
+		  {
+		  	foreach ($data->Pro_Items->Items_ItemsImg as $img)
+		  	{
+		  		if (file_exists($img->img))
+		  		{
+		  			echo Yii::app()->controller->show_img($img->img, '', '', array(
+		  					'title'=>Yii::app()->controller->setHideKey($data->Pro_Items->Items_StoreContent->Content_Store->phone) . ' [' .
+		  					$data->Pro_Items->Items_StoreContent->name . ']'
+		  			));
+		  			break;
+		  		}
+		  	}
+		  }
+	      ?>
+	  </div>
+	  <div class="content">
+	  	<div class="item_title">
+	  			<span class="name">
+	  				名称：
+	  			</span>
+	  			<span class="item_name">
+	  				<?php echo CHtml::encode($data->Pro_Items->name);?>
+	  			</span>
+					<?php 
+				        if ($data->Pro_Items->status != Items::status_online)
+				        {
+				   	 ?>
+                       		<span style="color: red;">（已<?php echo Items::$_status[$data->Pro_Items->status]; ?>）</span>
+		          <?php 
+		          		}
+		          	?>
+	  			<span class="item_classliy">
+					<?php echo CHtml::encode($data->Pro_Items->Items_ItemsClassliy->name);?>
+				</span>
+	  	</div>
+	  	<div class="item_address">
+	  		  	<span class="name">
+	  				地址：
+	  			</span>
+	  			<span class="address">
+  			        	<?php
+                            echo CHtml::encode(
+                                $data->Pro_Items->Items_area_id_p_Area_id->name.
+                                $data->Pro_Items->Items_area_id_m_Area_id->name.
+                                $data->Pro_Items->Items_area_id_c_Area_id->name.
+                                $data->Pro_Items->address
+                            );
+                        ?>
+	  			</span>
+	  	</div>
+	  	<div class="item_store">
+	  			<span class="name">
+	  				商家公司名：
+	  			</span>
+	  			<span class="store">
+	  				<?php echo CHtml::encode($data->Pro_Items->Items_StoreContent->name); ?>
+	  			</span>|
+	  			<span class="name">
+	  				商家账号：
+	  			</span>
+	  			<span class="phone">
+	  				<?php echo CHtml::encode(Yii::app()->controller->setHideKey($data->Pro_Items->Items_StoreContent->Content_Store->phone)); ?>
+	  			</span>
+	  	</div>
+	  </div>
+	 <div class="fare_info">
+					<span class="fare_title">已选价格</span>
+					<div class="fare_list">
+						<ul>
+						<?php
+								if ($data->Pro_ItemsClassliy->append == 'Hotel')
+								{
+									foreach ($data->Pro_Items->Items_Fare as $fare_key=>$fare)
+									{
+						?>
+							<li>
+								<span title="套房类型" ><?php echo CHtml::encode($fare->name);?></span>
+								<span title="房间大小"><?php echo CHtml::encode($fare->info);?> 平方</span>
+								<span title="入住人数"><?php echo CHtml::encode($fare->number);?>人间</span>
+								<span title="价格金额"><?php echo CHtml::encode($fare->price);?></span>
+								<?php echo Chtml::checkBox('Fare['.$model->id.']['.$key.']['.$data->Pro_Items->id.']['.$fare_key.']', false, array(
+										'value'=>json_encode(array('dot_id'=>$model->id,'item_id'=>$data->Pro_Items->id,'fare'=>$fare->id)), 'class'=>'fare')); ?>
+							</li>
+							<?php
+									}
+								}
+								else
+								{
+									foreach ($data->Pro_Items->Items_Fare as $fare_key=>$fare)
+									{
+							?>
+							<li>
+								<span title="套餐名称"><?php echo CHtml::encode($fare->name);?></span>
+								<span title="套餐类型"><?php echo CHtml::encode($fare->info);?></span>
+								<span title="价格金额"><?php echo CHtml::encode($fare->price);?> 元</span>
+							<?php echo Chtml::checkBox('Fare['.$model->id.']['.$key.']['.$data->Pro_Items->id.']['.$fare_key.']', false , array(
+									'value'=>json_encode(array('dot_id'=>$model->id,'item_id'=>$data->Pro_Items->id,'fare'=>$fare->id)), 
+									'class'=>'fare')); ?>
+							</li>
+							<?php
+									}
+								}
+							?>
+						</ul>
+					</div>
+				</div>
+		</div>
+	<?php 
+		}
+	?>
+	<div class="buttons">
+		<input style="cursor:pointer" type="button"  id="confirm"  value="确认">
+		<input style="cursor:pointer" type="button"  onclick="$('#view_dot').dialog('close'); return false;" value="取消">
+	</div>
+</div>

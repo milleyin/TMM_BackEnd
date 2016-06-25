@@ -1,0 +1,162 @@
+	/**
+	 * 无效订单
+	 * @var unknown
+	 */
+	const status_not=0;
+	/**
+	 * 是否有效
+	 * @var unknown
+	 */
+	const status_yes=1;
+	/**
+	 * 解释字段 centre_status 的含义
+	 * @var array
+	 */
+	public static $_status=array(0=>'无效订单',1=>'有效订单',);
+	
+	/*************************************核心状态 *********************************/
+	/**
+	 * 不可支付 
+	 * @var integer
+	 */
+	const centre_status_not=-1;
+	/**
+	 * 可支付
+	 * @var integer
+	 */
+	const centre_status_yes=0;
+	/**
+	 * 解释字段 centre_status 的含义
+	 * @var array
+	 */
+	public static $_centre_status=array(-1=>'不可支付',0=>'可支付');
+	
+	/*************************************支付状态*********************************/
+	/**
+	 * 支付状态 过期的订单
+	 * @var unknown
+	 */
+	const pay_status_past=-1;
+	/**
+	 * 支付状态  没有支付
+	 * @var unknown
+	 */
+	const pay_status_not=0;
+	/**
+	 * 支付状态  已经支付
+	 * @var unknown
+	 */
+	const pay_status_yes=1;
+	/**
+	 * 解释字段 pay_status 的含义
+	 * @var array
+	 */
+	public static $_pay_status=array(-1=>'已过期',0=>'待支付',2=>'已支付');
+	
+	/************************************订单状态*********************************/
+	/**
+	 * 订单状态  过期 （付完款后 没有扫描消费 订单过期）有时间段
+	 * @var unknown
+	 */
+	const order_status_store_past=-3;
+	/**
+	 * 订单状态  退款 （付完款后的操作 退款成功）
+	 * @var unknown
+	 */
+	const order_status_store_refund=-2;
+	/**
+	 * 订单状态  已取消 取消不付钱 （只有在没有付钱之前的操作）
+	 * @var unknown
+	 */
+	const order_status_store_undo=-1;
+	/**
+	 * 订单状态  待处理 自助游 等待商家同意订单		（自助游的订单默认值）
+	 * @var unknown
+	 */
+	const order_status_store_query=0;
+	/**
+	 * 订单状态  待付款  商家同意接受订单 等待用户付款 （结伴游的订单默认值）
+	 * @var unknown
+	 */
+	const order_status_store_yes=1; 
+	/**
+	 * 订单状态 已付款 用户已付款 
+	 * @var unknown
+	 */
+	const order_status_user_pay=2;
+	/**
+	 * 订单状态 已消费  用户消费所有项目订单的状态
+	 * @var unknown
+	 */
+	const order_status_user_use=3;	
+	/**
+	 * 解释字段 order_status 的含义
+	 * @var array
+	 */
+	public static $_order_status=array(
+			-3=>'已过期',
+			-2=>'已退款',
+			-1=>'已取消',
+			0=>'待处理',
+			1=>'待付款',
+			2=>'已付款',
+			3=>'已消费'
+	);
+	
+	/********用户 是否确认出游  *******************************************************/
+	/**
+	 *	取消出游
+	 */
+	const status_go_no=-1;
+	/**
+	 * 出游日期未定 （结伴游 未给时间 的状态）
+	 * @var unknown
+	 */
+	const status_go_set=0;
+	/**
+	 * 待确认      （结伴游 给出时间 的状态）
+	 */
+ 	const status_go_query=1;
+ 	/**
+ 	 *	确认出游       (自助游 默认值)
+ 	 */
+ 	const status_go_yes=2; 
+ 	/**
+ 	 * 解释字段 pay_type 的含义
+ 	 * @var unknown
+ 	 */
+ 	public static $_status_go=array(-1=>'取消出游',0=>'出游日期未定',1=>'待确认',2=>'确认出游');
+	
+ 	/*************************支付类型 ****************************/
+	/**
+	 * 支付宝
+	 * @var integer
+	 */
+	const pay_type_alipay=1;
+	/**
+	 * 解释字段 pay_type 的含义
+	 * @var unknown
+	 */
+	public static $_pay_type=array(1=>'支付宝');
+	
+	/*************************订单类型 ****************************/
+	/**
+	 * 下单类型 （多个点 )
+	 * @var integer
+	 */
+	const order_type_dot=1;
+	/**
+	 * 下单类型 （一条线 )
+	 * @var integer
+	 */
+	const order_type_thrand=2;
+	/**
+	 * 下单类型 （一个结伴游 )
+	 * @var integer
+	 */
+	const order_type_group=3;
+	/**
+	 * 解释字段 order_type 含义
+	 * @var unknown
+	 */
+	public static $_order_type=array(1=>'自助游(点)',2=>'自助游(线)',3=>'结伴游');

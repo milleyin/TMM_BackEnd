@@ -1,0 +1,61 @@
+
+// UEL  /index.php?r=api/area/counties&id={城市ID}
+
+// GET 请求 无需登录
+
+//存在错误
+
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "list_data": [																//请求县（区）的数据
+            {	
+				"name": "市辖区",													//县（区）名称
+                "value": "2212",													//县（区）ID
+                "link": "http://localhost/tmm/index.php?r=api/area/set&id=2211"		//切换县（区） 请求链接 详情 切换城市接口（县（区））文档
+            },
+            {
+                "name": "罗湖区",
+                "value": "2213",
+                "link": "http://localhost/tmm/index.php?r=api/area/set&id=2211"
+            },
+            {
+                "name": "福田区",
+                "value": "2214",
+                "link": "http://localhost/tmm/index.php?r=api/area/set&id=2211"
+            },
+            {
+                "name": "南山区",
+                "value": "2215",
+                "link": "http://localhost/tmm/index.php?r=api/area/set&id=2211"
+            },
+            {
+                "name": "宝安区",
+                "value": "2216",
+                "link": "http://localhost/tmm/index.php?r=api/area/set&id=2211"
+            },
+            {
+                "name": "龙岗区",
+                "value": "2217",
+                "link": "http://localhost/tmm/index.php?r=api/area/set&id=2211"
+            },
+            {
+                "name": "盐田区",
+                "value": "2218",
+                "link": "http://localhost/tmm/index.php?r=api/area/set&id=2211"
+            }
+        ]
+    }
+}
+
+//错误提示
+
+{
+    "status": 0,
+    "code": 50006,
+    "msg": "没有相关数据",
+    "data": {}
+}
+

@@ -1,0 +1,191 @@
+<?php
+namespace Litchi\Controller;
+use Think\Controller;
+
+/**
+ * 管理控制器
+ * Class ManageController
+ * @package Litchi\Controller
+ *
+ * @author Moore Mo
+ */
+class ManageController extends Controller {
+
+
+    /**
+     * 樱花女神报名审核
+     */
+    public function YHc36c98e93b699c40d16b7a3fc5a18539() {
+        $auditStatusArr = array(0=>'待审', 1=>'通过', -1=>'不通过');
+
+        // 搜索条件 审核状态,编号id,昵称
+        $audit_status = I('get.audit_status');
+        $id = I('get.id', '');
+        $nickname = I('get.nickname', '', 'trim');
+        $condition = array();
+        // 编号ID搜索时，只精准匹配id
+        if (is_numeric($id)) {
+            // 转变类型是为了在模板进行全等判断
+            $id = intval($id);
+            $condition['id'] = $id;
+        } else if (is_numeric($audit_status)) {
+            // 转变类型是为了在模板进行全等判断
+            $audit_status = intval($audit_status);
+            $condition['audit_status'] = $audit_status;
+            if (!empty($nickname)) {
+                $condition['nickname'] = array('like', "%{$nickname}%");
+            }
+        } else if (!empty($nickname)) {
+            $condition['nickname'] = array('like', "%{$nickname}%");
+        }
+        // 记录历史搜索单词
+        $words = array(
+            'audit_status' => $audit_status,
+            'id' => $id,
+            'nickname' => $nickname
+        );
+
+        $racingModel = M('LzRacing');
+        // 分页操作
+        $count      = $racingModel->where($condition)->count();// 查询满足要求的总记录数
+
+        $Page       = new \Common\Library\Util\Page($count, 10);// 实例化分页类 传入总记录数和每页显示的记录数(25)
+
+        $show       = $Page->show();// 分页显示输出
+
+        $list = $racingModel->where($condition)->order('racing_time DESC')->limit($Page->firstRow.','.$Page->listRows)->select();
+        $this->assign('auditStatusArr', $auditStatusArr);
+
+        $this->assign('words', $words);
+        $this->assign('list', $list);
+        $this->assign('page',$show);
+        $this->assign('title', '创意自拍管理');
+        $this->display('voteList');
+    }
+
+    /**
+     * 樱花女神详情
+     */
+    public function YHce17343327e1f32c7ef72356581db73c() {
+        $id = I('get.id', 0, 'intval');
+
+        $info = M('LzRacing')->where(array('id'=>$id))->find();
+        $imgList = M('LzRacingImg')->where(array('to_id'=>$id))->select();
+
+        if (empty($info)) {
+            $this->error('无此参赛者信息');
+        }
+        // 参赛者图片
+        $info['imgList'] = $imgList;
+
+        $this->assign('info', $info);
+        $this->assign('title', '创意自拍详情');
+        $this->display('voteDetail');
+    }
+
+    /**
+     * 樱花女神审核
+     */
+    public function YHc0ce0abb82a1553d0db7877ab3a1aab7() {
+        $id = I('get.id', 0, 'intval');
+        $type = I('get.type');
+        if ( ($id == 0) || ( ! in_array($type, array(0, 1)))) {
+            $this->error('非法操作');
+        }
+        // 审核不通过
+        if ($type == 0) {
+            $data['audit_status'] = -1;
+            $data['audit_time'] = time();
+        }
+
+        // 审核通过
+        if ($type == 1) {
+            $data['audit_status'] = 1;
+            $data['audit_time'] = time();
+        }
+
+        if (M('LzRacing')->field('audit_status,audit_time')->where(array('id'=>$id))->save($data)) {
+            $this->success('审核成功', U('manage/YHc36c98e93b699c40d16b7a3fc5a18539'));
+        } else {
+            $this->success('审核失败，请重新审核', U('manage/YHc36c98e93b699c40d16b7a3fc5a18539'));
+        }
+    }
+
+    /**
+     * 生成实体卡
+     */
+    public function LZ23d85fc8fd8c7142245e1b7367eb20ca() {
+//        if ($this->_createCard(3000)) {
+//            echo '生成成功';
+//        } else {
+//            echo '生成失败，请重新生成...';
+//        }
+    }
+
+    /**
+     * 生成卡券
+     * @param $number
+     * @return bool
+     */
+    private function _createCard($number) {
+        $lzCardModel = M('LzCard');
+        $lzComboModel = M('LzCombo');
+        $comboInfo = $lzComboModel->where(array('id'=> 1))->find();
+
+        $data = array();
+
+        for ($i = 0; $i < $number; $i++) {
+            $data[] = array(
+                'card_no' => $this->_getCardNo(),
+                'type' => 2,
+                'name' => $comboInfo['name'],
+                'description' => $comboInfo['description'],
+                'combo_id' => $comboInfo['id'],
+                'card_price' => $comboInfo['price'],
+                'start_time' => $comboInfo['start_time'],
+                'end_time' => $comboInfo['end_time'],
+                'add_time' => time(),
+                'is_valid' => 1,
+                'from_type' => 1
+            );
+        }
+
+        // 批量生成卡券
+        $result = $lzCardModel->addAll($data);
+        if ($result) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 检验卡号的唯一性
+     * @return 产生的随机字符串
+     */
+    private function _getCardNo() {
+        $cardNo = $this->_getRandStr();
+        $cardInfo = M('LzCard')->where(array('card_no' => $cardNo))->find();
+        if ($cardInfo) {
+            $cardNo = $this->_getCardNo();
+        }
+
+        return $cardNo;
+    }
+
+    /**
+     *
+     * 产生随机字符串，不长于6位
+     * @param int $length
+     * @return 产生的随机字符串
+     */
+    private function _getRandStr($length = 6)
+    {
+        $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
+        $str ="";
+        for ( $i = 0; $i < $length; $i++ )  {
+            $str .= substr($chars, mt_rand(0, strlen($chars)-1), 1);
+        }
+        return $str;
+    }
+}

@@ -1,0 +1,73 @@
+//我发去的活动 报名（下单）列表
+//链接 index.php?r=api/orderActives/list&id=value
+//GET
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=api/orderActives/list&id=17",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "order_no": "MJ201511050041",
+                "value": "41",
+                "link": "http://localhost/tmm/index.php?r=api/order/view&id=41",
+                "main_retinue": {
+                    "name": "马晓松1",
+                    "phone": "18127005181"
+                },
+                "order_price": "169.42",
+                "user_go_count": "1",
+                "add_time": "2015-11-05 15:31:11",
+                "status": {
+                    "order_status": {
+                        "name": "已付款",
+                        "value": "2"
+                    },
+                    "status_go": {
+                        "name": "确认出游",
+                        "value": "2"
+                    },
+                    "order_type": {
+                        "name": "活动(旅游)",
+                        "value": "3"
+                    }
+                }
+            },
+            {
+                "order_no": "MJ201511050040",
+                "value": "40",
+                "link": "http://localhost/tmm/index.php?r=api/order/view&id=40",
+                "main_retinue": {
+                    "name": "马晓松",
+                    "phone": "13632677944"
+                },
+                "order_price": "169.42",
+                "user_go_count": "1",
+                "add_time": "2015-11-05 14:51:03",
+                "status": {
+                    "order_status": {
+                        "name": "已付款",
+                        "value": "2"
+                    },
+                    "status_go": {
+                        "name": "确认出游",
+                        "value": "2"
+                    },
+                    "order_type": {
+                        "name": "活动(旅游)",
+                        "value": "3"
+                    }
+                }
+            }
+        ]
+    }
+}

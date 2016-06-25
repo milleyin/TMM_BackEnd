@@ -1,0 +1,83 @@
+
+// UEL  /index.php?r=api/area/get
+
+// GET 请求 无需登录
+
+//存在错误 返回的数据 优先获取切换城市的信息 如果没有则区GPS的信息  如果也没有 则返回错误
+
+//切换城市的信息
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "address_info": {																	//地址信息
+            "name": "天津市",																//设置的城市（县（区））的名称
+            "value": "22",																	//ID
+            "city": {																		//城市
+                "name": "天津市",															//名称
+                "value": "22"																//ID
+            },
+            "province": {																	//省
+                "name": "天津",																//名称
+                "value": "21"																//ID
+            },
+            "district": {																	//县（区）
+                "name": "",																	//名称  可以为空 表示当前设置的是城市 设置的是县（区）时 不为空
+                "value": ""																	//ID 可以为空	
+            },
+            "counties_link": "http://localhost/tmm/index.php?r=api/area/counties&id=22",	//可以获取更详情的县（区） 链接  当设置县（区）时 无此链接
+            "address": "天津天津市",														//格式化地址	
+            "location": {																	//系统后台返回的 经纬度
+                "location": "117.190186,39.125595",											//格式化经纬度
+                "lng": "117.190186",														//经度
+                "lat": "39.125595"															//维度
+            }
+        }
+    }
+}
+
+//GPS 的信息
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "address_info": {																	//地址信息
+            "name": "深圳",																	//城市名称  当前不支持县（区）
+            "value": "2211",																//城市ID
+            "counties_link": "http://localhost/tmm/index.php?r=api/area/counties&id=2211",	//切换城市（县（区））更详细的链接
+            "city": {																		//城市
+                "name": "深圳",																//名称
+                "value": "2211"																//ID
+            },
+            "province": {																	//省
+                "name": "广东省",															//名称
+                "value": "2184"																//ID
+            },
+            "district": {																	//县(区) 可以为空
+                "name": "龙岗区",															//名称
+                "value": "2217"																//ID
+            },
+            "address": "广东省深圳龙岗区",													//格式化地址
+            "location": {																	//后端返回经纬度
+                "location": "114.251373,22.721512",											//格式化经纬度
+                "lng": "114.251373",														//经度
+                "lat": "22.721512"															//纬度
+            },
+            "location_accurate": {															//GPS经纬度
+                "location": "114.25,22.721512",												//格式化经纬度
+                "lng": "114.25",															//经度
+                "lat": "22.721512"															//纬度
+            }
+        }
+    }
+}
+
+//错误信息
+{
+    "status": 0,
+    "code": 50006,
+    "msg": "没有相关数据",
+    "data": {}
+}

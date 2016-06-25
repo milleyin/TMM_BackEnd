@@ -1,0 +1,41 @@
+<extend name="Base/common"/>
+
+<block name="body">
+    <div class="container">
+        <h4>
+            成都青白江樱花节门票预定：
+        </h4>
+        <form class="form-horizontal" action="{:U('add')}" method="post">
+            <div class="form-group">
+                <label class="col-xs-4 control-label from-label">所选类型：</label>
+                <div class="col-xs-8">
+                    普通票
+                    <input type="hidden" id="type" name="type" value="1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="number" class="col-xs-4 control-label from-label">购买份数：</label>
+                <div class="col-xs-8">
+                    <input type="text" class="form-control" id="number" name="number" value="1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="mobile" class="col-xs-4 control-label from-label">联系人手机号码：</label>
+                <div class="col-xs-8">
+                    <input type="text" class="form-control" id="mobile" name="mobile" placeholder="手机号码">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="sms_code" class="col-xs-4 control-label from-label">短信验证码：</label>
+                <div class="col-xs-8">
+                    <input type="text" class="form-control" id="sms_code" name="sms_code" placeholder="短信验证码">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-10">
+                    <button type="submit" class="btn btn-default">去支付</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</block>

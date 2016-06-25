@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="./jquery-1.3.2.js"></script>
+<script type="text/javascript" src="./jquery.checktree.js"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="./checktree.css" />
+<title>test</title>
+</head>
+<body>
+<script type="text/javascript">
+$(document).ready(function(){
+  $("ul.checktree").checkTree();
+  //  $('#tijiao').click(function(){
+//     $.ajax({
+//           type:'POST', 
+//           dataType:'html',
+//           cache:false,
+//           data:$('#test').serialize(),
+//           success:function(data, textStatus){$('#reset-password-form').parent().html(data);},
+//           url:'<?php echo url_for('speednms/Test2');?>'
+//           });
+//    });
+  });
+</script>
+<button id="tijiao">提交</button>
+<form id="test">
+<ul class="checktree" style="margin-left: 15px;">
+  <li><input type="checkbox" name="test" value="test"> <label>测试</label>
+  <ul>
+    <li><input type="checkbox" name="liulei" value="liulei" checked="checked"> <label>刘磊</label></li>
+  </ul>
+  </li>
+  <li><input type="checkbox" name="jingdian" value="jingdian"> <label>径典</label>
+  <ul>
+    <li><input type="checkbox" name="china" value="china" checked="checked"> <label>我家</label></li>
+  </ul>
+  </li>
+  <li><input type="checkbox" name="usa" value="usa"> <label>美国</label></li>
+  <li><input type="checkbox" name="riben" value="japan" checked="checked"> <label>中国</label>
+  <ul>
+    <li><input type="checkbox" name="hanguo" value="hanguo"> <label>韩国</label></li>
+    <li><input type="checkbox" name="malaixiya" value="malaixiya"> <label>马来西亚</label>
+    <ul>
+      <li><input type="checkbox" name="feilibin" value="feilibin"> <label>菲律宾</label></li>
+    </ul>
+    </li>
+    <li><input type="checkbox" name="aerlan" value="aerlan"> <label>爱尔兰</label>
+    <ul>
+      <li><input type="checkbox" name="xini" value="xini"> <label>悉尼</label></li>
+      <li><input type="checkbox" name="beijing" value="beijing" checked="checked"> <label>北京</label></li>
+    </ul>
+    </li>
+  </ul>
+  </li>
+</ul>
+</form>
+
+Css 是经过我更改过的，不过改的那里我也不记得了，所以css可以根据自己的需求在修改。程序里还支持事件函数，具体可以看原作者的介绍，在程序了有地址。
+</body>
+</html>

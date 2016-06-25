@@ -1,0 +1,14 @@
+<?php
+/* @var $this UserController */
+/* @var $model User */
+
+$this->breadcrumbs = array(
+	'管理页'=>array('admin'),
+	$model->name=>array('view', 'id'=>$model->id),
+	'更新页',
+);
+?>
+
+<h1>更新页 User<font color='#eb6100'><?php echo CHtml::encode($model->id); ?></font></h1>
+
+<?php $this->renderPartial('_form', array('model'=>$model)); ?>

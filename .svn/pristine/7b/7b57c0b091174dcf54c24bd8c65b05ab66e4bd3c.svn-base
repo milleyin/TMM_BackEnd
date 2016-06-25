@@ -1,0 +1,13 @@
+<?php
+/* @var $this ChanceController */
+/* @var $model Chance */
+
+$this->breadcrumbs=array(
+	'管理页'=>array('admin'),
+	'创建页',
+);
+?>
+
+<h1>创建 Chance</h1>
+
+<?php $this->renderPartial('_form', array('model'=>$model)); ?>

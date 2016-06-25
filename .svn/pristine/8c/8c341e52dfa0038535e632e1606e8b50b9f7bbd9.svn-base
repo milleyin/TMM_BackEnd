@@ -1,0 +1,56 @@
+<?php
+/* @var $this UploadController */
+/* @var $model Upload */
+
+$this->breadcrumbs = array(
+	'管理页'=>array('admin'),
+	$model->id,
+);
+?>
+
+<h1>查看 Upload <font color='#eb6100'><?php echo CHtml::encode($model->id); ?></font></h1>
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		array(
+				'name'=>'id',
+		),
+		array(
+				'name'=>'type',
+				'value'=>$model::$_type[$model->type],
+		),
+		array(
+				'name'=>'upload_id',
+		),
+		array(
+				'name'=>'manager_id',
+		),
+		array(
+				'name'=>'upload_type',
+				'value'=>$model::$_upload_type[$model->upload_type],
+		),
+		array(
+				'name'=>'path',
+		),
+		array(
+				'name'=>'info',
+		),
+		array(
+				'name'=>'size',
+		),
+		array(
+				'name'=>'up_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'add_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'status',
+				'value'=>$model::$_status[$model->status],
+		),
+	),
+)); 
+?>

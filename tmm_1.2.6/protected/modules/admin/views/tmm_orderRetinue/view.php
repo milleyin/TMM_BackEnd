@@ -1,0 +1,111 @@
+<?php
+/* @var $this Tmm_orderRetinueController */
+/* @var $model OrderRetinue */
+
+$this->breadcrumbs=array(
+	'订单管理页'=>array('/admin/tmm_order/admin'),
+	'自助游管理页'=>array('/admin/tmm_order/admin'),
+	'订单随行人员',
+	$model->order_no,
+);
+?>
+
+<h1>查看 订单随行人员详情 <font color='#eb6100'><?php echo $model->order_no; ?></font></h1>
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		array(
+				'name'=>'id',
+		),
+		array(
+				'name'=>'order_id',
+		),
+		array(
+				'name'=>'order_no',
+		),
+		array(
+				'name'=>'son_order_id',
+		),
+		array(
+				'name'=>'son_order_no',
+		),
+		array(
+				'name'=>'user_id',
+		),
+		array(
+				'name'=>'retinue_id',
+		),
+		array(
+				'name'=>'retinue_name',
+		),
+		array(
+				'name'=>'retinue_gender',
+				'value'=>$model::$_retinue_gender[$model->retinue_gender],
+		),
+		array(
+				'name'=>'retinue_identity',
+		),
+		array(
+				'name'=>'retinue_phone',
+		),
+		array(
+				'name'=>'insure_name',
+		),
+		array(
+				'name'=>'insure_gender',
+				'value'=>$model::$_insure_gender[$model->insure_gender],
+		),
+		array(
+				'name'=>'insure_identity',
+		),
+		array(
+				'name'=>'insure_phone',
+		),
+		array(
+				'name'=>'insure_age',
+		),
+		array(
+				'name'=>'is_main',
+				'value'=>$model::$_is_main[$model->is_main],
+		),
+		array(
+				'name'=>'insure_no',
+		),
+		array(
+				'name'=>'insure_verify',
+		),
+		array(
+				'name'=>'start_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'end_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'insure_price',
+		),
+		array(
+				'name'=>'fact_price',
+		),
+		array(
+				'name'=>'insure_number',
+		),
+		array(
+				'name'=>'beneficiary',
+		),
+		array(
+				'name'=>'add_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'up_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'status',
+				'value'=>$model::$_status[$model->status],
+		),
+	),
+)); ?>

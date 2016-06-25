@@ -1,0 +1,729 @@
+<?php
+/**
+ * 订单定时任务
+ * @author Changhai Zhan
+ *	创建时间：2015-10-26 13:41:03
+ *	protected php yiic.php order
+ * */
+class OrderCommand  extends ConsoleCommand
+{
+	/**
+	 * 订单主要的定时任务
+	 * 点 、线 下单没有支付 订单过期
+	 */
+	public function actionIndex()
+	{
+		//开始
+		$this->logText[] = 'START';
+		$criteria = new CDbCriteria;
+		//点 线 支付超时
+		$criteria->addCondition('`order_type` =:dot OR `order_type` =:thrand');
+		$criteria->params[':dot'] = Order::order_type_dot;
+		$criteria->params[':thrand'] = Order::order_type_thrand;
+		//标准条件	
+		$criteria->addColumnCondition(array(
+				'`order_status`'=>Order::order_status_store_yes,				//订单的状态 待支付
+				'`status_go`'=>Order::status_go_yes,									//是否出游	确认出游
+				'`centre_status`'=>Order::centre_status_yes,						//是否可以支付 可支付
+				'`pay_status`'=>Order::pay_status_not,								//没有支付 没支付
+				'`status`'=>Order::status_yes,												//有效的订单 
+		));
+		$hour = Yii::app()->params['command_time']['order']['MQ'];	//超时时间
+		$criteria->compare('up_time','<='.(time()-$hour*3600));
+		//查找
+		$order = Order::model()->find($criteria);
+		if ($order)
+		{
+			//开启事物
+			$transaction = $order->dbConnection->beginTransaction();
+			try
+			{
+				$count = Order::model()->count($criteria);
+				if($count > 0)
+				{
+					$return = 0;//更新的条数
+					$return_items = 0;//更新的条数
+					$countPage = $this->getPageCount($count);
+					for ($i=1; $i<=$countPage; $i++)
+					{
+						$this->getPageCriteria($i, $criteria);
+						$datas = Order::model()->findAll($criteria);
+						if($datas)
+						{
+							$ids = array();
+							foreach ($datas as $data)
+								$ids[] = $data->id;
+							//条件
+							$criteria_update = new CDbCriteria;
+							$criteria_update->addInCondition('id', $ids);
+							$return += Order::model()->updateAll(array(
+								'order_status'=>Order::order_status_store_undo,	//订单的状态 取消订单
+								'status_go'=>Order::status_go_no,						//是否出游 取消出游
+								'centre_status'=>Order::centre_status_not,			//是否可以支付 不可支付
+								'pay_status'=>Order::pay_status_past,					//没有支付 取消支付
+								'up_time'=>time(),
+							), $criteria_update);
+
+							$criteria_update_item = new CDbCriteria;
+							$criteria_update_item->addInCondition('order_id', $ids);
+							$return_items += OrderItems::model()->updateAll(array(
+								'is_shops'=>OrderItems::is_shops_order_not,		//商家确认状态   订单用户取消了
+								'up_time'=>time(),
+							), $criteria_update_item);
+
+							$this->logText[] = implode(' , ', $ids);
+						}else
+							break;
+					}
+					if($count != $return)
+						throw new Exception("定时任务 保存改变MQ(觅境) 订单支付超时状态失败");
+
+					$this->logText[] = '定时任务 保存改变MQ(觅境) 订单支付超时状态NO. '.$return;
+				}
+				$transaction->commit();
+			}
+			catch (Exception $e)
+			{
+				$transaction->rollBack();
+				$this->logText[] = $e->getMessage();
+				$this->logText[] = 'END';
+				return self::return_error;
+			}
+		}
+		$this->logText[]='END';
+		return self::correct;
+	}
+	
+	/**
+	 * 商家接单超时
+	 */
+	public function actionStore()
+	{
+		$this->logText[]='START';
+
+		$criteria = new CDbCriteria;
+
+		$criteria->addCondition('`order_type`=:order_type_dot OR `order_type` =:order_type_thrand');
+		$criteria->params[':order_type_dot'] 	= Order::order_type_dot;
+		$criteria->params[':order_type_thrand'] = Order::order_type_thrand;
+
+		$criteria->addColumnCondition(array(
+			'`order_status`'=>Order::order_status_store_query,							//订单的状态 待支付
+			'`status_go`'=>Order::status_go_yes,													//是否出游	确认出游
+			'`centre_status`'=>Order::centre_status_not,										//是否不可以支付 不支付
+			'`pay_status`'=>Order::pay_status_not,												//没有支付 没支付
+			'`status`'=>Order::status_yes,																//有效的订单
+		));
+		$hour = Yii::app()->params['command_time']['order']['MQ_Store'];		//超时时间
+		$criteria->compare('add_time','<='.(time()-$hour*3600));
+		$order = Order::model()->find($criteria);
+		if ($order)
+		{
+			//开启事物
+			$transaction = $order->dbConnection->beginTransaction();
+			try
+			{
+				$count = Order::model()->count($criteria);
+				if ($count > 0)
+				{
+					$return = 0;								//更新的条数
+					$return_items = 0;					//更新的条数
+					$countPage = $this->getPageCount($count);
+					for ($i=1; $i<=$countPage; $i++)
+					{
+						//获得分页
+						$this->getPageCriteria($i, $criteria);
+						$datas = Order::model()->findAll($criteria);
+						if($datas)
+						{
+							$ids = array();
+							//记录所有订单ID
+							foreach ($datas as $data)
+								$ids[] = $data->id;
+							//更新order 表
+							$criteria_update = new CDbCriteria;
+							$criteria_update->addInCondition('id', $ids);
+							$return += Order::model()->updateAll(array(
+								'order_status'=>Order::order_status_store_undo,	//订单的状态 取消订单
+								'status_go'=>Order::status_go_no,						//是否出游 取消出游
+								'centre_status'=>Order::centre_status_not,			//是否可以支付 不可支付
+								'pay_status'=>Order::pay_status_past,					//没有支付 取消支付
+								'up_time'=>time(),
+							), $criteria_update);
+
+							// 更新order_items 订单=========待接收
+							$criteria_query=new CDbCriteria;
+							$criteria_query->addInCondition('order_id', $ids);
+							$criteria_query->addColumnCondition(array('is_shops'=>OrderItems::is_shops_store_query));
+							OrderItems::model()->updateAll(array(   					//更新商家项目 拒绝接单
+								'is_shops'=>OrderItems::is_shops_store_not,		//已拒收
+								'up_time'=>time(),
+							), $criteria_query);
+
+							// 更新order_items 订单========已接收
+							$criteria_yes=new CDbCriteria;
+							$criteria_yes->addInCondition('order_id', $ids);
+							$criteria_yes->addColumnCondition(array('is_shops'=>OrderItems::is_shops_store_yes));
+							OrderItems::model()->updateAll(array(   					//更新商家项目 拒绝接单
+								'is_shops'=>OrderItems::is_shops_yes_not,			//已接收被其他拒收
+								'up_time'=>time(),
+							), $criteria_yes);
+
+							$this->logText[] = implode(',', $ids);
+						}
+						else
+							break;
+					}
+					if($count != $return)
+						throw new Exception("定时任务 保存改变MQ(觅境) 商家接单超时状态失败");
+
+					$this->logText[] = '定时任务 保存改变MQ(觅境) 商家接单超时状态NO. '.$return;
+				}
+				$transaction->commit();
+			}
+			catch (Exception $e)
+			{
+				$transaction->rollBack();
+				$this->logText[]=$e->getMessage();
+				$this->logText[]='END';
+				return self::return_error;
+			}
+		}
+		$this->logText[]='END';
+		
+		return self::correct;
+	}
+	
+	/**
+	 * 活动订单 支付超时=====觅趣订单
+	 */
+	public function actionTour()
+	{
+		$this->logText[]='START';
+
+		$criteria =new CDbCriteria;
+		$criteria->with = array(
+			'Order_OrderActives'=>array(
+				'with'=>'OrderActives_Actives'
+			)
+		);
+		//订单类型 活动订单 活动代付订单
+		$criteria->addCondition('`t`.`order_type` =:actives OR `t`.`order_type` =:full');
+		$criteria->params[':actives'] = Order::order_type_actives_tour;	//活动订单
+		$criteria->params[':full'] = Order::order_type_actives_tour_full;	//活动代付订单
+		//标准条件
+		$criteria->addColumnCondition(array(
+			't.order_status'=>Order::order_status_store_yes,						//订单的状态 待支付
+			't.status_go'=>Order::status_go_yes,											//是否出游	确认出游
+			't.centre_status'=>Order::centre_status_yes,								//是否不可以支付 可支付
+			't.pay_status'=>Order::pay_status_not,										//没有支付  未支付
+			't.status'=>Order::status_yes,														//有效的订单
+		));
+		$hour=Yii::app()->params['command_time']['order']['MQ_User'];//超时时间
+		$cal_time = $this->calculate_out_time($hour,self::time_hour);
+
+		$criteria->addCondition('`t`.`up_time` <=:up_time OR `OrderActives_Actives`.`go_time` <= :go_time');
+		$criteria->params[':up_time'] 	= $cal_time;
+		$criteria->params[':go_time'] 	= time();
+		//查询是否有订单 
+		$order = Order::model()->find($criteria);
+		// 用户规定时间没有支付
+		if($order)
+		{
+			//开启事务
+			$transaction = $order->dbConnection->beginTransaction();
+			try{
+				$count = Order::model()->count($criteria);
+				if($count > 0)
+				{
+					$return=0;																			//更新的条数
+					$return_items =0;																//更新的条数
+					$countPage=$this->getPageCount($count);
+					for($i=1;$i<=$countPage;$i++)
+					{
+						$this->getPageCriteria($i, $criteria);
+						$datas=Order::model()->findAll($criteria);
+						if($datas)
+						{
+							$ids = array();
+							foreach ($datas as $data)
+								$ids[]=$data->id;
+
+							$criteria_update = new CDbCriteria;
+							$criteria_update->addInCondition('id', $ids);
+							$return += Order::model()->updateAll(array(
+								'order_status'=>Order::order_status_store_undo,	//订单的状态 取消订单
+								'status_go'=>Order::status_go_no,						//是否出游 取消出游
+								'centre_status'=>Order::centre_status_not,			//是否可以支付 不可支付
+								'pay_status'=>Order::pay_status_past,					//没有支付 取消支付
+								'up_time'=>time(),
+							),$criteria_update);
+
+							foreach ($datas as $model)
+							{
+								if ($model->order_type == Order::order_type_actives_tour)
+								{
+									if(! Actives::restore_order_number($model->Order_OrderActives->actives_id,$model->user_go_count))
+										throw new Exception("用户取消订单 归还活动数量失败");							
+									if(! Actives::actives_tour_count_out($model->Order_OrderActives->actives_id))
+										throw new Exception("用户取消订单 减少报名人数失败");
+								}
+								else if ($model->order_type == Order::order_type_actives_tour_full)
+								{
+									if(! OrderActives::actives_order_count($model->order_organizer_id,true))
+										throw new Exception("用户取消订单 减少报名人数失败");
+									if (! OrderActives::actives_confirm_count($model->order_organizer_id,true))
+										throw new Exception("用户取消订单 减少确认出游失败");
+								}
+							}
+
+//  							if(! Actives::restore_order_number_arr($ids))
+//  								throw new Exception("定时任务 保存改变MQ(觅趣) 还原报名人数和还原数量超时状态失败");
+
+							$criteria_update_item = new CDbCriteria;
+							$criteria_update_item->addInCondition('`order_id`', $ids);
+							$return_items += OrderItems::model()->updateAll(array(
+								'is_shops'=>OrderItems::is_shops_order_not,		//商家确认状态   订单用户取消了
+								'up_time'=>time(),
+							),$criteria_update_item);
+
+							$this->logText[]=implode(',', $ids);
+						}else
+							break;
+					}
+					if($count != $return)
+						throw new Exception("定时任务 保存改变MQ(觅趣) 订单支付超时状态失败");
+
+					$this->logText[]='定时任务 保存改变MQ(觅趣) 订单支付超时状态NO. '.$return;
+				}
+				$transaction->commit();
+			}
+			catch (Exception $e)
+			{
+				$transaction->rollBack();
+				$this->logText[]=$e->getMessage();
+				$this->logText[]='END';
+				return self::return_error;
+			}
+		}
+		return self::correct;
+	}
+
+	/**
+	 * 点订单：用户超过7天（距出游时间延后7天）未扫码消费，订单变为已过期状态；
+	 */
+	public function actionDot()
+	{
+		$this->logText[] = 'START';
+		$criteria =new CDbCriteria;
+		$criteria->with = array(
+			'Order_OrderShops'
+		);
+		$criteria->addCondition('`t`.`order_type`=:order_type_dot ');
+		$criteria->params[':order_type_dot'] 	= Order::order_type_dot;
+
+		$criteria->addColumnCondition(array(
+			'`t`.`order_status`'=>Order::order_status_user_pay,						//订单的状态 已付款
+			'`t`.`status_go`'=>Order::status_go_yes,											//是否出游	确认出游
+			'`t`.`centre_status`'=>Order::centre_status_not,								//是否不可以支付 不支付
+			'`t`.`pay_status`'=>Order::pay_status_yes,										//没有支付 已支付
+			'`t`.`status`'=>Order::status_yes,														//有效的订单
+		));
+		$day = Yii::app()->params['command_time']['order']['MQ_dot'];	//超时时间
+		$cal_time = $this->calculate_out_time($day,self::time_day);
+
+		$criteria->compare('`t`.`go_time`','<='.$cal_time);
+		$order=Order::model()->find($criteria);
+
+		if($order){
+			//开启事物
+			$transaction = $order->dbConnection->beginTransaction();
+			try{
+				$count = Order::model()->count($criteria);
+				if($count > 0)
+				{
+					$return = 0;										//更新的条数
+					$return_items = 0;							//更新的条数
+					$countPage = $this->getPageCount($count);
+					for ($i=1; $i<=$countPage; $i++)
+					{
+						//获得分页
+						$this->getPageCriteria($i, $criteria);
+						$datas = Order::model()->findAll($criteria);
+						if($datas)
+						{
+							$ids = array();
+							//记录所有订单ID
+							foreach ($datas as $data)
+								$ids[] = $data->id;
+							//更新order 表
+							$criteria_update = new CDbCriteria;
+							$criteria_update->addInCondition('id', $ids);
+							$return += Order::model()->updateAll(array(
+								'order_status'=>Order::order_status_store_past,	//订单的状态 已过期订单
+								'up_time'=>time(),
+							), $criteria_update);
+
+							//活动消费
+							$criteria_transaction = new CDbCriteria;
+							$criteria_transaction->with = array(
+								'OrderItems_Order',
+								'OrderItems_OrderItemsFare',
+							);
+							$criteria_transaction->addInCondition('t.order_id', $ids);
+							$criteria_transaction->addColumnCondition(array('t.is_barcode'=>OrderItems::is_barcode_valid));
+
+							$model_items = OrderItems::model()->findAll($criteria_transaction);
+
+							foreach($model_items as $v) 
+							{
+								//添加资金交易记录 和钱包操作
+								if(! OrderItems::scancodeDotThrand($v,false))
+									throw new Exception("扫描消费项目 钱包操作错误".json_encode(array(Account::$create_error,AccountLog::$create_error)));
+							}
+
+							// 更新order_items 订单=========未消费改成已过期
+							$criteria_query=new CDbCriteria;
+							$criteria_query->addInCondition('order_id', $ids);
+							$criteria_query->addColumnCondition(array('is_barcode'=>OrderItems::is_barcode_valid));
+							OrderItems::model()->updateAll(array(   //更新商家项目 已过期
+								'is_barcode'=>OrderItems::is_barcode_past,
+								'up_time'=>time(),
+							),$criteria_query);
+
+							$this->logText[] = implode(',', $ids);
+						}else
+							break;
+					}
+					if ($count != $return)
+						throw new Exception("定时任务 保存改变MQ(觅境) 点订单：用户超过7天超时状态失败");
+
+					$this->logText[]='定时任务 保存改变MQ(觅境) 点订单：用户超过7天超时状态NO. '.$return;
+				}
+				$transaction->commit();
+			}
+			catch (Exception $e)
+			{
+				$transaction->rollBack();
+				$this->logText[] = $e->getMessage();
+				$this->logText[] = 'END';
+				return self::return_error;
+			}
+		}
+		return self::correct;
+	}
+
+	/**
+	 * 线订单：用户超过7天（从日程最后一天开始延后7天）未扫码消费，订单变为已过期状态；
+	 */
+	public function actionThrand()
+	{
+		//开始
+		$this->logText[]='START';
+
+		$criteria =new CDbCriteria;
+		$criteria->with = array(
+			'OrderItems_Order',
+			'OrderItems_OrderItemsFare'
+		);
+		$criteria->addCondition('`OrderItems_Order`.`order_type`=:order_type_thrand ');
+		$criteria->params[':order_type_thrand'] = Order::order_type_thrand;
+
+		$criteria->addColumnCondition(array(
+			'`OrderItems_Order`.`order_status`'=>Order::order_status_user_pay,		//订单的状态 已付款
+			'`OrderItems_Order`.`status_go`'=>Order::status_go_yes,							//是否出游	确认出游
+			'`OrderItems_Order`.`centre_status`'=>Order::centre_status_not,			//是否不可以支付 不支付
+			'`OrderItems_Order`.`pay_status`'=>Order::pay_status_yes,						//没有支付 已支付
+			'`OrderItems_Order`.`status`'=>Order::status_yes,									//有效的订单
+		));
+		$day = Yii::app()->params['command_time']['order']['MQ_thrand'];				//超时时间
+		$cal_time = $this->calculate_out_time($day, self::time_day);
+
+		$condition = new CDbExpression($cal_time.'-(`t`.`shops_day_sort`/2)*86400');
+		$criteria->addCondition('`OrderItems_Order`.`go_time` <='.$condition);
+
+		$criteria->order='`t`.`shops_day_sort` desc';
+		$criteria->group='`t`.`order_id`';
+		$order=OrderItems::model()->find($criteria);
+
+		if ($order)
+		{
+			//开启事物
+			$transaction = $order->dbConnection->beginTransaction();
+			try
+			{
+				$count=OrderItems::model()->count($criteria);
+				if($count > 0)
+				{
+					$return=0;					//更新的条数
+					$return_items =0;		//更新的条数
+					$countPage=$this->getPageCount($count);
+					for($i=1;$i<=$countPage;$i++)
+					{
+						//获得分页
+						$this->getPageCriteria($i, $criteria);
+						$datas=OrderItems::model()->findAll($criteria);
+						if($datas)
+						{
+							$ids = array();
+							//记录所有订单ID
+							foreach ($datas as $data)
+								$ids[]=$data->OrderItems_Order->id;
+							//更新order 表
+							$criteria_update = new CDbCriteria;
+							$criteria_update->addInCondition('id', $ids);
+							$return += Order::model()->updateAll(array(
+								'order_status'=>Order::order_status_store_past,	//订单的状态 已过期订单
+								'up_time'=>time(),
+							),$criteria_update);
+							
+							//活动消费
+							$criteria_transaction=new CDbCriteria;
+							$criteria_transaction->with=array(
+								'OrderItems_Order',
+								'OrderItems_OrderItemsFare',
+							);
+							$criteria_transaction->addInCondition('`t`.`order_id`', $ids);
+							$criteria_transaction->addColumnCondition(array('`t`.`is_barcode`'=>OrderItems::is_barcode_valid));
+
+							$model_items = OrderItems::model()->findAll($criteria_transaction);
+
+							foreach($model_items as $v)
+							{
+								//添加资金交易记录 和钱包操作
+								if(! OrderItems::scancodeDotThrand($v,false))
+									throw new Exception("扫描消费项目 钱包操作错误".json_encode(array(Account::$create_error,AccountLog::$create_error)));
+							}
+
+							// 更新order_items 订单=========未消费改成已过期
+							$criteria_query=new CDbCriteria;
+							$criteria_query->addInCondition('`order_id`', $ids);
+							$criteria_query->addColumnCondition(array('`is_barcode`'=>OrderItems::is_barcode_valid));
+							OrderItems::model()->updateAll(array(   			//更新商家项目 已过期
+								'is_barcode'=>OrderItems::is_barcode_past,
+								'up_time'=>time(),
+							), $criteria_query);
+
+							$this->logText[] = implode(' ,', $ids);
+						}else
+							break;
+					}
+					if($count != $return)
+						throw new Exception("定时任务 保存改变MQ(觅境) 线订单：用户超过7天超时状态失败");
+
+					$this->logText[]='定时任务 保存改变MQ(觅境) 线订单：用户超过7天超时状态NO. '.$return;
+				}
+				$transaction->commit();
+			}
+			catch (Exception $e)
+			{
+				$transaction->rollBack();
+				$this->logText[]=$e->getMessage();
+				$this->logText[]='END';
+				return self::return_error;
+			}
+		}
+
+		return self::correct;
+	}
+
+	/**
+	 *觅趣订单：用户超过7天（从日程最后一天开始延后7天 ）未扫码消费，订单变为已过期状态；
+	 */
+	public function actionActives()
+	{
+		$this->logText[]='START';
+		$criteria =new CDbCriteria;
+		$criteria->with = array(
+			'OrderActives_Actives',
+			'OrderActives_OrderItems',
+			'OrderActives_Order',
+		);
+		$criteria->group = '`OrderActives_OrderItems`.`id`';
+
+		$criteria->addCondition('`OrderActives_Actives`.`actives_status`=:start OR `OrderActives_Actives`.`actives_status`=:end ');
+		$criteria->params[':start'] 	= Actives::actives_status_start;							//活动状态 开始（报名中，进行中）
+		$criteria->params[':end'] 	= Actives::actives_status_end;							//活动状态 活动结束
+
+		$day = Yii::app()->params['command_time']['order']['MQ_actives'];				//超时时间
+		$cal_time = $this->calculate_out_time($day,self::time_day);
+		//活动的最后一天 
+		$condition = new CDbExpression($cal_time.'-(`OrderActives_OrderItems`.`shops_day_sort`/2)*86400');
+		$criteria->addCondition('`OrderActives_OrderItems`.`is_barcode`=:is_barcode AND  `t`.`user_pay_count` > 0 AND  `OrderActives_Actives`.`go_time` !=0 AND  `OrderActives_Actives`.`go_time` <='.$condition);
+		$criteria->params[':is_barcode'] = OrderItems::is_barcode_valid;					//有效的
+		
+		$criteria->addColumnCondition(array(
+			'`OrderActives_Order`.`status`'=>Order::status_yes,									//有效
+			'`OrderActives_Order`.`pay_status`'=>Order::pay_status_yes,					//已支付
+			'`OrderActives_Order`.`order_status`'=>Order::order_status_user_pay,	//已付款
+			'`OrderActives_Order`.`status_go`'=>Order::status_go_yes,						//确认出游
+		));
+
+		$criteria->order='`OrderActives_OrderItems`.`shops_day_sort` desc';
+		$order=OrderActives::model()->find($criteria);
+		if($order)
+		{
+			//开启事物
+			$transaction = $order->dbConnection->beginTransaction();
+			try
+			{
+				$count=OrderActives::model()->count($criteria);
+				if ($count > 0)
+				{
+					$return = 0;																								//更新的条数
+					$return_items = 0;																					//更新的条数				
+					$datas=OrderActives::model()->findAll($criteria);
+					if ($datas)
+					{
+						$items_ids = array();
+						//记录所有订单ID
+						foreach ($datas as $data) 
+						{
+							//消费码ID
+							foreach($data->OrderActives_OrderItems as $items) 
+								$items_ids[] = $items->id;
+						}
+						//去重复的
+						$items_ids = array_flip( array_flip($items_ids));
+						//统计项目数量
+						$return_items += count($items_ids);
+						
+						$criteria_items = new CDbCriteria;
+						$criteria_items->with = array(
+								'OrderItems_OrderItems',
+								'OrderItems_OrderItemsFare',
+								'OrderItems_Order'=>array(
+										'with'=>array(
+												'Order_OrderActives'=>array(
+														'with'=>array(																	
+															'OrderActives_Actives'=>array('with'=>'Actives_Shops')
+														),
+												),
+										),
+								),
+						);
+						$criteria_items->addColumnCondition(array(
+								'`OrderItems_Order`.`status`'=>Order::status_yes,								//有效
+								'`OrderItems_Order`.`pay_status`'=>Order::pay_status_yes,					//已支付
+								'`OrderItems_Order`.`order_status`'=>Order::order_status_user_pay,	//已付款
+								'`OrderItems_Order`.`status_go`'=>Order::status_go_yes,						//确认出游
+						));
+						$criteria_items->addInCondition('`OrderItems_OrderItems`.`id`', $items_ids);
+						$criteria_items->addColumnCondition(array(
+								'`OrderItems_OrderItems`.`is_barcode`'=>OrderItems::is_barcode_valid //有效的
+						));
+						//需要消费的项目	
+						$items_models = OrderItems::model()->findAll($criteria_items);
+						//需要服务费用的订单
+						$charge_orders = array();
+						$order_ids = array();
+						if (empty($items_models))
+							throw new Exception("定时任务 保存改变MQ(觅趣订单) 觅趣订单：数据异常错误");
+
+						//过期项目
+						foreach ($items_models as $items_model)
+						{
+							if (! OrderItems::scancodeActivesTour($items_model, false, ($items_model->OrderItems_Order->Order_OrderActives->OrderActives_Actives->is_organizer == Actives::is_organizer_yes)))
+								throw new Exception("定时任务 保存改变MQ(觅趣订单) 觅趣订单 活动项目 钱包操作错误".json_encode(array(Account::$create_error, AccountLog::$create_error)));
+							//组织者的活动有服务费用
+							if ($items_model->OrderItems_Order->Order_OrderActives->OrderActives_Actives->is_organizer == Actives::is_organizer_yes)
+								$charge_orders[$items_model->OrderItems_Order->id] = $items_model->OrderItems_Order;
+							//活动中的订单
+							$order_ids[] = $items_model->OrderItems_Order->id;
+						}
+						//活动服务费用
+						if (!empty($charge_orders))
+						{
+							if (! OrderItems::scancodeActivesTourCharge($charge_orders, false))
+								throw new Exception("定时任务 保存改变MQ(觅趣订单) 觅趣订单 活动服务费用 钱包操作错误".json_encode(array(Account::$create_error, AccountLog::$create_error)));							
+						}
+						//过滤重复的订单
+						$order_ids = array_flip(array_flip($order_ids));
+						//更新order 表
+						$criteria_update = new CDbCriteria;
+						$criteria_update->addInCondition('id', $order_ids);
+						$return_order = Order::model()->updateAll(array(
+							'order_status'=>Order::order_status_store_past,	//订单的状态 已过期订单
+							'up_time'=>time(),
+						),$criteria_update);
+						if(! $return_order)
+							throw new Exception("定时任务 保存改变MQ(觅趣订单) 觅趣订单 订单操作错误");
+						
+						// 更新order_items 订单=========未消费改成已过期
+						$criteria_query=new CDbCriteria;
+						$criteria_query->addInCondition('id', $items_ids);
+						$criteria_query->addColumnCondition(array('is_barcode'=>OrderItems::is_barcode_valid));
+						//更新项目 已过期
+						$return +=OrderItems::model()->updateAll(array(   
+							'is_barcode'=>OrderItems::is_barcode_past,			//已过期	
+							'up_time'=>time(),													//更新时间
+						),$criteria_query);
+						//记录日志 消费的项目
+						$this->logText[] = implode(' , ', $items_ids);
+					}
+					else
+						break;
+				}
+				if($return_items != $return)
+					throw new Exception("定时任务 保存改变MQ(觅趣订单) 觅趣订单：用户超过7天超时状态失败".$count .'=='. $return .' =='.count($items_ids));
+				//记录日志
+				$this->logText[] = '定时任务 保存改变MQ(觅趣订单) 觅趣订单：用户超过7天超时状态NO. '.$return;
+					
+				$transaction->commit();
+			}
+			catch (Exception $e)
+			{
+				$transaction->rollBack();
+				$this->logText[] = $e->getMessage();
+				$this->logText[] = 'END';
+				return self::return_error;
+			}
+		}
+		return self::correct;
+	}
+
+	/**
+	 * 更新支付中的订单 
+	 */
+	public function actionPaying()
+	{
+		$this->logText[]='START';
+		
+		$criteria =new CDbCriteria;
+		$criteria->addCondition('`up_time`<=:up_time AND `pay_status`=:pay_status_paying');
+		$criteria->params[':pay_status_paying']=Order::pay_status_paying;//支付中
+		$criteria->params[':up_time'] = time() - 300;
+		$criteria->addColumnCondition(array(
+				'order_status'=>Order::order_status_store_yes,	//订单的状态
+				'status_go'=>Order::status_go_yes,						//是否出游
+				'centre_status'=>Order::centre_status_yes,			//是否可以支付
+				'status'=>Order::status_yes,									//有效的订单
+		));
+		$order=Order::model()->find($criteria);
+		if($order)
+		{
+			//开启事物
+			$transaction = $order->dbConnection->beginTransaction();
+			try{
+				$count=Order::model()->count($criteria);
+				if($count)
+				{
+					$return = Order::model()->updateAll(array('pay_status'=>Order::pay_status_not, 'pay_type'=>Order::pay_type_none, 'up_time'=>time()),$criteria);
+					if($count != $return)
+						throw new Exception("定时任务 保存改变订单状态失败");
+					$this->logText[]='定时任务 改变支付中的状态 NO. '.$return;
+				}
+				$transaction->commit();
+			}
+			catch (Exception $e)
+			{
+				$transaction->rollBack();
+				$this->logText[]=$e->getMessage();
+				$this->logText[]='END';
+				return self::return_error;
+			}
+		}
+		$this->logText[]='END';
+		return self::correct;
+	}
+}

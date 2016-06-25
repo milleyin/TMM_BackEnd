@@ -1,0 +1,80 @@
+
+//保证金日志
+
+//URL /index.php?r=store/store_deposit/index
+
+//GET
+
+//存在错误 存在空
+
+//正常
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=store/store_deposit/index",
+            "selectedPage": 1
+        },
+        "deposit": "900.00",					//剩余保证金
+        "list_data": [
+            {
+                "deposit": "1000.00",			//操作保证金
+                "deposit_old": "0.00",			//原有保证金
+                "format_deposit": "+1,000.00",	//格式化操作保证金
+                "deposit_status": {
+                    "value": "1",				//保证金类型值
+                    "name": "添加保证金"		//保证金类型名称
+                },
+                "reason": "dgsgsddssgsdgdggd",	//保证金原因
+                "add_time": "2015/12/31"		//操作时间
+            },
+            {
+                "deposit": "100.00",
+                "deposit_old": "1000.00",
+                "format_deposit": "-100.00",
+                "deposit_status": {
+                    "value": "-1",
+                    "name": "扣除保证金"
+                },
+                "reason": "不知道\r\n",
+                "add_time": "2015/12/31"
+            }
+        ]
+    }
+}
+
+//空值
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=store/store_deposit/index",
+            "selectedPage": 1
+        },
+        "deposit": "0.00",					//剩余保证金
+        "list_data": [
+        ]
+    }
+}
+
+//错误 没有登录 或者 子账号
+{
+    "status": 0,
+    "code": 50006,
+    "msg": "没有相关数据",
+    "data": []
+}

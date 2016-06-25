@@ -1,0 +1,35 @@
+<block name="header"></block>
+
+<block name="body"></block>
+<script type="text/javascript">
+    $(function(){
+        $(window).resize(function(){
+            $(".gdu-container").css("min-height", $(window).height() - 220);
+        }).resize();
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 500) {
+                $('.go-top').fadeIn();
+            } else {
+                $('.go-top').fadeOut();
+            }
+        });
+        $(".go-top").hover(function() {
+            $(this).addClass("go-top-hover");
+        }, function() {
+            $(this).removeClass("go-top-hover");
+        });
+        $('.go-top').on("click", function() {
+            $("body, html").animate({
+                scrollTop: 0
+            }, '500');
+        });
+        Handlebars.registerHelper("prettifyDate", function(timestamp) {
+            var dateStr = new Date(timestamp * 1000);
+            return dateStr.getFullYear() + '-' + dateStr.getMonth()+1 +'-' + dateStr.getDate();
+        });
+
+        $('#navbar').on('click', 'li', function() {
+            $('#navbar').removeClass('in');
+        });
+    });
+</script>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>提交成功</title>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->getAssets() . '/css/mailingSuc.css'?>">
+</head>
+
+<body>
+<div class="mailingSuc">
+    <img src="<?php echo $this->getAssets() . '/images/receive.png'; ?>" class="sucImg">
+    <p class="title">提交成功！</p>
+    <p class="txt">奖品邮寄后我们会以短信通知给您，敬请留意。</p>
+</div>
+</body>
+
+</html>

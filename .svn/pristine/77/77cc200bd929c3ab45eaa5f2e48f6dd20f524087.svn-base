@@ -1,0 +1,138 @@
+<?php
+/* @var $this AgentController */
+/* @var $model Agent */
+
+$this->breadcrumbs = array(
+	$model->firm_name,
+);
+?>
+
+<h1>我的信息 <font color='#eb6100'><?php echo CHtml::encode($model->firm_name) ?></font></h1>
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		array(
+				'name'=>'id',
+		),
+		array(
+				'name'=>'admin_id',
+				'value'=>$model->Agent_Admin->name,
+		),
+		array(
+				'name'=>'phone',
+		),
+		array(
+				'name'=>'merchant_count',
+		),
+		array(
+				'name'=>'firm_name',
+		),
+		array(
+				'name'=>'area_id_p',
+				'value'=>$model->Agent_area_id_p_Area_id->name
+		),
+		array(
+				'name'=>'area_id_m',
+				'value'=>$model->Agent_area_id_m_Area_id->name
+		),
+		array(
+				'name'=>'area_id_c',
+				'value'=>$model->Agent_area_id_c_Area_id->name
+		),
+		array(
+				'name'=>'address',
+		),
+		array(
+				'name'=>'firm_tel',
+		),
+		array(
+				'name'=>'firm_postcode',
+		),
+		array(
+				'name'=>'bl_code',
+		),
+		array(
+				'name'=>'bl_img',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->bl_img),
+		),
+		array(
+				'name'=>'tax_img',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->tax_img),
+		),
+		array(
+				'name'=>'occ_img',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->occ_img),
+		),
+		array(
+				'name'=>'com_contacts',
+		),
+		array(
+				'name'=>'com_identity',
+		),
+		array(
+				'name'=>'com_phone',
+		),
+		array(
+				'name'=>'manage_name',
+		),
+		array(
+				'name'=>'manage_identity',
+		),
+		array(
+				'name'=>'manage_phone',
+		),
+		array(
+				'name'=>'identity_hand',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->identity_hand),
+		),
+		array(
+				'name'=>'identity_before',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->identity_before),
+		),
+		array(
+				'name'=>'identity_after',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->identity_after),
+		),
+		array(
+			'name'=>'login_error',
+		),
+		array(
+			'name'=>'error_count',
+		),
+		array(
+			'name'=>'login_time',
+			'type'=>'datetime',
+		),
+		array(
+			'name'=>'login_ip',
+		),
+		array(
+			'name'=>'last_time',
+			'type'=>'datetime',
+		),
+		array(
+			'name'=>'last_ip',
+		),
+		array(
+			'name'=>'add_time',
+			'type'=>'datetime',
+		),
+		array(
+			'name'=>'up_time',
+			'type'=>'datetime',
+		),
+		array(
+			'name'=>'status',
+			'value'=>$model::$_status[$model->status],
+		),
+	),
+)); 
+?>
+

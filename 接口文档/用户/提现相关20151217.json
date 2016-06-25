@@ -1,0 +1,148 @@
+//===================================2016-01-04 更新============================================================================
+
+
+/**
+*   在原申请提现金额里
+*	插一步，先验证金额
+*/
+// 模块/方法：
+// index.php?r=api/Cash/cash_verify_price
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        用户提现
+
+// 参数
+
+//  先验证帐是否可以申请  ==========不可以返回下面
+{
+  "status": 0,
+  "code": 40201,
+  "msg": "表单数据验证不通过",
+  "form": {
+    "Cash_msg": [
+      "还有没处理完的提现申请"
+    ],
+    "Cash_status": [
+      "004"
+    ]
+  }
+}
+
+//  先验证帐是否可以申请  ==========可以返回下面
+{
+  "Cash": {
+	"price":10.00 //提现金额
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+
+
+
+// 模块/方法：
+// index.php?r=api/cash/index
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取提现申请记录
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": { // 分页信息
+            "prev": "", // 上一页的链接
+            // 当前页的链接
+            "selected": "http://test.365tmm.net/index.php?r=store/store_cash/index",
+            // 下一页的链接
+            "next": "http://test.365tmm.net/index.php?r=store/store_cash/index&page=2",
+            "selectedPage": 1, // 当前第几页
+            "count": 2, // 页数
+            "page": "page", // 参数名
+            // 分页基础链接
+            "link": "http://test.365tmm.net/index.php?r=store/store_cash/index"
+        },
+        "list_data": [ // 提现申请记录列表
+            {
+                "price": "10000.00", // 提现金额
+                "remark_first": "初审理由", // 备注(初)
+                "remark_double": "复审理由", // 备注(复)
+                "remark_submit": "最终确认的理由", // 备注(确认)
+                "cash_status": { // 付款状态
+                    "value": "1", //
+                    "name": "成功" // 
+                },
+                "deposit_status": { // 审核状态
+                    "value": "6", // 
+                    "name": "驳回" //
+                },
+                "add_time": "2015/09/06 12:54:35", // 添加时间
+                "up_time": "2015/09/06 12:54:35" // 更新时间
+            }
+        ]
+    }
+}
+
+
+// 模块/方法：
+// index.php?r=api/cash/captcha_cash
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        用户提现，获取短信验证码
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": []
+}
+
+// 模块/方法：
+// index.php?r=api/cash/create
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        用户提现
+
+// 参数
+
+//  先验证帐是否可以申请  ==========不可以返回下面
+{
+  "status": 0,
+  "code": 40201,
+  "msg": "表单数据验证不通过",
+  "form": {
+    "Cash_msg": [
+      "还有没处理完的提现申请"
+    ],
+    "Cash_status": [
+      "004"
+    ]
+  }
+}
+
+//  先验证帐是否可以申请  ==========可以返回下面
+{
+  "Cash": {
+    "sms": "sape", // 短信验证
+	"price":10.00 //提现金额
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+

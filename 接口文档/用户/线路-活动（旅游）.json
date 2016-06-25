@@ -1,0 +1,298 @@
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "name": "旅游活动",
+        "c_id": "3",
+        "list_info": "一个完整的旅游活动",
+        "page_info": "面朝大海，春暖花开。",
+        "brow": "1",
+        "share": "1",
+        "praise": "1",
+        "list_img": "http://test.365tmm.net/uploads/shops/thrand/20151015/7658561f09ac8edac8.00437204.jpg",
+        "page_img": "http://test.365tmm.net/uploads/shops/thrand/20151015/4934561f09ac920171.30357839.png",
+        "c_name": "活动",
+        "actives": {
+            "name": "活动(旅游)",
+            "value": "0"
+        },
+        "actives_info": {
+            "organizer": {
+                "phone": "13632677944"
+            },
+            "remark": "创建一个旅游活动",
+            "number": {
+                "name": "活动人数",
+                "value": "10"
+            },
+            "order_number": {
+                "name": "剩余报名人数",
+                "value": "7"
+            },
+            "tour_price": {
+                "name": "服务费/人",
+                "value": "20.00"
+            },
+            "tour_count": {
+                "name": "报名统计",
+                "value": "3"
+            },
+            "order_count": {
+                "name": "付款统计",
+                "value": "3"
+            }
+        },
+        "actives_time": {
+            "start_time": "2015-10-31",
+            "end_time": "2015-11-04",
+            "go_time": "2015-11-07"
+        },
+        "actives_status": {
+            "name": "进行中",
+            "value": "1"
+        },
+        "order_actives": {
+            "order_status": {
+                "name": "已付款",
+                "value": "2"
+            },
+            "status_go": {
+                "name": "确认出游",
+                "value": "2"
+            },
+            "pay_status": {
+                "name": "已支付",
+                "value": "1"
+            },
+            "value": "154",
+            "link": "http://localhost/tmm/index.php?r=api/order/view&id=154"
+        },
+        "add_time": "2015/10/19 10:01:07",
+        "audit_type": 1,
+        "audit_name": "已通过",
+        "link_collect": "http://localhost/tmm/index.php?r=api/shops/collect&id=40",
+        "actives_id": "40",
+        "collent_status": 0,
+        "collent_name": "取消",
+        "is_sale": {
+            "name": "可卖",
+            "value": "1"
+        },
+        "list": [
+            {
+                "day": "第一天上午",
+                "day_content": "6666666666666",
+                "dot_list": [
+                    {
+                        "day_dot_list_img": "",
+                        "day_dot_id": 32,
+                        "day_dot_link": "http://localhost/tmm/index.php?r=api/dot/view&id=32",
+                        "day_dot_name": "旅游活动",
+                        "day_item": [
+                            {
+                                "sort": 1,
+                                "item_name": "广宁竹海",
+                                "item_link": "http://localhost/tmm/index.php?r=api/play/view&id=57",
+                                "item_img": "http://test.365tmm.net/uploads/items/tmp/play/20150930/8296560ba44a2553e7.03434368.jpg",
+                                "item_type": {
+                                    "value": 3,
+                                    "name": "玩"
+                                },
+                                "store_name": "田觅觅",
+                                "shop_fare": [
+                                    {
+                                        "name": "特价门票 ",
+                                        "info": "儿童 ",
+                                        "price": "1.69 元"
+                                    }
+                                ],
+                                "address": "广东省肇庆广宁县四连线往怀集方向2公里"
+                            }
+                        ]
+                    },
+                    {
+                        "day_dot_list_img": "",
+                        "day_dot_id": 31,
+                        "day_dot_link": "http://localhost/tmm/index.php?r=api/dot/view&id=31",
+                        "day_dot_name": "旅游活动",
+                        "day_item": [
+                            {
+                                "sort": 1,
+                                "item_name": "放鸡岛",
+                                "item_link": "http://localhost/tmm/index.php?r=api/play/view&id=56",
+                                "item_img": "http://test.365tmm.net/uploads/items/play/20150930/6422560b9ce2c87157.58467922.jpg",
+                                "item_type": {
+                                    "value": 3,
+                                    "name": "玩"
+                                },
+                                "store_name": "田觅觅茂名市供应商",
+                                "shop_fare": [
+                                    {
+                                        "name": "特价门票 ",
+                                        "info": "成人 ",
+                                        "price": "20.50 元"
+                                    }
+                                ],
+                                "address": "广东省茂名电白县博贺镇翠湖路博贺港码头"
+                            },
+                            {
+                                "sort": 2,
+                                "item_name": "茂名海岸",
+                                "item_link": "http://localhost/tmm/index.php?r=api/play/view&id=55",
+                                "item_img": "http://test.365tmm.net/uploads/items/play/20150930/6044560b9542cd4d04.79039845.jpg",
+                                "item_type": {
+                                    "value": 3,
+                                    "name": "玩"
+                                },
+                                "store_name": "田觅觅茂名市供应商",
+                                "shop_fare": [
+                                    {
+                                        "name": "特价门票 ",
+                                        "info": "儿童 ",
+                                        "price": "0.59 元"
+                                    }
+                                ],
+                                "address": "广东省茂名电白县博贺镇龙山尖岗管理区海边"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "day": "第一天下午",
+                "day_content": "444444444444444",
+                "dot_list": [
+                    {
+                        "day_dot_list_img": "",
+                        "day_dot_id": 25,
+                        "day_dot_link": "http://localhost/tmm/index.php?r=api/dot/view&id=25",
+                        "day_dot_name": "旅游活动",
+                        "day_item": [
+                            {
+                                "sort": 1,
+                                "item_name": "溪头村",
+                                "item_link": "http://localhost/tmm/index.php?r=api/play/view&id=33",
+                                "item_img": "http://test.365tmm.net/uploads/items/play/20150929/1787560a5cf4d762a0.13107331.jpg",
+                                "item_type": {
+                                    "value": 3,
+                                    "name": "玩"
+                                },
+                                "store_name": "田觅觅广州供应商",
+                                "shop_fare": [
+                                    {
+                                        "name": "特价门票 ",
+                                        "info": "儿童 ",
+                                        "price": "34.75 元"
+                                    }
+                                ],
+                                "address": "广东省广州从化市良口镇溪头村"
+                            }
+                        ]
+                    },
+                    {
+                        "day_dot_list_img": "",
+                        "day_dot_id": 23,
+                        "day_dot_link": "http://localhost/tmm/index.php?r=api/dot/view&id=23",
+                        "day_dot_name": "旅游活动",
+                        "day_item": [
+                            {
+                                "sort": 1,
+                                "item_name": "大埔蜜柚",
+                                "item_link": "http://localhost/tmm/index.php?r=api/eat/view&id=29",
+                                "item_img": "http://test.365tmm.net/uploads/items/eat/20150929/7017560a5830dd8463.23306165.jpg",
+                                "item_type": {
+                                    "value": 1,
+                                    "name": "吃"
+                                },
+                                "store_name": "梅州市",
+                                "shop_fare": [
+                                    {
+                                        "name": "特价套餐 ",
+                                        "info": "成人 ",
+                                        "price": "34.47 元"
+                                    }
+                                ],
+                                "address": "广东省梅州大埔县蜜柚园"
+                            },
+                            {
+                                "sort": 2,
+                                "item_name": "瑞锦酒店",
+                                "item_link": "http://localhost/tmm/index.php?r=api/hotel/view&id=31",
+                                "item_img": "http://test.365tmm.net/uploads/items/hotel/20150929/9686560a5a5ea9f568.83407161.jpg",
+                                "item_type": {
+                                    "value": 2,
+                                    "name": "住"
+                                },
+                                "store_name": "梅州市",
+                                "shop_fare": [
+                                    {
+                                        "name": "单人间套房 ",
+                                        "info": "100 平方",
+                                        "number": "1 人间",
+                                        "price": "34.99 元"
+                                    }
+                                ],
+                                "address": "广东省梅州大埔县内环西路龙山二街"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "day": "第二天上午",
+                "day_content": "111111111111111",
+                "dot_list": [
+                    {
+                        "day_dot_list_img": "",
+                        "day_dot_id": 23,
+                        "day_dot_link": "http://localhost/tmm/index.php?r=api/dot/view&id=23",
+                        "day_dot_name": "旅游活动",
+                        "day_item": [
+                            {
+                                "sort": 1,
+                                "item_name": "大埔蜜柚",
+                                "item_link": "http://localhost/tmm/index.php?r=api/eat/view&id=29",
+                                "item_img": "http://test.365tmm.net/uploads/items/eat/20150929/7017560a5830dd8463.23306165.jpg",
+                                "item_type": {
+                                    "value": 1,
+                                    "name": "吃"
+                                },
+                                "store_name": "梅州市",
+                                "shop_fare": [
+                                    {
+                                        "name": "特价套餐 ",
+                                        "info": "成人 ",
+                                        "price": "34.47 元"
+                                    }
+                                ],
+                                "address": "广东省梅州大埔县蜜柚园"
+                            },
+                            {
+                                "sort": 2,
+                                "item_name": "瑞锦酒店",
+                                "item_link": "http://localhost/tmm/index.php?r=api/hotel/view&id=31",
+                                "item_img": "http://test.365tmm.net/uploads/items/hotel/20150929/9686560a5a5ea9f568.83407161.jpg",
+                                "item_type": {
+                                    "value": 2,
+                                    "name": "住"
+                                },
+                                "store_name": "梅州市",
+                                "shop_fare": [
+                                    {
+                                        "name": "单人间套房 ",
+                                        "info": "100 平方",
+                                        "number": "1 人间",
+                                        "price": "34.99 元"
+                                    }
+                                ],
+                                "address": "广东省梅州大埔县内环西路龙山二街"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "list_num": 3
+    }
+}

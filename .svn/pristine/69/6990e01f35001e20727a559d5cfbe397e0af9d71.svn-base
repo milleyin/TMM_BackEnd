@@ -1,0 +1,170 @@
+<?php
+namespace app\admin\controllers;
+
+use AdminModulesController;
+
+/**
+ * @author Changhai Zhan
+ *	创建时间：2016-06-01 15:24:30 */
+class ConfigController extends AdminModulesController
+{
+	/**
+	 * 当前操作模型的名称
+	 * @var string
+	 */
+	public $_modelName = 'Config';
+	
+	/**
+	 * 管理
+	 */
+	public function actionAdmin()
+	{
+		$model = new \Config('search');
+		//清除默认值
+		$model->unsetAttributes();
+		if (isset($_GET['Config']))
+			$model->attributes = $_GET['Config'];
+
+		$this->render('admin', array(
+			'model'=>$model,
+		));
+	}
+	
+	/**
+	 * 查看
+	 * @param integer $id
+	 */
+	public function actionView($id)
+	{
+		$model = $this->loadModelByPk($id, array(
+			'with' => array('Config_Admin', 'Config_Pad')
+		));
+		$this->render('view', array(
+			'model' => $model
+		));
+	}
+
+	/**
+	 * 创建
+	 * @param $id 展示屏id
+	 */
+	public function actionCreate($id)
+	{
+		$model = new \Config;
+		// 校检展示屏
+		$padObj = \Pad::model()->find(
+			array(
+				'condition'=>'id=:id',
+				'params'=>array(':id' => $id)
+			)
+		);
+
+		$model->scenario = 'create';
+		$this->ajaxVerify($model, 'config-form');
+
+		if ($padObj) {
+			if (isset($_POST['Config'])) {
+				$model->attributes = $_POST['Config'];
+				$model->store_id = $padObj->store_id;
+				$model->pad_id = $padObj->id;
+				$model->manager_id = \Yii::app()->user->id;
+
+				if ($model->save()) {
+					$this->redirect(array('view', 'id'=>$model->id));
+				}
+			}
+		}
+
+		$this->render('create', array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * 更新
+	 * @param $id 抽奖配置id
+	 */
+	public function actionUpdate($id)
+	{
+		$model = $this->loadModelByPk($id);
+
+		$model->scenario = 'update';
+		$this->ajaxVerify($model, 'config-form');
+
+		if (isset($_POST['Config']))
+		{
+			$model->attributes = $_POST['Config'];
+			if ($model->save())
+				$this->redirect(array('view', 'id'=>$model->id));
+		}
+
+		$this->render('update', array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * 删除
+	 * @param integer $id the ID of the model to be deleted
+	 * @return Success page "admin"
+	 */
+	public function actionDelete($id)
+	{
+		$this->loadModelByPk($id, '`status`=:status', array(':status'=>\Config::_STATUS_DISABLE))->updateByPk($id, array('status'=>\Config::_STATUS_DELETED));
+		
+		if ( !isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+	
+	/**
+	 * 禁用
+	 * @param integer $id the ID of the model to be deleted
+	 * @return Success page "admin"
+	 */
+	public function actionDisable($id)
+	{
+		$this->loadModelByPk($id, '`status`=:status', array(':status'=>\Config::_STATUS_NORMAL))->updateByPk($id, array('status'=>\Config::_STATUS_DISABLE));
+		
+		if ( !isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+	
+	/**
+	 * 激活
+	 * @param integer $id the ID of the model to be deleted
+	 * @return Success page "admin"
+	 */
+	public function actionStart($id)
+	{
+		$this->loadModelByPk($id, '`status`=:status', array(':status'=>\Config::_STATUS_DISABLE))->updateByPk($id, array('status'=>\Config::_STATUS_NORMAL));
+		
+		if ( !isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+	
+	/**
+	 * 还原
+	 * @param integer $id the ID of the model to be deleted
+	 * @return Success page "admin"
+	 */
+	public function actionRestore($id)
+	{
+		$this->loadModelByPk($id, '`status`=:status', array(':status'=>\Config::_STATUS_DELETED))->updateByPk($id, array('status'=>\Config::_STATUS_DISABLE));
+		
+		if ( !isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+	
+	/**
+	 * 清除记录
+	 * @param integer $id the ID of the model to be deleted
+	 * @return Success page "admin"
+	 */
+	public function actionClear($id)
+	{
+		$this->loadModelByPk($id, '`status`=:status', array(':status'=>\Config::_STATUS_DELETED))->delete();
+		
+		if ( !isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+}

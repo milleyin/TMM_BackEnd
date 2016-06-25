@@ -1,0 +1,84 @@
+
+//报名代付活动相关接口文档
+
+// UEL /index.php?r=api/attend/order
+
+// POST 请求 需登录 需要GET 请求获取秘钥
+
+//存在错误
+
+
+//格式
+{
+	"Order":{
+		"order_price":"1401.40", 	//订单总价 
+		"go_time":"2016-06-09"		//订单出游时间  如果设置了出游时间 则不用 如果没有 则必须有 格式 YYYY-MM-DD 可单独设置 详见 设置出游时间（以前的链接） 
+	},
+	"OrderShops":{
+		"shops_id":"225"			//商品ID (等价活动ID) 不等价与活动订单ID
+	},
+	"Attend":{
+		"name":""					//修改自己默认报名的名字 可选 不可等于来的名字与默认名字 "自己（默认）" 可以单独设置名字 详见 举办人设置自己活动报名姓名
+	}
+}
+
+//返回值 同之前以前创建订单 略同
+
+
+//举办人设置自己活动报名姓名
+
+// UEL /index.php?r=api/attend/name
+
+// POST 请求 需登录 需要GET 请求获取秘钥
+
+//存在错误
+
+{
+  "Attend":{
+	"name":"设置的名字" //设置的名字  不能等价于 "自己（默认）" 和 之前设置的名字
+  }
+}
+
+//返回值
+//错误
+{
+    "status": 0,
+    "code": 40201,
+    "msg": "表单数据验证不通过",
+    "form": {
+        "name": [
+            "订单已提交不能修改"
+        ]
+    }
+}
+
+//正确的
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "status": 1
+    }
+}
+
+//get 活动参与人
+// index.php?r=api/attend/list&id=229
+
+//get 取消报名
+// index.php?r=api/attend/delete&id=27
+
+//get 我参与活动列表页 （代付）
+// index.php?r=api/attend/index
+
+//get 查看我参与的活动
+// index.php?r=api/attend/view&id=30
+
+//get 我发布的活动列表页
+// index.php?r=api/orderActives/index
+
+//get 我发布活动的详情页 (审核通过 并 包装过的)
+// index.php?r=api/orderActives/view&id={id}
+
+//get 我发布活动的详情页 (审核未通过（含）之前)
+// index.php?r=api/orderActives/oldview&id={id}

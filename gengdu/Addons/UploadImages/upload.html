@@ -1,0 +1,193 @@
+<script type="text/javascript" src="__ADDONROOT__/script/UploadImages.js"></script>
+<link rel="stylesheet" href="__ADDONROOT__/style/UploadImages.css">
+    <input type="file" id="upload_picture_{$name}">
+    <input type="hidden" name="{$name}" value="{$valStr}" class="icon {$name}" />
+    <div class="upload-img-box-multiply">
+        <notempty name="valArr">
+             <volist name="valArr" id="v">
+                <div class="upload-pre-item">
+
+                    <div class="upload-pre-item-image">
+                        <img src="__ROOT__{$v|get_cover='path'}" data-id="{$v}"/>
+                        <span class='btn-close btn-close-{$name}' title='删除图片' data-id="{$v}"></span>
+                    </div>
+                    <div class="multiply-image-title">
+                        <label class="multiply-label">标题：</label>
+                        <input type="text" class="text input-large" name="pic_title" value="{$v|get_cover='pic_title'}" placeholder="请填写标题" data-id="{$v}">
+                        <span class="multiply-msg"></span>
+                    </div>
+                    <div class="multiply-image-desc">
+                        <label class="multiply-label">
+                            描述：
+                        </label>
+                        <textarea class="multiply-textarea input-large" name="pic_description" data-id="{$v}">{$v|get_cover='pic_description'}</textarea>
+                        <span class="multiply-msg"></span>
+                    </div>
+
+                </div>
+             </volist>
+        </notempty>
+    </div>
+<script type="text/javascript">
+    //上传图片
+    $(function(){
+        /* 初始化上传插件*/
+        $("#upload_picture_{$name}").uploadify({
+            "height"          : 30,
+            "swf"             : "__STATIC__/uploadify/uploadify.swf",
+            "fileObjName"     : "download",
+            "buttonText"      : "上传图片",
+            "uploader"        : "{:U('File/uploadPicture',array('session_id'=>session_id()))}",
+            "width"           : 120,
+            'removeTimeout'   : 1,
+            'fileTypeExts'    : '*.jpg; *.png; *.gif;',
+            "onUploadSuccess" : uploadPicture{$name},
+            'onFallback' : function() {
+                alert('未检测到兼容版本的Flash.');
+            }
+        });
+
+        $("body").on("click", ".btn-close-{$name}", function(){
+            event.preventDefault();
+            // 图片id
+            var id = $(this).attr('data-id');
+            var self = this;
+            // 回调
+            var callback = function() {
+                $(self).parent().parent().remove();
+                picsbox = $("#upload_picture_{$name}").siblings('.upload-img-box-multiply');
+                picArr = [];
+                for (var i = 0; i < picsbox.children().length ; i++) {
+                    picArr.push(picsbox.children('.upload-pre-item:eq('+i+')').find('img').attr('data-id'));
+                };
+                picStr = picArr.join(',');
+                $('.icon.{$name}').val(picStr);
+            };
+
+            if (id) {
+                //
+                $.post(
+                        "{:U('Article/pictureDel')}",
+                        'id=' + id,
+                        function(data){
+                            /* 提示信息 */
+                            callback();
+                        },
+                        "json"
+                );
+            }
+
+
+
+
+
+
+
+        });
+
+        $(".upload-img-box-multiply").on("change", ".btn-close-{$name}", function(){
+            event.preventDefault();
+            $(this).parent().parent().remove();
+            picsbox = $("#upload_picture_{$name}").siblings('.upload-img-box-multiply');
+            picArr = [];
+            for (var i = 0; i < picsbox.children().length ; i++) {
+                picArr.push(picsbox.children('.upload-pre-item:eq('+i+')').find('img').attr('data-id'));
+            };
+            picStr = picArr.join(',');
+            $('.icon.{$name}').val(picStr);
+
+
+
+        });
+        /* 实时图片信息 */
+        $(".upload-img-box-multiply")
+        .on("focus","input",function(){
+            $(this).data('title_param',$(this).serialize());
+        })
+        .on("blur", "input", function(){
+            if ($(this).data('title_param') != $(this).serialize()) {
+                var self = $(this);
+                var postData = 'id=' + $(this).attr('data-id') + '&' + $(this).serialize();
+                $.post(
+                        "{:U('Article/pictureEdit')}",
+                        postData,
+                        function(data){
+                            /* 提示信息 */
+                            var name = data.status ? "success" : "error", msg;
+                            msg = self.parent().find(".multiply-msg").addClass(name).text(data.info)
+                                    .css("display", "inline-block");
+                            setTimeout(function(){
+                                msg.fadeOut(function(){
+                                    msg.text("").removeClass(name);
+                                });
+                            }, 1000);
+                        },
+                        "json"
+                );
+
+
+
+            }
+        })
+        .on("focus","textarea",function(){
+            $(this).data('desc_param',$(this).serialize());
+        })
+        .on("blur", "textarea", function(){
+            if ($(this).data('desc_param') != $(this).serialize()) {
+                var self = $(this);
+                var postData = 'id=' + $(this).attr('data-id') + '&' + $(this).serialize();
+                $.post(
+                        "{:U('Article/pictureEdit')}",
+                        postData,
+                        function(data){
+                            /* 提示信息 */
+                            var name = data.status ? "success" : "error", msg;
+                            msg = self.parent().find(".multiply-msg").addClass(name).text(data.info)
+                                    .css("display", "inline-block");
+                            setTimeout(function(){
+                                msg.fadeOut(function(){
+                                    msg.text("").removeClass(name);
+                                });
+                            }, 1000);
+                        },
+                        "json"
+                );
+            }
+        });
+    })
+    function uploadPicture{$name}(file, data){
+        var data = $.parseJSON(data);
+        var src = '';
+        if(data.status){
+            src = data.url || '__ROOT__' + data.path;
+            upload_img = '<div class="upload-pre-item">'
+                       + '<div class="upload-pre-item-image">'
+                       + '<img src="'+ src +'" title="点击显示大图" data-id="'+ data.id +'"/>'
+                       + '<span class="btn-close btn-close-{$name}" title="删除图片" data-id="'+ data.id +'"></span>'
+                       + '</div>'
+                       + '<div class="multiply-image-title">'
+                       + '<label class="multiply-label">标题：</label>'
+                       + '<input type="text" class="text input-large" name="pic_title" value="" placeholder="请填写标题" data-id="'+ data.id +'">'
+                       + '<span class="multiply-msg"></span></div>'
+                       + '<div class="multiply-image-desc">'
+                       + '<label class="multiply-label">描述：</label>'
+                       + '<textarea class="multiply-textarea input-large" name="pic_description" data-id="'+ data.id +'"></textarea>'
+                       + '<span class="multiply-msg"></span></div>'
+                       + '</div>';
+            picsbox = $("#upload_picture_{$name}").siblings('.upload-img-box-multiply');
+            picsbox.append(upload_img)
+            picArr = [];
+            for (var i = 0; i < picsbox.children().length ; i++) {
+                picArr.push(picsbox.children('.upload-pre-item:eq('+i+')').find('img').attr('data-id'));
+            };
+            picStr = picArr.join(',');
+            $('.icon.{$name}').val(picStr);
+        } else {
+            updateAlert(data.info);
+            setTimeout(function(){
+                $('#top-alert').find('button').click();
+                $(that).removeClass('disabled').prop('disabled',false);
+            },1500);
+        }
+    }
+</script>

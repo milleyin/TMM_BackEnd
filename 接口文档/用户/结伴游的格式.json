@@ -1,0 +1,626 @@
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "name": "结伴游Go",
+        "value": "44",
+        "classliy": {
+            "name": "结伴游",
+            "value": "3"
+        },
+        "items_fare": [
+            {
+                "name": "的粉丝粉丝的第三方",
+                "value": "10",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "15",
+                        "name": "大碗餐",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "10000.00"
+                    },
+                    {
+                        "value": "16",
+                        "name": "小碗餐",
+                        "info": "小孩",
+                        "number": "0",
+                        "price": "110.00"
+                    },
+                    {
+                        "value": "17",
+                        "name": "四号",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1110.00"
+                    },
+                    {
+                        "value": "18",
+                        "name": "突击",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1000.00"
+                    },
+                    {
+                        "value": "19",
+                        "name": "不知道",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1000.00"
+                    }
+                ]
+            },
+            {
+                "name": "sdfs",
+                "value": "2",
+                "classliy": {
+                    "name": "住",
+                    "value": "2"
+                },
+                "fare": [
+                    {
+                        "value": "3",
+                        "name": "sdgdsgds",
+                        "info": "2",
+                        "number": "2",
+                        "price": "10.00"
+                    },
+                    {
+                        "value": "4",
+                        "name": "sdfgdss",
+                        "info": "3",
+                        "number": "3",
+                        "price": "100.00"
+                    }
+                ]
+            },
+            {
+                "name": "的粉丝粉丝的第三方",
+                "value": "6",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "8",
+                        "name": "sdgdssdgds",
+                        "info": "sdgdsg",
+                        "number": "0",
+                        "price": "100.00"
+                    }
+                ]
+            },
+            {
+                "name": "的粉丝粉丝的第三方",
+                "value": "10",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "15",
+                        "name": "大碗餐",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "10000.00"
+                    },
+                    {
+                        "value": "16",
+                        "name": "小碗餐",
+                        "info": "小孩",
+                        "number": "0",
+                        "price": "110.00"
+                    },
+                    {
+                        "value": "17",
+                        "name": "四号",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1110.00"
+                    },
+                    {
+                        "value": "18",
+                        "name": "突击",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1000.00"
+                    },
+                    {
+                        "value": "19",
+                        "name": "不知道",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1000.00"
+                    }
+                ]
+            },
+            {
+                "name": "的粉丝粉丝的第三方",
+                "value": "10",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "15",
+                        "name": "大碗餐",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "10000.00"
+                    },
+                    {
+                        "value": "16",
+                        "name": "小碗餐",
+                        "info": "小孩",
+                        "number": "0",
+                        "price": "110.00"
+                    },
+                    {
+                        "value": "17",
+                        "name": "四号",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1110.00"
+                    },
+                    {
+                        "value": "18",
+                        "name": "突击",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1000.00"
+                    },
+                    {
+                        "value": "19",
+                        "name": "不知道",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1000.00"
+                    }
+                ]
+            },
+            {
+                "name": "的粉丝粉丝的第三方",
+                "value": "10",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "15",
+                        "name": "大碗餐",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "10000.00"
+                    },
+                    {
+                        "value": "16",
+                        "name": "小碗餐",
+                        "info": "小孩",
+                        "number": "0",
+                        "price": "110.00"
+                    },
+                    {
+                        "value": "17",
+                        "name": "四号",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1110.00"
+                    },
+                    {
+                        "value": "18",
+                        "name": "突击",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1000.00"
+                    },
+                    {
+                        "value": "19",
+                        "name": "不知道",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1000.00"
+                    }
+                ]
+            },
+            {
+                "name": "的粉丝粉丝的第三方",
+                "value": "10",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "15",
+                        "name": "大碗餐",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "10000.00"
+                    },
+                    {
+                        "value": "16",
+                        "name": "小碗餐",
+                        "info": "小孩",
+                        "number": "0",
+                        "price": "110.00"
+                    },
+                    {
+                        "value": "17",
+                        "name": "四号",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1110.00"
+                    },
+                    {
+                        "value": "18",
+                        "name": "突击",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1000.00"
+                    },
+                    {
+                        "value": "19",
+                        "name": "不知道",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "1000.00"
+                    }
+                ]
+            },
+            {
+                "name": "你穿上了他买的新衣",
+                "value": "5",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                },
+                "fare": [
+                    {
+                        "value": "7",
+                        "name": "了他买",
+                        "info": "大人",
+                        "number": "0",
+                        "price": "10.00"
+                    },
+                    {
+                        "value": "11",
+                        "name": "小碗餐",
+                        "info": "小孩",
+                        "number": "0",
+                        "price": "1000.00"
+                    }
+                ]
+            }
+        ],
+        "OrderItems": {
+            "1": [
+                {
+                    "44": [
+                        {
+                            "10": [
+                                {
+                                    "15": {
+                                        "price": "10000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "16": {
+                                        "price": "110.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "17": {
+                                        "price": "1110.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "18": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "19": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "2": [
+                                {
+                                    "3": {
+                                        "price": "10.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "4": {
+                                        "price": "100.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "6": [
+                                {
+                                    "8": {
+                                        "price": "100.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "44": [
+                        {
+                            "10": [
+                                {
+                                    "15": {
+                                        "price": "10000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "16": {
+                                        "price": "110.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "17": {
+                                        "price": "1110.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "18": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "19": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "44": [
+                        {
+                            "10": [
+                                {
+                                    "15": {
+                                        "price": "10000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "16": {
+                                        "price": "110.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "17": {
+                                        "price": "1110.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "18": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "19": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "44": [
+                        {
+                            "10": [
+                                {
+                                    "15": {
+                                        "price": "10000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "16": {
+                                        "price": "110.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "17": {
+                                        "price": "1110.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "18": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "19": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "2": [
+                {
+                    "44": [
+                        {
+                            "10": [
+                                {
+                                    "15": {
+                                        "price": "10000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "16": {
+                                        "price": "110.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "17": {
+                                        "price": "1110.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "18": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "19": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "5": [
+                                {
+                                    "7": {
+                                        "price": "10.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                },
+                                {
+                                    "11": {
+                                        "price": "1000.00",
+                                        "number": 0,
+                                        "count": 0
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "main": {
+            "type": [
+                {
+                    "classliy": [
+                        {
+                            "name": "吃",
+                            "value": "1"
+                        }
+                    ],
+                    "name": "大人"
+                },
+                {
+                    "classliy": [
+                        {
+                            "name": "吃",
+                            "value": "1"
+                        }
+                    ],
+                    "name": "小孩"
+                },
+                {
+                    "classliy": [
+                        {
+                            "name": "吃",
+                            "value": "1"
+                        }
+                    ],
+                    "name": "sdgdsg"
+                }
+            ],
+            "room": [
+                {
+                    "classliy": [
+                        {
+                            "name": "住",
+                            "value": "2"
+                        }
+                    ],
+                    "name": "双人间",
+                    "number": "2"
+                },
+                {
+                    "classliy": [
+                        {
+                            "name": "住",
+                            "value": "2"
+                        }
+                    ],
+                    "name": "三人间",
+                    "number": "3"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,3 @@
+<script type="text/javascript" src="__STATIC__/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="__JS__/util.js"></script>
+<block name="script"></block> <!-- 用于加载js代码 -->

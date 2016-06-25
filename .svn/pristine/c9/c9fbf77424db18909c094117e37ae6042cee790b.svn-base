@@ -1,0 +1,152 @@
+<?php
+
+/**
+ * This is the model class for table "{{upload}}".
+ *
+ * The followings are the available columns in table '{{upload}}':
+ * @property string $id
+ * @property integer $type
+ * @property string $upload_id
+ * @property string $manager_id
+ * @property integer $upload_type
+ * @property string $path
+ * @property string $size
+ * @property string $up_time
+ * @property string $add_time
+ * @property integer $status
+ */
+class Upload extends ActiveRecord
+{
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return '{{upload}}';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+			array('upload_id, manager_id', 'required'),
+			array('type, upload_type, status', 'numerical', 'integerOnly'=>true),
+			array('upload_id, manager_id, size', 'length', 'max'=>20),
+			array('path', 'length', 'max'=>128),
+			array('up_time, add_time', 'length', 'max'=>10),
+			// The following rule is used by search().
+			// @todo Please remove those attributes that should not be searched.
+			array('id, type, upload_id, manager_id, upload_type, path, size, up_time, add_time, status', 'safe', 'on'=>'search'),
+		);
+	}
+
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+		);
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'id' => 'ID',
+			'type' => '类型',
+			'upload_id' => '归属ID',
+			'manager_id' => '操作归属',
+			'upload_type' => '上传类型',
+			'path' => '路径',
+			'size' => '推荐理由',
+			'up_time' => '更新时间',
+			'add_time' => '创建时间',
+			'status' => '状态',
+		);
+	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 *
+	 * Typical usecase:
+	 * - Initialize the model fields with values from filter form.
+	 * - Execute this method to get CActiveDataProvider instance which will filter
+	 * models according to data in model fields.
+	 * - Pass data provider to CGridView, CListView or any similar widget.
+	 *
+	 * @return CActiveDataProvider the data provider that can return the models
+	 * based on the search/filter conditions.
+	 */
+	public function search()
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria = new CDbCriteria;
+
+		$criteria->compare('id', $this->id,true);
+		$criteria->compare('type', $this->type);
+		$criteria->compare('upload_id', $this->upload_id,true);
+		$criteria->compare('manager_id', $this->manager_id,true);
+		$criteria->compare('upload_type', $this->upload_type);
+		$criteria->compare('path', $this->path,true);
+		$criteria->compare('size', $this->size,true);
+		$this->timeSearch('up_time', $criteria);
+		$this->timeSearch('add_time', $criteria);
+		if ($this->status != self::_STATUS_DELETED)
+			$criteria->compare('status', '<>' . self::_STATUS_DELETED);
+		$criteria->compare('status', $this->status);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>10,
+			),
+			'sort'=>array(
+				'defaultOrder'=>'t.id desc',
+				/*
+				'attributes'=>array(
+					'id'=>array(
+						'desc'=>'id desc',
+					),
+				),
+				*/
+			),
+		));
+	}
+
+	/**
+	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param string $className active record class name.
+	 * @return Upload the static model class
+	 */
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+	
+	/**
+	 * 保存之前的操作
+	 * (non-PHPdoc)
+	 * @see CActiveRecord::beforeSave()
+	 */
+	public function beforeSave()
+	{
+		if (parent::beforeSave())
+		{
+			if ($this->getIsNewRecord())
+				$this->up_time = $this->add_time = time();
+			return true;
+		}
+		return false;
+	}
+}

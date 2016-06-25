@@ -1,0 +1,41 @@
+<?php
+/* @var $this SelectController */
+/* @var $model Select */
+
+$this->breadcrumbs = array(
+	'管理页'=>array('admin'),
+	$model->id,
+);
+?>
+
+<h1>查看 Select <font color='#eb6100'><?php echo CHtml::encode($model->id); ?></font></h1>
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		array(
+				'name'=>'id',
+		),
+		array(
+				'name'=>'ad_id',
+		),
+		array(
+				'name'=>'ad_type',
+				'value'=>$model::$_ad_type[$model->ad_type],
+		),
+		array(
+				'name'=>'store_id',
+		),
+		array(
+				'name'=>'pad_id',
+		),
+		array(
+				'name'=>'manager_id',
+		),
+		array(
+				'name'=>'add_time',
+				'type'=>'datetime',
+		),
+	),
+)); 
+?>

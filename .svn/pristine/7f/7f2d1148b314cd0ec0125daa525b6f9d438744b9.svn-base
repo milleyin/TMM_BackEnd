@@ -1,0 +1,55 @@
+// 备注：凡是POST请求的，都需要先请求一下GET，拿到CSRF码，请求格式为
+// 模块/方法：
+// api/xx/xxx (同要POST请求的url)
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取CSRF
+
+// 参数 &csrf=csrf
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "csrf": {
+            "TMM_CSRF": "5d2694695c6989098c22879610e3fd007294f67c"
+        }
+    }
+}
+
+// 模块/方法：
+// index.php?r=store/store_account/view
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取我的账务情况
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        // 收入总额
+        "total": "99999.00",
+		"total_format": "99999.00",		
+        // 可提现金额
+        "money": "55555.00",
+		"money_format": "99999.00",	
+        // 已提现金额
+        "cash_count": "3000.00",
+		"cash_count_format": "99999.00",	
+        // 剩余保证金
+        "deposit": "500.00",
+		"deposit_format": "99999.00",	
+    }
+}

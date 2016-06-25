@@ -1,0 +1,88 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/vote-detail.css" rel="stylesheet">
+</block>
+<block name="body">
+    <div class="detail-container">
+        <img src="__IMG__/ns_banner.png" alt="" width="100%" height="100%">
+        <div class="sub-top">
+            <a href="{:U('vote/rewards')}">查看奖品及参赛规则</a>
+        </div>
+        <div class="sub-main">
+            <div class="detail-info">
+                <span class="detail-num">{$racingInfo.id}
+                </span>
+                <span class="detail-name">{$racingInfo.nickname}</span>
+                <div class="detail-desc">
+                    <span class="desc-tip"><span class="flag-red">{$racingInfo.poll}</span>票</span>
+                    <span class="desc-tip">排名<span class="flag-green">{$racingInfo.rankInfo.rank}</span>位</span>
+
+                    <neq name="racingInfo['rankInfo']['rank']" value="1">
+                        <span class="desc-tip">距上一名还差<span class="flag-red">{$racingInfo.rankInfo.difPoll}</span>票</span>
+                    </neq>
+
+                </div>
+            </div>
+            <div class="detail-content">
+                <p class="detail-introduce">{$racingInfo.introduce}</p>
+                <ul class="img-ul">
+                <volist name="racingInfo.imgList" id="vo">
+                    <li class="img-item">
+                        <img class="img-item-img" src="__ROOT__/{$vo.img_url}">
+                    </li>
+                </volist>
+                </ul>
+            </div>
+        <if condition="$racingInfo['isCanVote'] == true ">
+            <div class="btn-wrap">
+                <a href="javascript:;" class="weui_btn tmm_btn_red" id="voteBtn" data-id="{$racingInfo.id}">
+                    为她投票
+                </a>
+                <img src="/Public/Home/images/heart.png" alt="heart">
+            </div>
+        <else/>
+            <div class="detail-row">
+                <a href="javascript:;" class="weui_btn tmm_btn_purple">今天你已经投票，请明天再来</a>
+            </div>
+        </if>
+        <if condition="$racingInfo['isApply'] == false ">
+            <div class="detail-row">
+                <if condition="$isEnd == false ">
+                    <a href="{:U('vote/apply')}" class="weui_btn tmm_btn_green">我也要参加</a>
+                </if>
+            </div>
+        </if>
+
+        <div class="detail-row">
+            <a href="{:U('vote/index')}" class="weui_btn tmm_btn_green">查看更多</a>
+        </div>
+
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function() {
+            var applyFlash = "{$applyFlash}";
+            if (applyFlash == 1) {
+                Utils.showTitleToast('报名成功！', '按左上角分享分享到朋友圈为自己拉票吧');
+            }
+            $('#voteBtn').on('click', function() {
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    type: "POST",
+                    url: "{:U('vote/vote')}",
+                    data: {'id':id},
+                    success: function(data) {
+                        Utils.showToast(data.info);
+                        if (data.status == 1) {
+                            $('.btn-wrap').html('<a href="javascript:;" class="weui_btn tmm_btn_purple">今天你已经投票，请明天再来</a>');
+                        } else if (data.status == 2) {
+                            window.location.href = "{:U('vote/follow')}";
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</block>

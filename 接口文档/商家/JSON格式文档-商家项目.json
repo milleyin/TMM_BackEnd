@@ -1,0 +1,359 @@
+
+// 备注：凡是POST请求的，都需要先请求一下GET，拿到CSRF码，请求格式为
+// 模块/方法：
+// api/xx/xxx (同要POST请求的url)
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取CSRF
+
+// 参数 &csrf=csrf
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "csrf": {
+            "TMM_CSRF": "5d2694695c6989098c22879610e3fd007294f67c"
+        }
+    }
+}
+
+// 模块/方法：
+// index.php?r=store/store_items/index
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取主商家项目信息
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": { // 分页信息
+            "prev": "", // 上一页的链接
+            // 当前页的链接
+            "selected": "http://test.365tmm.net/index.php?r=store/store_items/index",
+            // 下一页的链接
+            "next": "http://test.365tmm.net/index.php?r=store/store_items/index&page=2",
+            "selectedPage": 1, // 当前第几页
+            "count": 4, // 页数
+            "page": "page", // 参数名
+            // 分页基础链接
+            "link": "http://test.365tmm.net/index.php?r=store/store_items/index"
+        },
+        "list_data": [ // 项目列表数据
+            {
+                "value": "17", // 项目id
+                // 项目详情链接
+                "link": "http://test.365tmm.net/index.php?r=store/store_eat/view&id=17",
+                // 项目名称
+                "name": "&lt;div&gt;我的家乡&lt;/div&gt;",
+                // 项目简介
+                "info": "",
+                // 项目缩略图
+                "item_litimg": "http://test.365tmm.net/uploads/items/eat/20150918/831955fc12467258c2.79472345.png",
+                "classliy": { // 项目类别信息
+                    "name": "吃", // 类别名称
+                    "value": "1" // 类别值
+                }
+            },
+            {
+                "value": "3",
+                "link": "http://test.365tmm.net/index.php?r=store/store_eat/view&id=3",
+                "name": "测试下",
+                "info": "",
+                "item_litimg": "http://test.365tmm.net/uploads/items/eat/20150908/591155ee7588ccb6a7.11927693.jpg",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                }
+            },
+            {
+                "value": "4",
+                "link": "http://test.365tmm.net/index.php?r=store/store_eat/view&id=4",
+                "name": "的粉丝粉丝的第三方",
+                "info": "",
+                "item_litimg": "http://test.365tmm.net/uploads/items/eat/20150908/241955ee7ece18f566.86318436.png",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                }
+            },
+            {
+                "value": "9",
+                "link": "http://test.365tmm.net/index.php?r=store/store_eat/view&id=9",
+                "name": "吃 谁不会啊 %%",
+                "info": "",
+                "item_litimg": "http://test.365tmm.net/uploads/items/eat/20150909/887455effbee04c349.64436168.jpg",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                }
+            },
+            {
+                "value": "11",
+                "link": "http://test.365tmm.net/index.php?r=store/store_eat/view&id=11",
+                "name": "的粉丝粉丝的第三方",
+                "info": "",
+                "item_litimg": "http://test.365tmm.net/uploads/items/eat/20150914/917855f66b985d7635.94525689.jpg",
+                "classliy": {
+                    "name": "吃",
+                    "value": "1"
+                }
+            }
+        ]
+    }
+}
+
+// 模块/方法：
+// index.php?r=store/store_eat/view
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取商家项目(吃)的详情
+
+// 参数
+&id=4
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "name": "的粉丝粉丝的第三方", // 项目名称
+        "info": "", // 项目简介
+        "phone": "13632677944", // 联系电话
+        "weixin": "5416543232616516", // 微信
+        "down": "1", // 下单量
+        "start_work": "00:00:00", // 工作开始时间
+        "end_work": "23:59:59", // 工作结束时间
+        "fare": [  // 价格信息
+            {
+                "name": "说说的风格", // 价格名称
+                "info": "大人", // 价格信息
+                "price": "1000.00" // 价格
+            }
+        ],
+        "tags": [ // 标签
+            "我啊", // 标签名称
+            "你说"
+        ],
+        // 项目详细内容
+        "content": "<p>\r\n\t<img alt=\"\" src=\"/tmm/uploads/editor/eat/images/83bOOOPIC72.jpg\" style=\"width: 650px; height: 650px;\" /></p>\r\n",
+        // 地图
+        "map": "http://test.365tmm.net/uploads/items/map/20150908/710255ee80c040f452.49362082.jpg",
+        // 缩略图
+        "img": "http://test.365tmm.net/uploads/items/eat/20150908/241955ee7ece18f566.86318436.png",
+        "img_list": [ // 项目图片列表
+            {
+                // 大图
+                "img": "http://test.365tmm.net/uploads/items/eat/20150908/241955ee7ece18f566.86318436.png",
+                // 小图 
+                "litimg": "",
+                // 图的标题
+                "title": "",
+                // 图的alt
+                "alt": "",
+                // 图的高
+                "height": "",
+                // 图的宽
+                "with": ""
+            },
+            {
+                "img": "http://test.365tmm.net/uploads/items/eat/20150908/231455ee7ef0e0c029.04907754.jpg",
+                "litimg": "",
+                "title": "",
+                "alt": "",
+                "height": "",
+                "with": ""
+            }
+        ],
+        "item_type": { // 项目类型信息
+            "value": 1, // 项目类型值
+            "name": "吃" // 项目类型名称
+        },
+        // 地址
+        "address": "上海上海市静安区是德国的帅哥的帅哥都是",
+        // 商家名称
+        "store_name": "我想想",
+        // 添加时间
+        "add_time": "2015/09/08 14:31:28",
+        // 审核状态值
+        "audit_type": 1,
+        // 审核状态名称值
+        "audit_name": "已通过"
+    }
+}
+
+/ 模块/方法：
+// index.php?r=store/store_hotel/view
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取商家项目(住)的详情
+
+// 参数
+&id=8
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "name": "松德股份多少",
+        "info": "",
+        "phone": "13632677944",
+        "weixin": "ASDGJOIGEGGSDG",
+        "down": "1",
+        "start_work": "00:00:00",
+        "end_work": "23:59:59",
+        "fare": [ // 价格信息
+            {
+                "name": "叔叔婶婶",  // 价格名称
+                "info": "2",  // 房间平方数
+                "number": "2",  // 入住人数
+                "price": "1000.00"  // 价格
+            }
+        ],
+        "tags": [
+            "我啊",
+            "是滴",
+            "不是",
+            "你说"
+        ],
+         "wifis": [ // 项目服务
+            {
+                "name": "WiFi", // 服务名称
+                // 服务图标
+                "icon": "http://test.365tmm.net/uploads/items/hotel/wifi/20150914/613955f6b15dd6a443.26504223.jpg"
+            }
+        ],
+        "content": "<p>\r\n\tsdgdsagdasgdasdsa sagsadgsad&nbsp;</p>\r\n",
+        "map": "http://test.365tmm.net/uploads/items/map/20150909/243855efeecf9f3f51.87081788.png",
+        "img": "http://test.365tmm.net/uploads/items/hotel/20150909/194455efeec5bcaa10.02012640.jpg",
+        "img_list": [
+            {
+                "img": "http://test.365tmm.net/uploads/items/hotel/20150909/194455efeec5bcaa10.02012640.jpg",
+                "litimg": "",
+                "title": "",
+                "alt": "",
+                "height": "",
+                "with": ""
+            },
+            {
+                "img": "http://test.365tmm.net/uploads/items/hotel/20150909/327055efeec87f2882.70282994.png",
+                "litimg": "",
+                "title": "",
+                "alt": "",
+                "height": "",
+                "with": ""
+            }
+        ],
+        "item_type": {
+            "value": 2,
+            "name": "住"
+        },
+        "address": "天津天津市河东区的四个屌丝歌神的歌声多个",
+        "store_name": "我想想",
+        "add_time": "2015/09/09 16:33:19",
+        "audit_type": 1,
+        "audit_name": "已通过"
+    }
+}
+
+// 模块/方法：
+// index.php?r=store/store_play/view
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取商家项目(玩)的详情
+
+// 参数
+&id=4
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "name": "的粉丝粉丝的第三方", // 项目名称
+        "info": "", // 项目简介
+        "phone": "13632677944", // 联系电话
+        "weixin": "5416543232616516", // 微信
+        "down": "1", // 下单量
+        "start_work": "00:00:00", // 工作开始时间
+        "end_work": "23:59:59", // 工作结束时间
+        "fare": [  // 价格信息
+            {
+                "name": "说说的风格", // 价格名称
+                "info": "大人", // 价格信息
+                "price": "1000.00" // 价格
+            }
+        ],
+        "tags": [ // 标签
+            "我啊", // 标签名称
+            "你说"
+        ],
+        // 项目详细内容
+        "content": "<p>\r\n\t<img alt=\"\" src=\"/tmm/uploads/editor/eat/images/83bOOOPIC72.jpg\" style=\"width: 650px; height: 650px;\" /></p>\r\n",
+        // 地图
+        "map": "http://test.365tmm.net/uploads/items/map/20150908/710255ee80c040f452.49362082.jpg",
+        // 缩略图
+        "img": "http://test.365tmm.net/uploads/items/eat/20150908/241955ee7ece18f566.86318436.png",
+        "img_list": [ // 项目图片列表
+            {
+                // 大图
+                "img": "http://test.365tmm.net/uploads/items/eat/20150908/241955ee7ece18f566.86318436.png",
+                // 小图 
+                "litimg": "",
+                // 图的标题
+                "title": "",
+                // 图的alt
+                "alt": "",
+                // 图的高
+                "height": "",
+                // 图的宽
+                "with": ""
+            },
+            {
+                "img": "http://test.365tmm.net/uploads/items/eat/20150908/231455ee7ef0e0c029.04907754.jpg",
+                "litimg": "",
+                "title": "",
+                "alt": "",
+                "height": "",
+                "with": ""
+            }
+        ],
+        "item_type": { // 项目类型信息
+            "value": 3, // 项目类型值
+            "name": "玩" // 项目类型名称
+        },
+        // 地址
+        "address": "上海上海市静安区是德国的帅哥的帅哥都是",
+        // 商家名称
+        "store_name": "我想想",
+        // 添加时间
+        "add_time": "2015/09/08 14:31:28",
+        // 审核状态值
+        "audit_type": 1,
+        // 审核状态名称值
+        "audit_name": "已通过"
+    }
+}

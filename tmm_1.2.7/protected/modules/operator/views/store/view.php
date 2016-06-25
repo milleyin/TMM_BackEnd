@@ -1,0 +1,121 @@
+<?php
+/* @var $this StoreController */
+/* @var $model StoreContent */
+
+$this->breadcrumbs = array(
+	'供应商管理页'=>array('admin'),
+	$model->name .'[' . $model->Content_Store->phone . ']',
+);
+?>
+
+<h1>查看 供应商 <font color='#eb6100'><?php echo CHtml::encode($model->name.'[' . $model->Content_Store->phone . ']') ?></font></h1>
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		array(
+				'name'=>'id',
+		),
+		array(
+				'name'=>'Content_Store.phone',
+		),
+		array(
+				'name'=>'name',
+		),
+		array(
+				'label'=>'上线项目统计',
+				'value'=>$model->Content_Store->Store_Items_Count,
+		),
+		array(
+				'name'=>'Play_Items.area_id_p',
+				'value'=>$model->Content_area_id_p_Area_id->name,
+		),
+		array(
+				'name'=>'Play_Items.area_id_m',
+				'value'=>$model->Content_area_id_m_Area_id->name,
+		),
+		array(
+				'name'=>'Play_Items.area_id_c',
+				'value'=>$model->Content_area_id_c_Area_id->name,
+		),
+		array(
+				'name'=>'address',
+		),
+		array(
+				'name'=>'store_tel',
+		),
+		array(
+				'name'=>'store_postcode',
+		),
+		array(
+				'name'=>'lx_contacts',
+		),
+		array(
+				'name'=>'lx_identity_code',
+		),
+		array(
+				'name'=>'lx_phone',
+		),
+		array(
+				'name'=>'identity_before',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->identity_before),
+		),
+		array(
+				'name'=>'identity_after',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->identity_after),
+		),
+		array(
+				'name'=>'identity_hand',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->identity_hand),
+		),
+		array(
+				'name'=>'com_contacts',
+		),
+		array(
+				'name'=>'com_phone',
+		),
+		array(
+				'name'=>'com_identity',
+		),
+		array(
+				'name'=>'bl_code',
+		),
+		array(
+				'name'=>'bl_img',
+				'type'=>'raw',
+				'value'=>$this->show_img($model->bl_img),
+		),
+		array(
+				'name'=>'Content_Store.last_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'Content_Store.last_ip',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'Content_Store.login_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'Content_Store.login_ip',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'Content_Store.up_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'Content_Store.add_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'Content_Store.status',
+				'value'=>StoreUser::$_status[$model->Content_Store->status]
+		),
+	),
+)); 
+?>

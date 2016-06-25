@@ -1,0 +1,392 @@
+//旅游活动创建
+// 模块/方法：
+// index.php?r=api/actives/create
+
+// 传值方式：
+// POST
+
+{
+    "actives_thrand": 34,							//线路ID 点为0
+    "is_insurance": 1,								//保险1=确认0=取消
+	"shops_info":'',								//活动对应点的信息====多点
+    "Actives": {									//活动信息
+        "actives_type": 0,							//0=旅游活动1=农产品活动
+        "tour_type": 0,								//-1=农产品活动,0=多个点,1=一条线
+        "number": 20,								//活动数量
+        "price": 0.00,								//活动单价(农产品传值)
+        "tour_price": 10,							//服务费
+        "remark": "创建线2",							//旅游活动备注
+        "start_time": "2015-11-04",					//报名开始时间
+        "end_time": "2015-11-06",					//报名截止时间
+		"go_time": "2015-11-06",					//出游时间     没填传 空值
+		"is_organizer" : 1,							//是否组织者 1=是 0=不是        	update time : 2016-01-28 
+		"is_open" : 1,								//是否开放显示 1=开放 0=不开放  	update time : 2016-02-18
+		"pay_type": 0 								//付款方式 0=AA付款 1=全额付款	update time : 2016-02-18
+    },
+    "Shops": {
+        "name": "创建线222"							//商品名称
+    },
+    "Pro": {										//选中项目  线路ID不为0时，可传空
+        "1": [										//天数  例：1=第一天上午，2=第一天下午，3=第二天上午......
+				{									//商品在排序
+					"39": 							//商品的ID
+						[							//项目的排序
+							58, 					//项目的ID
+							57
+						]
+				}, {								//商品在排序
+					"33":							//商品的ID
+						[							//项目的排序
+							58						//项目的ID
+						]	
+				}
+		],
+        "2": [
+				{
+					"27": 
+						[
+							42
+						]
+				}, {
+					"26": 
+						[
+							43
+						]
+				}
+		],
+        "4": [
+				{
+					"26": 
+						[
+							43
+						]
+				}
+		]
+    },
+    "ProFare": {								//选中项目对应价格  线路ID不为0时，可传空
+        "1": [									//天数  例：1=第一天上午，2=第一天下午，3=第二天上午......
+				{								//商品在排序
+					"39": [						//商品的ID
+							{					//项目的排序
+								"58": 			//项目的ID
+									[			//价格的排序
+										64		//价格的ID 
+									]
+							}, 
+							{					//项目的排序
+								"57": 			//项目的ID
+									[			//价格的排序
+										63		//价格的ID 
+									]
+							}
+					]
+				}, {							//商品在排序
+					"33": [						//商品的ID
+							{					//项目的排序
+								"58": 			//项目的ID
+									[			//价格的排序
+										64		//价格的ID
+									]
+							}
+					]
+				}
+		],
+        "2": [{
+            "27": [{
+                "42": [44]
+            }]
+        }, {
+            "26": [{
+                "43": [45]
+            }]
+        }],
+        "4": [{
+            "26": [{
+                "43": [45]
+            }]
+        }]
+    }
+}
+
+//旅游活动更新（编辑）
+// 模块/方法：
+// index.php?r=api/actives/update&id=48				//48=活动ID
+
+// 传值方式：
+// POST
+
+//传的值数据和创建 一样
+
+
+
+//旅游活动查看 
+// 模块/方法：
+// index.php?r=api/actives/view&id=48				//48=活动ID
+
+// 20151104143656
+// http://172.16.1.158/tm/index.php?r=api/actives/view&id=58  
+
+{
+  "status": 1,
+  "code": 0,
+  "msg": "正确",
+  "data": {
+    "name": "创建线222",
+    "c_id": "3",
+    "list_info": "333333333333",
+    "page_info": "444444444",
+    "brow": "1",
+    "share": "1",
+    "praise": "1",
+    "tags": [
+      "开心",
+      "广东省内",
+      "放松",
+      "亲子",
+      "人文",
+      "开心",
+      "广东省内",
+      "放松",
+      "亲子",
+      "人文",
+      "开心",
+      "广东省内",
+      "放松",
+      "亲子",
+      "人文"
+    ],
+    "list_img": "http://test.365tmm.net/uploads/shops/actives/20151104/litimg_app/22865639a3dc8f1291.87056317.jpg",
+    "page_img": "http://test.365tmm.net/uploads/shops/actives/20151104/litimg_app/4525639a3dc8f6a31.06171112.jpg",
+    "c_name": "活动",
+    "actives": {
+      "name": "活动(旅游)",
+      "value": "0"
+    },
+    "actives_info": {
+      "organizer": {
+        "phone": "13144828679"
+      },
+      "remark": "更新线2",
+      "number": {
+        "name": "活动人数",
+        "value": "10"
+      },
+      "order_number": {
+        "name": "剩余报名人数",
+        "value": "0"
+      },
+      "tour_price": {
+        "name": "服务费/人",
+        "value": "40.00"
+      },
+      "tour_count": {
+        "name": "报名统计",
+        "value": "0"
+      },
+      "order_count": {
+        "name": "付款统计",
+        "value": "0"
+      }
+    },
+    "actives_time": {
+      "start_time": "2015-11-03",
+      "end_time": "2015-11-07",
+      "go_time": "出游日期未定"
+    },
+    "actives_status": {
+      "name": "进行中",
+      "value": "1"
+    },
+    "order_actives": {
+      "name": "未报名",
+      "value": -1,
+      "link": ""
+    },
+    "add_time": "2015/11/04 14:13:12",
+    "audit_type": 1,
+    "audit_name": "已通过",
+    "link_collect": "http://localhost/tm/index.php?r=api/shops/collect&id=58",
+    "actives_id": "58",
+    "collent_status": 0,
+    "collent_name": "取消",
+    "is_sale": {
+      "name": "可卖",
+      "value": "1"
+    },
+    "list": [
+      {
+        "day": "第一天上午",
+        "day_content": "55555555555555555555",
+        "dot_list": [
+          {
+            "day_dot_list_img": "",
+            "day_dot_id": 39,
+            "day_dot_link": "http://localhost/tm/index.php?r=api/dot/view&id=39",
+            "day_dot_name": "化州游",
+            "day_item": [
+              {
+                "sort": 1,
+                "item_name": "泥沟村",
+                "item_link": "http://localhost/tm/index.php?r=api/play/view&id=58",
+                "item_img": "http://test.365tmm.net/uploads/items/play/20151009/7305617674ef3dfd5.31620159.png",
+                "item_type": {
+                  "value": 3,
+                  "name": "玩"
+                },
+                "store_name": "田觅觅达哥专用",
+                "shop_fare": [
+                  {
+                    "name": "特价门票 ",
+                    "info": "成人 ",
+                    "price": "1.98 元"
+                  }
+                ],
+                "address": "广东省深圳市辖区测试"
+              },
+              {
+                "sort": 2,
+                "item_name": "广宁竹海",
+                "item_link": "http://localhost/tm/index.php?r=api/play/view&id=57",
+                "item_img": "http://test.365tmm.net/uploads/items/tmp/play/20150930/8296560ba44a2553e7.03434368.jpg",
+                "item_type": {
+                  "value": 3,
+                  "name": "玩"
+                },
+                "store_name": "田觅觅",
+                "shop_fare": [
+                  {
+                    "name": "特价门票 ",
+                    "info": "儿童 ",
+                    "price": "1.69 元"
+                  }
+                ],
+                "address": "广东省肇庆广宁县四连线往怀集方向2公里"
+              }
+            ]
+          },
+          {
+            "day_dot_list_img": "",
+            "day_dot_id": 33,
+            "day_dot_link": "http://localhost/tm/index.php?r=api/dot/view&id=33",
+            "day_dot_name": "泥沟村(测)",
+            "day_item": [
+              {
+                "sort": 1,
+                "item_name": "泥沟村",
+                "item_link": "http://localhost/tm/index.php?r=api/play/view&id=58",
+                "item_img": "http://test.365tmm.net/uploads/items/play/20151009/7305617674ef3dfd5.31620159.png",
+                "item_type": {
+                  "value": 3,
+                  "name": "玩"
+                },
+                "store_name": "田觅觅达哥专用",
+                "shop_fare": [
+                  {
+                    "name": "特价门票 ",
+                    "info": "成人 ",
+                    "price": "1.98 元"
+                  }
+                ],
+                "address": "广东省深圳市辖区测试"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "day": "第一天下午",
+        "day_content": "7777777777777777",
+        "dot_list": [
+          {
+            "day_dot_list_img": "",
+            "day_dot_id": 27,
+            "day_dot_link": "http://localhost/tm/index.php?r=api/dot/view&id=27",
+            "day_dot_name": "结庐在人境",
+            "day_item": [
+              {
+                "sort": 1,
+                "item_name": "黄埔古村",
+                "item_link": "http://localhost/tm/index.php?r=api/play/view&id=42",
+                "item_img": "http://test.365tmm.net/uploads/items/play/20150929/8796560a60876a5ec2.39204039.jpg",
+                "item_type": {
+                  "value": 3,
+                  "name": "玩"
+                },
+                "store_name": "田觅觅广州供应商",
+                "shop_fare": [
+                  {
+                    "name": "特价门票 ",
+                    "info": "成人 ",
+                    "price": "12.66 元"
+                  }
+                ],
+                "address": "广东省广州海珠区新港东路黄埔村"
+              }
+            ]
+          },
+          {
+            "day_dot_list_img": "",
+            "day_dot_id": 26,
+            "day_dot_link": "http://localhost/tm/index.php?r=api/dot/view&id=26",
+            "day_dot_name": "浪漫百年古镇",
+            "day_item": [
+              {
+                "sort": 1,
+                "item_name": "塱头村",
+                "item_link": "http://localhost/tm/index.php?r=api/play/view&id=43",
+                "item_img": "http://test.365tmm.net/uploads/items/play/20150929/2611560a6184d138d2.97364952.png",
+                "item_type": {
+                  "value": 3,
+                  "name": "玩"
+                },
+                "store_name": "田觅觅广州供应商",
+                "shop_fare": [
+                  {
+                    "name": "特价门票 ",
+                    "info": "儿童 ",
+                    "price": "12.77 元"
+                  }
+                ],
+                "address": "广东省广州花都区炭步镇塱头村"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "day": "第二天下午",
+        "day_content": "66666666666",
+        "dot_list": [
+          {
+            "day_dot_list_img": "",
+            "day_dot_id": 26,
+            "day_dot_link": "http://localhost/tm/index.php?r=api/dot/view&id=26",
+            "day_dot_name": "浪漫百年古镇",
+            "day_item": [
+              {
+                "sort": 1,
+                "item_name": "塱头村",
+                "item_link": "http://localhost/tm/index.php?r=api/play/view&id=43",
+                "item_img": "http://test.365tmm.net/uploads/items/play/20150929/2611560a6184d138d2.97364952.png",
+                "item_type": {
+                  "value": 3,
+                  "name": "玩"
+                },
+                "store_name": "田觅觅广州供应商",
+                "shop_fare": [
+                  {
+                    "name": "特价门票 ",
+                    "info": "儿童 ",
+                    "price": "12.77 元"
+                  }
+                ],
+                "address": "广东省广州花都区炭步镇塱头村"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "list_num": 3
+  }
+}

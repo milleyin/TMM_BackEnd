@@ -1,0 +1,30 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">天美荔枝文化节</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav" id="nav">
+                <eq name="Think.ACTION_NAME" value="index">
+                    <li class="active"><a href="{:U('Back/ticket')}" >游园门票验证</a></li>
+                <else />
+                    <li <eq name="Think.ACTION_NAME" value="ticket">class="active"<else/></eq> ><a href="{:U('Back/ticket')}" >游园门票验证</a></li>
+                </eq>
+                <li <eq name="Think.ACTION_NAME" value="card">class="active"<else/></eq> ><a href="{:U('Back/card')}">卡券验证</a></li>
+                <li <eq name="Think.ACTION_NAME" value="logistics">class="active"<else/></eq> ><a href="{:U('Back/logistics')}">荔枝邮寄</a></li>
+                <li <eq name="Think.ACTION_NAME" value="ticketorderlist">class="active"<else/></eq> ><a href="{:U('Back/ticketOrderList')}">门票统计</a></li>
+                <li <eq name="Think.ACTION_NAME" value="cardorderlist">class="active"<else/></eq> ><a href="{:U('Back/cardOrderList')}">提货券统计</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="javascript:;">{$loginName}</a></li>
+                <li><a href="{:U('Login/logout')}">退 出</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>

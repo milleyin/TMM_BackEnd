@@ -1,0 +1,258 @@
+body, div, ol, ul, h1, h2, h3, h4, h5, h6, p, th, td, dl, dd, form, iframe, input, textarea, select, label, article, aside, footer, header, menu, nav, section, time, audio, video {margin: 0;padding: 0; }
+article, aside, footer, header, hgroup, nav, section, audio, canvas, video, img {display: block; }
+body, button, input, select, textarea {font-size: 14px;font-family: arial,\5b8b\4f53,Microsoft YaHei; }
+body{margin: 0 auto;min-width: 320px;max-width: 640px;height: 100%;background-color: #000000;}
+iframe, img {border: 0; }
+textarea {resize: none; }
+em, i {font-style: normal; }
+ul, ol, li {list-style: none; }
+button, input, select, textarea {font-size: 100%; }
+a, a:visited {text-decoration: none; }
+table {border-collapse: collapse;border-spacing: 0; }
+img {-ms-interpolation-mode: bicubic; }
+
+.clearfix:after {
+    content: " ";
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+/* 投票首页 */
+.index-container {
+    position: relative;
+    background-color: #000000;
+}
+.tmm-search-from {
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 90%;
+    position: absolute;
+    top: 10px;
+    color: #FFFFFF;
+}
+.tmm_search_outer {
+    background-color: #000000;
+    opacity: 0.7;
+}
+.tmm_search_inner {
+    background-color: #000000;
+}
+.tmm_search_input {
+    color: #FFFFFF;
+}
+.index-main {
+    height: auto;
+    background: #FFDED4 url("../images/ripple.jpg") no-repeat bottom;
+    -webkit-background-size: 100% auto;
+    background-size: 100% auto;
+}
+.sub-top .sub-left, .sub-top .sub-right {
+    width: 50%;
+    float: left;
+    text-align: center;
+}
+.sub-top .sub-left {
+    position: relative;
+}
+.sub-top .sub-left:after {
+    content: '';
+    position: absolute;
+    left: auto;
+    bottom: 0;
+    right: 0;
+    top: 25px;
+    height: 60%;
+    width: 1px;
+    background-color: #EF4F4F;
+    display: block;
+    z-index: 15;
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
+}
+.sub-top span.num, .sub-top span.desc {
+    display: inline-block;
+    width: 100%;
+    color: #8A605F;
+}
+.sub-top span.num {
+    padding-top: 13px;
+    font-size: 24px;
+    font-weight: 900;
+}
+.sub-top span.desc {
+    font-size: 14px;
+}
+.sub-bottom {
+    padding-top: 36px;
+}
+.sub-bottom .index-btn {
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 14px;
+    padding-right: 14px;
+    width: 55%;
+    box-sizing: border-box;
+    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+    color: #FFFFFF;
+    line-height: 2.33333333;
+    border-radius: 5px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    overflow: hidden;
+    background-color: #FF1823;
+}
+.sub-bottom .disable-btn {
+    background-color: #777;
+}
+.sub-bottom .sub-bottom-desc {
+    display: inline-block;
+    padding: 23px 0;
+    width: 100%;
+    text-align: center;
+    color: #ff3e67;
+}
+.sub-bottom-desc a{
+    color: #ff3e67;
+}
+.index-bottom .tab-ul {
+    padding-top: 25px;
+    padding-bottom: 0;
+    border-bottom: 1px solid #ffe6da;
+}
+.index-bottom .tab-ul li{
+    float: left;
+    padding-bottom: 13px;
+    width: 50%;
+    text-align: center;
+}
+.index-bottom .tab-ul li.active {
+    border-bottom: 2px solid #ffe6da;
+}
+.index-bottom .tab-ul li:hover {
+    border-bottom: 2px solid #ffe6da;
+}
+.tab-ul li a {
+    font-size: 15px;
+    color: #ffe6da;
+}
+.img-wrap {
+    padding: 11px 11px;
+}
+.img-wrap .img-ul {
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+.img-ul .img-item-size,
+.img-ul .img-item {
+    margin: 0;
+    padding: 0;
+    float: left;
+    width: 50%;
+    height: auto;
+    background-color: #000000;
+}
+.item-box {
+    margin: 5px 5px;
+    padding: 5px;
+    height: 305px;
+    border: 1px solid #D4D4D4;
+    border-radius: 5px;
+    background-color: #f8f7f7;
+}
+.item-box .racing-img{
+    width: 100%;
+    height: 208px;
+    background-color: #D8D8D8;
+}
+.item-title {
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+.racing-No {
+    font-size: 15px;
+    font-weight: 600;
+}
+.racing-name {
+    font-size: 14px;
+}
+.item-poll {
+    text-align: right;
+    padding-bottom: 5px;
+}
+.racing-poll {
+    padding-right: 5px;
+    font-size: 15px;
+    font-weight: 800;
+    color: #ff213d;
+}
+.apply-btn {
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 14px;
+    padding-right: 14px;
+    width: 100%;
+    height: 27px;
+    box-sizing: border-box;
+    font-size: 13px;
+    text-align: center;
+    text-decoration: none;
+    color: #FFFFFF;
+    line-height: 2.33333333;
+    border-radius: 3px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    overflow: hidden;
+    background: #FF1823;
+}
+.btn-wrap {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+.btn-wrap img{
+    position: absolute;
+    top: -10px;
+    left: -2px;
+    width: 22px;
+    height: 23px;
+    background: none;
+}
+@media (min-width: 320px) and (max-width: 374px) {
+    .item-box {
+        height: 265px;
+    }
+    .item-box .racing-img {
+        height: 168px;
+    }
+}
+
+.loading-wrap {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    margin-left: -55px;
+    color: #FFFFFF;
+    text-align: center;
+    z-index: 100;
+    display: none;
+}
+
+
+/* 回到顶部 */
+
+.go-top {
+    position: fixed;
+    width: 65.5px;
+    height: 27.5px;
+    background: url('../images/top.png') no-repeat;
+    background-size: 65.5px 27.5px;
+    bottom: 80px;
+    right: 0;
+    cursor: pointer;
+}

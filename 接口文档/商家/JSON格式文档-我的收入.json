@@ -1,0 +1,212 @@
+// 备注：凡是POST请求的，都需要先请求一下GET，拿到CSRF码，请求格式为
+// 模块/方法：
+// api/xx/xxx (同要POST请求的url)
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取CSRF
+
+// 参数 &csrf=csrf
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "csrf": {
+            "TMM_CSRF": "5d2694695c6989098c22879610e3fd007294f67c"
+        }
+    }
+}
+
+// 模块/方法：
+// index.php?r=store/store_bills/index
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取商家近七天收入（包括子帐号）
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "main": {  // 主帐号信息
+            "info": {
+                "value": "4", // 主帐号id
+                "phone": "15814421487", // 主帐号
+                "total_money": "420.00" // 总收入
+            },
+            "main_list_data": [ // 近七天收入数据
+                {
+                    "add_time": "2015-09-22", // 日期
+                    "day_money": "60.00" // 营业额
+                },
+                {
+                    "add_time": "2015-09-23",
+                    "day_money": "60.00"
+                },
+                {
+                    "add_time": "2015-09-24",
+                    "day_money": "60.00"
+                },
+                {
+                    "add_time": "2015-09-25",
+                    "day_money": "60.00"
+                },
+                {
+                    "add_time": "2015-09-26",
+                    "day_money": "60.00"
+                },
+                {
+                    "add_time": "2015-09-27",
+                    "day_money": "60.00"
+                },
+                {
+                    "add_time": "2015-09-28",
+                    "day_money": "60.00"
+                }
+            ]
+        },
+        "son": [ // 子帐号数据
+            {
+                "info": { // 子帐号信息
+                    "value": "7", // 子帐号id
+                    "phone": "13392851103", // 子帐号
+                    "total_money": "420.00" // 总收入
+                },
+                "son_list_data": [ // 子帐号近七天收入
+                    {
+                        "add_time": "2015-09-22", // 日期
+                        "day_money": "60.00" // 营业额
+                    },
+                    {
+                        "add_time": "2015-09-23",
+                        "day_money": "60.00"
+                    },
+                    {
+                        "add_time": "2015-09-24",
+                        "day_money": "60.00"
+                    },
+                    {
+                        "add_time": "2015-09-25",
+                        "day_money": "60.00"
+                    },
+                    {
+                        "add_time": "2015-09-26",
+                        "day_money": "60.00"
+                    },
+                    {
+                        "add_time": "2015-09-27",
+                        "day_money": "60.00"
+                    },
+                    {
+                        "add_time": "2015-09-28",
+                        "day_money": "60.00"
+                    }
+                ]
+            },
+            {
+                "info": {
+                    "value": "8",
+                    "phone": "18127005180",
+                    "total_money": "420.00"
+                },
+                "son_list_data": [
+                    {
+                        "add_time": "2015-09-22",
+                        "day_money": "60.00"
+                    },
+                    {
+                        "add_time": "2015-09-23",
+                        "day_money": "60.00"
+                    },
+                    {
+                        "add_time": "2015-09-24",
+                        "day_money": "60.00"
+                    },
+                    {
+                        "add_time": "2015-09-25",
+                        "day_money": "60.00"
+                    },
+                    {
+                        "add_time": "2015-09-26",
+                        "day_money": "60.00"
+                    },
+                    {
+                        "add_time": "2015-09-27",
+                        "day_money": "60.00"
+                    },
+                    {
+                        "add_time": "2015-09-28",
+                        "day_money": "60.00"
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+
+// 模块/方法：
+// index.php?r=store/store_bills/son_index
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取商家子帐号的近七天收入
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "info": { // 子帐号信息
+            "value": "7", // 子帐号id
+            "phone": "13392851103", // 子帐号
+            "total_money": "420.00" // 总收入
+        },
+        "list_data": [ // 近七天收入的数据
+            {
+                "add_time": "2015-09-22", // 日期
+                "day_money": "60.00" // 营业额
+            },
+            {
+                "add_time": "2015-09-23",
+                "day_money": "60.00"
+            },
+            {
+                "add_time": "2015-09-24",
+                "day_money": "60.00"
+            },
+            {
+                "add_time": "2015-09-25",
+                "day_money": "60.00"
+            },
+            {
+                "add_time": "2015-09-26",
+                "day_money": "60.00"
+            },
+            {
+                "add_time": "2015-09-27",
+                "day_money": "60.00"
+            },
+            {
+                "add_time": "2015-09-28",
+                "day_money": "60.00"
+            }
+        ]
+    }
+}

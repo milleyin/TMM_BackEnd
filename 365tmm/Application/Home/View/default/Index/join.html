@@ -1,0 +1,27 @@
+<extend name="Base/common"/>
+<block name="body">
+    <div class="content con-join">
+        <div class="intro">
+            <p>我们紧跟互联网的发展趋势，我们全力应用大数据的信息技术，我们坚信高素质人才的核心价值。</p>
+            <p>我们在找你，一个拥抱互联网，以激情迎战变化的挑战者！一个喜欢和高智商团队一同工作，不甘平庸的有志青年！一个期待自由开放的文化的新新人类！一个坚韧顽强目标明确的独立人！</p>
+            <p>来吧，让我们“在一起，走更远”</p>
+
+            <div class="email">简历投递邮箱：hr@365tmm.com</div>
+        </div>
+
+        <div class="recruit-tag">
+            <volist name="articleList" id="article">
+                <a href="#recruit{$article.id}">{$article.title}</a>
+            </volist>
+        </div>
+        <div class="recruit-info">
+        <volist name="articleList" id="article">
+            <div class="title">{$article.title}<span id="recruit{$article.id}"></span></div>
+            <div class="info">
+                {$article.content}
+            </div>
+        </volist>
+        </div>
+    </div>
+    <span class="icon-to-top"></span>
+</block>

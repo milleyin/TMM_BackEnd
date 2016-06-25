@@ -1,0 +1,33 @@
+<?php
+
+class m160310_090322_reason extends CDbMigration
+{
+	public function up()
+	{
+		$tableName = Reason::model()->tableName();
+		$this->createTable($tableName, array(
+				'id' =>"INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID'",
+				'admin_id' =>"int(11) unsigned NOT NULL DEFAULT 0 COMMENT '管理员'",
+				'order_type' =>"tinyint(3) NOT NULL DEFAULT 0 COMMENT '订单类型'",
+				'sale_type' =>"tinyint(3) NOT NULL DEFAULT 0 COMMENT '售后类型'",
+				'cargo_type' =>"tinyint(3) NOT NULL DEFAULT 0 COMMENT '货物类型'",
+				'role_type' =>"tinyint(3) NOT NULL DEFAULT 0 COMMENT '角色类型'",
+				'name' =>"varchar(64) DEFAULT '' COMMENT '名称'",
+				'reason' =>"varchar(128) NOT NULL DEFAULT '' COMMENT '原因'",
+				'remark' =>"text NOT NULL COMMENT '备注'",
+				'sort' =>"INT(11) NOT NULL DEFAULT 0 COMMENT '排序'",
+				'add_time' =>"INT(10) UNSIGNED NOT NULL COMMENT '添加时间'",
+				'up_time' =>"INT(10) UNSIGNED NOT NULL COMMENT '更新时间'",
+				'status' =>"TINYINT(3) NOT NULL DEFAULT 1 COMMENT '状态'",
+				'PRIMARY KEY (`id`)',
+		),"ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT='售后原因'");
+		return true;
+	}
+
+	public function down()
+	{
+		$tableName = Reason::model()->tableName();
+		$this->dropTable($tableName);
+		return true;
+	}
+}

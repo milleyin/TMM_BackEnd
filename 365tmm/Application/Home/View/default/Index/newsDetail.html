@@ -1,0 +1,28 @@
+<extend name="Base/common"/>
+<block name="body">
+    <div class="banner">
+        <div class="big-img img8"></div>
+    </div>
+
+    <div class="content con-news">
+        <div class="article">
+            <h2><span class="tag"><span>{$articleInfo.category_name}</span></span>{$articleInfo.title}</h2>
+            <div class="desc"><span class="author">发布者：田觅觅</span><span class="date">{$articleInfo.update_time|date='Y-m-d',###}</span>
+                <!-- JiaThis Button BEGIN -->
+                <div class="jiathis_style_32x32" style="display:inline-block;vertical-align:middle;margin-left: 50px;">
+                    <a class="jiathis_button_qzone"></a>
+                    <a class="jiathis_button_tsina"></a>
+                    <a class="jiathis_button_weixin"></a>
+                    <a class="jiathis_button_cqq"></a>
+                </div>
+                <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+                <!-- JiaThis Button END -->
+            </div>
+
+            <div class="article-content">
+                {$articleInfo.content}
+            </div>
+        </div>
+    </div>
+    <span class="icon-to-top"></span>
+</block>

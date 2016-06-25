@@ -1,0 +1,118 @@
+@CHARSET "UTF-8";
+.items_container {
+    width: 100%;
+}
+.view{
+    width: 90%;
+    position: relative;
+    background:#F2F2F2;
+    left: 50px;
+}
+.view .list_left{
+    float: left;
+    width: 45%;
+    border-right: 2px dashed #c0a16b;
+}
+.view .list_title{
+    height: 30px;
+    line-height: 30px;
+    padding: 5px 5px;
+}
+.view .list_name{
+    font-size: 14px;
+    font-weight: 900;
+}
+.view .list_classliy{
+    margin-left:10px;
+    padding:1px 3px;
+    font-size: 16px;
+    background: black;
+    font-weight: 900;
+    color: white;
+}
+.view .list_address,.view .list_store{
+    font-size: 12px;
+    font-weight: 400;
+    width:auto;
+    line-height: 20px;
+    word-wrap:break-word;
+    padding: 5px 5px;
+}
+.view .list_address span,.view .list_store span{
+    margin-right:10px;
+    font-weight: 600;
+}
+.view .list_store {
+    margin: 0;
+    padding: 0;
+}
+.view .list_store label.label_title   {
+    font-weight: 600;
+    text-align: left;
+    margin: 0;
+    padding-left: 5px;
+    width: 60px;
+}
+.view .list_store span{
+    display: inline-block;
+    padding: 5px 10px 0 0;
+    border-right: 1px solid #000000;
+}
+
+.view .list_fare{
+    background:white;
+    border:1px dotted black;
+    width:380px;
+    padding: 0 5px 10px 5px;
+    margin:15px 0 5px 5px;
+}
+.view .list_fare span{
+    position:relative;
+    top:-10px;
+    font-size: 16px;
+    background-color:white;
+    font-weight: 900;
+    padding:2px 5px;
+}
+.view .list_fare td{
+	 font-size: 12px;
+}
+.view .list_right{
+    float:left;
+    padding: 5px 0 5px 60px;
+    width: 45%;
+}
+.view .list_right h6 {
+    font-size: 14px;
+    color: #555;
+    font-weight: 900;
+    padding: 5px 5px;
+}
+
+.view .list_right textarea {
+    width: 100%;
+    height: auto;
+    min-height: 150px;
+}
+
+.view .list_tool {
+    position: absolute;
+    width: 38px;
+    z-index: 100;
+    top: 0;
+    left: -50px;
+}
+.view .list_tool a {
+    text-decoration: none;
+    border: 1px solid #c0a16b;
+    text-align: center;
+}
+.view .list_tool a:hover {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+.view .list_tool .btn {
+    display: block;
+    padding: 5px 5px;
+    margin: 10px 0;
+}

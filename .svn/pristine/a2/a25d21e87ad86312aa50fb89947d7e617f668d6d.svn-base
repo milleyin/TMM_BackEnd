@@ -1,0 +1,6 @@
+.info_nav_float{min-width:200px;clear: both;}
+.info_nav_float_left{float:left;background-color:#999999;min-width:100px;line-height:30px;text-align:center;}
+.info_nav_float_right{float:left;background-color:#F2F2F2;min-width:100px;line-height:30px;text-align:center;}
+.info_nav_float_clear{clear:both;}
+.info_nav_thrand{background-color:black;min-width:1400px;height:3px;margin-bottom: 10px;}
+.create_descirbe{display:none;}

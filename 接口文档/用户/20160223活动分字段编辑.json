@@ -1,0 +1,300 @@
+/**
+* 2016-02-23
+*/
+
+//旅游活动分字段编辑================================编辑商品名称
+// 模块/方法：
+// index.php?r=api/actives/UpdateShopsName&id=303
+
+// 传值方式：
+// POST   
+
+{
+     "Shops": {
+        "name": "创建线222"							//商品名称
+	},
+	"TMM_CSRF":"dd61bfe20fc69626629d9e03427aff502e574b19"	//csrf码值
+}
+
+// 正常返回 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "status": 1
+    }
+}
+
+// 错误返回 结果
+{
+    "status": 0,
+    "code": 50005,
+    "msg": "数据不合法",
+    "data": []
+}
+
+
+
+//旅游活动分字段编辑================================编辑活动参与人数
+// 模块/方法：
+// index.php?r=api/actives/UpdateNumber&id=303
+
+// 传值方式：
+// POST   
+
+{
+     "Actives": {
+        "number": 20,								//活动数量
+	},
+	"TMM_CSRF":"dd61bfe20fc69626629d9e03427aff502e574b19"	//csrf码值
+}
+
+// 正常返回 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "status": 1
+    }
+}
+
+// 错误返回 结果
+{
+    "status": 0,
+    "code": 50005,
+    "msg": "数据不合法",
+    "data": []
+}
+
+
+//旅游活动分字段编辑================================编辑活动服务费
+// 模块/方法：
+// index.php?r=api/actives/UpdateTourPrice&id=303
+
+// 传值方式：
+// POST   
+
+{
+     "Actives": {
+        "tour_price": 10,							//服务费
+	},
+	"TMM_CSRF":"dd61bfe20fc69626629d9e03427aff502e574b19"	//csrf码值
+}
+
+// 正常返回 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "status": 1
+    }
+}
+
+// 错误返回 结果
+{
+    "status": 0,
+    "code": 50005,
+    "msg": "数据不合法",
+    "data": []
+}
+
+//旅游活动分字段编辑================================编辑活动出游日期
+// 模块/方法：
+// index.php?r=api/actives/UpdateGoTime&id=303
+
+// 传值方式：
+// POST   
+
+{
+     "Actives": {
+        		"go_time": "2015-11-06",					//出游时间
+	},
+	"TMM_CSRF":"dd61bfe20fc69626629d9e03427aff502e574b19"	//csrf码值
+}
+
+// 正常返回 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "status": 1
+    }
+}
+
+// 错误返回 结果
+{
+    "status": 0,
+    "code": 50005,
+    "msg": "数据不合法",
+    "data": []
+}
+
+
+//旅游活动分字段编辑================================编辑活动报名起止日期
+// 模块/方法：
+// index.php?r=api/actives/UpdateStartEndTime&id=303
+
+// 传值方式：
+// POST   
+
+{
+     "Actives": {
+        "start_time": "2015-11-04",					//报名开始时间
+        "end_time": "2015-11-06",					//报名截止时间
+	},
+	"TMM_CSRF":"dd61bfe20fc69626629d9e03427aff502e574b19"	//csrf码值
+}
+
+// 正常返回 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "status": 1
+    }
+}
+
+// 错误返回 结果
+{
+    "status": 0,
+    "code": 50005,
+    "msg": "数据不合法",
+    "data": []
+}
+
+
+//旅游活动分字段编辑================================编辑活动简介
+// 模块/方法：
+// index.php?r=api/actives/UpdateRemark&id=303
+
+// 传值方式：
+// POST   
+
+{
+     "Actives": {
+        "remark": "test",					//活动简介
+	},
+	"TMM_CSRF":"dd61bfe20fc69626629d9e03427aff502e574b19"	//csrf码值
+}
+
+// 正常返回 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "status": 1
+    }
+}
+
+// 错误返回 结果
+{
+    "status": 0,
+    "code": 50005,
+    "msg": "数据不合法",
+    "data": []
+}
+
+
+//旅游活动分字段编辑================================编辑活动付款方式
+// 模块/方法：
+// index.php?r=api/actives/UpdatePayType&id=303
+
+// 传值方式：
+// POST   
+
+{
+     "Actives": {
+       "pay_type": 0 								//付款方式 0=AA付款 1=全额付款
+	},
+	"TMM_CSRF":"dd61bfe20fc69626629d9e03427aff502e574b19"	//csrf码值
+}
+
+// 正常返回 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "status": 1
+    }
+}
+
+// 错误返回 结果
+{
+    "status": 0,
+    "code": 50005,
+    "msg": "数据不合法",
+    "data": []
+}
+
+//旅游活动分字段编辑================================编辑活动公开性
+// 模块/方法：
+// index.php?r=api/actives/UpdateIsOpen&id=303
+
+// 传值方式：
+// POST   
+
+{
+     "Actives": {
+       "is_open" : 1,								//是否开放显示 1=开放 0=不开放
+	},
+	"TMM_CSRF":"dd61bfe20fc69626629d9e03427aff502e574b19"	//csrf码值
+}
+
+// 正常返回 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "status": 1
+    }
+}
+
+// 错误返回 结果
+{
+    "status": 0,
+    "code": 50005,
+    "msg": "数据不合法",
+    "data": []
+}
+
+
+//旅游活动分字段编辑================================编辑 线路
+// 模块/方法：
+// index.php?r=api/actives/UpdateThrand&id=303
+
+// 传值方式：
+// POST   
+
+{
+     "actives_thrand": 162,							//线路ID 
+	"TMM_CSRF":"dd61bfe20fc69626629d9e03427aff502e574b19"	//csrf码值
+}
+
+// 正常返回 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "status": 1
+    }
+}
+
+// 错误返回 结果
+{
+    "status": 0,
+    "code": 50005,
+    "msg": "数据不合法",
+    "data": []
+}
+
+
+

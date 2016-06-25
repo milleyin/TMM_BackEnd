@@ -1,0 +1,24 @@
+<?php
+namespace Common\Controller;
+
+use Think\Controller;
+
+/**
+ * 公共api控制器
+ * Class ApiController
+ * @package Common\Controller
+ *
+ * @author Moore Mo
+ */
+class ApiController extends Controller {
+
+    /**
+     * 获取地区信息
+     * @return mixed
+     */
+    public function getRegion() {
+        $regionModel = M('Region');
+        $id = max(intval(I('get.id')), 0);
+        return $regionModel->where(array('pid' => $id, 'status' => 1))->order('nid')->select();
+    }
+}

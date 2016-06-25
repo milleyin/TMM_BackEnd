@@ -1,0 +1,449 @@
+/*************************************订单状态 相关状态*********************************/
+	/**
+	 * 无效订单 (如报名取消)
+	 * @var unknown
+	 */
+	const status_not=0;
+	/**
+	 * 是否有效
+	 * @var unknown
+	 */
+	const status_yes=1;
+	/**
+	 * 解释字段 centre_status 的含义
+	 * @var array
+	 */
+	public static $_status=array(0=>'无效订单',1=>'有效订单',);
+	
+	/*************************************核心状态 *********************************/
+	/**
+	 * 不可支付 
+	 * @var integer
+	 */
+	const centre_status_not=-1;
+	/**
+	 * 可支付
+	 * @var integer
+	 */
+	const centre_status_yes=0;
+	/**
+	 * 解释字段 centre_status 的含义
+	 * @var array
+	 */
+	public static $_centre_status=array(-1=>'不可支付',0=>'可支付');
+	
+	/*************************************支付状态*********************************/
+	/**
+	 * 支付状态 已取消
+	 * @var unknown
+	 */
+	const pay_status_past=-2;
+	/**
+	 * 支付状态 支付中
+	 * @var unknown
+	 */
+	const pay_status_paying=-1;
+	/**
+	 * 支付状态  未支付
+	 * @var unknown
+	 */
+	const pay_status_not=0;
+	/**
+	 * 支付状态  已支付
+	 * @var unknown
+	 */
+	const pay_status_yes=1;
+	/**
+	 * 解释字段 pay_status 的含义
+	 * @var array
+	 */
+	public static $_pay_status=array(-2=>'已取消',-1=>'支付中',0=>'未支付',1=>'已支付');
+	
+	/************************************订单状态*********************************/
+	/**
+	 * 订单状态  过期 （付完款后 没有扫描消费 订单过期）有时间段
+	 * @var unknown
+	 */
+	const order_status_store_past=-3;
+	/**
+	 * 订单状态  退款 （付完款后的操作 退款成功）
+	 * @var unknown
+	 */
+	const order_status_store_refund=-2;
+	/**
+	 * 订单状态  已取消 取消不付钱 （只有在没有付钱之前的操作）
+	 * @var unknown
+	 */
+	const order_status_store_undo=-1;
+	/**
+	 * 订单状态  待处理 自助游 等待商家同意订单		（自助游的订单默认值）
+	 * @var unknown
+	 */
+	const order_status_store_query=0;
+	/**
+	 * 订单状态  待付款  商家同意接受订单 等待用户付款 （活动的订单默认值）
+	 * @var unknown
+	 */
+	const order_status_store_yes=1; 
+	/**
+	 * 订单状态 已付款 用户已付款 
+	 * @var unknown
+	 */
+	const order_status_user_pay=2;
+	/**
+	 * 订单状态 已消费  用户消费所有项目订单的状态
+	 * @var unknown
+	 */
+	const order_status_user_use=3;	
+	/**
+	 * 解释字段 order_status 的含义
+	 * @var array
+	 */
+	public static $_order_status=array(
+			-3=>'已过期',
+			-2=>'已退款',
+			-1=>'已取消',
+			0=>'待处理',
+			1=>'待付款',
+			2=>'已付款',
+			3=>'已消费'
+	);
+	
+	/********用户 出游状态 *******************************************************/
+	/**
+	 *	取消出游
+	 */
+	const status_go_no=-1;
+	/**
+	 * 出游日期未定 （旅游活动 未给时间 的状态）
+	 * @var unknown
+	 */
+	const status_go_set=0;
+	/**
+	 * 待确认      （旅游活动 给出时间 的状态）
+	 */
+ 	const status_go_query=1;
+ 	/**
+ 	 *	确认出游       (自助游 默认值)
+ 	 */
+ 	const status_go_yes=2;
+ 	/**
+ 	 * 解释字段 pay_type 的含义
+ 	 * @var unknown
+ 	 */
+ 	public static $_status_go=array(-1=>'取消出游',0=>'出游日期待定',1=>'待确认',2=>'确认出游');
+	
+ 	/*************************支付类型 ****************************/
+	/**
+	 * 支付宝
+	 * @var integer
+	 */
+	const pay_type_alipay=1;
+	/**
+	 * 解释字段 pay_type 的含义
+	 * @var unknown
+	 */
+	public static $_pay_type=array(1=>'支付宝');
+	
+	/*************************订单类型 ****************************/
+	/**
+	 * 下单类型 （多个点 )
+	 * @var integer
+	 */
+	const order_type_dot=1;
+	/**
+	 * 下单类型 （一条线 )
+	 * @var integer
+	 */
+	const order_type_thrand=2;
+	/**
+	 * 下单类型 （活动订单 旅游)
+	 * @var integer
+	 */
+	const order_type_group=3;
+	/**
+	 * 下单类型 （活动订单 旅游)
+	 * @var integer
+	 */
+	const order_type_actives_tour=3;
+	/**
+	 * 下单类型 （活动订单 农产品)
+	 * @var integer
+	 */
+	const order_type_actives_farm=4;
+	/**
+	 * 下单类型 （农产品)
+	 * @var integer
+	 */
+	const order_type_farm=5;
+	/**
+	 * 解释字段 order_type 含义
+	 * @var unknown
+	 */
+	public static $_order_type=array(1=>'自助游(点)',2=>'自助游(线)',3=>'活动(旅游)',4=>'活动(农产品)',5=>'农产品');
+/*************************************订单状态 相关状态*********************************/
+	
+	
+/************************************* start 活动状态 相关状态*********************************/
+	/********************************* 活动状态 ****************************/
+	/**
+	 * 活动状态 取消活动
+	 * @var integer
+	 */
+	const actives_status_cancel=-1;
+	/**
+	 * 活动状态 没有开始
+	 * @var integer
+	 */
+	const actives_status_not_start=0;
+	/**
+	 * 活动状态 开始（报名中，进行中）
+	 * @var integer
+	 */
+	const actives_status_start=1;
+	/**
+	 * 活动状态 活动结束
+	 * @var integer
+	 */
+	const actives_status_end=2;
+	/**
+	 * 解释字段 actives_status 的含义
+	 * @var array
+	 */
+	public static $_actives_status=array(-1=>'取消活动',0=>'没有开始',1=>'进行中',2=>'活动结束');
+	
+	/********************************* 活动分类 ****************************/
+	/**
+	 * 活动分类 活动(旅游)
+	 * @var integer
+	 */
+	const actives_type_tour=0;
+	/**
+	 * 活动分类 活动(农产品)
+	 * @var integer
+	 */
+	const actives_type_farm=1;
+	/**
+	 * 解释字段 actives_type 的含义
+	 * @var array
+	 */
+	public static $_actives_type=array('活动(旅游)','活动(农产品)');
+	
+	/********************************* 活动（旅游）类型 ****************************/
+	/**
+	 * 活动（旅游）类型  由多个点创建的
+	 * @var integer
+	*/
+	const tour_type_farm=-1;
+	/**
+	 * 活动（旅游）类型  由多个点创建的
+	 * @var integer
+	 */
+	const tour_type_dot=0;
+	/**
+	 * 活动（旅游）类型  由一条线创建的
+	 * @var integer
+	 */
+	const tour_type_thrand=1;
+	/**
+	 * 解释字段 actives_type 的含义
+	 * @var array
+	 */
+	public static $_tour_type=array(-1=>'农产品活动','多个点','一条线');
+	
+/*************************************end 活动状态 相关状态*********************************/
+
+
+
+/*********************************start 活动分类 ****************************/	
+	
+	/********************************* 活动分类 相关状态****************************/
+	/**
+	 * 活动分类 活动(旅游)
+	 * @var integer
+	 */
+	const actives_type_tour=0;
+	/**
+	 * 活动分类 活动(农产品)
+	 * @var integer
+	 */
+	const actives_type_farm=1;
+	/**
+	 * 解释字段 actives_type 的含义
+	 * @var array
+	 */
+	public static $_actives_type=array('活动(旅游)','活动(农产品)');
+/*********************************end 活动分类 相关状态****************************/	
+
+/*********************************start 商家接单 扫描 相关状态****************************/		
+	/**
+	 *	商家确认状态   订单用户取消了
+	 * @var unknown
+	 */
+	const is_shops_order_not=-4;
+	/**
+	 *	商家确认状态   已接收被其他拒收
+	 * @var unknown
+	 */
+	const is_shops_yes_not=-3;
+	/**
+	 *  商家确认状态   待接收被其他拒收
+	 * @var unknown
+	 */
+	const is_shops_query_not=-2;
+	/**
+	 * 商家确认状态   已拒收
+	 * @var unknown
+	 */
+	const is_shops_store_not=-1;
+	/**
+	 *	商家确认状态   待接收
+	 * @var unknown
+	 */
+	const is_shops_store_query=0;
+	/**
+	 * 商家确认状态   已接收
+	 * @var unknown
+	 */
+	const is_shops_store_yes=1;
+	/**
+	 * 解释字段 is_shops 的含义
+	 * @var array
+	 */
+	public static $_is_shops=array(
+				-4=>'已取消',
+				-3=>'已接收(被其他拒收)',
+				-2=>'待接收(被其他拒收)',
+				-1=>'已拒收',
+				0=>'待接收',
+				1=>'已接收',
+	);
+	/***********************项目消费状态*****************************/
+	
+	/**
+	 *  无效
+	 * @var unknown
+	 */
+	const is_barcode_invalid=-2;
+	/**
+	 * 已过期
+	 * @var unknown
+	 */
+	const is_barcode_past=-1;
+	/**
+	 *  已消费
+	 * @var unknown
+	 */
+	const is_barcode_yes=0;
+	/**
+	 *  未消费 有效
+	 * @var unknown
+	 */
+	const is_barcode_valid=1;	
+	/**
+	 *  解释字段 is_barcode 的含义
+	 * @var unknown
+	 */
+	public static $_is_barcode=array(
+			-2=>'无效',
+			-1=>'已过期',
+			0=>'已消费',
+			1=>'未消费'		
+	);
+	
+/*********************************end 商家接单 扫描 相关状态****************************/	
+
+
+/*********************************start 商品相关状态 ****************************/	
+	/**
+	 * 商家审核未通过
+	 * @var integer
+	 */
+	const audit_store_nopass=-4;
+	/**
+	 * 商家审核中
+	 * @var integer
+	 */
+	const audit_store_pending=-3;
+	/**
+	 * 未提交
+	 * @var integer
+	 */
+	const audit_draft=-2;
+	/**
+	 * 平台审核未通过
+	 * @var integer
+	 */
+	const audit_nopass=-1;
+	/**
+	 * 平台审核中
+	 * @var integer
+	 */
+	const audit_pending=0;
+	/**
+	 *平台审核通过
+	 * @var unknown
+	 */
+	const audit_pass=1;
+	
+	
+	/**
+	 * 上线
+	 * @var integer
+	 */
+	const status_online=1;
+	/**
+	 * 下线
+	 * @var integer
+	 */
+	const status_offline=0;
+	/**
+	 * 删除
+	 * @var integer
+	 */
+	const status_del=-1;
+	/**
+	 * 推荐
+	 * @var unknown
+	 */
+	const selected=1;
+	/**
+	 * 不可卖
+	 * @var unknown
+	 */
+	const is_sale_not=0;
+	/**
+	 * 可卖
+	 * @var unknown
+	 */
+	const is_sale_yes=1;
+	
+	/**
+	 * 解释字段 status 的含义
+	 * @var array
+	 */
+	public static $_is_sale=array('非卖品','可卖');
+	/**
+	 * 解释字段 status 的含义
+	 * @var array
+	 */
+	public static $_status=array(-1=>'删除','下线','上线');
+	/**
+	 * 解释字段 audit 的含义
+	 * @var array
+	 */
+	public static $_audit=array(
+			-4=>'商家审核未通过',
+			-3=>'商家审核中',
+			-2=>'未提交',
+			-1=>'审核未通过',
+			0=>'审核中',
+			1=>'审核通过'
+	);
+	/**
+	 * 解释字段 selected 的含义
+	 * @var array
+	 */
+	public static $_selected=array('未推荐','已推荐');
+	
+/*********************************end 商品相关状态 ****************************/	

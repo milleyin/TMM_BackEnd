@@ -1,0 +1,65 @@
+<extend name="Base/common"/>
+<block name="body">
+<div class="container-fluid gdu-container-fluid">
+    <div class="row show-grid grid-no-border gdu-row-fluid">
+        <div class="col-xs-12 col-md-12 gdu-col-fluid">
+            <div class="swiper-container gdu-article-albumn-swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="gdu-article-albumn-info-wrap">
+                            <img src="__ROOT__{$info.detail_icon_path}" alt="__ROOT__{$info.title}">
+                            <div class="gdu-article-albumn-info">
+                                <h1 class="gdu-article-albumn-title">{$info.title}</h1>
+                                <div class="gdu-article-albumn-options">
+                                    <span class="gdu-article-albumn-date">{$info.update_time|date='Y-m-d',###}</span>
+                                    <span class="gdu-article-albumn-category">{$category.title}</span>
+                                </div>
+                                <p class="gdu-article-albumn-description">
+                                    {$info.description}
+                                </p>
+                            </div>
+                            <div class="gdu-cover-plan-info">
+                                <img class="gdu-cover-plan" src="__ROOT__{$info.rand_path}" alt="头图">
+                                <span class="gdu-cover-img-num">共{$picCount}张图片</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <volist name="picList" id="pic" offset="0" key="k">
+                    <div class="swiper-slide">
+                        <img src="__ROOT__{$pic.path}" alt="{$pic.pic_title}">
+                        <div class="gdu-article-albumn-other-info">
+                            <div class="gdu-page-num-info-other">
+                                <p class="gdu-curNum-other">{$k}</p>
+                                <p class="gdu-allNum-other">{$picCount}</p>
+                            </div>
+                            <p class="gdu-article-albumn-other-description">
+                                {$pic.pic_description}
+                            </p>
+                        </div>
+                    </div>
+                    </volist>
+                </div>
+                <!-- Add Arrows -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</block>
+<block name="script">
+    <script type="text/javascript">
+        var mySwiper = new Swiper('.gdu-article-albumn-swiper-container', {
+            direction: 'horizontal',
+            loop: false,
+            autoplay: false,
+            autoHeight: true,
+            simulateTouch: false,
+            keyboardControl: true,
+            mousewheelControl: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev'
+        });
+    </script>
+</block>

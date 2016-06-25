@@ -1,0 +1,147 @@
+<?php
+	$menu['我的账号管理'] = array(
+			array(
+				'label'=>'我的信息',
+				'url'=>array('/admin/index/index'),
+				'linkOptions'=>array('title'=>'我的信息'),
+			),
+			array(
+					'label'=>'修改信息',
+					'url'=>array('/admin/index/update'),
+					'linkOptions'=>array('title'=>'修改我的信息'),
+			),
+			array(
+					'label'=>'修改密码',
+					'url'=>array('/admin/index/pwd'),
+					'linkOptions'=>array('title'=>'修改我的密码'),
+			),
+	);
+	$menu['管理员管理'] = array(
+			array(
+					'label'=>'账号管理',
+					'url'=>array('/admin/admin/admin'),
+					'linkOptions'=>array('title'=>'账号管理'),
+			),
+			array(
+					'label'=>'创建账号',
+					'url'=>array('/admin/admin/create'),
+					'linkOptions'=>array('title'=>'创建账号'),
+			),
+	);
+	$menu['体验店管理'] = array(
+			array(
+					'label'=>'账号管理',
+					'url'=>array('/admin/store/admin'),
+					'linkOptions'=>array('title'=>'账号管理'),
+			),
+			array(
+					'label'=>'创建账号',
+					'url'=>array('/admin/store/create'),
+					'linkOptions'=>array('title'=>'创建账号'),
+			),
+	);
+	$menu['展示屏管理'] = array(
+	        array(
+	                'label'=>'展示屏管理',
+	                'url'=>array('/admin/pad/admin'),
+	                'linkOptions'=>array('title'=>'账号管理'),
+	        ),
+	);
+	$menu['商品管理'] = array(
+			array(
+					'label'=>'商品管理',
+					'url'=>array('/admin/shop/admin'),
+					'linkOptions'=>array('title'=>'商品管理'),
+			),
+			array(
+					'label'=>'创建商品',
+					'url'=>array('/admin/shop/create'),
+					'linkOptions'=>array('title'=>'创建商品'),
+			),
+	);
+	$menu['广告管理'] = array(
+			array(
+					'label'=>'广告管理',
+					'url'=>array('/admin/ad/admin'),
+					'linkOptions'=>array('title'=>'广告管理'),
+			),
+			array(
+					'label'=>'创建广告',
+					'url'=>array('/admin/ad/create'),
+					'linkOptions'=>array('title'=>'创建广告'),
+			),
+	);
+	$menu['抽奖管理'] = array(
+			array(
+					'label'=>'抽奖配置',
+					'url'=>array('/admin/config/admin'),
+					'linkOptions'=>array('title'=>'抽奖管理'),
+			),
+			array(
+					'label'=>'创建抽奖配置',
+					'url'=>array('/admin/config/create'),
+					'linkOptions'=>array('title'=>'创建抽奖'),
+			),
+	);
+	$menu['奖品管理'] = array(
+	        array(
+	                'label'=>'抽奖管理',
+	                'url'=>array('/admin/prize/admin'),
+	                'linkOptions'=>array('title'=>'抽奖管理'),
+	        ),
+	        array(
+	                'label'=>'创建抽奖',
+	                'url'=>array('/admin/prize/create'),
+	                'linkOptions'=>array('title'=>'创建抽奖'),
+	        ),
+	);
+	$menu['抽奖机会管理'] = array(
+	        array(
+	                'label'=>'抽奖机会管理',
+	                'url'=>array('/admin/chance/admin'),
+	                'linkOptions'=>array('title'=>'抽奖机会管理'),
+	        ),
+	        array(
+	                'label'=>'抽奖机会管理',
+	                'url'=>array('/admin/chance/create'),
+	                'linkOptions'=>array('title'=>'抽奖机会管理'),
+	        ),
+	);
+	$menu['资源文件管理'] = array(
+	        array(
+	                'label'=>'资源文件管理',
+	                'url'=>array('/admin/upload/admin'),
+	                'linkOptions'=>array('title'=>'抽奖机会管理'),
+	        ),
+	);
+	$array = array();
+	$active = 0;
+	if (!empty($menu))
+	{
+		$i = 0;
+		foreach ($menu as $name=>$menu)
+		{
+			$array[$name] = $this->renderPartial('/layouts/_common/__menuitem', array('menu'=>$menu), true);
+			if ($active == 0)
+			{
+				foreach ($menu as $url)
+				{
+					if ( !strcasecmp(trim($url['url'][0], '/'), $this->route))
+						$active = $i;
+				}
+				$i++;
+			}
+		}
+	}
+$this->widget('zii.widgets.jui.CJuiAccordion', array(
+		'panels'=>$array,
+		'htmlOptions'=>array(
+			'style'=>'width:189px;height:auto;'
+		),
+		'options'=>array(
+			'style'=>'height:auto;',
+			'animated'=>'bounceslide',
+			'collapsible'=>true,
+			'active'=>$active,
+		),
+));

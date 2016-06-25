@@ -1,0 +1,440 @@
+2016/05/26 10:32:56 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "favicon.ico"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('favicon.ico')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/favicon.ico
+HTTP_REFERER=http://pad.cn/login/index.html
+---
+2016/05/26 10:38:40 [error] [exception.CHttpException.404] exception 'CHttpException' with message '没有找到相关的数据.' in D:\wamp\www\pad\app\pad\protected\components\Controller.php:271
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\components\Controller.php(231): Controller->loadModelError('???????????????...', 0)
+#1 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\IndexController.php(25): Controller->loadModelByPk('1', Object(CDbCriteria))
+#2 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\IndexController->actionIndex()
+#3 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('index')
+#7 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#8 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#9 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#10 {main}
+REQUEST_URI=/admin/index/index.html
+HTTP_REFERER=http://pad.cn/admin/index/index.html
+---
+2016/05/26 10:39:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message '没有找到相关的数据。' in D:\wamp\www\pad\app\pad\protected\components\Controller.php:271
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\components\Controller.php(231): Controller->loadModelError('???????????????...', 0)
+#1 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\IndexController.php(25): Controller->loadModelByPk('1', Object(CDbCriteria))
+#2 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\IndexController->actionIndex()
+#3 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('index')
+#7 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#8 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#9 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#10 {main}
+REQUEST_URI=/admin/index/index.html
+HTTP_REFERER=http://pad.cn/admin/index/index.html
+---
+2016/05/26 10:39:40 [error] [exception.CHttpException.404] exception 'CHttpException' with message '没有找到相关的数据。' in D:\wamp\www\pad\app\pad\protected\components\Controller.php:271
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\components\Controller.php(231): Controller->loadModelError('???????????????...', 0)
+#1 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\IndexController.php(25): Controller->loadModelByPk('1', Object(CDbCriteria))
+#2 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\IndexController->actionIndex()
+#3 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('index')
+#7 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#8 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#9 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#10 {main}
+REQUEST_URI=/admin/index/index.html
+HTTP_REFERER=http://pad.cn/admin/index/index.html
+---
+2016/05/26 10:39:41 [error] [exception.CHttpException.404] exception 'CHttpException' with message '没有找到相关的数据。' in D:\wamp\www\pad\app\pad\protected\components\Controller.php:271
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\components\Controller.php(231): Controller->loadModelError('???????????????...', 0)
+#1 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\IndexController.php(25): Controller->loadModelByPk('1', Object(CDbCriteria))
+#2 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\IndexController->actionIndex()
+#3 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('index')
+#7 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#8 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#9 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#10 {main}
+REQUEST_URI=/admin/index/index.html
+HTTP_REFERER=http://pad.cn/admin/index/index.html
+---
+2016/05/26 10:39:42 [error] [exception.CHttpException.404] exception 'CHttpException' with message '没有找到相关的数据。' in D:\wamp\www\pad\app\pad\protected\components\Controller.php:271
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\components\Controller.php(231): Controller->loadModelError('???????????????...', 0)
+#1 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\IndexController.php(25): Controller->loadModelByPk('1', Object(CDbCriteria))
+#2 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\IndexController->actionIndex()
+#3 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('index')
+#7 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#8 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#9 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#10 {main}
+REQUEST_URI=/admin/index/index.html
+HTTP_REFERER=http://pad.cn/admin/index/index.html
+---
+2016/05/26 10:39:43 [error] [exception.CHttpException.404] exception 'CHttpException' with message '没有找到相关的数据。' in D:\wamp\www\pad\app\pad\protected\components\Controller.php:271
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\components\Controller.php(231): Controller->loadModelError('???????????????...', 0)
+#1 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\IndexController.php(25): Controller->loadModelByPk('1', Object(CDbCriteria))
+#2 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\IndexController->actionIndex()
+#3 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('index')
+#7 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#8 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#9 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#10 {main}
+REQUEST_URI=/admin/index/index.html
+HTTP_REFERER=http://pad.cn/admin/index/index.html
+---
+2016/05/26 10:54:28 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "update" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('update')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('update')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/upd...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/update.html
+HTTP_REFERER=http://pad.cn/admin/index/index.html
+---
+2016/05/26 13:45:34 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'CSRF token 无法被验证.' in D:\wamp\www\pad\framework\web\CHttpRequest.php:1355
+Stack trace:
+#0 D:\wamp\www\pad\framework\base\CComponent.php(561): CHttpRequest->validateCsrfToken(Object(CEvent))
+#1 D:\wamp\www\pad\framework\base\CApplication.php(212): CComponent->raiseEvent('onBeginRequest', Object(CEvent))
+#2 D:\wamp\www\pad\framework\base\CApplication.php(183): CApplication->onBeginRequest(Object(CEvent))
+#3 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#4 {main}
+REQUEST_URI=/gii/crud/index.html
+HTTP_REFERER=http://pad.cn/gii/crud/index.html
+---
+2016/05/26 14:21:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "admin/index.htmlsdfsfdsds"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index.htm...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/admin/index.htmlsdfsfdsds
+---
+2016/05/26 14:21:43 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "admin/indexdsfssdf"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/indexdsfs...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/admin/indexdsfssdf
+---
+2016/05/26 15:50:21 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'CSRF token 无法被验证.' in D:\wamp\www\pad\framework\web\CHttpRequest.php:1355
+Stack trace:
+#0 D:\wamp\www\pad\framework\base\CComponent.php(561): CHttpRequest->validateCsrfToken(Object(CEvent))
+#1 D:\wamp\www\pad\framework\base\CApplication.php(212): CComponent->raiseEvent('onBeginRequest', Object(CEvent))
+#2 D:\wamp\www\pad\framework\base\CApplication.php(183): CApplication->onBeginRequest(Object(CEvent))
+#3 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#4 {main}
+REQUEST_URI=/admin.html
+---
+2016/05/26 15:50:36 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'CSRF token 无法被验证.' in D:\wamp\www\pad\framework\web\CHttpRequest.php:1355
+Stack trace:
+#0 D:\wamp\www\pad\framework\base\CComponent.php(561): CHttpRequest->validateCsrfToken(Object(CEvent))
+#1 D:\wamp\www\pad\framework\base\CApplication.php(212): CComponent->raiseEvent('onBeginRequest', Object(CEvent))
+#2 D:\wamp\www\pad\framework\base\CApplication.php(183): CApplication->onBeginRequest(Object(CEvent))
+#3 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#4 {main}
+REQUEST_URI=/admin.html
+---
+2016/05/26 15:51:33 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'CSRF token 无法被验证.' in D:\wamp\www\pad\framework\web\CHttpRequest.php:1355
+Stack trace:
+#0 D:\wamp\www\pad\framework\base\CComponent.php(561): CHttpRequest->validateCsrfToken(Object(CEvent))
+#1 D:\wamp\www\pad\framework\base\CApplication.php(212): CComponent->raiseEvent('onBeginRequest', Object(CEvent))
+#2 D:\wamp\www\pad\framework\base\CApplication.php(183): CApplication->onBeginRequest(Object(CEvent))
+#3 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#4 {main}
+REQUEST_URI=/admin.html
+---
+2016/05/26 15:51:40 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'CSRF token 无法被验证.' in D:\wamp\www\pad\framework\web\CHttpRequest.php:1355
+Stack trace:
+#0 D:\wamp\www\pad\framework\base\CComponent.php(561): CHttpRequest->validateCsrfToken(Object(CEvent))
+#1 D:\wamp\www\pad\framework\base\CApplication.php(212): CComponent->raiseEvent('onBeginRequest', Object(CEvent))
+#2 D:\wamp\www\pad\framework\base\CApplication.php(183): CApplication->onBeginRequest(Object(CEvent))
+#3 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#4 {main}
+REQUEST_URI=/admin.html
+---
+2016/05/26 15:51:49 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'CSRF token 无法被验证.' in D:\wamp\www\pad\framework\web\CHttpRequest.php:1355
+Stack trace:
+#0 D:\wamp\www\pad\framework\base\CComponent.php(561): CHttpRequest->validateCsrfToken(Object(CEvent))
+#1 D:\wamp\www\pad\framework\base\CApplication.php(212): CComponent->raiseEvent('onBeginRequest', Object(CEvent))
+#2 D:\wamp\www\pad\framework\base\CApplication.php(183): CApplication->onBeginRequest(Object(CEvent))
+#3 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#4 {main}
+REQUEST_URI=/admin.html
+---
+2016/05/26 16:01:39 [error] [exception.CDbException] exception 'CDbException' with message 'table "pad_role" 没有任何栏位将被更新.' in D:\wamp\www\pad\framework\db\schema\CDbCommandBuilder.php:395
+Stack trace:
+#0 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(1752): CDbCommandBuilder->createUpdateCommand(Object(CMysqlTableSchema), Array, Object(CDbCriteria))
+#1 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(1127): CActiveRecord->updateByPk('1', Array)
+#2 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\RoleController.php(111): CActiveRecord->update(Array)
+#3 [internal function]: app\admin\controllers\RoleController->actionDisable('1')
+#4 D:\wamp\www\pad\framework\web\actions\CAction.php(109): ReflectionMethod->invokeArgs(Object(app\admin\controllers\RoleController), Array)
+#5 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(app\admin\controllers\RoleController), Object(ReflectionMethod), Array)
+#6 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#8 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('disable')
+#10 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/role/disa...')
+#11 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#12 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#13 {main}
+REQUEST_URI=/admin/role/disable.html?ajax=role-grid&id=1
+HTTP_REFERER=http://pad.cn/admin/role/admin.html
+---
+2016/05/26 16:01:52 [error] [exception.CDbException] exception 'CDbException' with message 'table "pad_role" 没有任何栏位将被更新.' in D:\wamp\www\pad\framework\db\schema\CDbCommandBuilder.php:395
+Stack trace:
+#0 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(1752): CDbCommandBuilder->createUpdateCommand(Object(CMysqlTableSchema), Array, Object(CDbCriteria))
+#1 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(1127): CActiveRecord->updateByPk('1', Array)
+#2 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\RoleController.php(111): CActiveRecord->update(Array)
+#3 [internal function]: app\admin\controllers\RoleController->actionDisable('1')
+#4 D:\wamp\www\pad\framework\web\actions\CAction.php(109): ReflectionMethod->invokeArgs(Object(app\admin\controllers\RoleController), Array)
+#5 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(app\admin\controllers\RoleController), Object(ReflectionMethod), Array)
+#6 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#8 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('disable')
+#10 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/role/disa...')
+#11 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#12 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#13 {main}
+REQUEST_URI=/admin/role/disable.html?ajax=role-grid&id=1
+HTTP_REFERER=http://pad.cn/admin/role/admin.html
+---
+2016/05/26 16:03:10 [error] [exception.CDbException] exception 'CDbException' with message 'table "pad_role" 没有任何栏位将被更新.' in D:\wamp\www\pad\framework\db\schema\CDbCommandBuilder.php:395
+Stack trace:
+#0 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(1752): CDbCommandBuilder->createUpdateCommand(Object(CMysqlTableSchema), Array, Object(CDbCriteria))
+#1 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(1127): CActiveRecord->updateByPk('1', Array)
+#2 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\RoleController.php(111): CActiveRecord->update(Array)
+#3 [internal function]: app\admin\controllers\RoleController->actionDisable('1')
+#4 D:\wamp\www\pad\framework\web\actions\CAction.php(109): ReflectionMethod->invokeArgs(Object(app\admin\controllers\RoleController), Array)
+#5 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(app\admin\controllers\RoleController), Object(ReflectionMethod), Array)
+#6 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#8 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('disable')
+#10 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/role/disa...')
+#11 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#12 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#13 {main}
+REQUEST_URI=/admin/role/disable.html?ajax=role-grid&id=1
+HTTP_REFERER=http://pad.cn/admin/role/admin.html
+---
+2016/05/26 16:13:11 [warning] [application] Failed to set unsafe attribute "0" of "Role".
+2016/05/26 16:25:39 [error] [php] trim() expects parameter 1 to be string, array given (D:\wamp\www\pad\framework\web\CUrlManager.php:297)
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\layouts\main1.php(28): CWebApplication->createUrl()
+#1 D:\wamp\www\pad\framework\web\CBaseController.php(126): require()
+#2 D:\wamp\www\pad\framework\web\CBaseController.php(95): app\admin\controllers\IndexController->renderInternal()
+#3 D:\wamp\www\pad\framework\web\widgets\CContentDecorator.php(76): app\admin\controllers\IndexController->renderFile()
+#4 D:\wamp\www\pad\framework\web\widgets\CContentDecorator.php(54): CContentDecorator->decorate()
+#5 D:\wamp\www\pad\framework\web\widgets\COutputProcessor.php(44): CContentDecorator->processOutput()
+#6 D:\wamp\www\pad\framework\web\CBaseController.php(214): CContentDecorator->run()
+#7 D:\wamp\www\pad\framework\web\CBaseController.php(308): app\admin\controllers\IndexController->endWidget()
+#8 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\layouts\column1.php(6): app\admin\controllers\IndexController->endContent()
+#9 D:\wamp\www\pad\framework\web\CBaseController.php(126): require()
+#10 D:\wamp\www\pad\framework\web\CBaseController.php(95): app\admin\controllers\IndexController->renderInternal()
+#11 D:\wamp\www\pad\framework\web\CController.php(784): app\admin\controllers\IndexController->renderFile()
+#12 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\IndexController.php(29): app\admin\controllers\IndexController->render()
+#13 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\IndexController->actionIndex()
+#14 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams()
+#15 D:\wamp\www\pad\framework\web\CController.php(286): app\admin\controllers\IndexController->runAction()
+#16 D:\wamp\www\pad\framework\web\CController.php(265): app\admin\controllers\IndexController->runActionWithFilters()
+#17 D:\wamp\www\pad\framework\web\CWebApplication.php(282): app\admin\controllers\IndexController->run()
+#18 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#19 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#20 D:\wamp\www\pad\app\pad\web\index.php(9): CWebApplication->run()
+REQUEST_URI=/admin/index.html
+2016/05/26 16:30:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "update" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('update')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('update')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/upd...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/update.html
+HTTP_REFERER=http://pad.cn/admin.html
+---
+2016/05/26 16:47:43 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "index.htmlsdf" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('index.htmlsdf')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('index.htmlsdf')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/index.htmlsdf
+---
+2016/05/26 17:41:38 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "admin/awards/admin"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/awards/ad...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/admin/awards/admin.html
+HTTP_REFERER=http://pad.cn/admin/ad/create.html
+---
+2016/05/26 17:41:43 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "admin/awards/admin"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/awards/ad...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/admin/awards/admin.html
+HTTP_REFERER=http://pad.cn/admin/ad/create.html
+---
+2016/05/26 17:44:56 [error] [exception.CHttpException.403] exception 'CHttpException' with message '没有权限访问系统。' in D:\wamp\www\pad\app\pad\protected\components\FrontController.php:41
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(306): FrontController->beforeAction(Object(CInlineAction))
+#1 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#2 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#3 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('')
+#4 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('')
+#5 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#6 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#7 {main}
+REQUEST_URI=/pad/app/pad/web/
+HTTP_REFERER=http://192.168.0.166/pad/app/pad/
+---
+2016/05/26 17:46:54 [error] [exception.CHttpException.404] exception 'CHttpException' with message '无法解析请求 "admin/awards/admin"。' in D:\wamp\www\pad\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/awards/ad...')
+#1 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#2 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#3 {main}
+REQUEST_URI=/pad/app/pad/web/admin/awards/admin.html
+HTTP_REFERER=http://192.168.0.166/pad/app/pad/web/admin/index/index.html
+---
+2016/05/26 18:17:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "index.htmsdsdl" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('index.htmsdsdl')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('index.htmsdsdl')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/login/ind...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/login/index.htmsdsdl?theme=json
+---
+2016/05/26 18:21:54 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "indexs" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('indexs')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('indexs')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/login/ind...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/login/indexs.html?theme=json
+---
+2016/05/26 18:24:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "indexs" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('indexs')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('indexs')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/login/ind...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/login/indexs.html?theme=json
+---
+2016/05/26 18:24:40 [error] [exception.CException] exception 'CException' with message 'app\admin\controllers\IndexController 无法找到请求的视图 "/layouts/_main1/__menuitem".' in D:\wamp\www\pad\framework\web\CController.php:878
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\layouts\_common\_menuitem.php(93): CController->renderPartial('/layouts/_main1...', Array, true)
+#1 D:\wamp\www\pad\framework\web\CBaseController.php(126): require('D:\wamp\www\pad...')
+#2 D:\wamp\www\pad\framework\web\CBaseController.php(95): CBaseController->renderInternal('D:\wamp\www\pad...', NULL, true)
+#3 D:\wamp\www\pad\framework\web\CController.php(869): CBaseController->renderFile('D:\wamp\www\pad...', NULL, true)
+#4 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\layouts\main1.php(41): CController->renderPartial('/layouts/_commo...')
+#5 D:\wamp\www\pad\framework\web\CBaseController.php(126): require('D:\wamp\www\pad...')
+#6 D:\wamp\www\pad\framework\web\CBaseController.php(95): CBaseController->renderInternal('D:\wamp\www\pad...', Array, true)
+#7 D:\wamp\www\pad\framework\web\widgets\CContentDecorator.php(76): CBaseController->renderFile('D:\wamp\www\pad...', Array, true)
+#8 D:\wamp\www\pad\framework\web\widgets\CContentDecorator.php(54): CContentDecorator->decorate('<div id="conten...')
+#9 D:\wamp\www\pad\framework\web\widgets\COutputProcessor.php(44): CContentDecorator->processOutput('<div id="conten...')
+#10 D:\wamp\www\pad\framework\web\CBaseController.php(214): COutputProcessor->run()
+#11 D:\wamp\www\pad\framework\web\CBaseController.php(308): CBaseController->endWidget('CContentDecorat...')
+#12 D:\wamp\www\pad\app\pad\protected\themes\html\views\admin\layouts\column1.php(6): CBaseController->endContent()
+#13 D:\wamp\www\pad\framework\web\CBaseController.php(126): require('D:\wamp\www\pad...')
+#14 D:\wamp\www\pad\framework\web\CBaseController.php(95): CBaseController->renderInternal('D:\wamp\www\pad...', Array, true)
+#15 D:\wamp\www\pad\framework\web\CController.php(784): CBaseController->renderFile('D:\wamp\www\pad...', Array, true)
+#16 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\IndexController.php(30): CController->render('index', Array)
+#17 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\IndexController->actionIndex()
+#18 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#19 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#20 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#21 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('index')
+#22 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#23 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#24 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#25 {main}
+REQUEST_URI=/admin/index/index.html
+HTTP_REFERER=http://pad.cn/admin/login/index.html
+---
+2016/05/26 18:28:09 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "indexs" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('indexs')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('indexs')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/login/ind...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/login/indexs.html?theme=json
+---
+2016/05/26 18:28:10 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "indexs" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('indexs')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('indexs')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/login/ind...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/login/indexs.html?theme=json
+---
+2016/05/26 18:28:10 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "indexs" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('indexs')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('indexs')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/login/ind...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/login/indexs.html?theme=json
+---
+2016/05/26 18:29:56 [error] [exception.CException] exception 'CException' with message '属性 "AdminLoginForm.name" 未被定义.' in D:\wamp\www\pad\framework\base\CComponent.php:130
+Stack trace:
+#0 D:\wamp\www\pad\app\pad\protected\themes\json\views\admin\login\index.php(6): CComponent->__get('name')
+#1 D:\wamp\www\pad\framework\web\CBaseController.php(126): require('D:\wamp\www\pad...')
+#2 D:\wamp\www\pad\framework\web\CBaseController.php(95): CBaseController->renderInternal('D:\wamp\www\pad...', Array, true)
+#3 D:\wamp\www\pad\framework\web\CController.php(869): CBaseController->renderFile('D:\wamp\www\pad...', Array, true)
+#4 D:\wamp\www\pad\framework\web\CController.php(782): CController->renderPartial('index', Array, true)
+#5 D:\wamp\www\pad\app\pad\protected\modules\admin\controllers\LoginController.php(51): CController->render('index', Array)
+#6 D:\wamp\www\pad\framework\web\actions\CInlineAction.php(49): app\admin\controllers\LoginController->actionIndex()
+#7 D:\wamp\www\pad\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 D:\wamp\www\pad\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 D:\wamp\www\pad\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('index')
+#11 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/login/ind...')
+#12 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#13 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#14 {main}
+REQUEST_URI=/admin/login/index.html?theme=json
+---

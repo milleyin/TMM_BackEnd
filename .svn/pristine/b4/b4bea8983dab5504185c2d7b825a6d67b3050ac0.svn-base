@@ -1,0 +1,51 @@
+<?php
+/* @var $this ConfigController */
+/* @var $model Config */
+
+$this->breadcrumbs = array(
+	'管理页'=>array('admin'),
+	$model->id,
+);
+?>
+
+<h1>查看 抽奖配置 <font color='#eb6100'><?php echo CHtml::encode($model->id); ?></font></h1>
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		array(
+				'name'=>'id',
+		),
+		array(
+				'name'=>'store_id',
+				'value'=>$model->Config_Pad->Config_Pad_Store->store_name
+		),
+		array(
+				'name'=>'pad_id',
+			    'value'=>$model->Config_Pad->number
+		),
+		array(
+				'name'=>'manager_id',
+			    'value'=>$model->Config_Admin->name
+		),
+		array(
+				'name'=>'number',
+		),
+		array(
+				'name'=>'info',
+		),
+		array(
+				'name'=>'up_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'add_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'status',
+				'value'=>$model::$_status[$model->status],
+		),
+	),
+)); 
+?>

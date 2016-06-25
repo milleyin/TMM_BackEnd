@@ -1,0 +1,185 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/main2.css" rel="stylesheet">
+</block>
+<block name="body">
+    <div class="wrapbg"></div>
+    <form id="reserve-form" method="post" action="{:U('order/add')}">
+        <div class="wrap2">
+
+            <div class="card">
+                <div class="card-header">成都青白江樱花节<b style="display: block;">门票预订</b></div>
+                <div class="card-body">
+
+                    <div class="form-row">
+                        <span class="tit">所选类型</span>
+
+                        <if condition="($type eq 1)">
+                            <span class="txt">普通票</span>
+                            <input type="hidden" value="1" name="type">
+                            <else />
+                            <span class="txt">夜樱票</span>
+                            <input type="hidden" value="2" name="type">
+                        </if>
+
+                    </div>
+                    <div class="form-row"><span class="tit">购买张数</span>
+                    <span class="count-num">
+                        <span class="sub">-</span>
+                        <input type="number" class="num number-deal" value="1" id="number" name="number" pattern="[0-9]*" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                        <span class="add">+</span>
+                    </span>
+                    </div>
+
+                    <div class="form-row"><input id="mobile" placeholder="联系手机号" type="number" class="number-deal" name="mobile" pattern="[0-9]*"><span class="code" id="getCode">获取验证码</span></div>
+                    <div class="form-row"><input id="smsCode" placeholder="短信验证码" type="number" class="number-deal" name="code" pattern="[0-9]*"></div>
+
+
+                    <div class="price">
+                        <span class="small">总额　￥</span><span class="cost">{$price}</span>
+                        <input type="hidden" name="total_price" id="total_price" value="{$price}">
+                    </div>
+
+                </div>
+                <div class="card-footer">
+                    <input class="submit" type="submit" value="支付">
+                </div>
+
+            </div>
+            <div class="bttip">
+                <p class="tit">温馨提示：</p>
+                <p class="txt">一旦订票成功，系统自动计票，故无法退票和退款，入园日期可自由安排，特此说明！如有疑问，请致电客服400-019-7090</p>
+            </div>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <script>
+
+        $(function() {
+            var price = {$price};
+            $('.add').on('click', function () {
+                var that = this;
+                var numberObj = $('#number');
+                numberObj.blur();
+                var number = parseInt(numberObj.val()) + 1;
+                numberObj.val(number);
+                number = numberLimit(number);
+                $('.cost').html(number * price);
+                $('#total_price').val(number * price);
+            });
+            $('.sub').on('click', function () {
+                var that = this;
+                var numberObj = $('#number');
+                numberObj.blur();
+                var number = parseInt(numberObj.val());
+                number = numberLimit(number);
+                if (number > 1) {
+                    numberObj.val(number - 1);
+                    $('.cost').html((number - 1) * price);
+                    $('#total_price').val((number - 1) * price);
+                } else {
+                    numberObj.val(1);
+                    $('.cost').html(1 * price);
+                    $('#total_price').val(1 * price);
+                }
+            });
+            function numberLimit(number) {
+                if (number > 1000) {
+                    number = 1;
+                    $('#number').val(number);
+                }
+                return number;
+            }
+
+            $('#number').on('change', function () {
+                var numberObj = $('#number');
+                var number = parseInt(numberObj.val());
+                if (isNaN(number)) {
+                    number = 1
+                    numberObj.val(1);
+                }
+                number = numberLimit(number);
+                if (number < 1) {
+                    numberObj.val(1);
+                    $('.cost').html(1 * price);
+                    $('#total_price').val(1 * price);
+                } else {
+                    $('.cost').html(number * price);
+                    $('#total_price').val(number * price);
+                }
+            });
+            function phone_countdown() {
+                var count = 60;
+                var countdown = setInterval(CountDown, 1000);
+
+                function CountDown() {
+                    $("#getCode").html('已发送 <font style="color:#ff0f0f;">' + count + '</font>秒');
+                    if (count == 0) {
+                        $("#getCode").html("获取验证码");
+                        clearInterval(countdown);
+                        getcheckcod = false;
+                    }
+                    count--;
+                }
+            }
+
+            var getcheckcod = false;
+            $('#getCode').on('click', function () {
+                if (getcheckcod)
+                    return false;
+                var phoneNumObj = $('#mobile');
+                var mobile = jQuery.trim(phoneNumObj.val());
+                if (mobile == "") {
+                    Utils.showToast("手机号 不可空白");
+                    return false;
+                } else if (! Utils.checkMobile(mobile)) {
+                    phoneNumObj.val('');
+                    Utils.showToast('手机号 无效');
+                    return false;
+                }
+                jQuery.ajax({
+                    url: "{:U('Order/sendSmsCode')}",
+                    dataType: "json",
+                    type: "POST",
+                    data: {'mobile': mobile},
+                    success: function (data) {
+                        if (data) {
+                            phone_countdown();
+                            getcheckcod = true;
+                        }
+                        else {
+                            Utils.showToast("发送短信过于频繁，请稍后在试！");
+                        }
+                    }
+                });
+                return false;
+            });
+
+            $('#reserve-form').submit(function() {
+                var $phoneNum = $('#mobile');
+                var phoneNum = $.trim($phoneNum.val());
+                var $code = $('#smsCode');
+                if (phoneNum) {
+                    if ( ! Utils.checkMobile(phoneNum) ) {
+                        Utils.showToast('手机号 无效');
+                        $phoneNum.val('');
+                        return false;
+                    }
+                } else {
+                    Utils.showToast('手机号 不可为空');
+                    return false;
+                }
+
+                if ($.trim($code.val()) == '') {
+                    Utils.showToast('短信验证 不可为空');
+                    return false;
+                }
+
+                return true;
+            });
+
+        });
+    </script>
+</block>

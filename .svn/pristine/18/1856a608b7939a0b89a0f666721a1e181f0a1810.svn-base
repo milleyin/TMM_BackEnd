@@ -1,0 +1,109 @@
+<extend name="Base/back"/>
+<block name="style">
+    <link href="__CSS__/manage.css" rel="stylesheet">
+</block>
+<block name="body">
+<body>
+    <div class="container-fluid" style="padding-top: 30px;">
+        <p class="bg-info" style="padding: 10px 0;text-align: center;">创意自拍管理</p>
+        <div class="container-fluid" style="margin:10px 0;">
+            <form class="form-inline" action="{:U('manage/YHc36c98e93b699c40d16b7a3fc5a18539')}" method="get">
+                <div class="form-group">
+                    <label>审核状态</label>
+                    <select class="form-control" name="audit_status">
+                        <option value="">请选择</option>
+                        <foreach name="auditStatusArr" item="vo" key="k" >
+                            <if condition="$k === $words['audit_status']">
+                                <option value="{$k}" selected >{$vo}</option>
+                            <else />
+                                <option value="{$k}" >{$vo}</option>
+                            </if>
+                        </foreach>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="num">编号</label>
+                    <input type="text" class="form-control" id="num" name="id" placeholder="编号" value="{$words.id}">
+                </div>
+                <div class="form-group">
+                    <label for="nickname">昵称</label>
+                    <input type="text" class="form-control" id="nickname" name="nickname" placeholder="昵称" value="{$words.nickname}">
+                </div>
+                <button type="submit" class="btn btn-primary">搜索</button>
+            </form>
+        </div>
+
+        <div class="table-responsive manage-table">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>昵称</th>
+                    <th>联系电话</th>
+                    <th>票数</th>
+                    <th>参赛时间</th>
+                    <th>审核状态</th>
+                    <th>审核时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <empty name="list">
+                    <tr>
+                        <td colspan="8">暂无数据...</td>
+                    </tr>
+
+                    <else />
+
+                    <foreach name="list" item="vo" >
+                        <tr>
+                            <td>{$vo.id}</td>
+                            <td>{$vo.nickname}</td>
+                            <td>{$vo.mobile}</td>
+                            <td>{$vo.poll}</td>
+                            <td>{$vo.racing_time|date='Y-m-d H:i:s',###}</td>
+                            <td>
+                                <eq name="vo.audit_status" value="0">
+                                    待审
+                                </eq>
+                                <eq name="vo.audit_status" value="1">
+                                    <span style="color: #44b549;">通过</span>
+                                </eq>
+                                <eq name="vo.audit_status" value="-1">
+                                    <span style="color: #e97e00;">不通过</span>
+                                </eq>
+                            </td>
+                            <td>
+                                <eq name="vo.audit_time" value="0">
+                                    --
+                                <else />
+                                    {$vo.audit_time|date='Y-m-d H:i:s',###}
+                                </eq>
+
+                            </td>
+                            <td>
+                            <eq name="vo.audit_status" value="0">
+                                <a href="{:U('manage/YHc0ce0abb82a1553d0db7877ab3a1aab7',array('id'=>$vo['id'], 'type'=>1))}" onclick="return confirm('确定审核通过吗?');" class="btn btn-primary">通过</a>
+                                <a href="{:U('manage/YHc0ce0abb82a1553d0db7877ab3a1aab7',array('id'=>$vo['id'], 'type'=>0))}" onclick="return confirm('确定审核不通过吗?');" class="btn btn-danger">不通过</a>
+                            </eq>
+                                <a href="{:U('manage/YHce17343327e1f32c7ef72356581db73c',array('id'=>$vo['id']))}" class="btn btn-info">详情</a>
+                            </td>
+                        </tr>
+                    </foreach>
+                </empty>
+                </tbody>
+            </table>
+            <nav style="text-align: center;">
+
+                    {$page}
+
+            </nav>
+        </div>
+    </div>
+</body>
+</block>
+<block name="script">
+    <script>
+    </script>
+</block>

@@ -1,0 +1,23 @@
+<?php
+/* @var $this LoginController */
+
+$this->breadcrumbs=array(
+	'Login',
+);
+?>
+<!doctype html>
+<html lang="zh_cn">
+<head>
+	<meta charset="UTF-8">
+	<title>关注公众号</title>
+</head>
+<body>
+<div class="qrcode">
+	<p class="title">长按以下二维码关注公众号</p>
+	<img src="<?php echo $this->getAssets() . '/images/code.jpg'; ?>">
+	<p class="txt">1、长按识别二维码图片，关注“田觅觅”公众号。</p>
+	<p class="txt">2、关注公众号后，重新扫描领券二维码，就可以领取优惠券了！</p>
+	<p class="txt">3、如有疑问，请致电客服400-019-7090</p>
+</div>
+</body>
+</html>

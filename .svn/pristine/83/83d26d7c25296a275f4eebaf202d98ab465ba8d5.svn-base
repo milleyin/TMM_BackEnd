@@ -1,0 +1,64 @@
+<extend name="Base/common"/>
+<block name="style">
+
+</block>
+<block name="body">
+    <body class="tmm-index">
+    <div class="banner">
+        <img src="__IMG__/banner.png">
+    </div>
+    <div class="con">
+        <div class="item-row item-two-heigh">
+            <a href="{:U('Ticket/index', array('fromType' => $fromType))}">
+                <div class="main-two">
+                    <img src="__IMG__/tickets.png">
+                    <div>购买门票</div>
+                </div>
+            </a>
+            <a href="{:U('Card/index', array('fromType' => $fromType))}">
+                <div class="main-two">
+                    <img src="__IMG__/litchi.png">
+                    <div>购买荔枝</div>
+                </div>
+            </a>
+        </div>
+        <div class="item-row item-four-heigh">
+            <a href="javascript:;">
+                <div class="main-four cover">
+                    <img src="__IMG__/interest.png">
+                    <div>公益活动</div>
+                </div>
+            </a>
+            <a href="javascript:;">
+                <div class="main-four cover">
+                    <img src="__IMG__/self.png">
+                    <div>创意自拍</div>
+                </div>
+            </a>
+            <a href="http://mp.weixin.qq.com/s?__biz=MzA5ODM1Njk4OA==&mid=505950338&idx=1&sn=67347863707bcf219db73f5921107262&scene=1&srcid=0509BHIgz8zvjQSWgTYJUYtz#rd">
+                <div class="main-four">
+                    <img src="__IMG__/park.png">
+                    <div>入园导航</div>
+                </div>
+            </a>
+            <a href="{:U('Index/record', array('fromType' => $fromType))}">
+                <div class="main-four">
+                    <img src="__IMG__/buy.png">
+                    <div>购买记录</div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="culture">
+        <a href="{$link}">
+            <div class="history">
+                <img src="__IMG__/culture.png">
+                <div class="intro">
+                    <div class="tit">荔枝文化</div>
+                    <div class="detail">深&nbsp;入&nbsp;探&nbsp;索&nbsp;荔&nbsp;枝&nbsp;的&nbsp;历&nbsp;史</div>
+                </div>
+            </div>
+        </a>
+    </div>
+    </body>
+</block>

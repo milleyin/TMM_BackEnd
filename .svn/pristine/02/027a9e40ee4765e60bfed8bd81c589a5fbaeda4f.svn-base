@@ -1,0 +1,16 @@
+<?php
+/* @var $this PadController */
+/* @var $model Pad */
+
+$this->breadcrumbs = array(
+    '体验店管理页'=>array('admin'),
+    $model->Pad_Store->name => array('store/view', 'id'=>$model->Pad_Store->id),
+	'展示屏管理页'=>array('admin', 'Pad[store_id]'=>'=' . $model->Pad_Store->id),
+	$model->name=>array('view', 'id'=>$model->id),
+	'展示屏更新页',
+);
+?>
+
+<h1>更新展示屏 <font color='#eb6100'><?php echo CHtml::encode($model->name); ?></font></h1>
+
+<?php $this->renderPartial('_form', array('model'=>$model)); ?>

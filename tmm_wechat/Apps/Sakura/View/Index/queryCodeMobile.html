@@ -1,0 +1,114 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/main2.css" rel="stylesheet">
+</block>
+<block name="body">
+<div class="wrapbg"></div>
+    <form id="query-form" action="{:U('index/queryCodeMobile')}" method="post">
+    <div class="wrap2">
+
+        <div class="card">
+            <div class="card-header">请输入预订门票时填写的手机号<b style="display: block;">查询</b></div>
+            <div class="card-body">
+                <div class="form-row">
+                    <input id="mobile" class="number-deal" placeholder="联系手机号" type="number" name="mobile" pattern="[0-9]*"><span class="code" id="getCode">获取验证码</span>
+                </div>
+                <div class="form-row">
+                    <input id="smsCode" class="number-deal" placeholder="短信验证码" type="number" name="code"  pattern="[0-9]*">
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <input class="submit" type="submit" value="查询">
+            </div>
+
+        </div>
+        <div class="bttip">
+            <p class="tit">温馨提示：</p>
+            <p class="txt">如有疑问，请致电客服400-019-7090</p>
+        </div>
+    </div>
+</form>
+</block>
+
+<block name="script">
+    <script>
+        $(function() {
+            var codeFlag  = false;
+            function phone_countdown(){
+                var count = 60;
+                var countdown = setInterval(CountDown, 1000);
+                function CountDown() {
+                    $("#getCode").html('已发送 <font style="color:#ff0f0f;">'+count+'</font>秒');
+                    if (count <= 0) {
+                        $("#getCode").html("获取验证码");
+                        clearInterval(countdown);
+                        codeFlag = false;
+                    }
+                    count--;
+                }
+            }
+            $('#getCode').on('click', function(){
+                if (codeFlag) {
+                    return false;
+                }
+                var mobileObj = $('#mobile');
+                var mobile = jQuery.trim(mobileObj.val());
+                if(mobile == "") {
+                    Utils.showToast("手机号 不可空白");
+                    mobileObj.val('');
+                    return false;
+                }else if(! Utils.checkMobile(mobile)) {
+                    mobileObj.val('');
+                    Utils.showToast("手机号 无效");
+                    return false;
+                }
+                jQuery.ajax({
+                    url: "{:U('index/getSmsCode')}",
+                    dataType: "json",
+                    type: "POST",
+                    data:{'mobile':mobile},
+                    success: function(data) {
+                        if(data){
+                            if (data == 1) {
+                                phone_countdown();
+                                codeFlag = true;
+                            } else if (data == 2) {
+                                Utils.showToast("此号码未预定过门票");
+                            }
+
+                        }
+                        else{
+                            Utils.showToast("发送短信过于频繁，请稍后在试！");
+                        }
+                    }
+                });
+                return false;
+            });
+
+            $('#query-form').submit(function() {
+                var mobileObj = $('#mobile');
+                var mobile = jQuery.trim(mobileObj.val());
+                var $code = $('#smsCode');
+                if (mobile) {
+                    if ( ! Utils.checkMobile(mobile) ) {
+                        Utils.showToast('手机号 无效');
+                        mobileObj.val('');
+                        return false;
+                    }
+                } else {
+                    Utils.showToast('手机号 不可为空');
+                    return false;
+                }
+
+                if ($.trim($code.val()) == '') {
+                    Utils.showToast('短信验证 不可为空');
+                    return false;
+                }
+
+                return true;
+            });
+        });
+
+    </script>
+</block>

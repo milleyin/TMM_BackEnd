@@ -1,0 +1,89 @@
+<?php
+/* @var $this Tmm_passwordController */
+/* @var $model Password */
+
+$this->breadcrumbs=array(
+	'密码管理页'=>array('admin'),
+	$model::getRoleName($model,$model->role_type),
+);
+?>
+
+<h1>查看密码详情 <font color='#eb6100'><?php echo CHtml::encode($model::getRoleName($model,$model->role_type)) ?></font></h1>
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		array(
+			'name'=>'id',
+		),
+		array(
+			'name'=>'role_type',
+			'value'=>$model::$_role_type[$model->role_type],
+		),
+		array(
+			'name'=>'role_id',
+			'value'=>$model::getRoleName($model,$model->role_type),
+		),
+		array(
+			'name'=>'manage_type',
+			'value'=>$model::$_role_type[$model->role_type],
+		),
+		array(
+			'name'=>'manage_id',
+			'value'=>$model::getManageRoleName($model,$model->role_type),
+		),
+		array(
+			'name'=>'password_type',
+			'value'=>$model::$_password_type[$model->password_type],
+		),
+		array(
+			'name'=>'use_count',
+		),
+		array(
+			'name'=>'up_count',
+		),
+		array(
+			'name'=>'error_count',
+		),
+		array(
+			'name'=>'use_error',
+		),
+		array(
+			'name'=>'use_ip',
+		),
+		array(
+			'name'=>'use_time',
+			'type'=>'datetime',
+		),
+		array(
+			'name'=>'use_address',
+		),
+		array(
+			'name'=>'last_ip',
+		),
+		array(
+			'name'=>'last_time',
+			'type'=>'datetime',
+		),
+		array(
+			'name'=>'last_address',
+		),
+		array(
+			'name'=>'add_time',
+			'type'=>'datetime',
+		),
+		array(
+			'name'=>'up_time',
+			'type'=>'datetime',
+		),
+		array(
+			'name'=>'centre_status',
+			'value'=>$model::$_centre_status[$model->centre_status],
+		),
+		array(
+			'name'=>'status',
+			'value'=>$model::$_status[$model->status],
+		),
+	),
+)); 
+

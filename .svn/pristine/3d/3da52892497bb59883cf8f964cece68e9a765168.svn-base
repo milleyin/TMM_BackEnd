@@ -1,0 +1,124 @@
+<?php
+/**
+ * 帮助文件
+ * @author Changhai Zhan
+ *
+ */
+class Helper
+{
+	/**
+	 * 返回公司名
+	 * @return string
+	 */
+	public static function getPowered()
+	{
+		return 'Shenzhen Tian Mimi Mdt InfoTech Ltd.';
+	}
+	
+	/**
+	 * ipad 版本号
+	 * @return string
+	 */
+	public static function getIpadVersion()
+	{
+		return '1.0.0';
+	}
+	
+	/**
+	 * 过滤ip地址
+	 * @param unknown $ip
+	 * @return boolean
+	 */
+	public static function allowIp($ip, $ipFilters)
+	{
+		if(empty($ipFilters))
+			return true;
+		foreach($ipFilters as $filter)
+		{
+			if($filter==='*' || $filter===$ip || (($pos=strpos($filter,'*'))!==false && !strncmp($ip,$filter,$pos)))
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 跳转页面
+	 * @param unknown $url
+	 * @param unknown $content
+	 * @param string $page
+	 * @param string $json
+	 * @param string $source
+	 * @return Ambigous <string, multitype:string unknown >
+	 */
+	public static function location($url, $content ='', $page = '', $json = true, $source = '')
+	{
+		header("Content-type:application/json;");
+		$app = Yii::app();
+		$request = $app->getRequest();
+		if (is_array($url))
+		{
+			$route = isset($url[0]) ? $url[0] : $app->defaultController;
+			$url = $app->createAbsoluteUrl($route, array_splice($url, 1));
+		}
+		$return = array(
+			'code'=>'302',
+			'source'=>$source == '' ? $request->getHostInfo() . $request->getUrl() : $source,
+			'location'=>$url,
+			'content'=>$content == '' ? array('result'=>1, 'message'=>'保存成功') : $content,
+			'page'=>$page == '' ? $url : $page,
+		);
+		return $json ? json_encode($return) : $return;
+	}
+	
+	/**
+	 * 获取数据类型
+	 * @param string $json
+	 * @param string $default
+	 * @return string
+	 */
+	public static function getDataType($json = 'json', $default = 'html')
+	{
+		if (isset(Yii::app()->theme, Yii::app()->theme->name) && strpos(Yii::app()->theme->name, $json) !== false)
+			return $json;
+		return $default;
+	}
+	
+	/**
+	 * 掷骰子概率计算
+	 * @param array $arr array('a'=>20,'b'=>30,'c'=>50)
+	 * @return bool/string 返回数组的KEY
+	 */
+	public static function dice($rateArr)
+	{
+	    $ret = false;
+	    $arr = array();
+	    $tmpMaxVal = 0;
+	    $tmpMaxKey = '';
+	    if (!empty($rateArr))
+	    {
+	        $max = array_sum($rateArr);
+	        $input = range(1, $max);
+	        $one = rand(1, $max);
+	        shuffle($input);
+	        foreach ($rateArr as $key => $val)
+	        {
+	            $val = !empty($val) ? intval($val) : 0;
+	            if ($val > $tmpMaxVal)
+	            {
+	                $tmpMaxVal = $val;
+	                $tmpMaxKey = $key;
+	            }
+	            $tmpInput = array_splice($input, $val);
+	            $spArr = $input;
+	            $input = $tmpInput;
+	
+	            foreach ($spArr as $n)
+	            {
+	                $arr[$n] = $key;
+	            }
+	        }	
+	        $ret = isset($arr[$one]) ? $arr[$one] : $tmpMaxKey;
+	    }
+	    return $ret;
+	}
+}

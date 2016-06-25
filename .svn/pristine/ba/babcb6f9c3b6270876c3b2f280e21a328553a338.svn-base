@@ -1,0 +1,131 @@
+
+//广告接口相关文档
+
+// UEL /index.php?r=api/ad/index&type={广告类型}
+
+// 默认type=0 表示 APP横幅
+// UEL /index.php?r=api/ad/index
+
+// type=1 表示 当季热销
+// UEL /index.php?r=api/ad/index
+
+// get 请求 无需登录 
+
+//返回值 默认 type=0  APP横幅
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {																	//分页信息
+            "prev": "",																//上一页链接
+            "selected": "",															//当前一页
+            "next": "",																//下一页链接
+            "count": 1,																//总计页数
+            "page": "page",															//页码链接名
+            "link": "http://localhost/tmm/index.php?r=api/ad/index",				//基础链接
+            "selectedPage": 1														//当前页数
+        },
+        "list_data": [																//广告数据 数组
+            {
+                "name": "点广告",													//广告的名字
+                "link": "http://test2.365tmm.net/index.php?r=api/dot/view&id=16",	//广告的链接
+                "value": "1",														//广告的ID
+                "sort": "1",														//广告的排序数值
+                "options": "",														//预留 链接或广告 属性
+                "img": "http://test2.365tmm.net/uploads/ad/20160317/litimg_app/500156ea7fbc1519f7.49763882.jpg", //广告图片
+                "link_type": {														//广告类型
+                    "name": "商品（点）详情",										//广告类型名
+                    "info": "商品（点）详情",										//广告类型说明
+                    "value": "2"													//广告类型值 用于判断需要跳转的页面
+                },
+                "type": {															//广告类型
+                    "name": "APP横幅",												//广告类型名
+                    "value": "0"													//广告类型值
+                }
+            },
+            {
+                "name": "阴平村",
+                "link": "https://m.365tmm.com/index.php?r=api/dot/view&id=50",
+                "value": "2",
+                "sort": "20",
+                "options": "",
+                "img": "http://test2.365tmm.net/uploads/ad/20160317/litimg_app/102656ea4b6f1fda84.81175250.png",
+                "link_type": {
+                    "name": "商品（点）详情",
+                    "info": "点的详情页面的接口链接",
+                    "value": "2"
+                },
+                "type": {
+                    "name": "APP横幅",
+                    "value": "0"
+                }
+            },
+            {
+                "name": "平武生态艺术之旅",
+                "link": "https://m.365tmm.com/index.php?r=api/thrand/view&id=55",
+                "value": "3",
+                "sort": "30",
+                "options": "",
+                "img": "http://test2.365tmm.net/uploads/ad/20160317/litimg_app/42056ea4bbd831623.14966209.jpg",
+                "link_type": {
+                    "name": "商品（线）详情",
+                    "info": "商品（线）详情",
+                    "value": "3"
+                },
+                "type": {
+                    "name": "APP横幅",
+                    "value": "0"
+                }
+            }
+        ]
+    }
+}
+
+//返回值 type=1 当季热销
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "",
+            "next": "",
+            "count": 1,
+            "page": "page",
+            "link": "http://localhost/tmm/index.php?r=api/ad/index&type=1",
+            "selectedPage": 1
+        },
+        "list_data": [
+            {
+                "name": "测试下",
+                "link": "https://m.365tmm.com/index.php?r=api/actives/view&id=105",
+                "value": "5",
+                "sort": "10",
+                "options": "",
+                "img": "http://test2.365tmm.net/uploads/ad/20160322/litimg_app/78356f0a5a5035540.88404148.jpg",
+                "link_type": {
+                    "name": "有赞外链",
+                    "info": "有赞外链",
+                    "value": "5"
+                },
+                "type": {
+                    "name": "当季热销",
+                    "value": "1"
+                }
+            }
+        ]
+    }
+}
+
+//没有广告
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "list_data": [],
+        "null": "小觅已经很努力了！"
+    }
+}

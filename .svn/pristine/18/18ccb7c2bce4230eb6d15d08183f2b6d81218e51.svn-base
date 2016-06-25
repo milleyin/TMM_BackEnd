@@ -1,0 +1,4 @@
+//name 用户-（代理商在用户报名之后给出出游时间）确认出游
+//链接 index.php?r=api/order/confirm&id=value
+//GET
+

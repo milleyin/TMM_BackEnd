@@ -1,0 +1,33 @@
+
+// 备注：凡是POST请求的，都需要先请求一下GET，拿到CSRF码，请求格式为
+// 模块/方法：
+// api/xx/xxx (同要POST请求的url)
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取CSRF
+
+// 参数 &csrf=csrf
+
+// 获取微信js-sdk配置参数
+
+//URL index.php?r=api/shops/wxgps&wxgps=wxgps&url=http://xxxxxxxxxxx"
+
+// GET
+
+// 参数
+
+//正常
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "appId": "wx7276cefc5ef30643",
+        "nonceStr": "mlgtFVYS6ajGBeO0",
+        "timestamp": 1460515623,
+        "signature": "4c6249da94c54be8137274d4906a4a989fb9bab1"
+    }
+}

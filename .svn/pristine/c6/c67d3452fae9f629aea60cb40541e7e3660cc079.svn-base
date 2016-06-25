@@ -1,0 +1,78 @@
+<?php
+/* @var $this RecordController */
+/* @var $model Record */
+
+$this->breadcrumbs = array(
+	'管理页'=>array('admin'),
+	$model->id,
+);
+?>
+
+<h1>查看 Record <font color='#eb6100'><?php echo CHtml::encode($model->id); ?></font></h1>
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		array(
+				'name'=>'id',
+		),
+		array(
+				'name'=>'user_id',
+		),
+		array(
+				'name'=>'store_id',
+		),
+		array(
+				'name'=>'pad_id',
+		),
+		array(
+				'name'=>'config_id',
+		),
+		array(
+				'name'=>'prize_id',
+		),
+		array(
+				'name'=>'chance_id',
+		),
+		array(
+				'name'=>'manager_id',
+		),
+		array(
+				'name'=>'receive_type',
+				'value'=>$model::$_receive_type[$model->receive_type],
+		),
+		array(
+				'name'=>'prize_name',
+		),
+		array(
+				'name'=>'prize_info',
+		),
+		array(
+				'name'=>'url',
+		),
+		array(
+				'name'=>'code',
+		),
+		array(
+				'name'=>'exchange_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'exchange_status',
+				'value'=>$model::$_exchange_status[$model->exchange_status],
+		),
+		array(
+				'name'=>'up_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'add_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'status',
+				'value'=>$model::$_status[$model->status],
+		),
+	),
+)); 
+?>

@@ -1,0 +1,470 @@
+
+// 备注：凡是POST请求的，都需要先请求一下GET，拿到CSRF码，请求格式为
+// 模块/方法：
+// api/xx/xxx (同要POST请求的url)
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取CSRF
+
+// 参数 &csrf=csrf
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "csrf": {
+            "TMM_CSRF": "5d2694695c6989098c22879610e3fd007294f67c"
+        }
+    }
+}
+// 模块/方法：
+// index.php?r=api/login/index
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        登录
+
+// 参数
+{
+  "UserLoginForm": {
+    "phone": "18199999999",
+    "password": "123123asd",
+    "verifyCode": "sape"
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "phone": "18199999999", // 用户手机
+        "nickname": "沫沫",  // 用户昵称
+        "is_organizer": "0", // 是否是组织者
+        "audit": "0",
+        "gender": "1",
+        "count": "5",
+        "last_ip": "127.0.0.1",
+        "add_time": "2015/09/15 17:32:20",
+        "last_time": "2015/09/15 21:56:30"
+    },
+    "jump": {
+        "home": "/index.php?r=api"
+    }
+}
+
+// 模块/方法：
+// index.php?r=api/user/view
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取用户信息
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "userInfo": { // userInfo 用户信息
+            "phone": "18199999999",
+            "nickname": "沫沫a",
+            "is_organizer": "0",
+            "audit": "0",
+            "gender": "1",
+            "count": "16",
+            "last_ip": "127.0.0.1",
+            "is_set": true, // 是否已经设置了密码
+            // update_link 更新用户资料的链接
+            "update_link": "http://test.365tmm.net/index.php?r=api/user/update"
+        },
+        "main_retinueInfo": { // main_retinueInfo 主要联系人(主要随行人员)
+            "list": [
+                {
+                    "value": "6", // 主要联系人id
+                    "name": "小泡沫",
+                     // view_link 查看随行人员的详情链接
+                    "view_link": "http://test.365tmm.net/index.php?r=api/retinue/view&id=6"
+                }
+            ],
+            // index_link 主要联系人(主要随行人员) 中的列表页链接
+            "index_link": "http://test.365tmm.net/index.php?r=api/retinue/index&type=1",
+            // create_link 主要联系人(主要随行人员) 中的创建链接
+            "create_link": "http://test.365tmm.net/index.php?r=api/retinue/create&type=1"
+        },
+        "retinueInfo": { // retinueInfo 随行联系人(普通随行人员)
+            "list": [
+                {
+                    "value": "3", // 随行人员id
+                    "name": "小小沫2",
+                    // view_link 查看随行联系人(普通随行人员)的详情链接
+                    "view_link": "http://test.365tmm.net/index.php?r=api/retinue/view&id=3"
+                },
+                {
+                    "value": "4",
+                    "name": "小沫仔",
+                    "view_link": "http://test.365tmm.net/index.php?r=api/retinue/view&id=4"
+                },
+                {
+                    "value": "5",
+                    "name": "小沫仔",
+                    "view_link": "http://test.365tmm.net/index.php?r=api/retinue/view&id=5"
+                }
+            ],
+            // index_link 随行联系人(普通随行人员) 中的列表页链接
+            "index_link": "http://test.365tmm.net/index.php?r=api/retinue/index&type=0",
+            // create_link 随行联系人(普通随行人员) 中的创建链接
+            "create_link": "http://test.365tmm.net/index.php?r=api/retinue/create&type=0"
+        },
+        "tagsInfo": [ // tagsInfo 用户标签信息
+            {
+                "value": "1", // 父标签id
+                "name": "职业", // 父标签名字
+                // index_link 标签分类的列表页
+                "index_link": "http://test.365tmm.net/index.php?r=api/user/tags_index&id=1",
+                // 子标签列表
+                "son": [
+                    {
+                        "value": "11",
+                        "name": "IT"
+                    }
+                ]
+            },
+            {
+                "value": "2",
+                "name": "旅行",
+                "index_link": "http://test.365tmm.net/index.php?r=api/user/tags_index&id=2",
+                "son": [
+                    {
+                        "value": "10",
+                        "name": "森林"
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+// 模块/方法：
+// index.php?r=api/user/update
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        更新用户信息 （昵称、性别）
+
+// 参数
+{
+  "User": {
+    "nickname": "momo", // 用户昵称
+    "gender": "1" // 性别 0保密 1男 2女
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": []
+}
+// 模块/方法：
+// index.php?r=api/user/tags_index
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        用户标签分类列表, 查询父标签分类下的子标签分类
+
+// 参数
+&id=1 // 父标签分类的id
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        // select_link 添加分类的链接
+        "select_link": "http://test.365tmm.net/index.php?r=api/user/tags_select",
+        // tag_count 限定可添加标签的个数
+        "tag_count": {
+            "select": 5, // 限制个数
+            "error": "选择标签不能超过5个" // 提示消息
+        },
+        // select_tags 已添加过的标签
+        "select_tags": [
+            {
+                "value": "11", // 标签id
+                "p_value": "1", // 标签父id
+                "name": "IT" // 标签名字
+            }
+        ],
+        // not_select_tags 已添加过的标签
+        "not_select_tags": [
+            {
+                "value": "3",
+                "p_value": "1",
+                "name": "管理层"
+            },
+            {
+                "value": "8",
+                "p_value": "1",
+                "name": "技术"
+            },
+            {
+                "value": "12",
+                "p_value": "1",
+                "name": "运营"
+            }
+        ]
+    }
+}
+// 模块/方法：
+// index.php?r=api/user/tags_select
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        添加标签
+// get 参数
+&id=1 父标签分类的id
+// post 参数
+{
+  "TagsElement": {
+    "user_select_tags_type": "1,2,3,4,5" // 要添加的标签id用,号连接
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+// 正确
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": []
+}
+// 错误 最多只能选择5个
+{
+    "status": 0,
+    "code": 50005,
+    "msg": "数据不合法",
+    "data": {}
+}
+
+// 模块/方法：
+// index.php?r=api/retinue/view
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        查看随行人员的详细信息
+
+// 参数
+&id=1 // 随行人员的id
+// 主要联系人 结果 主要联系人不能删除
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "value": "2", // id
+        "name": "小小沫1", // 名字
+        "identity": "45088119880102657X", // 身份证号码
+        "phone": "18177777777", // 手机号
+        "email": "", // 邮箱
+        "is_main": "1", // 是否是主要联系人，1是0否
+        // update_link 编辑随行人员的链接
+        "update_link": "http://test.365tmm.net/index.php?r=api/retinue/update_main&id=2",
+    }
+}
+// 随行人员结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "value": "2", // id
+        "name": "小小沫1", // 名字
+        "identity": "45088119880102657X", // 身份证号码
+        "phone": "18177777777", // 手机号
+        "email": "", // 邮箱
+        "is_main": "1", // 是否是主要联系人，1是0否
+        // update_link 编辑随行人员的链接
+        "update_link": "http://test.365tmm.net/index.php?r=api/retinue/update&id=2",
+        // 删除随行人员的链接
+        "delete_link": "http://test.365tmm.net/index.php?r=api/retinue/delete&id=2"
+    }
+}
+
+// 模块/方法：
+// index.php?r=api/retinue/index
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        查询随行人员的列表页
+
+// 参数
+&type=1  // 0查询普通随行人员 1查询主要联系人
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        // page 分页信息
+        "page": {
+            "prev": "", // 上一页的链接
+            "selected": "", // 当前页的链接
+            "next": "", // 下一页的链接
+            "count": 1, // 页数
+            "page": "page", // 参数名
+            // 分页基础链接
+            "link": "http://test.365tmm.net/index.php?r=api/retinue/index&type=0",
+            "selectedPage": 1 // 当前第几页
+        },
+        "list": [
+            {
+                "value": "2", // 随行人员id
+                "name": "小小沫1", // 随行人员名字
+                "is_main": "0", // 是否是主要联系人 1是 0不是
+                // 查看随行人员详情的链接
+                "view_link": "http://test.365tmm.net/index.php?r=api/retinue/view&id=2"
+            },
+            {
+                "value": "3",
+                "name": "小小沫2",
+                "is_main": "0",
+                "view_link": "http://test.365tmm.net/index.php?r=api/retinue/view&id=3"
+            },
+            {
+                "value": "5",
+                "name": "小沫仔",
+                "is_main": "0",
+                "view_link": "http://test.365tmm.net/index.php?r=api/retinue/view&id=5"
+            }
+        ]
+    }
+}
+
+// 模块/方法：
+// index.php?r=api/retinue/create
+// 传值方式：
+// POST
+
+// 功能描述：
+//        创建随行人员
+
+// GET 参数
+&type=1  // 0创建普通随行人员 1创建主要联系人
+// POST 参数
+{
+  "Retinue": {
+    "name": "小沫仔", // 名字
+    "identity": "43678119880102657X", // 身份证
+    "phone": "12345678910", // 手机
+    "email": "aaaa@aaa.com" // 邮箱
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": [
+    ]
+}
+
+// 模块/方法：
+// index.php?r=api/retinue/update
+// 传值方式：
+// POST
+
+// 功能描述：
+//        更新随行人员
+
+// GET 参数
+&id=1  // 随行人员id
+// POST 参数
+{
+  "Retinue": {
+    "name": "小沫仔",
+    "identity": "43678119880102657X",
+    "phone": "12345678910",
+    "email": "aaaa@aaa.com"
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": [
+    ]
+}
+
+// 模块/方法：
+// index.php?r=api/retinue/update_main
+// 传值方式：
+// POST
+
+// 功能描述：
+//        更新主要联系人，不能修改手机号码
+
+// GET 参数
+&id=1  // 主要联系人id
+// POST 参数
+{
+  "Retinue": {
+    "name": "小沫仔",
+    "identity": "43678119880102657X",
+    "email": "aaaa@aaa.com"
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": [
+    ]
+}
+
+// 模块/方法：
+// index.php?r=api/retinue/delete
+// 传值方式：
+// GET
+
+// 功能描述：
+//        删除随行人员
+
+// 参数
+&id=1  // 随行人员id
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": [
+    ]
+}

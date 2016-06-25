@@ -1,0 +1,74 @@
+<?php
+/* @var $this ExpressController */
+/* @var $model Express */
+
+$this->breadcrumbs = array(
+	'管理页'=>array('admin'),
+	$model->name,
+);
+?>
+
+<h1>查看 Express <font color='#eb6100'><?php echo CHtml::encode($model->id); ?></font></h1>
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		array(
+				'name'=>'id',
+		),
+		array(
+				'name'=>'user_id',
+		),
+		array(
+				'name'=>'record_id',
+		),
+		array(
+				'name'=>'manager_id',
+		),
+		array(
+				'name'=>'name',
+		),
+		array(
+				'name'=>'phone',
+		),
+		array(
+				'name'=>'province',
+		),
+		array(
+				'name'=>'city',
+		),
+		array(
+				'name'=>'district',
+		),
+		array(
+				'name'=>'address',
+		),
+		array(
+				'name'=>'express_status',
+				'value'=>$model::$_express_status[$model->express_status],
+		),
+		array(
+				'name'=>'express_name',
+		),
+		array(
+				'name'=>'express_code',
+		),
+		array(
+				'name'=>'express_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'up_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'add_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'status',
+				'value'=>$model::$_status[$model->status],
+		),
+	),
+)); 
+?>

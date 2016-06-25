@@ -1,0 +1,153 @@
+<extend name="Base/common"/>.
+<block name="style">
+    <link rel="stylesheet" href="__CSS__/apply.css">
+</block>
+<block name="body">
+    <div class="page slideIn cell">
+        <form id="applyForm" class="weui_cells weui_cells_form no_after_borderl" style="margin-top: 0;" action="{:U('Vote/apply')}" method="post" >
+            <div class="weui_cell">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <textarea id="introduce" class="weui_textarea" name="introduce" placeholder="我和荔枝的前世今生，最美还是我。（限50个字）" rows="5" maxlength="50"></textarea>
+                </div>
+            </div>
+
+            <div class="weui_cell no_before_border">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <div class="weui_uploader">
+                        <ul class="weui_uploader_files" id="imgList">
+                            <li class="weui_uploader_file" id="empty_img" style="background-image:url('__IMG__/img_rect.png')"></li>
+                        </ul>
+                        <div class="weui_uploader_input_wrp" id="empty_img_file_input">
+                            <input id="uploads" class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label tmm_weui_label">昵称</label></div>
+                <div class="weui_cell_bd weui_cell_primary tmm_weui_cell_primary">
+                    <input class="weui_input tmm_weui_input" type="text" name="nickname" id="nickname" value="{$nickname}">
+                </div>
+            </div>
+
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label tmm_weui_label">联系电话</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input id="mobile" name="mobile" class="weui_input tmm_weui_input" type="number" pattern="[0-9]*" placeholder="请输入您的真实手机号码">
+                </div>
+            </div>
+
+            <div class="weui_cell tmm_weui_cell">
+                <input type="button" class="weui_btn weui_btn_warn tmm_weui_btn_warn" id="apply" value="确定报名">
+            </div>
+
+        </form>
+    </div>
+</block>
+<block name="script">
+    <script src="__STATIC__/jqueryupload/jquery.ui.widget.js"></script>
+    <script src="__STATIC__/jqueryupload/jquery.fileupload.js"></script>
+    <script>
+        $(function() {
+            var viewImg = $('#imgList');
+            var empty_img_file_input = $('#empty_img_file_input');
+            var imgIndex = 0;
+            $('#uploads').fileupload({
+                autoUpload: true,
+                url: "{:U('Vote/uploadImg')}",
+                add: function(e, data) {
+                    $('#imgList').find('#empty_img').remove();
+                    var len = $("#imgList li").length;
+                    if (len >= 5) {
+                        Utils.showToast('对不起,您最多只能上传5张图片!');
+                        return false;
+                    } else {
+                        data.submit();
+                    }
+                },
+                // 上传完成后的执行逻辑
+                done: function (e, response) {
+                    if (response.result.status == 1) {
+                        Utils.showToast("上传成功");
+                        var path = "__ROOT__/" + response.result.data.path;
+
+                        var liStr = '<li class="weui_uploader_file" style="background-image:url(' + path +')">'
+                                + '<input type="hidden" id="file' + imgIndex + '" name="file_upload[]" value="' + response.result.data.path + '">'
+                                + '<span class="del"></span>'
+                                + '</li>';
+
+                        viewImg.append(liStr);
+                        $(".del").on("click", function() {
+                            $(this).parent('li').remove();
+                            var len = $("#imgList li").length;
+                            if (len < 5) {
+                                empty_img_file_input.show();
+                            }
+                            if (len <= 0) {
+                                viewImg.html('<li class="weui_uploader_file" id="empty_img" style="background-image:url(__IMG__/img_rect.png)"></li>');
+                            }
+                        });
+                        imgIndex++;
+
+                        var len = $("#imgList li").length;
+                        if (len >= 5) {
+                            empty_img_file_input.hide();
+                        }
+                    } else {
+                        Utils.showToast(response.result.info);
+                    }
+                },
+                fail: function(e, data) {
+                    Utils.showToast("上传失败");
+                }
+            });
+
+            $('#apply').on('click', function() {
+                var name = $("#nickname").val();
+                var phone = $("#mobile").val();
+                var introduce = $('#introduce').val();
+                var len = $("#imgList li").not('#empty_img').length;
+
+                if (introduce.length > 50) {
+                    Utils.showToast('自我介绍不能超过50个字');
+                    return false;
+                }
+                if (len == 0) {
+                    Utils.showToast('请选择图片');
+                    return false;
+                }
+                if (name == "") {
+                    Utils.showToast('请输入昵称');
+                    return false;
+                }
+                if (phone == "") {
+                    Utils.showToast('请输入联系电话');
+                    return false;
+                } else if (! Utils.checkMobile(phone)) {
+                    Utils.showToast('联系电话 无效');
+                    return false;
+                }
+                if (introduce == '') {
+                    $('#introduce').val('我和荔枝的前世今生，最美还是我。');
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "{:U('Vote/apply')}",
+                    data: $('#applyForm').serialize(),
+                    success: function(response) {
+                        if (response.status == 1) {
+                            window.location.href = response.data.url;
+                        } else if (response.status == 2) {
+                            window.location.href = "{:U('Vote/follow')}";
+                        } else {
+                            Utils.showToast(response.prompt);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</block>

@@ -1,0 +1,55 @@
+<extend name="Base/common"/>
+<block name="style">
+
+</block>
+<block name="body">
+<body class="success">
+    <div class="title">购票成功！</div>
+    <div class="card2">
+        <div class="content">
+            <div class="tit">{$comboInfo.name}</div>
+            <div class="txt">桂味荔枝25kg</div>
+            <div class="date">使用日期：{$comboInfo.start_time|date='Y/m/d', ###}至{$comboInfo.end_time|date='Y/m/d', ###}</div>
+            <img class="img" src="__IMG__/card2.png">
+            <div class="num">{$orderInfo.number|default='0'}</div>
+        </div>
+        <div class="footer">
+            购票手机号码：{$orderInfo.mobile}
+        </div>
+    </div>
+    <div class="give">赠送</div>
+    <div class="card">
+        <div class="content">
+            <div class="tit">{$ticketInfo.name}</div>
+            <div class="txt">{$ticketInfo.ticket_info}</div>
+            <div class="date">使用日期：{$ticketInfo.start_time|date='Y/m/d', ###}至{$ticketInfo.end_time|date='Y/m/d', ###}</div>
+            <img class="img" src="__IMG__/formbgheader.png">
+            <div class="num">{$ticketNumber|default='0'}</div>
+        </div>
+        <div class="footer">
+            购票手机号码：{$orderInfo.mobile}
+        </div>
+    </div>
+
+    <a class="give-intro">赠送门票可进入“购买记录>门票”查看</a>
+
+    <div class="give-card">
+        <div class="left">
+            <div class="price">￥<span>10</span></div>
+            <div class="intro">
+                <p class="tit">天美优惠券</p>
+                <p class="txt">仅限购买天美系列产品</p>
+            </div>
+        </div>
+        <div class="right"><a href="http://wap.koudaitong.com/v2/ump/promocard/fetch?alias=n4vo1tpn">点击<br>领取</a></div>
+    </div>
+
+    <div class="footer-wrap">
+        <a class="footer-item" href="{:U('Card/index', array('fromType' => $fromType))}">继续购买</a>
+        <a class="footer-item" href="{:U('Card/myCard', array('fromType' => $fromType))}">我的提货券</a>
+        <a class="footer-item" href="{:U('Index/index', array('fromType' => $fromType))}">逛逛其他</a>
+    </div>
+
+</body>
+
+</block>

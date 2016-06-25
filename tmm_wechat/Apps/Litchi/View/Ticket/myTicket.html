@@ -1,0 +1,45 @@
+<extend name="Base/common"/>
+<block name="style">
+
+</block>
+<block name="body">
+<body class="payInfo">
+<empty name="ticketOrderList">
+    <div class="noCard">您还没有购买门票</div>
+<else />
+    <volist name="ticketOrderList" id="vo">
+        <div class="card">
+            <div class="content">
+                <div class="tit">{$vo.ticketInfo.name}
+                    <eq name="vo.type" value="2">
+                        <span class="give-ticket">赠</span>
+                    </eq>
+                </div>
+                <div class="txt">{$vo.ticketInfo.ticket_info}</div>
+                <div class="date">使用日期：{$vo.ticketInfo.start_time|date='Y/m/d', ###}至{$vo.ticketInfo.end_time|date='Y/m/d', ###}</div>
+                <div class="status">
+
+                    <eq name="vo.is_enter" value="0">
+                        <span class="flag flag-dark">未入园</span>
+                        <else />
+                        <span class="flag flag-gray">已入园</span>
+                    </eq>
+
+                </div>
+                <img class="img" src="__IMG__/formbgheader.png">
+            </div>
+            <div class="footer">
+                购票手机号码：{$vo.mobile}
+            </div>
+            <div class="num">
+                {$vo.nums}
+            </div>
+        </div>
+    </volist>
+</empty>
+
+
+
+
+</body>
+</block>

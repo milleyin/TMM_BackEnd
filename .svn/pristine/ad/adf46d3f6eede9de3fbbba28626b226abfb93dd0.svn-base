@@ -1,0 +1,10 @@
+<extend name="Base/common"/>
+<block name="style">
+</block>
+<block name="body">
+    <body style="margin: 0 auto;min-width: 320px;max-width: 640px;height: 100%;background-color: #000000;">
+        <img src="__IMG__/rewards.png" width="100%" height="100%">
+    </body>
+</block>
+<block name="script">
+</block>

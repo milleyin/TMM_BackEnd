@@ -1,0 +1,131 @@
+.btn-close{
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 17px;
+    height: 17px;
+    background: url('../images/bg_icon.png') no-repeat -25px 0;
+    cursor: pointer;
+}
+
+.btn-close:hover {
+    text-decoration: none;
+    border-bottom: 0 none;
+}
+.upload-img-box-multiply {
+    margin-top: 70px;
+}
+.upload-img-box-multiply .upload-pre-item {
+    position: relative;
+    height: 180px;
+    clear: both;
+}
+.upload-img-box-multiply .upload-pre-item-image {
+    position: relative;
+    margin-right: 8px;
+    margin-top: 8px;
+    padding: 1px;
+    border: 1px solid #ccc;
+    width: 120px;
+    max-height: 120px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .3s linear;
+}
+.upload-img-box-multiply .upload-pre-item-image img{
+    max-height: 120px;
+    vertical-align: top;
+}
+.upload-img-box-multiply .multiply-image-title {
+    position: absolute;
+    top: 0;
+    left: 150px;
+}
+.upload-img-box-multiply .multiply-image-desc {
+    position: absolute;
+    top: 50px;
+    left: 150px;
+}
+
+.upload-img-box-multiply .multiply-label {
+    display: block;
+}
+.upload-img-box-multiply .multiply-textarea {
+    height: 100px;
+    padding: 4px;
+    border: 1px solid #eeeeee;
+    background-color: #fff;
+    transition: all .3s linear
+}
+.upload-img-box-multiply .multiply-msg {
+    display: none;
+    vertical-align: top;
+    font-weight: normal;
+}
+.upload-img-box-multiply .multiply-msg.success {
+    color: #468847;
+}
+.upload-img-box-multiply .multiply-msg.error {
+    color: #B94A48;
+}
+.upload-img-box-multiply .upload-pre-file {
+    padding: 0 10px;
+    width: 380px;
+    height: 35px;
+    line-height: 35px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border: 1px dashed #ccc;
+    background-color: #fff;
+}
+
+/* 上传图片点击弹出层 */
+.uploadback {
+    z-index: 99999;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+}
+.upload-img-popup {
+    position: fixed;
+    z-index: 9999;
+    padding: 3px;
+    border: 1px solid #c3c3c3;
+    background-color: #fff;
+    box-shadow: 0 0 4px rgba(0,0,0,.5);
+}
+
+.upload-img-popup img{
+    display: inline-block;
+    max-height: 500px;
+    max-width: 800px;
+    cursor: pointer;
+}
+
+.upload-img-popup .close-pop {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 17px;
+    height: 17px;
+    background: url('../images/bg_icon.png') no-repeat -25px 0;
+}
+.upload-img-popup .close-pop:hover {
+    text-decoration: none;
+    border-bottom: 0 none;
+}
+.upload-img-popup img {
+    display: block;
+}
+.upload_icon_all {
+    width: 15px;
+    height: 15px;
+    background: url('../images/attachment_1.png');
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px
+}

@@ -1,0 +1,38 @@
+<?php
+namespace app\controllers;
+
+use FrontController;
+
+/**
+ * 广告相关接口
+ * Class AdController
+ * @package app\controllers
+ *
+ * @author Moore Mo
+ */
+class AdController extends FrontController
+{
+	/**
+	 * 图片广告
+	 */
+	public function actionImg() {
+		$model = new \Upload;
+		$criteria = new \CDbCriteria;
+		$criteria->addColumnCondition(
+			array(
+				'type' => \Ad::AD_TYPE_IMAGE,
+				'upload_id' => 1,
+			)
+		);
+		$imgAdObj = $model->findAll($criteria);
+
+		$this->render('img', array('model' => $imgAdObj));
+	}
+
+	/**
+	 * 视频广告
+	 */
+	public function actionVideo() {
+
+	}
+}

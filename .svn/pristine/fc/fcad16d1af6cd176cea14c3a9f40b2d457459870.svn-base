@@ -1,0 +1,56 @@
+<?php
+/* @var $this BankCardController */
+/* @var $model BankCard */
+/* @var $form CActiveForm */
+?>
+
+<div class="form wide">
+
+<?php $form = $this->beginWidget('CActiveForm', array(
+	'id'=>'bank-card-form',
+	'enableAjaxValidation'=>true,
+	'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>true,
+	),
+)); ?>
+
+	<p class="note">这些字段 <span class="required">*</span>是必须的.</p>
+
+	<?php echo $form->errorSummary($model); ?>
+
+	<div class="row">
+		<?php
+			if ( !$model->bank_id)
+				$model->bank_id = $oldModel->bank_id;
+		?>
+		<?php echo $form->labelEx($model,'bank_id'); ?>
+		<?php echo $form->dropDownList($model,'bank_id',array(''=>'--请选择--')+Bank::data()); ?>
+		<?php echo $form->error($model, 'bank_id'); ?>
+	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'bank_branch'); ?>
+		<?php echo $form->textField($model,'bank_branch',array('size'=>30,'maxlength'=>20, 'placeholder'=>$oldModel->bank_branch)); ?>
+		<?php echo $form->error($model, 'bank_branch'); ?>
+	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'bank_name'); ?>
+		<?php echo $form->textField($model,'bank_name',array('size'=>20,'maxlength'=>20, 'placeholder'=>$oldModel->bank_name)); ?>
+		<?php echo $form->error($model, 'bank_name'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'bank_code'); ?>
+		<?php echo $form->textField($model,'bank_code',array('size'=>30,'maxlength'=>30, 'placeholder'=>$oldModel->bank_code)); ?>
+		<?php echo $form->error($model, 'bank_code'); ?>
+	</div>
+
+	<div class="row buttons">
+		<?php echo CHtml::submitButton('下一步'); ?>
+	</div>
+
+<?php $this->endWidget(); ?>
+
+</div><!-- form -->

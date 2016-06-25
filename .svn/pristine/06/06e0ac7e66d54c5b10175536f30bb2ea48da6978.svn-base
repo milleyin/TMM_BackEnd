@@ -1,0 +1,12 @@
+<?php
+namespace app\user\controllers;
+
+use UserModulesController;
+
+class IndexController extends UserModulesController
+{
+	public function actionIndex()
+	{
+		$this->render('index');
+	}
+}

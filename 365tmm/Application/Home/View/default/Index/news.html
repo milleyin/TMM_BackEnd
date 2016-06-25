@@ -1,0 +1,24 @@
+<extend name="Base/common"/>
+<block name="body">
+    <div class="banner">
+        <div class="big-img img8"></div>
+    </div>
+    <div class="content con-news">
+        <div class="article-list">
+        <volist name="articleList" id="article">
+            <div class="item">
+                <h2><span class="tag"><span>{$article.category_name}</span></span><a href="{:U('index/detail?id='.$article['id'])}">{$article.title}</a></h2>
+                <div class="desc"><span class="author">发布者：田觅觅</span><span class="date">{$article.update_time|date='Y-m-d',###}</span></div>
+                <div class="abstract">{$article.description}</div>
+                <a class="img" href="{:U('index/detail?id='.$article['id'])}"><img src="__ROOT__{$article.cover_path}"></a>
+            </div>
+        </volist>
+        </div>
+
+        <div class="paging">
+            {$pageInfo}
+        </div>
+
+    </div>
+    <span class="icon-to-top"></span>
+</block>

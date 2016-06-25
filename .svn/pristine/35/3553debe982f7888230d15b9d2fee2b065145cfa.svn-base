@@ -1,0 +1,48 @@
+2016/06/05 14:24:58 [info] [TestIndex] 
+##########################
+[控制台开始] :2016-06-05 14:24:58:981
+测试
+[控制台结束] :2016-06-05 14:24:58:9813
+##########################
+2016/06/05 14:26:12 [info] [TestIndex] #
+###########################
+[控制台开始] :2016-06-05 14:26:12:4536#
+测试#
+[控制台结束] :2016-06-05 14:26:12:4539
+##########################
+2016/06/05 14:36:08 [error] [exception.CDbException] exception 'CDbException' with message 'table "pad_pad" 没有任何栏位将被更新.' in D:\wamp\www\pad\framework\db\schema\CDbCommandBuilder.php:395
+Stack trace:
+#0 D:\wamp\www\pad\framework\db\ar\CActiveRecord.php(1770): CDbCommandBuilder->createUpdateCommand(Object(CMysqlTableSchema), Array, Object(CDbCriteria))
+#1 D:\wamp\www\pad\app\pad\protected\commands\PadCommand.php(14): CActiveRecord->updateAll(Array)
+#2 [internal function]: PadCommand->actionIndex()
+#3 D:\wamp\www\pad\framework\console\CConsoleCommand.php(172): ReflectionMethod->invokeArgs(Object(PadCommand), Array)
+#4 D:\wamp\www\pad\framework\console\CConsoleCommandRunner.php(71): CConsoleCommand->run(Array)
+#5 D:\wamp\www\pad\framework\console\CConsoleApplication.php(92): CConsoleCommandRunner->run(Array)
+#6 D:\wamp\www\pad\framework\base\CApplication.php(185): CConsoleApplication->processRequest()
+#7 D:\wamp\www\pad\framework\yiic.php(33): CApplication->run()
+#8 D:\wamp\www\pad\app\pad\protected\yiic.php(7): require_once('D:\wamp\www\pad...')
+#9 {main}
+---
+2016/06/05 14:37:30 [info] [PadIndex] 
+##########################
+[控制台开始] :2016-06-05 14:37:29:8821
+2
+[控制台结束] :2016-06-05 14:37:30:0012
+##########################
+2016/06/05 14:37:39 [info] [PadIndex] 
+##########################
+[控制台开始] :2016-06-05 14:37:39:7826
+[控制台结束] :2016-06-05 14:37:39:8742
+##########################
+2016/06/05 14:37:57 [info] [PadIndex] 
+##########################
+[控制台开始] :2016-06-05 14:37:57:1782
+0
+[控制台结束] :2016-06-05 14:37:57:2565
+##########################
+2016/06/05 14:38:10 [info] [PadIndex] 
+##########################
+[控制台开始] :2016-06-05 14:38:10:5358
+0
+[控制台结束] :2016-06-05 14:38:10:641
+##########################

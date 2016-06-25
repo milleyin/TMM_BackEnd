@@ -1,0 +1,18 @@
+<?php
+namespace app\controllers;
+
+use FrontController;
+
+/**
+ * 
+ * @author Changhai Zhan
+ *
+ */
+class IndexController extends FrontController
+{
+	public function actionIndex()
+	{
+		$model = 'test';
+		$this->render('index', array('model'=>$model));
+	}
+}

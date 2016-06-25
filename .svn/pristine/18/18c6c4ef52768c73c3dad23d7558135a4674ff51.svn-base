@@ -1,0 +1,53 @@
+// 备注：凡是POST请求的，都需要先请求一下GET，拿到CSRF码，请求格式为
+// 模块/方法：
+// api/xx/xxx (同要POST请求的url)
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取CSRF
+
+// 参数 &csrf=csrf
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "csrf": {
+            "TMM_CSRF": "5d2694695c6989098c22879610e3fd007294f67c"
+        }
+    }
+}
+
+// 模块/方法：
+// index.php?r=api/order/dot_cancel
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        取消订单
+
+// 参数
+$id=1 订单id
+// 结果
+// 成功
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "order": { // 订单信息
+            "name": "MJ2015092500030", // 订单号
+            "value": "1", // 订单id
+            "link": "http://test.365tmm.net/index.php?r=api/order/view&id=2" // 订单详情链接
+        },
+        "order_status": { // 订单状态-3=>'已过期',-2=>'已退款',-1=>'已取消',0=>'待处理',1=>'待付款',2=>'已付款',3=>'已消费'
+            "name": "已取消",
+            "value": "-1" //
+        }
+    }
+}

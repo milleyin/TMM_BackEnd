@@ -1,0 +1,18 @@
+<?php
+
+// This is the database connection configuration.
+return CMap::mergeArray(
+	array(
+		'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
+		// uncomment the following lines to use a MySQL database
+		/*
+		'connectionString' => 'mysql:host=localhost;dbname=testdrive',
+		'emulatePrepare' => true,
+		'username' => 'root',
+		'password' => '',
+		'charset' => 'utf8',
+		*/
+	),
+	file_exists(dirname(__FILE__).'/database-dev.php') ? require(dirname(__FILE__).'/database-dev.php') : array(),
+	file_exists(dirname(__FILE__).'/database-local.php') ? require(dirname(__FILE__).'/database-local.php') : array()
+);

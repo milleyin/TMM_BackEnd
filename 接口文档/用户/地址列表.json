@@ -1,0 +1,115 @@
+
+//URL /index.php?r=api/area/index
+
+//SEARCH /index.php?r=api/area/index&search={城市名、 省名称、 县（区）名称、及各自的拼音 支持拼音缩写 空表示没有搜索条件及全部显示}
+
+//serach.value 获取搜索链接
+
+//GET 请求 无需登录
+
+//不存在错误 
+
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "hot_city": [                 												//后台添加热门城市 暂不支持热门 县（区） 数组  可以为空
+            {
+                "name": "深圳",														//热门城市名称
+                "value": "2211",													//热门城市ID
+                "spell": "shenzhen",												//热门城市拼音
+                "link": "http://localhost/tmm/index.php?r=api/area/set&id=2211",	// 切换城市请求 GET 成功返回城市的数据 详情见 切换城市接口（县（区））文档
+                "counties_link": "http://localhost/tmm/index.php?r=api/area/counties&id=2211", //请求城市更详情的县 或者 区  支持切换城市（县（区））  为县（区）时 无此链接
+                "parent": {															
+                    "name": "广东省",												//省名称
+                    "value": "2184",												//省名称
+                    "spell": "guangdongsheng"										//省拼音
+                }
+            },
+            {
+                "name": "九江",
+                "value": "1439",
+                "spell": "jiujiang",
+                "link": "http://localhost/tmm/index.php?r=api/area/set&id=1439",
+                "counties_link": "http://localhost/tmm/index.php?r=api/area/counties&id=1439",
+                "parent": {
+                    "name": "江西省",
+                    "value": "1414",
+                    "spell": "jiangxisheng"
+                }
+            }
+        ],
+        "list_data": {																				//城市列表数据 可以为空
+            "s": [																					//城市拼音分组
+                {
+                    "name": "深圳",																	//城市名称	
+                    "value": "2211",																//城市ID
+                    "group": "s",																	//城市分组拼音字母
+                   "spell": "shenzhen",																//城市拼音
+                    "link": "http://localhost/tmm/index.php?r=api/area/set&id=2211", 				// 切换城市请求 GET 成功返回城市的数据 详情见 切换城市接口（县（区））文档
+                    "counties_link": "http://localhost/tmm/index.php?r=api/area/counties&id=2211", 	//请求城市更详情的县 或者 区  支持切换城市（县（区）） 为县（区）时 无此链接
+                    "parent": {
+                        "name": "广东省",															//省名称
+                        "value": "2184",															//省名称
+                        "spell": "guangdongsheng"													//省拼音
+                    }
+                },
+                {
+                    "name": "石家庄",
+                    "value": "103",
+                    "group": "s",
+                    "spell": "shijiazhuang",
+                    "link": "http://localhost/tmm/index.php?r=api/area/set&id=103",
+                    "counties_link": "http://localhost/tmm/index.php?r=api/area/counties&id=103",
+                    "parent": {
+                        "name": "河北省",
+                        "value": "102",
+                        "spell": "hebeisheng"
+                    }
+                }
+            ]
+        },
+        "location": {																				//当前位置 通过 经纬度设置定位  详情见  经纬度设置定位保存
+            "name": "GPS",																			//GPS 名称
+            "value": {																				//设置后 系统返回值 可以为空
+                "address_info": {																	//地址的详细信息
+                    "name": "中山市",																//当前的城市名称  暂不支持县（区）GPS 定位  也就说 在县（区）定位的话 返回的数据 是该县（区）的城市定位
+                    "value": "2358",																//城市的ID
+                    "counties_link": "http://localhost/tmm/index.php?r=api/area/counties&id=2358", 	//请求城市更详情的县 或者 区  支持切换城市（县（区））  为县（区）时 无此链接
+                    "city": {																		//城市
+                        "name": "中山市",															//名称
+                        "value": "2358"																//ID
+                    },
+                    "province": {																	//省份
+                        "name": "广东省",															//名称	
+                        "value": "2184"																//ID
+                    },
+                    "district": {																	//县（区）
+                        "name": "",																	//名称 可以为空
+                        "value": ""																	//ID
+                    },
+                    "address": "广东省中山市",														//格式化地址
+                    "location": {																	//后端定位 是该定位的城市定位
+                        "location": "113.382393,22.521112",											//格式化经纬度
+                        "lng": "113.382393",														//经度
+                        "lat": "22.521112"															//维度
+                    },
+                    "location_accurate": {															//GPS 设置时的经纬度 参数
+                        "location": "113.25,22.721512",												//格式化经纬度
+                        "lng": "113.25",															//经度
+                        "lat": "22.721512"															//维度
+                    }
+                }
+            }
+        },
+        "orientation": {																			//切换城市的数据
+            "name": "orientation",																	//名称
+            "value": null																			//设置后返回的值 可以为空
+        },
+        "search": {																					//搜索的名称 和 链接
+            "name": "search",																		//搜索的名称
+            "value": "http://localhost/tmm/index.php?r=api/area/index&search="						//搜索的链接
+        }
+    }
+}

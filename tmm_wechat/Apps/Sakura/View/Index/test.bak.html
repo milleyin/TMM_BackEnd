@@ -1,0 +1,30 @@
+<extend name="Base/common"/>
+<block name="body">
+    <div class="wrap">
+        <ul>
+            <li><a href="{:U('activity')}">樱花节活动详情</a></li>
+            <li><a href="{:U('reserve')}">樱花节门票预订</a></li>
+            <li><a href="{:U('paySuccess')}">樱花节活动支付成功</a></li>
+            <li><a href="{:U('queryCode')}">查询二维码</a></li>
+            <li><a href="{:U('confirm')}">确认消费</a></li>
+            <li><a href="{:U('follow')}">关注公众号</a></li>
+            <li>{$openId}</li>
+        </ul>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function() {
+            var openId = '{$openId}';
+
+
+            function test() {
+                alert(openId);
+            }
+
+            test();
+
+
+        });
+    </script>
+</block>

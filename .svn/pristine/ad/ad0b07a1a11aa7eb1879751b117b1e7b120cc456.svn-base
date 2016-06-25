@@ -1,0 +1,66 @@
+<?php
+/* @var $this MenuController */
+/* @var $model Menu */
+/* @var $form CActiveForm */
+?>
+
+<div class="form wide">
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'menu-form',
+	//'focus'=>array($model, 'columnName'),
+	'enableAjaxValidation'=>false,
+	'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>true,
+	),
+	//'htmlOptions' => array('enctype'=>'multipart/form-data'),
+)); ?>
+
+	<p class="note">这些字段<span class="required">*</span>是必须的。</p>
+
+	<?php echo $form->errorSummary($model); ?>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'type'); ?>
+		<?php echo $form->textField($model,'type'); ?>
+		<?php echo $form->error($model,'type'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'name'); ?>
+		<?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>64)); ?>
+		<?php echo $form->error($model,'name'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'title'); ?>
+		<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>64)); ?>
+		<?php echo $form->error($model,'title'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'info'); ?>
+		<?php echo $form->textField($model,'info',array('size'=>60,'maxlength'=>128)); ?>
+		<?php echo $form->error($model,'info'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'route'); ?>
+		<?php echo $form->textField($model,'route',array('size'=>60,'maxlength'=>128)); ?>
+		<?php echo $form->error($model,'route'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'sort'); ?>
+		<?php echo $form->textField($model,'sort'); ?>
+		<?php echo $form->error($model,'sort'); ?>
+	</div>
+
+	<div class="row buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? '创建' : '保存'); ?>
+	</div>
+
+<?php $this->endWidget(); ?>
+
+</div><!-- form -->

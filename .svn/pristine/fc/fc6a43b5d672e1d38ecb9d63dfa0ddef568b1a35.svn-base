@@ -1,0 +1,89 @@
+<?php
+/* @var $this StoreController */
+/* @var $model Store */
+
+$this->breadcrumbs = array(
+	'体验店管理页'=>array('admin'),
+	$model->name,
+);
+?>
+
+<h1>查看体验店 <font color='#eb6100'><?php echo CHtml::encode($model->name); ?></font></h1>
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		array(
+				'name'=>'id',
+		),
+		array(
+				'name'=>'phone',
+		),
+		array(
+				'name'=>'store_name',
+		),
+		array(
+				'name'=>'name',
+		),
+		array(
+				'name'=>'telephone',
+		),
+		array(
+				'name'=>'pad_count',
+		),
+		array(
+				'name'=>'province',
+		        'value'=>$model->Store_Area_province->name,
+		),
+		array(
+				'name'=>'city',
+		        'value'=>$model->Store_Area_city->name,
+		),
+		array(
+				'name'=>'district',
+		        'value'=>$model->Store_Area_district->name,
+		),
+		array(
+				'name'=>'address',
+		),    
+        array(
+                'name'=>'Store_Role.manager_id',
+        ),
+        array(
+                'name'=>'Store_Role.count',
+        ),
+        array(
+                'name'=>'Store_Role.error_count',
+        ),
+		array(
+				'name'=>'Store_Role.login_error',		        
+		),
+        array(
+                'name'=>'Store_Role.login_time',
+                'type'=>'datetime',
+        ),
+        array(
+                'name'=>'Store_Role.login_ip',
+        ),
+        array(
+                'name'=>'Store_Role.last_time',
+                'type'=>'datetime',
+        ),
+        array(
+                'name'=>'Store_Role.last_ip',
+        ),
+		array(
+				'name'=>'up_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'add_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'status',
+				'value'=>$model::$_status[$model->status],
+		),
+	),
+)); 
+?>

@@ -1,0 +1,172 @@
+<?php
+
+/**
+ * This is the model class for table "{{prize}}".
+ *
+ * The followings are the available columns in table '{{prize}}':
+ * @property string $id
+ * @property string $store_id
+ * @property string $pad_id
+ * @property string $config_id
+ * @property string $manager_id
+ * @property string $name
+ * @property string $info
+ * @property string $url
+ * @property string $count
+ * @property string $number
+ * @property string $odds
+ * @property integer $receive_type
+ * @property integer $position
+ * @property string $up_time
+ * @property string $add_time
+ * @property integer $status
+ */
+class Prize extends ActiveRecord
+{
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return '{{prize}}';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+			array('store_id, pad_id, config_id, manager_id', 'required'),
+			array('receive_type, position, status', 'numerical', 'integerOnly'=>true),
+			array('store_id, pad_id, config_id, manager_id', 'length', 'max'=>20),
+			array('name', 'length', 'max'=>32),
+			array('info, url', 'length', 'max'=>128),
+			array('count, number, odds', 'length', 'max'=>11),
+			array('up_time, add_time', 'length', 'max'=>10),
+			// The following rule is used by search().
+			// @todo Please remove those attributes that should not be searched.
+			array('id, store_id, pad_id, config_id, manager_id, name, info, url, count, number, odds, receive_type, position, up_time, add_time, status', 'safe', 'on'=>'search'),
+		);
+	}
+
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+		);
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'id' => 'ID',
+			'store_id' => '体验店',
+			'pad_id' => '展示屏',
+			'config_id' => '抽奖配置',
+			'manager_id' => '操作角色',
+			'name' => '名称',
+			'info' => '描述',
+			'url' => 'Url',
+			'count' => '库存',
+			'number' => '剩余数量',
+			'odds' => '中奖率',
+			'receive_type' => '领取方式',
+			'position' => '奖品位置',
+			'up_time' => '更新时间',
+			'add_time' => '创建时间',
+			'status' => '状态',
+		);
+	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 *
+	 * Typical usecase:
+	 * - Initialize the model fields with values from filter form.
+	 * - Execute this method to get CActiveDataProvider instance which will filter
+	 * models according to data in model fields.
+	 * - Pass data provider to CGridView, CListView or any similar widget.
+	 *
+	 * @return CActiveDataProvider the data provider that can return the models
+	 * based on the search/filter conditions.
+	 */
+	public function search()
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria = new CDbCriteria;
+
+		$criteria->compare('id', $this->id,true);
+		$criteria->compare('store_id', $this->store_id,true);
+		$criteria->compare('pad_id', $this->pad_id,true);
+		$criteria->compare('config_id', $this->config_id,true);
+		$criteria->compare('manager_id', $this->manager_id,true);
+		$criteria->compare('name', $this->name,true);
+		$criteria->compare('info', $this->info,true);
+		$criteria->compare('url', $this->url,true);
+		$criteria->compare('count', $this->count,true);
+		$criteria->compare('number', $this->number,true);
+		$criteria->compare('odds', $this->odds,true);
+		$criteria->compare('receive_type', $this->receive_type);
+		$criteria->compare('position', $this->position);
+		$this->timeSearch('up_time', $criteria);
+		$this->timeSearch('add_time', $criteria);
+		if ($this->status != self::_STATUS_DELETED)
+			$criteria->compare('status', '<>' . self::_STATUS_DELETED);
+		$criteria->compare('status', $this->status);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>10,
+			),
+			'sort'=>array(
+				'defaultOrder'=>'t.id desc',
+				/*
+				'attributes'=>array(
+					'id'=>array(
+						'desc'=>'id desc',
+					),
+				),
+				*/
+			),
+		));
+	}
+
+	/**
+	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param string $className active record class name.
+	 * @return Prize the static model class
+	 */
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+	
+	/**
+	 * 保存之前的操作
+	 * (non-PHPdoc)
+	 * @see CActiveRecord::beforeSave()
+	 */
+	public function beforeSave()
+	{
+		if (parent::beforeSave())
+		{
+			if ($this->getIsNewRecord())
+				$this->up_time = $this->add_time = time();
+			return true;
+		}
+		return false;
+	}
+}

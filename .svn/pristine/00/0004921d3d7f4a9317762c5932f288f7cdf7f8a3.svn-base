@@ -1,0 +1,151 @@
+<?php
+
+/**
+ * This is the model class for table "{{admin}}".
+ *
+ * The followings are the available columns in table '{{admin}}':
+ * @property string $id
+ * @property string $username
+ * @property string $phone
+ * @property string $name
+ * @property string $up_time
+ * @property string $add_time
+ * @property integer $status
+ */
+class Admin extends ActiveRecord
+{
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return '{{admin}}';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+			//array('id, username', 'required'),
+			array('status', 'numerical', 'integerOnly'=>true),
+			array('id', 'length', 'max'=>20),
+			array('username', 'length', 'max'=>32),
+			array('phone', 'length', 'max'=>11),
+			array('name', 'length', 'max'=>16),
+			array('up_time, add_time', 'length', 'max'=>10),
+		    
+		    //自己修改信息
+		    array('name, phone', 'required', 'on'=>'self_update'),
+		    array('name, phone', 'safe', 'on'=>'self_update'),
+		    array('phone', 'ext.validators.PhoneValidator', 'on'=>'self_update'),
+		    array('id, username, up_time, add_time, status', 'unsafe', 'on'=>'self_update'),
+
+			// The following rule is used by search().
+			// @todo Please remove those attributes that should not be searched.
+			array('id, username, phone, name, up_time, add_time, status', 'safe', 'on'=>'search'),
+		);
+	}
+
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+            'Admin_Role'=>array(self::BELONGS_TO, 'Role', 'id'),
+		    'Admin_Password'=>array(self::HAS_ONE, 'Password', 'role_id'),
+		);
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'id' => 'ID',
+			'username' => '用户名',
+			'phone' => '手机号',
+			'name' => '姓名',
+			'up_time' => '修改时间',
+			'add_time' => '注册时间',
+			'status' => '状态',
+		);
+	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 *
+	 * Typical usecase:
+	 * - Initialize the model fields with values from filter form.
+	 * - Execute this method to get CActiveDataProvider instance which will filter
+	 * models according to data in model fields.
+	 * - Pass data provider to CGridView, CListView or any similar widget.
+	 *
+	 * @return CActiveDataProvider the data provider that can return the models
+	 * based on the search/filter conditions.
+	 */
+	public function search()
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria = new CDbCriteria;
+
+		$criteria->compare('id', $this->id,true);
+		$criteria->compare('username', $this->username,true);
+		$criteria->compare('phone', $this->phone,true);
+		$criteria->compare('name', $this->name,true);
+		$this->timeSearch('up_time', $criteria);
+		$this->timeSearch('add_time', $criteria);
+		if ($this->status != self::_STATUS_DELETED)
+			$criteria->compare('status', '<>' . self::_STATUS_DELETED);
+		$criteria->compare('status', $this->status);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>10,
+			),
+			'sort'=>array(
+				'defaultOrder'=>'t.id desc',
+				/*
+				'attributes'=>array(
+					'id'=>array(
+						'desc'=>'id desc',
+					),
+				),
+				*/
+			),
+		));
+	}
+
+	/**
+	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param string $className active record class name.
+	 * @return Admin the static model class
+	 */
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+	
+	/**
+	 * 保存之前的操作
+	 * (non-PHPdoc)
+	 * @see CActiveRecord::beforeSave()
+	 */
+	public function beforeSave()
+	{
+		if (parent::beforeSave())
+			return true;
+		
+		return false;
+	}
+}

@@ -1,0 +1,80 @@
+2016/05/31 17:37:32 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---
+2016/05/31 17:37:33 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---
+2016/05/31 17:49:17 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---
+2016/05/31 17:49:17 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---
+2016/05/31 17:49:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---
+2016/05/31 17:49:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---
+2016/05/31 17:49:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---
+2016/05/31 17:49:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "test" 动作.' in D:\wamp\www\pad\framework\web\CController.php:483
+Stack trace:
+#0 D:\wamp\www\pad\framework\web\CController.php(270): CController->missingAction('test')
+#1 D:\wamp\www\pad\framework\web\CWebApplication.php(282): CController->run('test')
+#2 D:\wamp\www\pad\framework\web\CWebApplication.php(141): CWebApplication->runController('admin/index/tes...')
+#3 D:\wamp\www\pad\framework\base\CApplication.php(185): CWebApplication->processRequest()
+#4 D:\wamp\www\pad\app\pad\web\index.php(9): CApplication->run()
+#5 {main}
+REQUEST_URI=/admin/index/test
+---

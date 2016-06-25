@@ -1,0 +1,128 @@
+<?php
+/* @var $this ExpressController */
+/* @var $model Express */
+/* @var $form CActiveForm */
+?>
+
+<div class="form wide">
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+    'id'=>'express-form',
+    //'focus'=>array($model, 'columnName'),
+    'enableAjaxValidation'=>false,
+    'enableClientValidation'=>true,
+    'clientOptions'=>array(
+        'validateOnSubmit'=>true,
+    ),
+    //'htmlOptions' => array('enctype'=>'multipart/form-data'),
+)); ?>
+
+    <p class="note">这些字段<span class="required">*</span>是必须的。</p>
+
+    <?php echo $form->errorSummary($model); ?>
+    
+    <div class="row value">
+        <?php echo $form->label($model,'name'); ?>
+        <?php echo CHtml::encode($model->name); ?>
+    </div>
+
+    <div class="row value">
+        <?php echo $form->label($model,'phone'); ?>
+        <?php echo CHtml::encode($model->phone); ?>
+    </div>
+
+    <div class="row value">
+        <?php echo $form->label($model,'address'); ?>
+        <?php echo CHtml::encode($model->Express_Area_province->name . $model->Express_Area_city->name . $model->Express_Area_district->name . $model->address);?>
+    </div>
+    
+    <div class="row value">
+        <?php echo $form->label($model->Express_Record, 'prize_name'); ?>
+        <?php echo CHtml::encode($model->Express_Record->prize_name); ?>
+    </div>
+    
+    <div class="row">
+        <?php echo $form->label($model->Express_Record->Record_Upload, 'path'); ?>
+        <?php echo CHtml::image($model->Express_Record->Record_Upload->getUrlPath(), CHtml::encode($model->Express_Record->Record_Upload->info), array('style'=>'widht:150px;height:150px;')); ?>
+    </div>
+    
+    <div class="row value">
+        <?php echo $form->label($model->Express_Record, 'prize_info'); ?>
+        <?php echo CHtml::encode($model->Express_Record->prize_info);?>
+    </div>
+    
+    <div class="row value">
+        <?php echo $form->label($model->Express_Record->Record_Store, 'store_name'); ?>
+        <?php echo CHtml::encode($model->Express_Record->Record_Store->store_name);?>
+    </div>
+    
+    <div class="row value">
+        <?php echo $form->label($model->Express_Record->Record_Store, 'phone'); ?>
+        <?php echo CHtml::encode($model->Express_Record->Record_Store->phone);?>
+    </div>
+    
+    <div class="row value">
+        <?php echo $form->label($model->Express_Record->Record_Pad, 'name'); ?>
+        <?php echo CHtml::encode($model->Express_Record->Record_Pad->name);?>
+    </div>
+    
+    <div class="row value">
+        <?php echo $form->label($model->Express_Record->Record_Pad, 'number'); ?>
+        <?php echo CHtml::encode($model->Express_Record->Record_Pad->number);?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model,'name'); ?>
+        <?php echo $form->textField($model,'name',array('size'=>32,'maxlength'=>32)); ?>
+        <?php echo $form->error($model,'name'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model,'phone'); ?>
+        <?php echo $form->textField($model,'phone',array('size'=>11,'maxlength'=>11)); ?>
+        <?php echo $form->error($model,'phone'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model,'province'); ?>
+        <?php echo $form->textField($model,'province',array('size'=>11,'maxlength'=>11)); ?>
+        <?php echo $form->error($model,'province'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model,'city'); ?>
+        <?php echo $form->textField($model,'city',array('size'=>11,'maxlength'=>11)); ?>
+        <?php echo $form->error($model,'city'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model,'district'); ?>
+        <?php echo $form->textField($model,'district',array('size'=>11,'maxlength'=>11)); ?>
+        <?php echo $form->error($model,'district'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model,'address'); ?>
+        <?php echo $form->textField($model,'address',array('size'=>60,'maxlength'=>128)); ?>
+        <?php echo $form->error($model,'address'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model,'express_name'); ?>
+        <?php echo $form->textField($model,'express_name',array('size'=>32,'maxlength'=>32)); ?>
+        <?php echo $form->error($model,'express_name'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model,'express_code'); ?>
+        <?php echo $form->textField($model,'express_code',array('size'=>60,'maxlength'=>128)); ?>
+        <?php echo $form->error($model,'express_code'); ?>
+    </div>
+
+    <div class="row buttons">
+        <?php echo CHtml::submitButton($model->isNewRecord ? '创建' : '保存'); ?>
+    </div>
+
+<?php $this->endWidget(); ?>
+
+</div><!-- form -->

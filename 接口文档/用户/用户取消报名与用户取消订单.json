@@ -1,0 +1,3 @@
+//name 我发起的活动-（取消报名 取消订单接口相同）
+//链接 index.php?r=api/order/cancel&id=value
+//GET

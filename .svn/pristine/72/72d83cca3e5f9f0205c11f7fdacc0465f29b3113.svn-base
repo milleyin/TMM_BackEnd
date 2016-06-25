@@ -1,0 +1,113 @@
+<extend name="Base/back"/>
+<block name="style">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+    </style>
+</block>
+<block name="body">
+<body>
+<include file="Public/back-nav"/>
+    <div class="container-fluid" style="padding-top: 30px;">
+        <p class="bg-info" style="padding: 10px 0;text-align: center;">创意自拍--({$info.nickname}) 详情</p>
+
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">编号</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{$info.id}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">昵称</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{$info.nickname}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">联系电话</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{$info.mobile}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">票数</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{$info.poll}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">自我介绍</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{$info.introduce}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">参赛时间</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{$info.racing_time|date='Y-m-d H:i:s',###}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">审核状态</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        <eq name="info.audit_status" value="0">
+                            待审
+                        </eq>
+                        <eq name="info.audit_status" value="1">
+                            <span style="color: #44b549;">通过</span>
+                        </eq>
+                        <eq name="info.audit_status" value="-1">
+                            <span style="color: #e97e00;">不通过</span>
+                        </eq>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">审核时间</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        <eq name="info.audit_time" value="0">
+                                    --
+                        <else />
+                            {$info.audit_time|date='Y-m-d H:i:s',###}
+                        </eq>
+                        
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">参赛照片</label>
+                <div class="col-sm-10">
+                    <empty name="info.imgList">
+                        <p class="form-control-static">无参赛照片...</p>
+                    <else />
+                        <div class="row">
+                            <volist name="info.imgList" id="vo">
+                                <div class="col-sm-4" style="padding: 5px 5px;">
+                                    <img src="__ROOT__/{$vo.img_url}" alt="" width="100%" height="100%">
+                                </div>
+                            </volist>
+                        </div>
+                    </empty>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <eq name="info.audit_status" value="0">
+                        <a href="{:U('Back/voteAudit',array('id'=>$info['id'], 'type'=>1))}" onclick="return confirm('确定审核通过吗?');" class="btn btn-primary">通过</a>
+                        <a href="{:U('Back/voteAudit',array('id'=>$info['id'], 'type'=>0))}" onclick="return confirm('确定审核不通过吗?');" class="btn btn-danger">不通过</a>
+                    </eq>
+                    <a href="javascript:window.history.back();" class="btn btn-success">返回</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</block>
+<block name="script">
+    <script>
+    </script>
+</block>

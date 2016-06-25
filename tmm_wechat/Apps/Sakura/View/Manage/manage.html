@@ -1,0 +1,87 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__STATIC__/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__CSS__/manage.css" rel="stylesheet">
+</block>
+<block name="body">
+    <div class="container" style="padding-top: 30px;">
+        <div class="alert alert-success" role="alert" id="success" style="display: none;">
+
+        </div>
+        <div class="alert alert-warning" role="alert" id="warning" style="display: none;">
+
+        </div>
+
+        <form class="form-inline" method="get" action="{:U('manage/YH1f1b666990747edfd1874cd1c61861af')}">
+            <div class="form-group">
+                <input type="text" class="form-control" name="mobile" placeholder="输入手机号码" value="{$mobile}">
+            </div>
+            <button type="submit" class="btn btn-default">提交</button>
+        </form>
+
+        <div class="table-responsive manage-table">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>手机号</th>
+                    <th>普通票</th>
+                    <th>夜樱票</th>
+                    <th>最后订票时间</th>
+                    <th>兑票时间</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <empty name="info">
+                    <tr>
+                        <td colspan="6">无此手机号码的购票信息</td>
+                    </tr>
+                <else />
+
+                <foreach name="info" item="vo" >
+                    <if condition="($vo.normalCount gt 0) OR ($vo.yyCount gt 0)">
+                    <tr>
+                        <td>{$vo.mobile}</td>
+                        <td>{$vo.normalCount}</td>
+                        <td>{$vo.yyCount}</td>
+                        <td>{$vo.create_time}</td>
+                        <td>{$vo.exchange_time|default="--"}</td>
+                        <td>
+                            <eq name="vo.status" value="1">
+                                <span style="color: #d9534f;">未兑换</span>
+                            </eq>
+                            <eq name="vo.status" value="2">
+                                <span style="color: #5cb85c;">已兑换</span>
+                            </eq>
+                            <eq name="vo.status" value="0">
+                                <span style="color: #f0ad4e;">未支付</span>
+                            </eq>
+                        </td>
+                        <td>
+                            <eq name="vo.status" value="1">
+                                <a class="btn btn-primary navbar-btn" onclick="return confirm('兑换吗?');"  href="{:U('manage/YH7ae741ddca06506c0a6308c5aeda87e7', array('mobile'=>$mobile))}">
+                                    兑换
+                                </a>
+                            <else />
+                                --
+                            </eq>
+                        </td>
+                    </tr>
+
+                    </if>
+
+                </foreach>
+
+                </empty>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+    </script>
+</block>

@@ -1,0 +1,230 @@
+需要登录
+/index.php?r=api/order/index get
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "page": {
+            "prev": "",
+            "selected": "http://test.365tmm.net/tmm/index.php?r=api/order/index",
+            "next": "http://test.365tmm.net/tmm/index.php?r=api/order/index&page=2",
+            "selectedPage": 1,
+            "count": 30,
+            "page": "page",
+            "link": "http://test.365tmm.net/tmm/index.php?r=api/order/index"
+        },
+        "list_data": [
+            {
+                "shops_name": "龙哥请吃饭！！！！",
+                "order_price": "3900.00",
+                "shops_img": "http://test.365tmm.net./uploads/items/eat/20150912/litimg_app/296655f3cafe3a0ea0.89912478.jpg",
+                "value": "146",
+                "pay_type": {
+                    "alipay": {
+                        "name": "支付宝",
+                        "value": 1
+                    }
+                },
+                "status": {
+                    "pay_type": {
+                        "name": "支付宝",
+                        "value": "1"
+                    },
+                    "order_status": {
+                        "name": "待处理",
+                        "value": "0"
+                    },
+                    "status_go": {
+                        "name": "确认出游",
+                        "value": "0"
+                    },
+                    "centre_status": {
+                        "name": "可支付",
+                        "value": "0"
+                    },
+                    "pay_status": {
+                        "name": "待支付",
+                        "value": "0"
+                    },
+                    "order_type": {
+                        "name": "自助游(点)",
+                        "value": "1"
+                    },
+                    "status": {
+                        "name": "有效订单",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "shops_name": "龙哥请吃饭！！！！",
+                "order_price": "3900.00",
+                "shops_img": "http://test.365tmm.net./uploads/items/eat/20150912/litimg_app/936355f3cb04b96cd3.63633559.jpg",
+                "value": "145",
+                "pay_type": {
+                    "alipay": {
+                        "name": "支付宝",
+                        "value": 1
+                    }
+                },
+                "status": {
+                    "pay_type": {
+                        "name": "支付宝",
+                        "value": "1"
+                    },
+                    "order_status": {
+                        "name": "待处理",
+                        "value": "0"
+                    },
+                    "status_go": {
+                        "name": "确认出游",
+                        "value": "0"
+                    },
+                    "centre_status": {
+                        "name": "可支付",
+                        "value": "0"
+                    },
+                    "pay_status": {
+                        "name": "待支付",
+                        "value": "0"
+                    },
+                    "order_type": {
+                        "name": "自助游(点)",
+                        "value": "1"
+                    },
+                    "status": {
+                        "name": "有效订单",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "shops_name": "龙哥请吃饭！！！！",
+                "order_price": "3900.00",
+                "shops_img": "http://test.365tmm.net./uploads/items/eat/20150912/litimg_app/936355f3cb04b96cd3.63633559.jpg",
+                "value": "144",
+                "pay_type": {
+                    "alipay": {
+                        "name": "支付宝",
+                        "value": 1
+                    }
+                },
+                "status": {
+                    "pay_type": {
+                        "name": "支付宝",
+                        "value": "1"
+                    },
+                    "order_status": {
+                        "name": "待处理",
+                        "value": "0"
+                    },
+                    "status_go": {
+                        "name": "确认出游",
+                        "value": "0"
+                    },
+                    "centre_status": {
+                        "name": "可支付",
+                        "value": "0"
+                    },
+                    "pay_status": {
+                        "name": "待支付",
+                        "value": "0"
+                    },
+                    "order_type": {
+                        "name": "自助游(点)",
+                        "value": "1"
+                    },
+                    "status": {
+                        "name": "有效订单",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "shops_name": "龙哥请吃饭！！！！",
+                "order_price": "3100.00",
+                "shops_img": "http://test.365tmm.net./uploads/items/tmp/eat/20150922/litimg_app/27015601518f51ca19.39356580.png",
+                "value": "143",
+                "pay_type": {
+                    "alipay": {
+                        "name": "支付宝",
+                        "value": 1
+                    }
+                },
+                "status": {
+                    "pay_type": {
+                        "name": "支付宝",
+                        "value": "1"
+                    },
+                    "order_status": {
+                        "name": "待处理",
+                        "value": "0"
+                    },
+                    "status_go": {
+                        "name": "确认出游",
+                        "value": "0"
+                    },
+                    "centre_status": {
+                        "name": "可支付",
+                        "value": "0"
+                    },
+                    "pay_status": {
+                        "name": "待支付",
+                        "value": "0"
+                    },
+                    "order_type": {
+                        "name": "自助游(点)",
+                        "value": "1"
+                    },
+                    "status": {
+                        "name": "有效订单",
+                        "value": "1"
+                    }
+                }
+            },
+            {
+                "shops_name": "点啊 ……",
+                "order_price": "14000.00",
+                "shops_img": "http://test.365tmm.net./uploads/items/tmp/eat/20150922/litimg_app/27015601518f51ca19.39356580.png",
+                "value": "142",
+                "pay_type": {
+                    "alipay": {
+                        "name": "支付宝",
+                        "value": 1
+                    }
+                },
+                "status": {
+                    "pay_type": {
+                        "name": "支付宝",
+                        "value": "1"
+                    },
+                    "order_status": {
+                        "name": "待处理",
+                        "value": "0"
+                    },
+                    "status_go": {
+                        "name": "确认出游",
+                        "value": "0"
+                    },
+                    "centre_status": {
+                        "name": "可支付",
+                        "value": "0"
+                    },
+                    "pay_status": {
+                        "name": "待支付",
+                        "value": "0"
+                    },
+                    "order_type": {
+                        "name": "自助游(点)",
+                        "value": "1"
+                    },
+                    "status": {
+                        "name": "有效订单",
+                        "value": "1"
+                    }
+                }
+            }
+        ]
+    }
+}

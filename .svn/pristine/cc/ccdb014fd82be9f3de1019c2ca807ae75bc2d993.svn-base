@@ -1,0 +1,140 @@
+<?php
+
+/**
+ * This is the model class for table "{{select}}".
+ *
+ * The followings are the available columns in table '{{select}}':
+ * @property string $id
+ * @property string $ad_id
+ * @property integer $ad_type
+ * @property string $store_id
+ * @property string $pad_id
+ * @property string $manager_id
+ * @property string $add_time
+ */
+class Select extends ActiveRecord
+{
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return '{{select}}';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+			array('ad_id, store_id, pad_id, manager_id', 'required'),
+			array('ad_type', 'numerical', 'integerOnly'=>true),
+			array('ad_id, store_id, pad_id, manager_id', 'length', 'max'=>20),
+			array('add_time', 'length', 'max'=>10),
+			// The following rule is used by search().
+			// @todo Please remove those attributes that should not be searched.
+			array('id, ad_id, ad_type, store_id, pad_id, manager_id, add_time', 'safe', 'on'=>'search'),
+		);
+	}
+
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+		);
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'id' => 'ID',
+			'ad_id' => '广告ID',
+			'ad_type' => '类型',
+			'store_id' => '体验店',
+			'pad_id' => '展示屏',
+			'manager_id' => '操作角色',
+			'add_time' => '创建时间',
+		);
+	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 *
+	 * Typical usecase:
+	 * - Initialize the model fields with values from filter form.
+	 * - Execute this method to get CActiveDataProvider instance which will filter
+	 * models according to data in model fields.
+	 * - Pass data provider to CGridView, CListView or any similar widget.
+	 *
+	 * @return CActiveDataProvider the data provider that can return the models
+	 * based on the search/filter conditions.
+	 */
+	public function search()
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria = new CDbCriteria;
+
+		$criteria->compare('id', $this->id,true);
+		$criteria->compare('ad_id', $this->ad_id,true);
+		$criteria->compare('ad_type', $this->ad_type);
+		$criteria->compare('store_id', $this->store_id,true);
+		$criteria->compare('pad_id', $this->pad_id,true);
+		$criteria->compare('manager_id', $this->manager_id,true);
+		$this->timeSearch('add_time', $criteria);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>10,
+			),
+			'sort'=>array(
+				'defaultOrder'=>'t.id desc',
+				/*
+				'attributes'=>array(
+					'id'=>array(
+						'desc'=>'id desc',
+					),
+				),
+				*/
+			),
+		));
+	}
+
+	/**
+	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param string $className active record class name.
+	 * @return Select the static model class
+	 */
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+	
+	/**
+	 * 保存之前的操作
+	 * (non-PHPdoc)
+	 * @see CActiveRecord::beforeSave()
+	 */
+	public function beforeSave()
+	{
+		if (parent::beforeSave())
+		{
+			if ($this->getIsNewRecord())
+				$this->add_time = time();
+			return true;
+		}
+		return false;
+	}
+}

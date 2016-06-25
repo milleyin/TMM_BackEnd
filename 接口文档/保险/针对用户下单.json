@@ -1,0 +1,83 @@
+// /order/add
+// 针对用户下单
+{
+  // 否 订单的操作方式：1-未完成，2-已完成，3-直接确
+  "operateType": 2,
+  // 否 第三方合作流水号
+  "serialNo": "",
+  // 否 用户 id
+  "loginId": "",
+  // 是 计划 ID 
+  "planId": 175,
+  // 是 保险期间  
+  "period": "2015-11-12 00,2015-11-18 24",
+  // 投何人信息
+  "applicant": {
+    // 是 投保人姓名 
+    "name": "小沫",
+    // 是 投保人证件类型  1-身份证
+    "cardType": 1,
+    // 投保人证件号
+    "cardNo": "3501241986112",
+    // 是  1  投保人性别：1-男，0-女
+    "gender": 1,
+    // 是  1986-11-26  投保人生日
+    "birthday": "1986-11-26",
+    // 是 被 保 人 所 在 省 传的是/util/areas/get 返回的code中的值
+    "province": "Anhui",
+    // 是  投保人所在市 传的是/util/areas/get 返回的code中的值
+    "city": "Anhui_Hefei",
+    // 是  13578941738  投保人手机
+    "mobile": "13578941738",
+    // 是  11@163.com  投保人邮箱
+    "email": "11@163.com"
+  },
+  "insured": {
+    // 是 被保人名字 
+    "name": "小小沫",
+    // 是 被保人证件类型  1-身份证
+    "cardType": 1,
+    // 是 被保人证件号
+    "cardNo": "3501241986112",
+    // 是  1986-11-26  投保人生日
+    "birthday": "1986-11-26",
+    // 是  1  被保人性别：1-男，0-女
+    "gender": 1,
+    // 否 被保人手机
+    "mobile": "13578941738",
+    // 是  11@163.com  投保人邮箱
+    "email": "11@163.com",
+    // 是  1  购买份数
+    "buyCopies": 1,
+    // 是 与投保人关系 1:本人","10:父母","11:子女","12:有抚养或赡养关系的亲属","14:其他关系人","9:配偶"
+    "relationshipToPolicyholder": 14
+  }
+}
+
+
+{
+  "planId": 175,
+  "period": "2015-11-12 00,2015-11-18 24",
+  "applicant": {
+    "name": "小沫",
+    "cardType": 1,
+    "cardNo": "3501241986112",
+    "gender": 1,
+    "birthday": "1986-11-26",
+    "province": "Anhui",
+    "city": "Anhui_Hefei",
+    "mobile": "13578941738",
+    "email": "11@163.com"
+  },
+  "insured": {
+    "name": "小小沫",
+    "cardType": 1,
+    "cardNo": "3501241986112",
+    "birthday": "1986-11-26",
+    "gender": 1,
+    "mobile": "13578941738",
+    "email": "11@163.com",
+    "buyCopies": 1,
+    "relationshipToPolicyholder": 14
+  }
+}

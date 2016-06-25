@@ -1,0 +1,307 @@
+
+// 备注：凡是POST请求的，都需要先请求一下GET，拿到CSRF码，请求格式为
+// 模块/方法：
+// api/xx/xxx (同要POST请求的url)
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        获取CSRF
+
+// 参数 &csrf=csrf
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "csrf": {
+            "TMM_CSRF": "5d2694695c6989098c22879610e3fd007294f67c"
+        }
+    }
+}
+// 没有登录的时候返回，结果为
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "login": false
+    },
+    "jump": "http://test.365tmm.net/index.php?r=store_login/login/index"
+}
+
+// 模块/方法：
+// index.php?r=store/store_login/index
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        商家登录（帐号密码）
+
+// 参数
+{
+  "StoreLoginForm": {
+    "phone": "15814421487", // 手机
+    "password": "123123asd", // 密码
+    "verifyCode": "sape" // 验证码
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "value": "7", // 商家id
+        "name": "我想想", // 商家名称
+        "phone": "15814421487", // 商家手机
+        "count": "7", // 登录次数
+        "last_ip": "127.0.0.1", // 上次登录的ip
+        "is_main": true, // true为主商家，false为商家子帐号
+        // 商家主页
+        "link": "http://test.365tmm.net/index.php?r=store/store_store/view",
+        "add_time": "2015/09/04 17:17:54",  // 添加时间
+        "last_time": "2015/09/21 19:33:53" // 修改时间
+    },
+    "jump": "http://test.365tmm.net/index.php?r=store/store_home/index"
+}
+
+// 模块/方法：
+// index.php?r=store/store_login/captcha_sms
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        商家登录（手机验证码），获取手机短信验证码
+
+// 参数
+{
+  "verifyCode": "123123", // 图片验证码
+  "phone": "18199999999", // 手机
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": []
+}
+
+// 模块/方法：
+// index.php?r=store/store_login/login_sms
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        商家登录（手机验证码）
+
+// 参数
+{
+  "StoreSmsLoginForm": {
+    "phone": "18199999999", // 手机
+    "sms": "123123asd", // 密码
+    "verifyCode": "sape" // 验证码
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "value": "7", // 商家id
+        "name": "我想想", // 商家名称
+        "phone": "15814421487", // 商家手机
+        "count": "7", // 登录次数
+        "last_ip": "127.0.0.1", // 上次登录的ip
+        "is_main": true, // true为主商家，false为商家子帐号
+        // 商家主页
+        "link": "http://test.365tmm.net/index.php?r=store/store_store/view",
+        "add_time": "2015/09/04 17:17:54",  // 添加时间
+        "last_time": "2015/09/21 19:33:53" // 修改时间
+    },
+    "jump": "http://test.365tmm.net/index.php?r=store/store_home/index"
+}
+
+// 模块/方法：
+// index.php?r=store/store_home/index
+
+// 传值方式：
+// GET
+
+//功能描述：
+//        商家主页
+
+// 参数
+
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": {
+        "value": "7", // 商家id
+        "name": "我想想", // 商家名称
+        "phone": "15814421487", // 商家手机
+        "count": "7", // 登录次数
+        "last_ip": "127.0.0.1", // 上次登录的ip
+        "is_main": true, // true为主商家，false为商家子帐号
+        // 商家主页
+        "link": "http://test.365tmm.net/index.php?r=store/store_store/view",
+        "add_time": "2015/09/04 17:17:54",  // 添加时间
+        "last_time": "2015/09/21 19:33:53" // 修改时间
+    },
+    "jump": "http://test.365tmm.net/index.php?r=store/store_home/index"
+}
+
+// 模块/方法：
+// index.php?r=store/store_store/captcha_pwd_sms
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        商家修改密码时，获取手机短信验证码
+
+// 参数
+{
+  "phone": "18199999999", // 手机
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": []
+}
+
+// 模块/方法：
+// index.php?r=store/store_store/pwd
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        商家修改密码
+
+// 参数
+{
+  "StoreUser": {
+    "phone": "18199999999", // 手机
+    "sms": "123456", // 短信验证码
+    "_pwd": "123123asd", // 新密码
+    "confirm_pwd": "123123asd" // 确认密码
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": []
+}
+
+// 模块/方法：
+// index.php?r=store/store_store/captcha_old_sms
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        商家修改旧手机号时，获取旧手机短信验证码(第一步)
+
+// 参数
+{
+  "phone": "18199999999", // 旧手机号
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": []
+}
+
+// 模块/方法：
+// index.php?r=store/store_store/phone_old
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        商家修改旧手机号(第一步是验证旧手机)
+
+// 参数
+{
+  "StoreUser": {
+    "phone": "18199999999", // 旧手机号
+    "sms": "123456" // 旧手机的短信验证码
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": []
+}
+
+// 模块/方法：
+// index.php?r=store/store_store/captcha_new_sms
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        商家修改旧手机号时，获取新手机短信验证码（第二步）
+
+// 参数
+{
+  "phone": "18199999999", // 旧手机号
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": []
+}
+
+// 模块/方法：
+// index.php?r=store/store_store/phone_new
+
+// 传值方式：
+// POST
+
+//功能描述：
+//        商家修改旧手机号(第二步是输入新手机)
+
+// 参数
+{
+  "StoreUser": {
+    "phone": "18199999999", // 新手机号
+    "sms": "123456" // 新手机的短信验证码
+  },
+  "TMM_CSRF": "4135a6cbf7738f372f234919714e0d14907127c1"
+}
+// 结果
+{
+    "status": 1,
+    "code": 0,
+    "msg": "正确",
+    "data": []
+}

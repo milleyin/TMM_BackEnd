@@ -1,0 +1,131 @@
+body, div, ol, ul, h1, h2, h3, h4, h5, h6, p, th, td, dl, dd, form, iframe, input, textarea, select, label, article, aside, footer, header, menu, nav, section, time, audio, video {margin: 0;padding: 0; }
+article, aside, footer, header, hgroup, nav, section, audio, canvas, video, img {display: block; }
+body, button, input, select, textarea {font-size: 14px;font-family: arial,\5b8b\4f53,Microsoft YaHei; }
+body{margin: 0 auto;min-width: 320px;max-width: 640px;height: 100%;background-color: #000000;}
+iframe, img {border: 0; }
+textarea {resize: none; }
+em, i {font-style: normal; }
+ul, ol, li {list-style: none; }
+button, input, select, textarea {font-size: 100%; }
+a, a:visited {text-decoration: none; }
+table {border-collapse: collapse;border-spacing: 0; }
+img {-ms-interpolation-mode: bicubic; }
+
+.clearfix:after {
+    content: " ";
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+/* 投票详情 */
+.detail-container {
+    background-color: #000000;
+}
+.detail-container .sub-top {
+    text-align: center;
+    padding: 34px 0;
+    background: #FFDED4 url("../images/ripple.jpg") no-repeat bottom;
+    -webkit-background-size: 100% auto;
+    background-size: 100% auto;
+}
+.detail-container .sub-top a{
+    color: #8A605F;
+}
+.sub-main {
+    padding: 15px 15px;
+    color: #ffdbd0;
+}
+.detail-info {
+    position: relative;
+    height: 74px;
+    border-bottom: 1px solid #806e68;
+}
+.detail-num {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 3px 8px;
+    height: 27px;
+    line-height: 27px;
+    border: 2px solid #ffdbd0;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 800;
+    text-align: center;
+}
+.detail-name {
+    font-size: 18px;
+    font-weight: 800;
+}
+.detail-desc {
+    position: absolute;
+    top: -10px;
+    right: 0;
+    text-align: right;
+}
+.desc-tip {
+    display: block;
+}
+.flag-red {
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ff3843;
+}
+.flag-green {
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #5aa528;
+}
+.detail-content {
+    padding: 15px 0;
+}
+.detail-introduce {
+    font-size: 13px;
+}
+.img-ul {
+    margin-top: 15px;
+    padding: 0;
+}
+.img-item {
+    height: auto;
+    margin-bottom: 10px;
+    padding: 18px 10px;
+    background:url('../images/rect_bg.png') no-repeat;
+    background-size: 100% 100%;
+}
+.img-item-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.btn-wrap {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+.btn-wrap img{
+    position: absolute;
+    top: -10px;
+    left: -2px;
+    width: 22px;
+    height: 23px;
+    background: none;
+}
+.detail-row {
+    margin: 10px 0;
+}
+.tmm_btn_red {
+    background-color: #ff213d;
+}
+.tmm_btn_green {
+    background-color: #66bb2d;
+}
+.tmm_btn_purple {
+    background-color: #447c1e;
+}

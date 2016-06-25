@@ -1,0 +1,15 @@
+<?php
+/* @var $this PadController */
+/* @var $model Pad */
+
+$this->breadcrumbs=array(
+    '体验店管理页'=>array('admin'),
+    $model->Pad_Store->store_name => array('store/view', 'id'=>$model->Pad_Store->id),
+    '展示屏管理页'=>array('admin', 'Pad[store_id]'=>'=' . $model->Pad_Store->id),
+	'展示屏绑定页',
+);
+?>
+
+<h1>展示屏绑定</h1>
+
+<?php $this->renderPartial('_form', array('model'=>$model)); ?>

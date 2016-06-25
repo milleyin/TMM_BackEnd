@@ -1,0 +1,33 @@
+<extend name="Base/common"/>
+<block name="style">
+
+</block>
+<block name="body">
+    <body class="orderlist">
+    <div class="order-list">
+    <volist name="logisticsList" id="vo">
+        <div class="order-item">
+            <div class="top">收货人{$key + 1}</div>
+            <div class="content">
+                <div class="con-info">
+                    <eq name="vo.is_send" value="0">
+                        <div class="flag flag-dark">未发货</div>
+                    <else/>
+                        <div class="flag flag-gray">已发货</div>
+                    </eq>
+                    <div class="tit"><span class="name">{$vo.cnee}</span><span class="phone">{$vo.phone}</span></div>
+                    <div class="num">{$vo.number}箱 X<eq name="vo.specs_id" value="1">5kg</eq><eq name="vo.specs_id" value="2">3kg</eq></div>
+                    <div class="address">{$vo.province|getRegionName=###}{$vo.city|getRegionName=###}{$vo.area|getRegionName=###}
+                        <br>{$vo.address}</div>
+                </div>
+                <eq name="vo.is_send" value="1">
+                <div class="con-bottom">
+                    {$vo.logistics_company}<span class="oddnum">单号 {$vo.logistics_no}</span>
+                </div>
+                </eq>
+            </div>
+        </div>
+    </volist>
+    </div>
+    </body>
+</block>

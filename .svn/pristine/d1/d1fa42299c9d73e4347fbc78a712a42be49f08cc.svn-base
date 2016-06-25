@@ -1,0 +1,111 @@
+<?php
+/* @var $this RecordController */
+/* @var $model Record */
+
+$this->breadcrumbs = array(
+	'抽奖记录管理页'=>array('admin'),
+	$model->Record_User->name,
+);
+?>
+
+<h1>查看抽奖记录 <font color='#eb6100'><?php echo CHtml::encode($model->Record_User->name); ?></font></h1>
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		array(
+				'name'=>'id',
+		),
+		array(
+				'name'=>'user_id',
+				'value'=>$model->Record_User->name
+		),        
+        array(
+                'name'=>'prize_id',
+        ),
+        array(
+                'name'=>'prize_name',
+        ),
+        array(
+                'name'=>'Record_Upload.path',
+                'type'=>'raw',
+                'label'=>'奖品图片',
+                'value'=> empty($model->Record_Upload) ? '暂无图片': CHtml::image($model->Record_Upload->getUrlPath(), CHtml::encode($model->Record_Upload->info), array('style'=>'widht:150px;height:150px;'))
+        ),
+        array(
+                'name'=>'prize_info',
+        ),       
+        array(
+                'name'=>'pad_id',
+                'value'=>$model->Record_Pad->name,
+        ),
+        array(
+                'name'=>'Record_Pad.number',
+        ),
+        array(
+                'name'=>'Record_Pad.mac',
+        ),
+        array(
+                'name'=>'store_id',
+                'value'=>$model->Record_Store->store_name
+        ),
+        array(
+                'name'=>'Record_Store.phone',
+        ),
+        array(
+                'name'=>'Record_Store.name',
+        ),
+        array(
+                'name'=>'Record_Store.telephone',
+        ),
+        array(
+                'name'=>'Record_Store.province',
+                'value'=>$model->Record_Store->Store_Area_province->name
+        ),
+        array(
+                'name'=>'Record_Store.city',
+                'value'=>$model->Record_Store->Store_Area_city->name
+        ),
+        array(
+                'name'=>'Record_Store.district',
+                'value'=>$model->Record_Store->Store_Area_district->name
+        ),
+        array(
+                'name'=>'Record_Store.address',
+        ),
+		array(
+				'name'=>'manager_id',
+		),
+		array(
+				'name'=>'receive_type',
+				'value'=>\Prize::$_receive_type[$model->receive_type],
+		),
+		array(
+				'name'=>'url',
+		),
+		array(
+				'name'=>'code',
+		),
+		array(
+				'name'=>'exchange_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'exchange_status',
+				'value'=>$model::$_exchange_status[$model->exchange_status],
+		),
+		array(
+				'name'=>'up_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'add_time',
+				'type'=>'datetime',
+		),
+		array(
+				'name'=>'status',
+				'value'=>$model::$_status[$model->status],
+		),
+	),
+)); 
+?>

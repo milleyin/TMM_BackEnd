@@ -1,0 +1,53 @@
+<?php
+/* @var $this Tmm_wifiController */
+/* @var $model Wifi */
+/* @var $form CActiveForm */
+?>
+
+<div class="form wide">
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'wifi-form',
+	'enableAjaxValidation'=>true,
+	'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>true,
+	),
+	'htmlOptions' => array('enctype'=>'multipart/form-data'),
+)); ?>
+
+	<p class="note">这些字段 <span class="required">*</span>是必须的.</p>
+
+	<?php echo $form->errorSummary($model); ?>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'name'); ?>
+		<?php echo $form->textField($model,'name',array('size'=>20,'maxlength'=>10)); ?>
+		<?php echo $form->error($model,'name'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'info'); ?>
+		<?php echo $form->textArea($model,'info',array('style'=>'width:300px;height:60px;')); ?>
+		<?php echo $form->error($model,'info'); ?>
+	</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'icon'); ?>
+		<?php echo $form->fileField($model,'icon',array('style'=>'width:300px;')); ?>
+		<?php echo $form->error($model,'icon'); ?>
+	</div>
+	<?php 
+		if(file_exists($model->icon))
+		{
+			echo '<div class="row"><label>'.$model->getAttributeLabel('icon').'</label>';
+			echo $this->show_img($model->icon);
+			echo '</div>';
+		}
+	?>
+	<div class="row buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? '创建' : '保存'); ?>
+	</div>
+
+<?php $this->endWidget(); ?>
+
+</div><!-- form -->

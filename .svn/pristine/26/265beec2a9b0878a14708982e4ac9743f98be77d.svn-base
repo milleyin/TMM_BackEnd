@@ -1,0 +1,91 @@
+<?php
+namespace Litchi\Controller;
+use Think\Controller;
+
+/**
+ * 管理控制器
+ * Class ManageController
+ * @package Litchi\Controller
+ *
+ * @author Moore Mo
+ */
+class ManageController extends Controller {
+
+    /**
+     * 生成实体卡
+     */
+    public function LZ23d85fc8fd8c7142245e1b7367eb20ca() {
+//        if ($this->_createCard(3000)) {
+//            echo '生成成功';
+//        } else {
+//            echo '生成失败，请重新生成...';
+//        }
+    }
+
+    /**
+     * 生成卡券
+     * @param $number
+     * @return bool
+     */
+    private function _createCard($number) {
+        $lzCardModel = M('LzCard');
+        $lzComboModel = M('LzCombo');
+        $comboInfo = $lzComboModel->where(array('id'=> 1))->find();
+
+        $data = array();
+
+        for ($i = 0; $i < $number; $i++) {
+            $data[] = array(
+                'card_no' => $this->_getCardNo(),
+                'type' => 2,
+                'name' => $comboInfo['name'],
+                'description' => $comboInfo['description'],
+                'combo_id' => $comboInfo['id'],
+                'card_price' => $comboInfo['price'],
+                'start_time' => $comboInfo['start_time'],
+                'end_time' => $comboInfo['end_time'],
+                'add_time' => time(),
+                'is_valid' => 1,
+                'from_type' => 1
+            );
+        }
+
+        // 批量生成卡券
+        $result = $lzCardModel->addAll($data);
+        if ($result) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 检验卡号的唯一性
+     * @return 产生的随机字符串
+     */
+    private function _getCardNo() {
+        $cardNo = $this->_getRandStr();
+        $cardInfo = M('LzCard')->where(array('card_no' => $cardNo))->find();
+        if ($cardInfo) {
+            $cardNo = $this->_getCardNo();
+        }
+
+        return $cardNo;
+    }
+
+    /**
+     *
+     * 产生随机字符串，不长于6位
+     * @param int $length
+     * @return 产生的随机字符串
+     */
+    private function _getRandStr($length = 6)
+    {
+        $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
+        $str ="";
+        for ( $i = 0; $i < $length; $i++ )  {
+            $str .= substr($chars, mt_rand(0, strlen($chars)-1), 1);
+        }
+        return $str;
+    }
+}

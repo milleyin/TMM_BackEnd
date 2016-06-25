@@ -1,0 +1,27 @@
+<?php
+/* @var $this AccountController */
+/* @var $model Account */
+
+$this->breadcrumbs = array(
+	Yii::app()->operator->name=>array('/operator/agent/own'),
+	'我的钱包',
+);
+?>
+
+<h1>查看我的钱包 ：<font color='#eb6100'><?php echo CHtml::encode(Yii::app()->operator->name) ?></font></h1>
+
+<div style="background: #E5F1F4;padding:40px;margin:50px;font-size: 22px;border-radius: 10px;">
+	<strong>
+			<?php echo $model->getAttributeLabel("money"); ?>：
+	</strong>
+	<span  style="font-size: 24px;letter-spacing:2px;color:#ED1C24;">
+		<?php echo $model->money;?>
+	</span> （元）
+</div>
+
+<div class="row">
+	<span class="buttons">
+		<?php	echo CHtml::Button('提现', array("onclick"=>"location.href='" . Yii::app()->createUrl('/operator/cash/create') . "'"));?>
+	</span>
+</div>
+				

@@ -1,0 +1,447 @@
+<?php
+namespace Litchi\Controller;
+use Think\Controller;
+
+/**
+ * 管理控制器
+ * Class BackController
+ * @package Litchi\Controller
+ *
+ * @author Moore Mo
+ */
+class BackController extends Controller {
+
+    private $uid;
+    private $loginName;
+
+    public function _initialize() {
+        $this->uid = I('session.uid');
+        if (empty($this->uid)) {
+            $this->redirect('Login/login');
+        }
+        $this->loginName = I('session.loginName');
+        $this->assign('loginName', $this->loginName);
+    }
+
+    public function index() {
+        $this->ticket();
+    }
+
+    /**
+     * 游园门票验证
+     */
+    public function ticket() {
+        $mobile = I('get.mobile', '', 'trim');
+
+        // 查询条件
+        $condition['is_enter'] = 0;
+        $condition['is_valid'] = 1;
+        if (isMobile($mobile)) {
+            $condition['mobile'] = $mobile;
+        }
+
+        $lzTicketModel = M('LzTicket');
+        $lzTicketOrderModel = M('LzTicketOrder');
+
+        // 查询出可用的电子门票信息
+        $ticketOrderList = $lzTicketOrderModel
+            ->field('id, mobile, ticket_id, type, count(id) as nums')
+            ->where($condition)
+            ->group('mobile,ticket_id,type')
+            ->select();
+
+        foreach ($ticketOrderList as $key => $ticketOrder) {
+            // 电子门票信息
+            $ticketOrderList[$key]['ticketInfo'] = $lzTicketModel->where(array('id' => $ticketOrder['ticket_id']))->find();
+        }
+
+        $this->assign('ticketOrderList', $ticketOrderList);
+        $this->assign('mobile', $mobile);
+        $this->assign('title', '游园门票验证');
+        $this->display('ticket');
+    }
+
+    /**
+     * 确认入园
+     */
+    public function goToEnter() {
+        ! IS_AJAX && $this->error('非法访问');
+
+        $back = new \stdClass();
+
+        $mobile = I('post.mobile', '', 'trim');
+        $type = I('post.type');
+        $number = I('post.number');
+
+        if (! is_numeric($number) || ! isMobile($mobile) || !in_array($type, array(1, 2))) {
+            $back->status = 0;
+            $back->prompt = '非法访问';
+            $this->ajaxReturn($back);
+        }
+
+        $lzTicketOrderModel = M('LzTicketOrder');
+        $lzTicketModel = M('lzTicket');
+
+        // 查询电子门票订单的信息
+        $ticketOrderInfo = $lzTicketOrderModel->where(array('mobile' => $mobile, 'type' => $type, 'is_enter' => 0, 'is_valid' => 1))->order('id asc')->find();
+        $ticketOrderIds = $lzTicketOrderModel->where(array('mobile' => $mobile, 'type' => $type, 'is_enter' => 0, 'is_valid' => 1))->limit(0, $number)->order('id asc')->getField('id', true);
+
+        if (empty($ticketOrderIds) || empty($ticketOrderInfo)) {
+            $back->status = 0;
+            $back->prompt = '抱歉，系统繁忙，请稍后重试';
+            $this->ajaxReturn($back);
+        }
+
+        // 电子门票的信息
+        $ticketInfo = $lzTicketModel->where(array('id' => $ticketOrderInfo['id']))->find();
+        // 判断电子门票是否在使用日期内
+        $nowTime = time();
+        if ( !($ticketInfo['start_time'] < $nowTime) || !($ticketInfo['end_time'] > $nowTime) ) {
+            $back->status = 0;
+            $back->prompt = '此票不在使用日期内';
+            $this->ajaxReturn($back);
+        }
+
+        // 更新入园状态
+        $updateResult = $lzTicketOrderModel->where(array('id' => array('in', $ticketOrderIds)))->save(array('is_enter' => 1, 'enter_time' => time()));
+        if ($updateResult === false) {
+            $back->status = 0;
+            $back->prompt = '抱歉，系统繁忙，请稍后重试';
+            $this->ajaxReturn($back);
+        }
+
+        // 记录操作日志
+        $this->_writeActionLog(array(
+            'action_user' => $this->loginName,
+            'user_id' => $this->uid,
+            'action_type' => 1,
+            'action_note' => $number . '张电子门票确认入园',
+            'action_json' => json_encode(array('ticketIds' => $ticketOrderIds)),
+            'add_time' => time()
+        ));
+
+        $back->status = 1;
+        $back->prompt = '确认入园成功';
+        $this->ajaxReturn($back);
+    }
+
+    /**
+     * 卡券验证
+     */
+    public function card() {
+        $lzCardModel = M('LzCard');
+
+        $word = I('get.word', '', 'trim');
+        $status = I('get.status');
+
+        // 查询条件
+        $condition['is_valid'] = 1;
+        if (is_numeric($status)) {
+            $condition['is_carry'] = $status;
+        }
+        if (!empty($word)) {
+            $condition['card_no|mobile'] = $word;
+        }
+
+        // 分页操作
+        $count = $lzCardModel->where($condition)->count();// 查询满足要求的总记录数
+        $Page = new \Common\Library\Util\Page($count, 10);// 实例化分页类 传入总记录数和每页显示的记录数(25)
+        $show = $Page->show();// 分页显示输出
+
+        // 查询出可用的卡券信息
+        $cardList = $lzCardModel->where($condition)->limit($Page->firstRow.','.$Page->listRows)->select();
+
+        $this->assign('cardList', $cardList);
+        $this->assign('word', $word);
+        $this->assign('status', $status);
+        $this->assign('page',$show);
+        $this->assign('title', '众筹荔枝验证');
+        $this->display('card');
+    }
+
+    /**
+     * 提果
+     */
+    public function goToCarry() {
+        ! IS_AJAX && $this->error('非法访问');
+
+        $lzCardModel = M('lzCard');
+        $back = new \stdClass();
+
+
+        $cardId = max(intval(I('post.id')), 0);
+
+        if (! $cardId) {
+            $back->status = 0;
+            $back->prompt = '非法访问';
+            $this->ajaxReturn($back);
+        }
+        // 卡券信息
+        $cardInfo = $lzCardModel->where(array('id' => $cardId, 'is_valid' => 1, 'is_carry' => 0))->find();
+        if (empty($cardInfo)) {
+            $back->status = 0;
+            $back->prompt = '非法访问';
+            $this->ajaxReturn($back);
+        }
+
+        // 判断卡券是否在使用日期内
+        $nowTime = time();
+        if ( !($cardInfo['start_time'] < $nowTime) || !($cardInfo['end_time'] > $nowTime) ) {
+            $back->status = 0;
+            $back->prompt = '此卡不在使用日期内';
+            $this->ajaxReturn($back);
+        }
+        // 更新提果状态
+        $updateCardResult = $lzCardModel->where(array('id' => $cardId, 'is_valid' => 1, 'is_carry' => 0))
+            ->save(array('carry_type' => 0, 'is_carry' => 1, 'carry_time' => time()));
+
+        if ($updateCardResult === false) {
+            $back->status = 0;
+            $back->prompt = '抱歉，系统繁忙，请稍后重试';
+            $this->ajaxReturn($back);
+        }
+
+        // 记录操作日志
+        $this->_writeActionLog(array(
+            'action_user' => $this->loginName,
+            'user_id' => $this->uid,
+            'action_type' => 2,
+            'action_note' => '提货卡券：' . $cardInfo['card_no'] . ' 提果',
+            'action_json' => json_encode(array('cardInfo' => $cardInfo)),
+            'add_time' => time()
+        ));
+
+        $back->status = 1;
+        $back->prompt = '提果成功';
+        $this->ajaxReturn($back);
+    }
+
+    /**
+     * 邮寄管理
+     */
+    public function logistics() {
+        $lzLogisticsModel = M('LzLogistics');
+
+        $word = I('get.word', '', 'trim');
+        $status = I('get.status');
+
+        // 查询条件
+        $condition['is_valid'] = 1;
+        if (is_numeric($status)) {
+            $condition['is_send'] = $status;
+        }
+        if (!empty($word)) {
+            $condition['card_no|mobile'] = $word;
+        }
+
+        // 分页操作
+        $count = $lzLogisticsModel->where($condition)->count();// 查询满足要求的总记录数
+        $Page = new \Common\Library\Util\Page($count, 10);// 实例化分页类 传入总记录数和每页显示的记录数(25)
+        $show = $Page->show();// 分页显示输出
+
+        // 查询物流信息
+        $logisticsList = $lzLogisticsModel->where($condition)->limit($Page->firstRow.','.$Page->listRows)->select();
+
+        $this->assign('logisticsList', $logisticsList);
+        $this->assign('word', $word);
+        $this->assign('status', $status);
+        $this->assign('page',$show);
+        $this->assign('title', '众筹荔枝邮寄');
+        $this->display('logistics');
+    }
+
+    /**
+     * 发货
+     */
+    public function goToSend() {
+        ! IS_AJAX && $this->error('非法访问');
+
+        $lzLogisticsModel = M('LzLogistics');
+        $back = new \stdClass();
+
+
+        $logisticsId = max(intval(I('post.id')), 0);
+        $logisticsNo = I('post.logistics_no', '', 'trim');
+
+        if (! $logisticsId || empty($logisticsNo)) {
+            $back->status = 0;
+            $back->prompt = '非法访问';
+            $this->ajaxReturn($back);
+        }
+        // 物流信息
+        $logisticsInfo = $lzLogisticsModel->where(array('id' => $logisticsId, 'is_valid' => 1, 'is_send' => 0))->find();
+        if (empty($logisticsInfo)) {
+            $back->status = 0;
+            $back->prompt = '非法访问';
+            $this->ajaxReturn($back);
+        }
+
+        // 更新物流状态
+        $updateLogisticsResult = $lzLogisticsModel->where(array('id' => $logisticsId, 'is_valid' => 1, 'is_send' => 0))
+            ->save(array('logistics_company' => '顺丰速运', 'logistics_no' => $logisticsNo, 'is_send' => 1, 'send_time' => time()));
+
+        if ($updateLogisticsResult === false) {
+            $back->status = 0;
+            $back->prompt = '抱歉，系统繁忙，请稍后重试';
+            $this->ajaxReturn($back);
+        }
+
+        // 记录操作日志
+        $this->_writeActionLog(array(
+            'action_user' => $this->loginName,
+            'user_id' => $this->uid,
+            'action_type' => 3,
+            'action_note' => '提货卡券：' . $logisticsInfo['card_no'] . ' 发货',
+            'action_json' => json_encode(array('logisticsInfo' => $logisticsInfo)),
+            'add_time' => time()
+        ));
+
+        $back->status = 1;
+        $back->prompt = '发货成功';
+        $this->ajaxReturn($back);
+    }
+
+    /**
+     * 门票统计
+     */
+    public function ticketOrderList() {
+        $lzOrderModel = D('LzOrder');
+
+        $searchArr = array(
+            'orderNo' => I('get.orderNo'),
+            'mobile' => I('get.mobile'),
+            'fromType' => I('get.fromType'),
+            'ticketType' => I('get.ticketType'),
+            'startTime' => I('get.startTime'),
+            'endTime' => I('get.endTime')
+        );
+
+        // 查询条件
+        $condition['order_status'] = $lzOrderModel::order_status_pay_yes;
+        $condition['type'] = 1;
+
+        if (!empty($searchArr['orderNo'])) {
+            $condition['order_no'] = $searchArr['orderNo'];
+        }
+        if (!empty($searchArr['mobile'])) {
+            $condition['mobile'] = $searchArr['mobile'];
+        }
+        if (is_numeric($searchArr['fromType'])) {
+            $condition['from_type'] = $searchArr['fromType'];
+        }
+        if (is_numeric($searchArr['ticketType'])) {
+            $condition['ticket_id'] = $searchArr['ticketType'];
+        }
+        if (!empty($searchArr['startTime']) && empty($searchArr['endTime'])) {
+            $condition['add_time'] = array('egt', strtotime($searchArr['startTime'] . ' 00:00:00'));
+        }
+        if (empty($searchArr['startTime']) && !empty($searchArr['endTime'])) {
+            $condition['add_time'] = array('elt', strtotime($searchArr['endTime'] . ' 23:59:59'));
+        }
+        if (!empty($searchArr['startTime']) && !empty($searchArr['endTime'])) {
+            $condition['add_time'] = array('between',array(strtotime($searchArr['startTime'] . ' 00:00:00'), strtotime($searchArr['endTime'] . ' 23:59:59')));
+        }
+
+
+        // 分页操作
+        $count = $lzOrderModel->where($condition)->count();// 查询满足要求的总记录数
+        $Page = new \Common\Library\Util\Page($count, 10);// 实例化分页类 传入总记录数和每页显示的记录数(25)
+        $show = $Page->show();// 分页显示输出
+
+        // 电子门票的订单信息
+        $ticketOrderList = $lzOrderModel->where($condition)->order('id desc')->limit($Page->firstRow.','.$Page->listRows)->select();
+
+        // 电子门票总订单
+        $totalOrder = $lzOrderModel->where(array('order_status' => array('neq', $lzOrderModel::order_status_pay_not), 'type' => 1))->count();
+
+        // 电子门票购买总量
+        $totalNumber = $lzOrderModel->where(array('order_status' => array('neq', $lzOrderModel::order_status_pay_not), 'type' => 1))->sum('number');
+
+        // 电子门票购买总价格
+        $totalPrice = $lzOrderModel->where(array('order_status' => array('neq', $lzOrderModel::order_status_pay_not), 'type' => 1))->sum('total_price');
+
+
+        $this->assign('ticketOrderList', $ticketOrderList);
+        $this->assign('searchArr', $searchArr);
+        $this->assign('page',$show);
+        $this->assign('totalOrder', $totalOrder);
+        $this->assign('totalNumber', $totalNumber);
+        $this->assign('totalPrice', $totalPrice);
+        $this->assign('title', '门票统计');
+        $this->display('ticketOrderList');
+    }
+
+    /**
+     * 提货券统计
+     */
+    public function cardOrderList() {
+        $lzOrderModel = D('LzOrder');
+
+        $searchArr = array(
+            'orderNo' => I('get.orderNo'),
+            'mobile' => I('get.mobile'),
+            'fromType' => I('get.fromType'),
+            'startTime' => I('get.startTime'),
+            'endTime' => I('get.endTime')
+        );
+
+        // 查询条件
+        $condition['order_status'] = $lzOrderModel::order_status_pay_yes;
+        $condition['type'] = 2;
+
+        if (!empty($searchArr['orderNo'])) {
+            $condition['order_no'] = $searchArr['orderNo'];
+        }
+        if (!empty($searchArr['mobile'])) {
+            $condition['mobile'] = $searchArr['mobile'];
+        }
+        if (is_numeric($searchArr['fromType'])) {
+            $condition['from_type'] = $searchArr['fromType'];
+        }
+        if (!empty($searchArr['startTime']) && empty($searchArr['endTime'])) {
+            $condition['add_time'] = array('egt', strtotime($searchArr['startTime'] . ' 00:00:00'));
+        }
+        if (empty($searchArr['startTime']) && !empty($searchArr['endTime'])) {
+            $condition['add_time'] = array('elt', strtotime($searchArr['endTime'] . ' 23:59:59'));
+        }
+        if (!empty($searchArr['startTime']) && !empty($searchArr['endTime'])) {
+            $condition['add_time'] = array('between',array(strtotime($searchArr['startTime'] . ' 00:00:00'), strtotime($searchArr['endTime'] . ' 23:59:59')));
+        }
+
+        // 分页操作
+        $count = $lzOrderModel->where($condition)->count();// 查询满足要求的总记录数
+        $Page = new \Common\Library\Util\Page($count, 10);// 实例化分页类 传入总记录数和每页显示的记录数(25)
+        $show = $Page->show();// 分页显示输出
+
+        // 提货券的订单信息
+        $cardOrderList = $lzOrderModel->where($condition)->order('id desc')->limit($Page->firstRow.','.$Page->listRows)->select();
+
+        // 提货券总订单
+        $totalOrder = $lzOrderModel->where(array('order_status' => array('neq', $lzOrderModel::order_status_pay_not), 'type' => 2))->count();
+
+        // 提货券购买总量
+        $totalNumber = $lzOrderModel->where(array('order_status' => array('neq', $lzOrderModel::order_status_pay_not), 'type' => 2))->sum('number');
+
+        // 提货券购买总价格
+        $totalPrice = $lzOrderModel->where(array('order_status' => array('neq', $lzOrderModel::order_status_pay_not), 'type' => 2))->sum('total_price');
+
+        $this->assign('cardOrderList', $cardOrderList);
+        $this->assign('searchArr', $searchArr);
+        $this->assign('page',$show);
+        $this->assign('totalOrder', $totalOrder);
+        $this->assign('totalNumber', $totalNumber);
+        $this->assign('totalPrice', $totalPrice);
+        $this->assign('title', '提货券统计');
+        $this->display('cardOrderList');
+    }
+
+    /**
+     * 记录操作日志
+     * @param $data
+     * @return mixed
+     */
+    private function _writeActionLog($data) {
+        return M('LzActionLog')->add($data);
+    }
+
+}

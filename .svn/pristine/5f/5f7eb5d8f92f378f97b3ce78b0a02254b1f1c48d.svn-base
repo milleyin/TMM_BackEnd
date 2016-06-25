@@ -1,0 +1,78 @@
+<?php
+
+/**
+ * UserIdentity represents the data needed to identity a user.
+ * It contains the authentication method that checks if the provided
+ * data can identity the user.
+ */
+class UserUserIdentity extends CUserIdentity
+{
+    /**
+     * 角色唯一ID
+     * @var unknown
+     */    
+    private $_id;
+    /**
+     * 角色数据
+     * @var unknown
+     */
+    private $_model;
+    
+    /**
+     * Authenticates a user.
+     * The example implementation makes sure if the username and password
+     * are both 'demo'.
+     * In practical applications, this should be changed to authenticate
+     * against some persistent user identity storage (e.g. database).
+     * @return boolean whether authentication succeeds.
+     */
+    public function authenticate()
+    {
+        $criteria = new CDbCriteria;
+        $criteria->with = array(
+            'User_Role',
+        );
+        $criteria->addColumnCondition(array(
+            '`t`.`openid`' => $this->username,
+            '`User_Role`.`status`' => Role::_STATUS_NORMAL,
+        ));
+        $this->_model = User::model()->find($criteria);
+        if ( !isset($this->_model->openid) || $this->_model->openid !== $this->username) {
+            $this->errorCode = self::ERROR_USERNAME_INVALID;
+        } else {
+            $this->_id = $this->_model->id;
+            $this->errorCode = self::ERROR_NONE;
+        }
+        return $this->errorCode == self::ERROR_NONE;
+    }
+    
+    /**
+     * 返回登录唯一标示id
+     * @see CUserIdentity::getId()
+     */
+    public function getId()
+    {
+        return $this->_id;
+    }
+    
+    /**
+     * 返回数据模型
+     */
+    public function getModel()
+    {
+        return $this->_model;
+    }
+    
+    /**
+     * 保存持久数据
+     * (non-PHPdoc)
+     * @see CBaseUserIdentity::getPersistentStates()
+     */
+    public function getPersistentStates()
+    {
+        return array(
+            'openid' => Yii::app()->controller->module->openid,
+            'wxUserInfo' => Yii::app()->controller->module->wxUserInfo
+        );
+    }
+}
