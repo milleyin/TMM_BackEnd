@@ -1,0 +1,342 @@
+<?php
+/**
+ * Controller is the customized base controller class.
+ * All controller classes for this application should extend from this base class.
+ * @property string $access
+ */
+class Controller extends CController
+{
+    /**
+     * @var string the default layout for the controller view. Defaults to '//layouts/column1',
+     * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
+     */
+    public $layout = '//layouts/column1';
+    /**
+     * @var array context menu items. This property will be assigned to {@link CMenu::items}.
+     */
+    public $menu = array();
+    /**
+     * @var array the breadcrumbs of the current page. The value of this property will
+     * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
+     * for more details on how to specify this property.
+     */
+    public $breadcrumbs = array();
+    /**
+     * 过滤IP
+     * @var array
+     */
+    public $ipFilters = array('127.0.0.1', '*');
+    /**
+     *  标题
+     * @var string
+     */
+    public $title;
+    /**
+     * 模块名称
+     * @var string
+     */
+    public $name;
+    /**
+     * 前端资源
+     * @var string
+     */
+    private $_assets;
+    /**
+     * 当前操作模型的名称
+     * @var string
+     */
+    public $_modelName;
+    /**
+     * 操作得到的数据
+     * @var ActiveRecord
+     */
+    public $_model;
+    /**
+     * url获取主题名称
+     * @var string
+     */
+    public $_themeName = 'theme';
+    /**
+     * csrf 攻击
+     * @var boolean
+     */
+    public $enableCsrfValidation = true;
+    /**
+     * 能否 跨域
+     * @var boolean
+     */
+    public $enableCrossValidation = false;
+    /**
+     * 跨域 域名
+     * @var string
+     */
+    public $crossDomainName = '*';
+    /**
+     * 是否强制 https
+     * @var boolean
+     */
+    public $enableHttpsValidation = false;
+    /**
+     *  错误消息
+     * @var string
+     */
+    public $errorMessage = '没有找到相关的数据。';
+    /**
+     * 错误代码
+     * @var unknown
+     */
+    public $errorCode = 0;
+    /**
+     * 是否提示错误
+     * @var unknown
+     */
+    public $errorThrow = true;
+    /**
+     * 错误提示
+     * @var unknown
+     */
+    public $errorStatus = 404;
+    /**
+     * 初始化
+     * (non-PHPdoc)
+     * @see CController::init()
+     */
+    public function init()
+    {
+        parent::init();
+        //$this->setTheme();
+        $this->copyAssets();
+        $this->setLastUrl();
+    }
+    
+    /**
+     * 记录 上上次的Get url 
+     * @param string $url
+     */
+    public function setLastUrl($url = '')
+    {
+       if ( !Yii::app()->getRequest()->getIsPostRequest() && Yii::app()->request->getUrlReferrer() != Yii::app()->request->hostInfo . Yii::app()->request->getUrl())
+           Yii::app()->user->setState('__lastUrl', Yii::app()->request->getUrlReferrer());
+    }
+    
+    /**
+     * 获取上上次的url
+     */
+    public function getLastUrl()
+    {
+        return Yii::app()->user->getState('__lastUrl', Yii::app()->request->getUrlReferrer());
+    }
+    
+    /**
+     * 进入控制器之前
+     * @see CController::beforeAction()
+     */
+    public function beforeAction($action)
+    {
+       if (parent::beforeAction($action))
+       {
+           Yii::app()->request->validateHttpsMust($this);
+           Yii::app()->request->validateCrossDomain($this);
+           Yii::app()->request->validateCsrfToken($this);
+           return true;
+       }
+       else
+           return false;
+    }
+    
+    /**
+     * 设置主题
+     * @param string $value
+     */
+    public function setTheme($value = '')
+    {
+        if ($value == '' && isset($_GET[$this->_themeName]) && in_array($_GET[$this->_themeName], Yii::app()->themeManager->getThemeNames()))
+            $value = $_GET[$this->_themeName];
+        if ($value != '')
+            Yii::app()->theme = $value;
+    }
+    
+    /**
+     * 重写跳转
+     * (non-PHPdoc)
+     * @see CController::redirect()
+     */
+    public function redirect($url, $terminate = true, $statusCode = 302)
+    {
+         if (Helper::getDataType() == 'json' || Yii::app()->getRequest()->getIsAjaxRequest())
+         {
+             if (is_array($url))
+                 $url = Yii::app()->getRequest()->getHostInfo() . CHtml::normalizeUrl($url);
+            echo Helper::location($url);
+            Yii::app()->end();
+         }
+         else
+             parent::redirect($url, $terminate, $statusCode);
+    }
+    
+    /**
+     * 主题的资源拷贝
+     */
+    public function copyAssets()
+    {
+        if (isset(Yii::app()->theme, Yii::app()->theme->name))
+        {
+            $src = Yii::app()->theme->basePath . '/assets';
+            $dstDir = Yii::app()->theme->basePath . '/../../../web/assets/themes/' . Yii::app()->theme->name;
+        }
+        else
+        {
+            $src = Yii::app()->basePath . '/assets';
+            $dstDir = Yii::app()->basePath . '/../web/assets';
+        }
+        if ( !is_dir($dstDir) && is_dir($src))
+            CFileHelper::copyDirectory($src, $dstDir, array('exclude'=>array('.svn', '.gitignore'), 'level'=>-1, 'newDirMode'=>0777, 'newFileMode'=>0666,));    
+    }
+    
+    /**
+     * 获取前端资源web路径
+     * @return string
+     */
+    public function getAssets()
+    {
+        if ($this->_assets == null)
+        {
+            $this->_assets = Yii::app()->request->baseUrl . '/assets';
+            if (isset(Yii::app()->theme, Yii::app()->theme->name))
+            {
+                $this->_assets .= '/themes/' . Yii::app()->theme->name;
+                if (isset($this->module, $this->module->id))
+                    $this->_assets .= '/' . $this->module->id;
+            }
+            elseif (isset($this->module, $this->module->id))
+                $this->_assets .= '/' . $this->module->id;
+        }
+        return $this->_assets;
+    }
+    
+    /**
+     * 添加css文件
+     * @param unknown $file
+     * @param string $position
+     * Yii::app()->baseUrl.filename
+     */
+    public function addCss($file, $position='')
+    {
+        Yii::app()->getClientScript()->registerCssFile($file, $position);
+    }
+    
+    /**
+     * 添加js文件
+     * @param unknown $file
+     * @param string $position
+     * Yii::app()->baseUrl.filename
+     */
+    public function addJs($file)
+    {
+        Yii::app()->getClientScript()->registerScriptFile($file);
+    }
+    
+    /**
+     * 添加JQ框架
+     * @param string $jq
+     */
+    public function addJq()
+    {
+        Yii::app()->getClientScript()->registerCoreScript('jquery');
+    }
+    
+    /**
+     * ajax 验证 兼容 相同数据模型验证
+     * @param unknown $models
+     * @param unknown $id
+     * @param unknown $same
+     */
+    public function ajaxVerify($models, $id, $sames = '')
+    {
+        if (isset($_POST['ajax']) && ($_POST['ajax'] == $id))
+        {
+            $result = array();
+            if ( !is_array($models))
+                $models = array($models);
+            if ( !is_array($sames))
+                $sames = array($sames);
+            $tabularModels = array();
+            $newModels = array();
+            foreach ($models as $model)
+            {
+                $name = CHtml::modelName($model);
+                if (in_array($name, $sames))
+                    $tabularModels[] = $model;
+                else
+                    $newModels[] = $model;
+            }
+            $result = array_merge(json_decode(CActiveForm::validate($newModels), true), json_decode(CActiveForm::validateTabular($tabularModels), true));
+            echo function_exists('json_encode') ? json_encode($result) : CJSON::encode($result);
+            Yii::app()->end();
+        }
+    }
+    
+    /**
+     * 加载数据初始化
+     * @throws CHttpException
+     * @return string
+     */
+    public function loadModelInit()
+    {
+        if ( !(isset($this->_modelName) && $this->_modelName))
+            throw new CHttpException(500, '没有设置操作数据模型');
+        return $this->_modelName;
+    }
+    
+    /**
+     * 加载数据 findByPk
+     * @param unknown $id
+     * @param string $condition
+     * @param unknown $params
+     */
+    public function loadModelByPk($id, $condition = '', $params = array())
+    {
+        $modelName = $this->loadModelInit();
+        $this->_model = $modelName::model()->findByPk($id, $condition, $params);
+        $this->loadModelError();
+        return $this->_model;
+    }
+    
+    /**
+     * 加载数据 find
+     * @param string $condition
+     * @param unknown $params
+     */
+    public function loadModel($condition = '', $params = array())
+    {
+        $modelName = $this->loadModelInit();
+        $this->_model = $modelName::model()->find($condition, $params);
+        $this->loadModelError();
+        return $this->_model;
+    }
+    
+    /**
+     * 加载数据 findAll
+     * @param string $condition
+     * @param unknown $params
+     */
+    public function loadModelAll($condition = '', $params = array())
+    {
+        $modelName = $this->loadModelInit();
+        $this->_model = $modelName::model()->findAll($condition, $params);
+        $this->loadModelError();
+        return $this->_model;
+    }
+    
+    /**
+     * 加载数据 报错
+     * @throws CHttpException
+     * @return ActiveRecord
+     */
+    public function loadModelError()
+    {
+        if ( !$this->_model && $this->errorThrow)
+           throw new CHttpException($this->errorStatus, $this->errorMessage, $this->errorCode);
+        return $this->_model;
+    }
+}

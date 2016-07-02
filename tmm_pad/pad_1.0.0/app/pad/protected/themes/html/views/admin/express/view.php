@@ -1,0 +1,112 @@
+<?php
+/* @var $this ExpressController */
+/* @var $model Express */
+
+$this->breadcrumbs = array(
+    '中奖发货管理页'=>array('admin'),
+    $model->name,
+);
+?>
+
+<h1>查看中奖发货 <font color='#eb6100'><?php echo CHtml::encode($model->name); ?></font></h1>
+<?php $this->widget('zii.widgets.CDetailView', array(
+    'data'=>$model,
+    'attributes'=>array(
+        array(
+                'name'=>'id',
+        ),
+        array(
+                'name'=>'user_id',
+                'value'=>$model->Express_User->name,
+        ),
+        array(
+                'name'=>'record_id',
+        ),
+        array(
+                'name'=>'manager_id',
+        ),
+        array(
+                'name'=>'Express_Record.prize_name',
+        ),
+        array(
+                'name'=>'Express_Record.Record_Upload.path',
+                'type'=>'raw',
+                'label'=>'奖品图片',
+                'value'=> empty($model->Express_Record->Record_Upload) ? '暂无图片': CHtml::image($model->Express_Record->Record_Upload->getUrlPath(), CHtml::encode($model->Express_Record->Record_Upload->info), array('style'=>'widht:150px;height:150px;'))
+        ),
+        array(
+                'name'=>'Express_Record.prize_info',
+                'type'=>'raw',
+                'value'=>nl2br(CHtml::encode($model->Express_Record->prize_info)),
+        ),
+        array(
+                'name'=>'name',
+        ),
+        array(
+                'name'=>'phone',
+        ),
+        array(
+                'name'=>'province',
+                'value'=>$model->Express_Area_province->name,
+        ),
+        array(
+                'name'=>'city',
+                'value'=>$model->Express_Area_city->name
+        ),
+        array(
+                'name'=>'district',
+                'value'=>$model->Express_Area_district->name,
+        ),
+        array(
+                'name'=>'address',
+        ),
+        array(
+                'name'=>'express_status',
+                'value'=>$model::$_express_status[$model->express_status],
+        ),
+        array(
+                'name'=>'express_name',
+        ),
+        array(
+                'name'=>'express_code',
+        ),
+        array(
+                'name'=>'express_time',
+                'type'=>'datetime',
+        ),
+        array(
+                'name'=>'Express_Record.Record_Pad.name',
+        ),
+        array(
+                'name'=>'Express_Record.Record_Pad.number',
+        ),
+        array(
+                'name'=>'Express_Record.Record_Pad.mac',
+        ),
+        array(
+                'name'=>'Express_Record.Record_Store.store_name',
+        ),
+        array(
+                'name'=>'Express_Record.Record_Store.phone',
+        ),
+        array(
+                'name'=>'Express_Record.Record_Store.name',
+        ),
+        array(
+                'name'=>'Express_Record.Record_Store.telephone',
+        ),
+        array(
+                'name'=>'up_time',
+                'type'=>'datetime',
+        ),
+        array(
+                'name'=>'add_time',
+                'type'=>'datetime',
+        ),
+        array(
+                'name'=>'status',
+                'value'=>$model::$_status[$model->status],
+        ),
+    ),
+)); 
+?>

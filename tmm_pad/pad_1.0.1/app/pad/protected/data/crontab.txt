@@ -1,0 +1,3 @@
+*/5 * * * * /alidata/www/pad.365mm.net/app/pad/protected/./yiic pad index
+
+*/5 * * * * /alidata/www/pad.365mm.com/app/pad/protected/./yiic pad index

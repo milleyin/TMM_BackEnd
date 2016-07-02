@@ -1,0 +1,50 @@
+<?php
+/**
+ * 
+ * @author Changhai Zhan
+ *
+ */
+class FrontWebUser extends WebUser
+{
+    /**
+     * 初始化
+     * (non-PHPdoc)
+     * @see WebUser::init()
+     */
+    public function init()
+    {
+        parent::init();
+    }
+    
+    /**
+     * 登录之前
+     * (non-PHPdoc)
+     * @see WebUser::beforeLogin()
+     */
+    protected function beforeLogin($id, $states, $fromCookie)
+    {
+        if (parent::beforeLogin($id, $states, $fromCookie))
+            return true;
+        return false;
+    }
+    
+    /**
+     * 登录之后
+     * (non-PHPdoc)
+     * @see WebUser::afterLogin()
+     */
+    protected function afterLogin($fromCookie)
+    {
+        parent::afterLogin($fromCookie);
+        Role::model()->updateLoginStatus($this->getId());
+    }
+    
+    /**
+     * 展示屏的ID
+     * @return Ambigous <mixed, unknown>
+     */
+    public function getPadId()
+    {
+        return $this->getState('__padId');
+    }
+}
