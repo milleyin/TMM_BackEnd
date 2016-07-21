@@ -1,0 +1,1553 @@
+<?php
+
+/**
+ * This is the model class for table "{{order}}".
+ *
+ * The followings are the available columns in table '{{order}}':
+ * @property string $id
+ * @property string $son_order_count
+ * @property string $order_no
+ * @property string $order_type
+ * @property string $user_id
+ * @property string $order_price
+ * @property string $pay_price
+ * @property string $price
+ * @property string $trade_no
+ * @property string $trade_name
+ * @property string $service_price
+ * @property string $service_fee
+ * @property integer $pay_type
+ * @property string $user_go_count
+ * @property string $user_price
+ * @property string $user_price_fact
+ * @property string $pay_time
+ * @property integer $status_go
+ * @property integer $go_time
+ * @property integer $add_time
+ * @property integer $up_time
+ * @property integer $pay_status
+ * @property integer $order_status
+ * @property integer $centre_status
+ * @property integer $status
+ */
+class Order extends CActiveRecord
+{    
+    /**
+     * 无效订单
+     * @var unknown
+     */
+    const status_not=0;
+    /**
+     * 是否有效
+     * @var unknown
+     */
+    const status_yes=1;
+    /**
+     * 解释字段 centre_status 的含义
+     * @var array
+     */
+    public static $_status=array(0=>'取消报名',1=>'有效订单',);
+    
+    /*************************************核心状态 *********************************/
+    /**
+     * 不可支付 
+     * @var integer
+     */
+    const centre_status_not=-1;
+    /**
+     * 可支付
+     * @var integer
+     */
+    const centre_status_yes=0;
+    /**
+     * 解释字段 centre_status 的含义
+     * @var array
+     */
+    public static $_centre_status=array(-1=>'不可支付',0=>'可支付');
+    
+    /*************************************支付状态*********************************/
+    /**
+     * 支付状态 已取消
+     * @var unknown
+     */
+    const pay_status_past=-2;
+    /**
+     * 支付状态 支付中
+     * @var unknown
+     */
+    const pay_status_paying=-1;
+    /**
+     * 支付状态  未支付
+     * @var unknown
+     */
+    const pay_status_not=0;
+    /**
+     * 支付状态  已支付
+     * @var unknown
+     */
+    const pay_status_yes=1;
+    /**
+     * 解释字段 pay_status 的含义
+     * @var array
+     */
+    public static $_pay_status=array(-2=>'已取消',-1=>'支付中',0=>'未支付',1=>'已支付');
+    
+    /************************************订单状态*********************************/
+    /**
+     * 订单状态  过期 （付完款后 没有扫描消费 订单过期）有时间段
+     * @var unknown
+     */
+    const order_status_store_past=-3;
+    /**
+     * 订单状态  退款 （付完款后的操作 退款成功）
+     * @var unknown
+     */
+    const order_status_store_refund=-2;
+    /**
+     * 订单状态  已取消 取消不付钱 （只有在没有付钱之前的操作）
+     * @var unknown
+     */
+    const order_status_store_undo=-1;
+    /**
+     * 订单状态  待处理 自助游 等待商家同意订单        （自助游的订单默认值）
+     * @var unknown
+     */
+    const order_status_store_query=0;
+    /**
+     * 订单状态  待付款  商家同意接受订单 等待用户付款 （活动的订单默认值）
+     * @var unknown
+     */
+    const order_status_store_yes=1; 
+    /**
+     * 订单状态 已付款 用户已付款 
+     * @var unknown
+     */
+    const order_status_user_pay=2;
+    /**
+     * 订单状态 已消费  用户消费所有项目订单的状态
+     * @var unknown
+     */
+    const order_status_user_use=3;    
+    /**
+     * 解释字段 order_status 的含义
+     * @var array
+     */
+    public static $_order_status=array(
+            -3=>'已过期',
+            -2=>'交易关闭',
+            -1=>'已取消',
+            0=>'待处理',
+            1=>'待付款',
+            2=>'已付款',
+            3=>'已消费'
+    );
+    
+    /********用户 出游状态 *******************************************************/
+    /**
+     *    取消出游
+     */
+    const status_go_no=-1;
+    /**
+     * 出游日期未定 （旅游活动 未给时间 的状态）
+     * @var unknown
+     */
+    const status_go_set=0;
+    /**
+     * 待确认      （旅游活动 给出时间 的状态）
+     */
+     const status_go_query=1;
+     /**
+      *    确认出游       (自助游 默认值)
+      */
+     const status_go_yes=2;
+     /**
+      * 解释字段 pay_type 的含义
+      * @var unknown
+      */
+     public static $_status_go=array(-1=>'取消出游',0=>'出游日期待定',1=>'待确认',2=>'确认出游');
+    
+     /*************************支付类型 ****************************/
+     /**
+      * 未支付
+      * @var integer
+      */
+     const pay_type_none = 0;
+    /**
+     * 支付宝
+     * @var integer
+     */
+    const pay_type_alipay = 1;
+    /**
+     * 钱包
+     * @var integer
+     */
+    const pay_type_account = 2;
+    /**
+     * 微信支付
+     * @var integer
+     */
+    const pay_type_wxpay = 3;
+    /**
+     * 解释字段 pay_type 的含义
+     * @var unknown
+     */
+    public static $_pay_type=array(0=>'未支付', 1=>'支付宝', 2=>'钱包', 3=>'微信');
+    
+    /*************************订单类型 ****************************/
+    /**
+     * 下单类型 （多个点 )
+     * @var integer
+     */
+    const order_type_dot=1;
+    /**
+     * 下单类型 （一条线 )
+     * @var integer
+     */
+    const order_type_thrand=2;
+    /**
+     * 下单类型 （活动订单 旅游)
+     * @var integer
+     */
+    const order_type_group=3;
+    /**
+     * 下单类型 （活动订单 旅游)
+     * @var integer
+     */
+    const order_type_actives_tour=3;
+    /**
+     * 下单类型 （活动订单 旅游)
+     * @var integer
+     */
+    const order_type_actives_tour_full=4;
+//     /**
+//      * 下单类型 （活动订单 农产品)
+//      * @var integer
+//      */
+//     const order_type_actives_farm=5;
+//     /**
+//      * 下单类型 （农产品)
+//      * @var integer
+//      */
+//     const order_type_farm=6;
+    /**
+     * 解释字段 order_type 含义
+     * @var unknown
+     */
+    public static $_order_type=array(1=>'觅境(景点)',2=>'觅境(线路)',3=>'觅趣(自费)',4=>'觅趣(代付)');
+        
+    /*************************我是分隔线 *************************************************/
+    /**
+     * 搜索的时间类型
+     * @var array
+     */
+    public $search_time_type;
+    /**
+     *    解释搜索类型时间的含义 search_time_type
+     * @var string
+     */
+    public static $_search_time_type=array('支付时间','创建时间','更新时间');
+    /**
+     *    解释搜索类型时间 search_time_type 的字段搜索
+     * @var string
+     */
+    public $__search_time_type=array('pay_time','add_time','up_time'); 
+    /**
+     * 搜索开始的时间
+     * @var string
+     */
+    public $search_start_time;
+    /**
+     * 搜索结束的时间
+     * @var string
+     */
+    public $search_end_time;
+    
+    public $money_count;
+    
+    /**********************************************/
+    /**
+     * 加载过的商品
+     * @var unknown
+     */
+    public static $_shops_data=array();
+    /**
+     * 订单收费详情
+     * @var unknown
+    */
+    public static $_money=array();
+    /**
+     * 订单统计
+     * @var unknown
+    */
+    public static $_money_count=0.00;
+    /**
+     * 随行人员的数量
+     * @var unknown
+     */
+    public static $retinue_count=0;
+    /**
+     * 订单中项目的数量
+     * @var unknown
+     */
+    public static $order_items_count=0;
+    /**
+     * 订单价格的数量
+     * @var unknown
+     */
+    public static $order_fare_count=0;
+    /**
+     *    项目的价格
+     * @var unknown
+     */
+    public static $order_items_money=0.00;
+    /**
+     *    订单的类型
+     * @var unknown
+     */
+    public static $__order_type;
+    /**
+     *    订单中 房间 数量（人间）
+     * @var unknown
+     */
+    public static $room_number=0;
+    /**
+     *    订单中 价格类型  成人， 数量
+     * @var unknown
+     */
+    public static $adult_number=0;
+    /**
+     *    订单中 价格类型  儿童 ， 数量
+     * @var unknown
+     */
+    public static $children_number=0;
+    /**
+     *    订单中 剩余的数量
+     * @var unknown
+     */
+    public static $order_number=0;
+    /**
+     *    订单中 剩余的数量
+     * @var unknown
+     */
+    public static $buy_number=0;
+    /**
+     *    订单中 活动的服务费
+     * @var unknown
+     */
+    public static $actives_tour_price=0.00;
+    /**
+     * 
+     * @var unknown
+     */
+    public static $actives_go_time;
+    /**
+     *    活动id
+     * @var inter
+     */
+    public static $actives_id;
+    /**
+     *    活动数据模型
+     * @var model
+     */
+    public static $actives_model;
+    
+    /**********************************************/
+    
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return '{{order}}';
+    }
+
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+        //    array('order_no, user_id, order_price, pay_price, price, trade_name, service_price, service_fee, user_go_count', 'required'),
+            array('order_type,pay_time, add_time, up_time,pay_type,order_organizer_id, status_go, pay_status, order_status, centre_status, status', 'numerical', 'integerOnly'=>true),
+            array('son_order_count,pay_price, price, service_price, service_fee, user_price, user_price_fact', 'length', 'max'=>13),
+            array('order_no, trade_name', 'length', 'max'=>128),
+            array('user_id, user_go_count', 'length', 'max'=>11),
+            array('trade_no', 'length', 'max'=>255),
+            array('pay_time, add_time, up_time', 'length', 'max'=>10),
+            array('order_type,pay_type', 'length', 'max'=>1),
+            array('order_price,pay_price,user_price', 'length', 'max'=>12),
+                                
+            array('pay_type','in','range'=>array_keys(self::$_pay_type)),    
+            //array('order_type','in','range'=>array_keys(self::$_order_type)),
+            //验证钱
+            array('order_price,pay_price,son_order_count,user_price','ext.Validator.Validator_money'),
+            //创建订单    
+            //公共的
+            array('order_type,order_price,son_order_count,user_go_count,user_price', 'required','on'=>'create_actives_tour,create'),    
+            //创建点 线 需要出游时间
+            array('go_time', 'required','on'=>'create'),    
+            array('money_count', 'compare', 'compareAttribute'=>'order_price','on'=>'create_actives_tour,create'),        
+            array('go_time','type','dateFormat'=>'yyyy-MM-dd','type'=>'date','on'=>'create'),
+            array('go_time','validate_go_time','on'=>'create'),
+            array('order_type','in','range'=>array_keys(self::$_order_type),'on'=>'create_actives_tour,create'),        
+            array('go_time,order_type,order_price,son_order_count,user_go_count', 'safe', 'on'=>'create'),    
+            array('order_type,order_price,son_order_count,user_go_count', 'safe', 'on'=>'create_actives_tour'),
+            array('order_organizer_id,pay_type,search_time_type,money_count,search_start_time,search_end_time,go_time,id, order_no, user_id, pay_price, price, trade_no, trade_name, service_price, service_fee, user_price_fact, pay_time, status_go, add_time, up_time, pay_status, order_status, centre_status, status', 'unsafe', 'on'=>'create_actives_tour'),
+            array('order_organizer_id,pay_type,search_time_type,money_count,search_start_time,search_end_time,id, order_no, user_id, pay_price, price, trade_no, trade_name, service_price, service_fee, user_price_fact, pay_time, status_go, add_time, up_time, pay_status, order_status, centre_status, status', 'unsafe', 'on'=>'create'),
+                
+            //活动代付 下单  actives_tour_full_go_time 有时间
+            array('go_time,order_price', 'required', 'on'=>'actives_tour_full_go_time'),             
+            array('go_time','type', 'dateFormat'=>'yyyy-MM-dd', 'type'=>'date', 'on'=>'actives_tour_full_go_time'),
+            array('go_time','validate_go_time','on'=>'actives_tour_full_go_time'),
+            array('go_time,order_price','safe','on'=>'actives_tour_full_go_time'),
+            array('order_type,order_organizer_id,search_time_type,search_start_time,search_end_time,id, son_order_count, order_no, user_id, pay_price, price, trade_no, trade_name, service_price, service_fee, pay_type, user_go_count, user_price, user_price_fact, pay_time, status_go, add_time, up_time, pay_status, order_status, centre_status, status','unsafe','on'=>'actives_tour_full_go_time'),                
+            //活动代付 下单 actives_tour_full 没有时间    
+            array('order_price', 'required', 'on'=>'actives_tour_full'),
+            array('order_price','safe','on'=>'actives_tour_full'),
+            array('order_type,go_time,order_organizer_id,search_time_type,search_start_time,search_end_time,id, son_order_count, order_no, user_id, pay_price, price, trade_no, trade_name, service_price, service_fee, pay_type, user_go_count, user_price, user_price_fact, pay_time, status_go, add_time, up_time, pay_status, order_status, centre_status, status','unsafe','on'=>'actives_tour_full'),
+            //活动代付 下单 计算价格
+            array('order_price', 'order_price', 'on'=>'actives_tour_full, actives_tour_full_go_time'),
+            
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('order_type,go_time,order_organizer_id,search_time_type,search_start_time,search_end_time,id, son_order_count, order_no, user_id, order_price, pay_price, price, trade_no, trade_name, service_price, service_fee, pay_type, user_go_count, user_price, user_price_fact, pay_time, status_go, add_time, up_time, pay_status, order_status, centre_status, status', 'safe', 'on'=>'search'),
+            //运营商搜索
+            array('order_no, order_type, order_price, price, pay_type, user_go_count, status_go, order_status, go_time, pay_time, add_time, up_time', 'safe', 'on'=>'operatorSearch'),
+        );
+    }
+
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            //订单随行人员(一对多)
+            'Order_OrderRetinue'=>array(self::HAS_MANY,'OrderRetinue','order_id'),
+            //复制商品表(一对多)
+            'Order_OrderShops'=>array(self::HAS_MANY,'OrderShops','order_id'),
+            //复制项目表(一对多)
+            'Order_OrderItems'=>array(self::HAS_MANY,'OrderItems','order_id'),
+            //用户表
+            'Order_User'=>array(self::BELONGS_TO,'User','user_id'),
+            //关联组织者订单详情表(归属)
+            'Order_OrderOrganizer'=>array(self::BELONGS_TO,'OrderOrganizer','order_organizer_id'),
+            //关联子订单
+            'Order_SonOrder'=>array(self::HAS_MANY,'SonOrder','order_id'),        
+            //关联活动总表订单详情表(归属)
+            'Order_OrderActives'=>array(self::BELONGS_TO,'OrderActives','order_organizer_id'),
+        );
+    }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'id' => 'ID',
+            'order_organizer_id'=>'觅趣总订单',
+            'son_order_count' => '子订单总费用',
+            'order_no' => '订单号',
+            'order_type'=>'订单类型',
+            'user_id' => ' 用户名',
+            'order_price' => '订单总价',
+            'money_count'=>'价格统计',
+            'pay_price' => '支付回调总价',
+            'price' => '支付总价',
+            'trade_no' => '支付回调',
+            'trade_name' => '支付账号',
+            'service_price' => '第三方支付服务费',
+            'service_fee' => '第三方支付服务费率%',
+            'pay_type' => '支付类型',
+            'user_go_count' => '出游人数',
+            'user_price' => '服务费用/人',
+            'user_price_fact' => '实际服务费用/人',
+            'pay_time' => '支付时间',
+            'status_go' => '出游状态',
+            'go_time'=>'出游时间',
+            'add_time' => '创建时间',
+            'up_time' => '更新时间',
+            'pay_status' => '支付状态',
+            'order_status' => '订单状态',
+            'centre_status' => '状态',
+            'status' => '记录状态',
+            'search_time_type'=>'时间类型',
+            'search_start_time'=>'开始时间',
+            'search_end_time'=>'结束时间',
+        );
+    }
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+    public function search($criteria='')
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+        if($criteria ==='')
+        {
+            $criteria=new CDbCriteria;
+            $criteria->compare('t.status','<>-1');
+            $criteria->compare('t.order_organizer_id','=0');
+
+            $criteria->with=array(
+                'Order_OrderRetinue',
+                'Order_User',
+                'Order_OrderShops'=>array(
+                    'condition'=>'`Order_OrderShops`.`shops_agent_id`=:agent_id',
+                    'params'=>array(':agent_id'=>Yii::app()->operator->id),
+                    ),
+                );
+
+//            if($this->search_time_type != '' && isset($this->__search_time_type[$this->search_time_type]))
+//            {
+//                if($this->search_start_time !='' && $this->search_end_time !='')
+//                    $criteria->addBetweenCondition('t.'.$this->__search_time_type[$this->search_time_type],strtotime($this->search_start_time),strtotime($this->search_end_time)+3600*24-1);
+//                elseif($this->search_start_time !='' && $this->search_end_time =='')
+//                    $criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'>='.strtotime($this->search_start_time));
+//                elseif($this->search_start_time =='' && $this->search_end_time !='')
+//                    $criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'<=' . (strtotime($this->search_end_time)+3600*24-1));
+//            }
+
+            $this->search_time_type = 2;
+            if(isset($this->__search_time_type[$this->search_time_type]))
+            {
+                if($this->search_start_time !='' && $this->search_end_time !='')
+                    $criteria->addBetweenCondition('t.'.$this->__search_time_type[$this->search_time_type],strtotime($this->search_start_time),strtotime($this->search_end_time)+3600*24-1);
+                elseif($this->search_start_time !='' && $this->search_end_time =='')
+                    $criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'>='.strtotime($this->search_start_time));
+                elseif($this->search_start_time =='' && $this->search_end_time !='')
+                    $criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'<=' . (strtotime($this->search_end_time)+3600*24-1));
+            }
+
+            $criteria->compare('t.id',$this->id,true);
+            $criteria->compare('t.son_order_count',$this->son_order_count,true);
+            $criteria->compare('t.order_no',$this->order_no,true);
+            $criteria->compare('Order_User.phone',$this->user_id,true);
+            $criteria->compare('t.order_price',$this->order_price,true);
+            $criteria->compare('t.pay_price',$this->pay_price,true);
+            $criteria->compare('t.price',$this->price,true);
+            $criteria->compare('t.trade_no',$this->trade_no,true);
+            $criteria->compare('t.trade_name',$this->trade_name,true);
+            $criteria->compare('t.service_price',$this->service_price,true);
+            $criteria->compare('t.service_fee',$this->service_fee,true);
+            $criteria->compare('t.pay_type',$this->pay_type);
+            $criteria->compare('t.user_go_count',$this->user_go_count,true);
+            $criteria->compare('t.user_price',$this->user_price,true);
+            $criteria->compare('t.user_price_fact',$this->user_price_fact,true);
+
+            if($this->pay_time != '')
+                $criteria->addBetweenCondition('t.pay_time',strtotime($this->pay_time),(strtotime($this->pay_time)+3600*24-1));
+            $criteria->compare('t.status_go',$this->status_go);
+           if($this->add_time != '')
+                $criteria->addBetweenCondition('t.add_time',strtotime($this->add_time),(strtotime($this->add_time)+3600*24-1));
+            if($this->up_time != '')
+                $criteria->addBetweenCondition('t.up_time',strtotime($this->up_time),(strtotime($this->up_time)+3600*24-1));
+            $criteria->compare('t.pay_status',$this->pay_status);
+            $criteria->compare('t.order_status',$this->order_status);
+            $criteria->compare('t.centre_status',$this->centre_status);
+            $criteria->compare('t.status',$this->status);
+
+            //当前代理商
+            //$criteria->compare('Order_OrderShops.shops_agent_id','='.Yii::app()->operator->id);
+
+        }
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+            'pagination'=>array(
+                    'pageSize'=>Yii::app()->params['admin_pageSize'],
+            ),
+            'sort'=>array(
+                    'defaultOrder'=>'t.add_time desc', //设置默认排序
+            ),
+        ));
+    }
+
+    /**
+     * 自助游订单
+     * @param string $criteria
+     * @return CActiveDataProvider
+     */
+    public function search_dot_thrand($criteria='')
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+        if($criteria ===''){
+            $criteria=new CDbCriteria;
+            $criteria->together = true;
+            $criteria->group = '`t`.`id`';
+            $criteria->compare('t.status','<>-1');
+            $criteria->compare('t.order_organizer_id','=0');
+            $criteria->addColumnCondition(array(
+                '`Order_OrderShops`.`shops_agent_id`'=>Yii::app()->operator->id,
+            ));
+
+            $criteria->with=array(
+                'Order_User',
+                'Order_OrderShops'
+            );
+
+            $this->search_time_type = 1;
+            if(isset($this->__search_time_type[$this->search_time_type]))
+            {
+                if($this->search_start_time !='' && $this->search_end_time !='')
+                    $criteria->addBetweenCondition('t.'.$this->__search_time_type[$this->search_time_type],strtotime($this->search_start_time),strtotime($this->search_end_time)+3600*24-1);
+                elseif($this->search_start_time !='' && $this->search_end_time =='')
+                    $criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'>='.strtotime($this->search_start_time));
+                elseif($this->search_start_time =='' && $this->search_end_time !='')
+                    $criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'<=' . (strtotime($this->search_end_time)+3600*24-1));
+            }
+
+            $criteria->compare('t.order_no',$this->order_no,true);
+            $criteria->compare('Order_User.phone',$this->user_id,true);
+            $criteria->compare('t.order_status',$this->order_status);
+        }
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+            'pagination'=>array(
+                'pageSize'=>Yii::app()->params['admin_pageSize'],
+            ),
+            'sort'=>array(
+                'defaultOrder'=>'t.add_time desc', //设置默认排序
+            ),
+        ));
+    }
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+    public function search_group($criteria='')
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+        if($criteria ===''){
+            $criteria=new CDbCriteria;
+            $criteria->compare('t.status','<>-1');
+            $criteria->compare('t.order_organizer_id','<>0');
+            $criteria->with=array(
+                'Order_OrderOrganizer',
+                'Order_OrderRetinue',
+                'Order_User',
+                'Order_OrderShops'=>array(
+                    'condition'=>'`Order_OrderShops`.`shops_agent_id`=:agent_id',
+                    'params'=>array(':agent_id'=>Yii::app()->operator->id),
+                ),
+            );
+
+//            if($this->search_time_type != '' && isset($this->__search_time_type[$this->search_time_type]))
+//            {
+//                if($this->search_start_time !='' && $this->search_end_time !='')
+//                    $criteria->addBetweenCondition('t.'.$this->__search_time_type[$this->search_time_type],strtotime($this->search_start_time),strtotime($this->search_end_time)+3600*24-1);
+//                elseif($this->search_start_time !='' && $this->search_end_time =='')
+//                    $criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'>='.strtotime($this->search_start_time));
+//                elseif($this->search_start_time =='' && $this->search_end_time !='')
+//                    $criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'<=' . (strtotime($this->search_end_time)+3600*24-1));
+//            }
+
+            $this->search_time_type = 2;
+            if(isset($this->__search_time_type[$this->search_time_type]))
+            {
+                if($this->search_start_time !='' && $this->search_end_time !='')
+                    $criteria->addBetweenCondition('t.'.$this->__search_time_type[$this->search_time_type],strtotime($this->search_start_time),strtotime($this->search_end_time)+3600*24-1);
+                elseif($this->search_start_time !='' && $this->search_end_time =='')
+                    $criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'>='.strtotime($this->search_start_time));
+                elseif($this->search_start_time =='' && $this->search_end_time !='')
+                    $criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'<=' . (strtotime($this->search_end_time)+3600*24-1));
+            }
+
+            $criteria->compare('t.id',$this->id,true);
+            $criteria->compare('t.son_order_count',$this->son_order_count,true);
+            $criteria->compare('t.order_no',$this->order_no,true);
+            $criteria->compare('Order_User.phone',$this->user_id,true);
+            $criteria->compare('t.order_price',$this->order_price,true);
+            $criteria->compare('t.pay_price',$this->pay_price,true);
+            $criteria->compare('t.price',$this->price,true);
+            $criteria->compare('t.trade_no',$this->trade_no,true);
+            $criteria->compare('t.trade_name',$this->trade_name,true);
+            $criteria->compare('t.service_price',$this->service_price,true);
+            $criteria->compare('t.service_fee',$this->service_fee,true);
+            $criteria->compare('t.pay_type',$this->pay_type);
+            $criteria->compare('t.user_go_count',$this->user_go_count,true);
+            $criteria->compare('t.user_price',$this->user_price,true);
+            $criteria->compare('t.user_price_fact',$this->user_price_fact,true);
+
+            if($this->pay_time != '')
+                $criteria->addBetweenCondition('t.pay_time',strtotime($this->pay_time),(strtotime($this->pay_time)+3600*24-1));
+            $criteria->compare('t.status_go',$this->status_go);
+            if($this->add_time != '')
+                $criteria->addBetweenCondition('t.add_time',strtotime($this->add_time),(strtotime($this->add_time)+3600*24-1));
+            if($this->up_time != '')
+                $criteria->addBetweenCondition('t.up_time',strtotime($this->up_time),(strtotime($this->up_time)+3600*24-1));
+            $criteria->compare('t.pay_status',$this->pay_status);
+            $criteria->compare('t.order_status',$this->order_status);
+            $criteria->compare('t.centre_status',$this->centre_status);
+            $criteria->compare('t.status',$this->status);
+
+            //当前代理商
+            //$criteria->compare('Order_OrderShops.shops_agent_id','='.Yii::app()->operator->id);
+
+        }
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+            'pagination'=>array(
+                'pageSize'=>Yii::app()->params['admin_pageSize'],
+            ),
+            'sort'=>array(
+                'defaultOrder'=>'t.add_time desc', //设置默认排序
+            ),
+        ));
+    }
+
+    /**
+     * 工作人员平台搜索====自助游
+     * @param string $criteria
+     * @return CActiveDataProvider
+     */
+
+    public function search_admin($criteria='')
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+        if($criteria ===''){
+            $criteria=new CDbCriteria;
+            //$criteria->compare('t.status','<>-1');
+            $criteria->compare('t.order_organizer_id','=0');
+
+            $criteria->with=array(
+                'Order_OrderRetinue',
+                'Order_User',
+                'Order_OrderShops',
+                'Order_OrderActives'
+            );
+
+            if($this->search_time_type != '' && isset($this->__search_time_type[$this->search_time_type]))
+            {
+                if($this->search_start_time !='' && $this->search_end_time !='')
+                    $criteria->addBetweenCondition('t.'.$this->__search_time_type[$this->search_time_type],strtotime($this->search_start_time),strtotime($this->search_end_time)+3600*24-1);
+                elseif($this->search_start_time !='' && $this->search_end_time =='')
+                    $criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'>='.strtotime($this->search_start_time));
+                elseif($this->search_start_time =='' && $this->search_end_time !='')
+                    $criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'<=' . (strtotime($this->search_end_time)+3600*24-1));
+            }
+
+            $criteria->compare('t.id',$this->id,true);
+            $criteria->compare('t.son_order_count',$this->son_order_count,true);
+            $criteria->compare('t.order_no',$this->order_no,true);
+            $criteria->compare('t.order_type',$this->order_type,true);
+            $criteria->compare('Order_User.phone',$this->user_id,true);
+            $criteria->compare('t.order_price',$this->order_price,true);
+            $criteria->compare('t.pay_price',$this->pay_price,true);
+            $criteria->compare('t.price',$this->price,true);
+            $criteria->compare('t.trade_no',$this->trade_no,true);
+            $criteria->compare('t.trade_name',$this->trade_name,true);
+            $criteria->compare('t.service_price',$this->service_price,true);
+            $criteria->compare('t.service_fee',$this->service_fee,true);
+            $criteria->compare('t.pay_type',$this->pay_type);
+            $criteria->compare('t.user_go_count',$this->user_go_count,true);
+            $criteria->compare('t.user_price',$this->user_price,true);
+            $criteria->compare('t.user_price_fact',$this->user_price_fact,true);
+
+            if($this->pay_time != '')
+                $criteria->addBetweenCondition('t.pay_time',strtotime($this->pay_time),(strtotime($this->pay_time)+3600*24-1));
+            $criteria->compare('t.status_go',$this->status_go);
+            if($this->go_time != '')
+                $criteria->addBetweenCondition('t.go_time', strtotime($this->go_time), (strtotime($this->go_time)+3600*24-1));
+            if($this->add_time != '')
+                $criteria->addBetweenCondition('t.add_time',strtotime($this->add_time),(strtotime($this->add_time)+3600*24-1));
+            if($this->up_time != '')
+                $criteria->addBetweenCondition('t.up_time',strtotime($this->up_time),(strtotime($this->up_time)+3600*24-1));
+            $criteria->compare('t.pay_status',$this->pay_status);
+            $criteria->compare('t.order_status',$this->order_status);
+            $criteria->compare('t.centre_status',$this->centre_status);
+            $criteria->compare('t.status',$this->status);
+
+
+        }
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+            'pagination'=>array(
+                'pageSize'=>Yii::app()->params['admin_pageSize'],
+            ),
+            'sort'=>array(
+                'defaultOrder'=>'t.add_time desc', //设置默认排序
+            ),
+        ));
+    }
+
+    /**
+     *  工作人员平台搜索====活动订单
+     * @param string $criteria
+     * @return CActiveDataProvider
+     */
+    public function search_actives($order_actives_id='')
+    {
+
+            $criteria = new CDbCriteria;
+        //    $criteria->compare('t.status', '<>-1');
+            $criteria->compare('t.order_organizer_id', '<>0');
+            $criteria->with = array(
+                'Order_OrderActives'=>array(
+                    'with'=>'OrderActives_Actives'
+                ),
+                'Order_OrderRetinue',
+                'Order_User',
+            );
+            if(isset($order_actives_id) && $order_actives_id != '')
+                $criteria->compare('t.order_organizer_id','='.$order_actives_id);
+
+            if($this->search_time_type != '' && isset($this->__search_time_type[$this->search_time_type]))
+            {
+                if($this->search_start_time !='' && $this->search_end_time !='')
+                    $criteria->addBetweenCondition('t.'.$this->__search_time_type[$this->search_time_type],strtotime($this->search_start_time),strtotime($this->search_end_time)+3600*24-1);
+                elseif($this->search_start_time !='' && $this->search_end_time =='')
+                    $criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'>='.strtotime($this->search_start_time));
+                elseif($this->search_start_time =='' && $this->search_end_time !='')
+                    $criteria->compare('t.'.$this->__search_time_type[$this->search_time_type],'<=' . (strtotime($this->search_end_time)+3600*24-1));
+            }
+            
+            $criteria->compare('t.id',$this->id,true);
+            $criteria->compare('t.son_order_count',$this->son_order_count,true);
+            $criteria->compare('t.order_no',$this->order_no,true);
+            $criteria->compare('t.order_organizer_id',$this->order_organizer_id,true);
+            $criteria->compare('t.order_type',$this->order_type,true);
+            $criteria->compare('Order_User.phone',$this->user_id,true);
+            $criteria->compare('t.order_price',$this->order_price,true);
+            $criteria->compare('t.pay_price',$this->pay_price,true);
+            $criteria->compare('t.price',$this->price,true);
+            $criteria->compare('t.trade_no',$this->trade_no,true);
+            $criteria->compare('t.trade_name',$this->trade_name,true);
+            $criteria->compare('t.service_price',$this->service_price,true);
+            $criteria->compare('t.service_fee',$this->service_fee,true);
+            $criteria->compare('t.pay_type',$this->pay_type);
+            $criteria->compare('t.user_go_count',$this->user_go_count,true);
+            $criteria->compare('t.user_price',$this->user_price,true);
+            $criteria->compare('t.user_price_fact',$this->user_price_fact,true);
+
+            if($this->pay_time != '')
+                $criteria->addBetweenCondition('t.pay_time',strtotime($this->pay_time),(strtotime($this->pay_time)+3600*24-1));
+            $criteria->compare('t.status_go',$this->status_go);
+            if($this->add_time != '')
+                $criteria->addBetweenCondition('t.add_time',strtotime($this->add_time),(strtotime($this->add_time)+3600*24-1));
+            if($this->up_time != '')
+                $criteria->addBetweenCondition('t.up_time',strtotime($this->up_time),(strtotime($this->up_time)+3600*24-1));
+            if($this->go_time != '')
+                $criteria->addBetweenCondition('OrderActives_Actives.go_time',strtotime($this->go_time),(strtotime($this->go_time)+3600*24-1));
+            $criteria->compare('t.pay_status',$this->pay_status);
+            $criteria->compare('t.order_status',$this->order_status);
+            $criteria->compare('t.centre_status',$this->centre_status);
+            $criteria->compare('t.status',$this->status);
+
+
+
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+            'pagination'=>array(
+                'pageSize'=>Yii::app()->params['admin_pageSize'],
+            ),
+            'sort'=>array(
+                'defaultOrder'=>'t.add_time desc', //设置默认排序
+            ),
+        ));
+    }
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return Order the static model class
+     */
+    public static function model($className=__CLASS__)
+    {
+        return parent::model($className);
+    }
+    
+    /**
+     * 保存之前的操作
+     * @see CActiveRecord::beforeSave()
+     */
+    public function beforeSave()
+    {
+        if (parent::beforeSave())
+        {        
+            if ($this->isNewRecord)
+                $this->up_time = $this->add_time = time();
+            else
+                $this->up_time=time();            
+            return true;
+        }
+        else
+            return false;
+    }
+    
+    /**
+     * 验证出发时间
+     */
+    public function validate_go_time()
+    {
+        if(! $this->hasErrors('go_time'))
+        {
+            if($this->go_time <= date('Y-m-d'))
+                $this->addError('go_time', '出游时间 不能小于今天');
+        }        
+    }
+
+    /**
+     * 代理商
+     * @param $order_id
+     * @return string
+     */
+    public static  function my_income_price($order_id)
+    {
+        $model=self::model()->findByPk($order_id,array(
+            'with'=>array(
+                'Order_OrderShops'=>array(
+                    'with'=>array(
+                        'OrderShops_OrderItems'
+                    )
+                )
+            ),
+            'condition'=>' `t`.`status`>=0 AND t.order_organizer_id =0   AND Order_OrderShops.shops_agent_id=:agent',
+            'params'=>array(':agent'=>Yii::app()->operator->id),
+        ));
+        if(! $model )
+            return '正在统计...';
+        // 统计我的收益
+        $item_total_money = 0.00;
+        $floor = Yii::app()->controller;
+        foreach ($model->Order_OrderShops as $shops)
+        {
+            foreach ($shops->OrderShops_OrderItems as  $items) 
+            {
+                $item_total_money = $floor->floorAdd($item_total_money, $floor->floorDiv($floor->floorMul($items->total,$items->items_push_agent), 100));
+            }
+        }
+        return  $item_total_money; 
+    }
+    /**
+     * 获取唯一的订单号
+     * @param unknown $id
+     * @return unknown
+        觅境：自助游    MJ+201509011   MJ + date  + id
+        觅趣：结伴游    MQ+201509011   MJ + date + id
+        觅鲜：农产品    MX+201509011   MJ + date  + id
+     */
+    public static function get_order_no($id,$order_type=self::order_type_dot)
+    {
+        $date=date('YmdHis');
+        if (Yii::app()->params['test_order_no'])
+            $prefix = Yii::app()->params['test_order_no'];
+        else 
+            $prefix = '';
+        if($order_type==self::order_type_dot || $order_type==self::order_type_thrand)//点、线
+        {
+            $front='MJ';
+            $id=$front.$date.self::get_order_no_default($id);
+        }
+        elseif($order_type==self::order_type_actives_tour)//活动（旅游）
+        {
+            $front='MQ';
+            $id=$front.$date.self::get_order_no_default($id);
+        }        
+        elseif($order_type==self::order_type_actives_tour_full)//活动（旅游）代付
+        {
+            $front='MQD';
+            $id=$front.$date.self::get_order_no_default($id);
+        }
+        else 
+            throw new CHttpException(404,'订单类型不合法！');
+        return $prefix . $id;
+    }
+    
+    /**
+     * 默认
+     * @param unknown $id
+     * @return string|unknown
+     */
+    public static function get_order_no_default($id)
+    { 
+        $number=Yii::app()->params['order_no_default'];    
+        if(strlen($id) <$number)
+        {
+            return sprintf('%0'.$number.'s', $id);
+        }
+        return $id;
+    }
+    
+    /**
+     * 调用支付宝接口等到数据
+     */
+    public static function alipay($model)
+    {
+        require_once(Yii::app()->basePath."/extensions/alipay/alipay.config.php");
+        require_once(Yii::app()->basePath."/extensions/alipay/lib/alipay_core.function.php");
+        require_once(Yii::app()->basePath."/extensions/alipay/lib/alipay_rsa.function.php");
+                
+        //$alipay_config['sign']='';                                                //签名
+         $alipay_config['notify_url'] = Yii::app()->params['order_pay_type']['alipay']['domain'].'/api/callback/alipay.php'; //Yii::app()->params['order_pay_type']['alipay']['domain'].Yii::app()->createUrl(Yii::app()->params['order_pay_type']['alipay']['returnUrl']);
+         $alipay_config['out_trade_no'] = $model->order_no;//订单
+        $alipay_config['subject'] = $model->Order_User->phone;                            //商品名称
+        $alipay_config['payment_type'] = 1;                                //支付类型
+        $alipay_config['seller_id'] = 'mille.yin@7090s.com';        //卖家支付宝账号
+        //$alipay_config['total_fee']= $model->order_price;        //总金额
+        $alipay_config['total_fee']= 0.01;                                    //总金额
+        //商品详情
+        $alipay_config['body'] = $model->Order_User->phone . ' ' . Order::$_order_type[$model->order_type] . ' 订单号： ' . $model->order_no . '总计：' . $model->order_price .' （元）';
+        $alipay_config['it_b_pay']='90m';                                //未付款交易的超时时间 
+        //$alipay_config['show_url']='m.alipay.com';
+        $dqm='"';
+        $params=array(
+            'service'=>$dqm.'mobile.securitypay.pay'.$dqm,
+            'partner'=>$dqm.$alipay_config['partner'].$dqm,
+            '_input_charset'=>$dqm.$alipay_config['input_charset'].$dqm,
+    //        'sign_type'=>$dqm.$alipay_config['sign_type'].$dqm,
+            'notify_url'=>$dqm.urlencode($alipay_config['notify_url']).$dqm,
+            'out_trade_no'=>$dqm.$alipay_config['out_trade_no'].$dqm,
+            'subject'=>$dqm.$alipay_config['subject'].$dqm,
+            'payment_type'=>$dqm.$alipay_config['payment_type'].$dqm,    
+            'seller_id'=>$dqm.$alipay_config['seller_id'].$dqm,
+            'total_fee'=>$dqm.$alipay_config['total_fee'].$dqm,
+            'body'=>$dqm.$alipay_config['body'].$dqm,
+            'it_b_pay'=>$dqm.$alipay_config['it_b_pay'].$dqm,
+            //'show_url'=>$dqm.$alipay_config['show_url'].$dqm,
+        );
+        $params=paraFilter($params);
+        $params=argSort($params);
+        $data=createLinkstring($params);
+        $params['sign']=$dqm.urlencode(rsaSign($data,$alipay_config['private_key_path'])).$dqm;
+        $params['sign_type']=$dqm.$alipay_config['sign_type'].$dqm;
+        $return= createLinkstring($params);
+        //Yii::app()->controller->log($return,ManageLog::user,ManageLog::create);
+        return $return;
+    }
+        
+    /**
+     * 验证数据
+     * @param unknown $model
+     * @return boolean
+     */
+    public static function validate_order($model)
+    {
+        if(isset($_POST['Order']) && isset($_POST['Order']['order_price']) && isset($_POST['Order']['order_type']))
+        {
+            $model->user_id=Yii::app()->api->id;        
+            if($_POST['Order']['order_type'] == Order::order_type_actives_tour)
+            {
+                $model->scenario='create_actives_tour';
+            }
+            else
+            {
+                $model->scenario='create';
+            }
+            $model->attributes = $_POST['Order'];
+            if(! Shops::validate_shops($model)) //验证商品
+                return false;
+            if(! Retinue::validate_retinue($model)) //验证随行
+                return false;
+            if(! isset($model->Order_OrderRetinue) || empty($model->Order_OrderRetinue))
+            {
+                $model->addError('order_price','订单随行人员 不可空白');
+                $model->addError('status','001');
+                return false;
+            }
+            if(! isset($model->Order_OrderShops) || empty($model->Order_OrderShops))
+            {
+                $model->addError('order_price','订单中的商品 不可空白');
+                $model->addError('status','002');
+                return false;
+            }
+            $return=true;
+            foreach ($model->Order_OrderRetinue as $OrderRetinue)
+            {
+                if(! $OrderRetinue->validate())
+                    $return=false;
+            }
+            foreach ($model->Order_OrderShops as $OrderShops)
+            {
+                if(! isset($OrderShops->OrderShops_OrderItems) || empty($OrderShops->OrderShops_OrderItems))
+                {
+                    $model->addError('order_price','订单商品中的项目 不可空白');
+                    $model->addError('status','003');
+                    return false;
+                }
+                if(! $OrderShops->validate())
+                    $return=false;
+                foreach ($OrderShops->OrderShops_OrderItems as $OrderItems)
+                {
+                    if(! isset($OrderItems->OrderItems_OrderItemsFare) || empty($OrderItems->OrderItems_OrderItemsFare))
+                    {
+                        $model->addError('order_price','订单商品项目中的价格 不可空白');
+                        $model->addError('status','004');
+                        return false;
+                    }
+                    if(! $OrderItems->validate())
+                        $return=false;
+                    foreach ($OrderItems->OrderItems_OrderItemsFare as $OrderItemsFare)
+                    {
+                        if(! $OrderItemsFare->validate())
+                            $return=false;
+                    }
+                }
+            }
+
+            //钱的验证
+            if(count(Order::$_money) != Order::$order_fare_count)
+            {
+                $model->addError('order_price','订单中价格 不可空白');
+                $model->addError('status','M03');
+                return false;
+            }
+            $money_count=0.00;
+            $floor = Yii::app()->controller;
+            foreach (Order::$_money as $money)
+            {
+                if ($floor->floorComp($floor->floorMul($money['price'], $money['number']), $money['total']) == 0)
+                    $money_count = $floor->floorAdd($money_count, $money['total']);
+            }
+            if($floor->floorComp(Order::$_money_count,$money_count) != 0)
+            {
+                $model->addError('order_price','订单中价格 不可空白');
+                $model->addError('status','M05');
+                return false;
+            }
+            if($model->order_type==Order::order_type_dot)//点
+            {
+                if($model->user_price <0 || $model->user_price != 0)
+                {
+                    $model->addError('order_price','订单数据 不可空白');
+                    $model->addError('status','005');
+                    return false;
+                }
+            }
+            elseif($model->order_type == Order::order_type_thrand)//线
+            {
+                if($model->user_price <0 || $model->user_price != 0)
+                {
+                    $model->addError('order_price','订单数据 不可空白');
+                    $model->addError('status','005');
+                    return false;
+                }
+                if(ceil(Order::$children_number/2) > Order::$adult_number)
+                {
+                    $model->addError('order_price','订单数据 不可空白');
+                    $model->addError('status','005');
+                    return false;
+                }
+            }
+            elseif($model->order_type == Order::order_type_actives_tour)//活动旅游
+            {
+                if(ceil(Order::$children_number/2) > Order::$adult_number)
+                {
+                    $model->addError('order_price','订单数据 不可空白');
+                    $model->addError('status','005');
+                    return false;
+                }            
+                if(Order::$order_number < Order::$retinue_count)
+                {
+                    $model->addError('order_price','订单人数 不可超出');
+                    $model->addError('status','AT00');
+                    return false;
+                }
+                if ($floor->floorComp($model->user_price, $floor->floorMul(Order::$retinue_count, Order::$actives_tour_price)) !=0)
+                {
+                    $model->addError('order_price','订单数据 不可空白');
+                    $model->addError('status','AT01');
+                    return false;
+                }
+                if ($floor->floorComp($model->user_price, $floor->floorMul($model->user_go_count, Order::$actives_tour_price)) !=0)
+                {
+                    $model->addError('order_price','订单数据 不可空白');
+                    $model->addError('status','AT01');
+                    return false;
+                }
+                //服务费
+                $model->user_price_fact = Order::$actives_tour_price;
+                Order::$buy_number=Order::$retinue_count;
+            }else
+                return false;
+            //订单总计
+            $model->money_count = $floor->floorAdd(Order::$_money_count, $floor->floorMul($model->user_price_fact, $model->user_go_count));
+            if(! $model->validate())
+                return false;
+            if($return)
+                return true;
+            return false;
+        }
+        else
+        {
+            $model->addError('order_price','订单总价格 不可空白');
+            $model->addError('status','M07');
+            return false;
+        }
+    }
+    
+    /**
+     * 创建我的订单
+     */
+    public static function create_order($model)
+    {
+        $transaction=$model->dbConnection->beginTransaction();
+        try
+        {
+            //多个点的订单
+            if($model->order_type==Order::order_type_dot)
+            {
+                $model->order_status=Order::order_status_store_query;    //等待确认
+                $model->status_go=Order::status_go_yes;                             //默认确认
+                $model->go_time=strtotime($model->go_time);
+                $model->centre_status=Order::centre_status_not;                //不可以支付
+            }
+            elseif($model->order_type==Order::order_type_thrand)
+            {
+                $model->order_status=Order::order_status_store_query;    //等待确认
+                $model->status_go=Order::status_go_yes;                             //默认确认
+                $model->centre_status=Order::centre_status_not;                //不可以支付
+                $model->go_time=strtotime($model->go_time);
+            }
+            elseif($model->order_type==Order::order_type_actives_tour)
+            {
+                if(Order::$actives_go_time == 0)
+                {        
+                    $model->order_status=Order::order_status_store_yes;    //默认确认
+                    $model->status_go=Order::status_go_set;                         //未给时间
+                    $model->centre_status=Order::centre_status_not;            //不可以支付
+                }
+                else
+                {
+                    $model->order_status=Order::order_status_store_yes;    //默认确认
+                    $model->status_go=Order::status_go_yes;                         //确认出游
+                    $model->centre_status=Order::centre_status_yes;            //可以支付                
+                    if (! OrderActives::actives_confirm_count(Order::$actives_model->Shops_OrderActives->id))
+                        throw new Exception("确认出游数量的订单统计错误");
+                }
+                $model->go_time=Order::$actives_go_time;
+            }//代付
+            else if($model->order_type == Order::order_type_actives_tour_full)
+            {
+                $model->order_status = Order::order_status_store_yes;        //默认确认
+                $model->status_go = Order::status_go_yes;                         //确认出游
+                $model->centre_status = Order::centre_status_yes;                //可以支付
+                if (! OrderActives::actives_confirm_count($model->order_organizer_id))
+                    throw new Exception("确认出游数量的订单统计错误");
+                if ($model->Order_OrderShops[0]->validate() && $model->validate())
+                {
+                    //出游时间
+                    $model->go_time = $model->Order_OrderShops[0]->is_go_time ? $model->Order_OrderShops[0]->is_go_time : strtotime($model->go_time);
+                    if (! $model->Order_OrderShops[0]->is_go_time)
+                    {
+                        if (! Actives::model()->updateByPk($model->Order_OrderShops[0]->shops_id, array(
+                            'go_time'=>$model->go_time,
+                        )))
+                            throw new Exception("觅趣（代付）更新出游时间错误");
+                    }
+                    Actives::model()->updateByPk($model->Order_OrderShops[0]->shops_id,array(
+                        'actives_status'=>Actives::actives_status_end,
+                        'status'=>Actives::status_published,
+                    ));
+                }
+                else
+                    throw new Exception("觅趣（代付）验证不通过");        
+            }else
+                throw new Exception("订单类型不合法");
+            $model->pay_status=Order::pay_status_not;         //未支付
+            $model->pay_type = Order::pay_type_none;        //默认没有支付类型
+            if(! $model->save(false))
+                throw new Exception("创建订单主要表错误");
+            $model->order_no=Order::get_order_no($model->id,$model->order_type);
+            if(! $model->save(false))
+                throw new Exception("创建订单主要表错误");
+            //没有随行人员
+            if ($model->order_type != Order::order_type_actives_tour_full)
+            {
+                foreach ($model->Order_OrderRetinue as $OrderRetinue)
+                {
+                    $OrderRetinue->order_id=$model->id;
+                    $OrderRetinue->order_no=$model->order_no;
+                    if(!$OrderRetinue->save(false))
+                        throw new Exception("创建订单随行人员错误");
+                }
+            }
+            foreach ($model->Order_OrderShops as $OrderShops)
+            {
+                $OrderShops->order_id=$model->id;
+                if(!$OrderShops->save(false))
+                    throw new Exception("创建订单复制商品错误");
+                foreach ($OrderShops->OrderShops_OrderItems as $OrderItems)
+                {
+                    $OrderItems->order_id=$model->id;
+                    $OrderItems->order_shops_id=$OrderShops->id;
+                    if($model->order_type == Order::order_type_actives_tour_full)    //活动(旅游)代付
+                    {
+                        $OrderItems->is_shops=OrderItems::is_shops_store_yes;        //默认接单
+                    }
+                    elseif($model->order_type==Order::order_type_actives_tour)    //活动(旅游)
+                    {
+                        $OrderItems->is_shops=OrderItems::is_shops_store_yes;        //默认接单
+                    }
+                    elseif($model->order_type==Order::order_type_thrand)            //线路
+                    {
+                        //线路中没有购买的项目 标志接单
+                        $OrderItems->is_shops=OrderItems::is_shops_store_query;    //等待接单
+                    }
+                    else//点 默认等待接单
+                    {
+                        $OrderItems->is_shops=OrderItems::is_shops_store_query;    //等待接单
+                    }
+                    $OrderItems->is_barcode=OrderItems::is_barcode_invalid;            //默认无效消费码
+                    //添加下单量
+                    Items::add_down($OrderItems->items_id);
+                    //项目保存                                
+                    if(!$OrderItems->save(false))
+                        throw new Exception("创建订单复制商品中项目错误");
+                    $OrderItems->barcode=OrderItems::get_barcode($OrderItems->id);
+                    if(!$OrderItems->save(false))
+                        throw new Exception("创建订单复制商品中项目码错误");
+                    foreach ($OrderItems->OrderItems_OrderItemsFare as $OrderItemsFare)
+                    {
+                        $OrderItemsFare->order_items_id=$OrderItems->id;
+                        $OrderItemsFare->order_id=$model->id;
+                        $OrderItemsFare->order_shops_id=$OrderShops->id;
+                        if(!$OrderItemsFare->save(false))
+                            throw new Exception("创建订单复制商品中项目错误");
+                    }
+                }
+            }
+            if($model->order_type==Order::order_type_dot)
+            {
+                // 项目免费====默认接单
+                $items_is_shops = OrderItems::exclude_items_code($model->id);
+                if(! empty($items_is_shops))
+                {
+                    if(! OrderItems::set_is_shops($items_is_shops))
+                        throw new Exception("创建订单点 免费项目默认接单错误");
+                }
+                if(SmsLoginForm::order_store_notify($model->user_id, $model->id))
+                    Yii::app()->controller->log('创建订单中 商家短信通知',ManageLog::user,ManageLog::create);
+            }
+            elseif($model->order_type==Order::order_type_thrand)
+            {
+                $not_shops=OrderItemsFare::exclude_items_code($model->id);
+                if(! empty($not_shops))
+                {
+                    if(! OrderItems::set_is_shops($not_shops))
+                        throw new Exception("创建订单 线路商家中项目没有购买 商家接单 设置为 接单状态 错误");
+                }
+                // 项目免费====默认接单
+                $items_is_shops = OrderItems::exclude_items_code($model->id);
+                if(! empty($items_is_shops))
+                {
+                    if(! OrderItems::set_is_shops($items_is_shops))
+                        throw new Exception("创建订单线 免费项目默认接单错误".implode(', ', $items_is_shops));
+                }
+                if(SmsLoginForm::order_store_notify($model->user_id, $model->id))
+                    Yii::app()->controller->log('创建订单中 商家短信通知',ManageLog::user,ManageLog::create);
+            }
+            elseif($model->order_type==Order::order_type_actives_tour)
+            {
+                if(! Actives::update_order_number(Order::$actives_id,Order::$buy_number))
+                    throw new Exception("卖完了");    
+                Actives::actives_tour_count_sign(Order::$actives_id);//添加表名人数
+                if(! OrderActives::actives_order_count(Order::$actives_model->Shops_OrderActives->id))
+                    throw new Exception("添加报名统计错误");
+            }
+            elseif ($model->order_type==Order::order_type_actives_tour_full)
+            {
+                if(! OrderActives::actives_order_count($model->order_organizer_id))
+                    throw new Exception("添加觅趣代付下单统计");
+            }        
+            $return=Yii::app()->controller->log('创建订单',ManageLog::user,ManageLog::create);
+            $transaction->commit();
+        }
+        catch(Exception $e)
+        {
+            $transaction->rollBack();
+            Yii::app()->controller->error_log($e->getMessage(),ErrorLog::user,ErrorLog::create,ErrorLog::rollback,__METHOD__);
+            $model->addError('id',$e->getMessage());
+        }
+        if(isset($return))
+            return true;
+        return false;
+    }
+    
+    /**
+     * 获取错误信息
+     * @param unknown $model
+     * @return Ambigous <multitype:unknown , multitype:>
+     */
+    public static function get_error($model)
+    {
+        $models=array();
+        $models[]=$model;
+        if(isset($model->Order_OrderRetinue) && !empty($model->Order_OrderRetinue))
+            $models=array_merge($models,$model->Order_OrderRetinue);
+        if(isset($model->Order_OrderShops) && !empty($model->Order_OrderShops))
+            $models=array_merge($models,$model->Order_OrderRetinue);
+        foreach ($model->Order_OrderShops as $Order_OrderShops)
+        {
+            if(isset($Order_OrderShops->OrderShops_OrderItems) && !empty($Order_OrderShops->OrderShops_OrderItems))
+                $models=array_merge($models,$Order_OrderShops->OrderShops_OrderItems);
+            foreach ($Order_OrderShops->OrderShops_OrderItems as $OrderShops_OrderItems)
+            {
+                if(isset($OrderShops_OrderItems->OrderItems_OrderItemsFare) && !empty($OrderShops_OrderItems->OrderItems_OrderItemsFare))
+                    $models=array_merge($models,$OrderShops_OrderItems->OrderItems_OrderItemsFare);
+            }
+        }
+        return $models;
+    }
+    
+    /**
+     * 支付中 状态改变
+     * @param unknown $order_id
+     * @return boolean
+     */
+    public static function pay_status_paying($order_id, $pay_type=Order::pay_type_alipay)
+    {
+        self::pay_status_not($order_id);
+        $criteria =new CDbCriteria;
+        $criteria->addCondition('`pay_status`=:pay_status_not');
+        $criteria->params[':pay_status_not']=Order::pay_status_not;//没有支付
+        $criteria->addColumnCondition(array(
+                'order_status'=>Order::order_status_store_yes,    //订单的状态
+                'status_go'=>Order::status_go_yes,                        //是否出游
+                'centre_status'=>Order::centre_status_yes,            //是否可以支付
+                'status'=>Order::status_yes,                                    //有效的订单
+        ));
+        $model=self::model()->findByPk($order_id,$criteria);
+        if($model)
+            return self::model()->updateByPk($order_id, array('pay_status'=>Order::pay_status_paying, 'up_time'=>time(), 'pay_type'=>$pay_type), $criteria);
+        
+        return false;
+    }
+    
+    /**
+     * 支付中 =>没有支付
+     * @param unknown $order_id
+     * @return boolean
+     */
+    public static function pay_status_not($order_id)
+    {
+        $criteria =new CDbCriteria;
+        $criteria->addCondition('`pay_status`=:pay_status_paying');
+        $criteria->params[':pay_status_paying']=Order::pay_status_paying;//支付中
+        $criteria->addColumnCondition(array(
+                'order_status'=>Order::order_status_store_yes,    //订单的状态
+                'status_go'=>Order::status_go_yes,                        //是否出游
+                'centre_status'=>Order::centre_status_yes,            //是否可以支付
+                'status'=>Order::status_yes,            //有效的订单
+        ));
+        $model=self::model()->findByPk($order_id,$criteria);
+        if($model)
+            return self::model()->updateByPk($order_id, array('pay_status'=>Order::pay_status_not, 'up_time'=>time(), 'pay_type'=>Order::pay_type_none),$criteria);
+        
+        return false;
+    }
+    
+    /**
+     * 支付成功后 活动（旅游）调用 用户购买价格的数据价格总计
+     * @param unknown $order_id
+     * @return boolean
+     */
+    public static function update_actives_tour_itmes_fare($order_id,$type=true)
+    {
+        if($type)
+            $type='+';
+        else 
+            $type='-';    
+        $criteria =new CDbCriteria;
+        $criteria->with=array(
+            'Order_OrderActives'=>array(
+                    'with'=>array('OrderActives_Actives'),            
+            ),
+            'Order_OrderItems'=>array(
+                    'with'=>array(
+                        'OrderItems_OrderItemsFare',
+                    ),
+            ),
+        );
+        //订单类型
+        $criteria->addCondition('`t`.`order_type`=:actives_tour OR `t`.`order_type`=:full');
+        $criteria->params[':actives_tour'] = Order::order_type_actives_tour;     //活动AA
+        $criteria->params[':full'] = Order::order_type_actives_tour_full;            //活动代付 订单
+        $criteria->addColumnCondition(array(
+                '`t`.`status_go`'=>Order::status_go_yes,                                            //出游状态 确认出游
+                '`t`.`order_status`'=>Order::order_status_user_pay,                        //订单状态 已付款
+                '`t`.`pay_status`'=>Order::pay_status_yes,                                        //支付状态 已支付
+                '`t`.`centre_status`'=>Order::centre_status_not,                                //核心状态 不可支付
+                '`t`.`status`'=>Order::status_yes,                                                        //有效的订单
+        ));
+        $model=self::model()->findByPk($order_id,$criteria);
+        
+        if ($model && isset($model->Order_OrderItems) && $model->Order_OrderItems && is_array($model->Order_OrderItems))
+        {
+            foreach ($model->Order_OrderItems as $items)
+            {
+                //项目总价
+                $return = OrderItems::model()->updateByPk($items->order_items_id, array(
+                    'total'=>new CDbExpression('`total`'.$type.':total',array(':total'=>$items->total)),
+                    'up_time'=>new CDbExpression('`up_time`'.$type.'1'),
+                ));
+                if (! $return)
+                    return false;
+                
+                if (isset($items->OrderItems_OrderItemsFare) && $items->OrderItems_OrderItemsFare)
+                {
+                    foreach ($items->OrderItems_OrderItemsFare as $fare)
+                    {
+                        //项目价格 数量 价格 添加
+                        $return_fare = OrderItemsFare::model()->updateByPk($fare->order_items_fare_id, array(
+                                'number'=>new CDbExpression('`number`'.$type.':number',array(':number'=>$fare->number)),
+                                'total'=>new CDbExpression('`total`'.$type.':total',array(':total'=>$fare->total)),
+                                'up_time'=>new CDbExpression('`up_time`'.$type.'1'),
+                        ));
+                        if (! $return_fare)
+                            return false;
+                    }
+                }else 
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * 计算订单的总价
+     */
+    public function order_price()
+    {
+        if(! $this->hasErrors('order_price'))
+        {
+            $floor = Yii::app()->controller;
+            $OrderShops = $this->Order_OrderShops[0];
+            $total = 0.00;
+            foreach ($OrderShops->OrderShops_OrderItems as $OrderItems)
+                $total = $floor->floorAdd($total, $OrderItems->total);        
+            //统计成人的人数
+            $number = Attend::getColumnCount($OrderShops->shops_id);
+            $this->user_go_count = $number;
+            $total = $floor->floorAdd($total, $floor->floorMul($number, $this->user_price_fact));
+            if ($floor->floorComp($total, $this->order_price) != 0)
+            {
+                $this->addError('go_time', '订单总价 计算错误');
+                $this->addError('order_price', $total);
+            }
+        }
+    }
+}

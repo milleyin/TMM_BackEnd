@@ -34,6 +34,7 @@ return array(
         'enableCrossValidation' => true,                       //全局 能否 跨域
         'crossDomainName' => '*',                                //全局 跨域 域名
         'enableHttpsValidation' => true,                       //全局 是否强制 https
+        'enableRawBodyValidation' => true,                 //全局 是否开启 POST rawbody
     ),
     
     'format'=>array(
@@ -71,18 +72,16 @@ return array(
     ),
     //重写规则
     'urlManager'=>array(
-         'urlFormat'=>'path',
-         'showScriptName' => false,     //去除index.php
-         'appendParams' => false,        //参数不重写
-         'urlSuffix'=>'.html',                   //加上.html
-         'rules'=>array(
-             '<modules:\w+>/<controller:\w+>/<action:\w+>' => '<modules>/<controller>/<action>',
-             '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
-             //'http://pad.cn/'=>array('/admin', 'urlSuffix'=>'', 'caseSensitive'=>false),
-             //'http://pad.cn/<controller:\w+>/<action:\w+>'=>array('/admin/<controller>/<action>', 'urlSuffix'=>'.html', 'caseSensitive'=>false),
-             //admin 为一个模块
-         ),
-     ),
+        'class' => 'UrlManager',                                    //重写方法 兼容get
+        'urlFormat'=>'path',
+        'showScriptName' => false,                            //去除index.php
+        'appendParams' => false,                               //参数不重写
+        'urlSuffix'=>'.html',                                          //加上.html
+        'rules'=>array(
+            '<modules:\w+>/<controller:\w+>/<action:\w+>' => '<modules>/<controller>/<action>',
+            '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+        ),
+    ),
 
     // database settings are configured in database.php
     'db'=>require(dirname(__FILE__).'/database/database.php'),

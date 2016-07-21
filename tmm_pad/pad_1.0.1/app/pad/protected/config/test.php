@@ -19,8 +19,9 @@ return CMap::mergeArray(
                     ),
                     array(
                         'class'=>'CWebLogRoute',
-                        'levels'=>'error, warning, trace',
-                        'categories'=>'system.db.*',
+                        'levels'=>'',
+                        'categories'=>'',
+                        //'showInFireBug' => true,
                     ),
                 ),
             ),

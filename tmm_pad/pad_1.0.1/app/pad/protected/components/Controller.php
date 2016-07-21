@@ -62,6 +62,11 @@ class Controller extends CController
      */
     public $enableCsrfValidation = true;
     /**
+     * csrf 回调函数
+     * @var unknown
+     */
+    public $enableCsrfException;
+    /**
      * 能否 跨域
      * @var boolean
      */
@@ -76,6 +81,11 @@ class Controller extends CController
      * @var boolean
      */
     public $enableHttpsValidation = false;
+    /**
+     * 是否RawBody获取数据
+     * @var boolean | array
+     */
+    public $enableRawBodyValidation = false;
     /**
      *  错误消息
      * @var string
@@ -104,6 +114,9 @@ class Controller extends CController
     public function init()
     {
         parent::init();
+        $this->enableCsrfException = function ($this, $request) {
+            throw new CHttpException(200, Yii::t('yii','The CSRF token could not be verified.'), 400);
+        };
         //$this->setTheme();
         $this->copyAssets();
         $this->setLastUrl();
@@ -135,13 +148,25 @@ class Controller extends CController
     {
        if (parent::beforeAction($action))
        {
-           Yii::app()->request->validateHttpsMust($this);
-           Yii::app()->request->validateCrossDomain($this);
-           Yii::app()->request->validateCsrfToken($this);
+           $this->validateRequest();
            return true;
        }
        else
            return false;
+    }
+    
+    /**
+     * 验证请求的
+     * @throws CHttpException
+     */
+    public function validateRequest()
+    {
+        if ( !Helper::allowIp(Yii::app()->request->userHostAddress, $this->ipFilters) && $this->route != ltrim(Yii::app()->getErrorHandler()->errorAction, '/'))
+            throw new CHttpException(403, '没有权限访问系统');
+        Yii::app()->getRequest()->validateHttpsMust($this);
+        Yii::app()->getRequest()->validateCrossDomain($this);
+        Yii::app()->getRequest()->validateRawBody($this);
+        Yii::app()->getRequest()->validateCsrfToken($this);
     }
     
     /**

@@ -1001,13 +1001,13 @@ class Order extends CActiveRecord
         require_once(Yii::app()->basePath."/extensions/alipay/lib/alipay_rsa.function.php");
                 
         //$alipay_config['sign']='';                                                //签名
-         $alipay_config['notify_url'] = Yii::app()->params['order_pay_type']['alipay']['domain'].'/alipay.php';//Yii::app()->params['order_pay_type']['alipay']['domain'].Yii::app()->createUrl(Yii::app()->params['order_pay_type']['alipay']['returnUrl']);
+         $alipay_config['notify_url'] = Yii::app()->params['order_pay_type']['alipay']['domain'].'/api/callback/alipay.php'; //Yii::app()->params['order_pay_type']['alipay']['domain'].Yii::app()->createUrl(Yii::app()->params['order_pay_type']['alipay']['returnUrl']);
          $alipay_config['out_trade_no'] = $model->order_no;//订单
         $alipay_config['subject'] = $model->Order_User->phone;                            //商品名称
         $alipay_config['payment_type'] = 1;                                //支付类型
         $alipay_config['seller_id'] = 'mille.yin@7090s.com';        //卖家支付宝账号
-        $alipay_config['total_fee']= $model->order_price;        //总金额
-        //$alipay_config['total_fee']= 0.01;                                    //总金额
+        //$alipay_config['total_fee']= $model->order_price;        //总金额
+        $alipay_config['total_fee']= 0.01;                                    //总金额
         //商品详情
         $alipay_config['body'] = $model->Order_User->phone . ' ' . Order::$_order_type[$model->order_type] . ' 订单号： ' . $model->order_no . '总计：' . $model->order_price .' （元）';
         $alipay_config['it_b_pay']='90m';                                //未付款交易的超时时间 

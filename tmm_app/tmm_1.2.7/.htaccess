@@ -7,4 +7,4 @@ RewriteEngine on
  RewriteCond %{REQUEST_FILENAME} !-d  
   
  # otherwise forward it to index.php  
- RewriteRule . wxpay.php
+ RewriteRule . index.php

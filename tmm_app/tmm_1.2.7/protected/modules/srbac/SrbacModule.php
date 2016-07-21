@@ -109,22 +109,20 @@ class SrbacModule extends CWebModule {
 
     //Create the translation component
     $this->setComponents(
-      array(
-      'tr'=>array(
-        'class'=>'CPhpMessageSource',
-        'basePath'=> dirname(__FILE__).DIRECTORY_SEPARATOR.'messages',
-        'onMissingTranslation'=>"Helper::markWords"
-      ),
-      )
+        array(
+            'tr'=>array(
+                'class'=>'CPhpMessageSource',
+                'basePath'=> dirname(__FILE__).DIRECTORY_SEPARATOR.'messages',
+                'onMissingTranslation'=>"Helper::markWords",
+            ),
+        )
     );
   }
-
   // SETTERS & GETTERS
-  
   //zch
-	public function setCssPublished($value){
-		$this->_cssPublished = $value;
-	}
+    public function setCssPublished($value){
+        $this->_cssPublished = $value;
+    }
   
   public function setCssUrl($cssUrl) {
     $this->_cssUrl = $cssUrl;

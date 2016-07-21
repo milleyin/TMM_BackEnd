@@ -1,46 +1,38 @@
 <?php
-$components = require(dirname(__FILE__).'/components.php');
-if (YII_DEBUG) {
-    $components['log']['routes'][] = array(
-        'class'=>'CWebLogRoute',
-        'levels'=>'',
-        'categories'=>'',
-        //'showInFireBug' => true,
-    );
-}
 /**
  * 主要配置文件
+ * ChangHai Zhan
  */
 return array(
-    'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
+    'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     // app 名字
-    'name'=>'展示屏（Pad）',
+    'name' => '展示屏（Pad）',
     // 语言
-    'language'=>'zh_cn',
+    'language' => 'zh_cn',
     // 字符集
     'charset' => 'utf-8',
     // 时区
-    'timeZone'=>'Asia/Shanghai',
+    'timeZone' => 'Asia/Shanghai',
     // 首页
-    'homeUrl'=>array('/index/index'),
+    'homeUrl' => array('/index/index'),
     // 预加载 组件 日志
-    'preload'=>array('log'),
+    'preload' => array('log'),
     //主题
-    'theme'=>'json',
+    'theme' => 'json',
     //命名空间
     'controllerNamespace' => 'app\controllers',
     //默认控制器
-    'defaultController'=>'index',
+    'defaultController' => 'index',
     // 自动加载
-    'import'=>array(
+    'import' => array(
         'application.models.*',
         'application.components.*',
         'ext.rewrites.*',
     ),
     //模块配置
-    'modules'=>require(dirname(__FILE__).'/modules/modules.php'),
+    'modules' => require(dirname(__FILE__).'/modules/modules.php'),
     // 组件配置
-    'components'=>$components,
+    'components' => require(dirname(__FILE__).'/components.php'),
     // 配置参数 Yii::app()->params['paramName']
-    'params'=>require(dirname(__FILE__).'/params/params.php'),
+    'params' => require(dirname(__FILE__).'/params/params.php'),
 );

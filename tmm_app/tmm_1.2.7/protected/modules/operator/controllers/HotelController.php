@@ -2,543 +2,548 @@
 /**
  * 
  * @author Changhai Zhan
- *	创建时间：2016-04-06 11:44:31 */
+ *    创建时间：2016-04-06 11:44:31 */
 class HotelController extends OperatorMainController
 {
-	/**
-	 * 默认操作数据模型
-	 * @var string
-	 */
-	public $_class_model = 'Hotel';
+    /**
+     * 添加 csrf白名单
+     * @var unknown
+     */
+    public $enableCsrfValidation = array('uploads' => false);
+    /**
+     * 默认操作数据模型
+     * @var string
+     */
+    public $_class_model = 'Hotel';
 
-	/**
-	 * 查看详情
-	 * @param integer $id
-	 */
-	public function actionView($id)
-	{
-		$model = $this->loadModel($id, array(
-			'with'=>array(
-				'Hotel_Items'=>array(
-					'condition'=>'Hotel_Items.status!=:status',
-					'params'=>array(':status'=>Items::status_del),
-					'with'=>array(
-						'Items_StoreContent'=>array('with'=>array('Content_Store')),
-						'Items_area_id_p_Area_id'=>array('select'=>'name'),
-						'Items_area_id_m_Area_id'=>array('select'=>'name'),
-						'Items_area_id_c_Area_id'=>array('select'=>'name'),
-						'Items_agent',
-					)
-				),
-				'Hotel_ItemsClassliy'=>array('select'=>'name'),
-				'Hotel_Fare',
-				'Hotel_ItemsImg',
-				'Hotel_ItemsWifi'=>array('with'=>array('ItemsWifi_Wifi')),
-			),
-		));
-		// 加载标签
-		$model->Hotel_TagsElement = TagsElement::get_select_tags(TagsElement::tags_items_hotel, $id);
-		
-		$this->render('view', array('model'=>$model));
-	}
+    /**
+     * 查看详情
+     * @param integer $id
+     */
+    public function actionView($id)
+    {
+        $model = $this->loadModel($id, array(
+            'with'=>array(
+                'Hotel_Items'=>array(
+                    'condition'=>'Hotel_Items.status!=:status',
+                    'params'=>array(':status'=>Items::status_del),
+                    'with'=>array(
+                        'Items_StoreContent'=>array('with'=>array('Content_Store')),
+                        'Items_area_id_p_Area_id'=>array('select'=>'name'),
+                        'Items_area_id_m_Area_id'=>array('select'=>'name'),
+                        'Items_area_id_c_Area_id'=>array('select'=>'name'),
+                        'Items_agent',
+                    )
+                ),
+                'Hotel_ItemsClassliy'=>array('select'=>'name'),
+                'Hotel_Fare',
+                'Hotel_ItemsImg',
+                'Hotel_ItemsWifi'=>array('with'=>array('ItemsWifi_Wifi')),
+            ),
+        ));
+        // 加载标签
+        $model->Hotel_TagsElement = TagsElement::get_select_tags(TagsElement::tags_items_hotel, $id);
+        
+        $this->render('view', array('model'=>$model));
+    }
 
-	/**
-	 * 创建
-	 */
-	public function actionCreate($id)
-	{
-		$this->addCss(Yii::app()->request->baseUrl.'/css/operator/ext/uploadify/uploadify.css');
-		$this->addJs(Yii::app()->request->baseUrl.'/css/operator/ext/uploadify/jquery.uploadify.min.js');
-		//实例化类
-		$model = new Hotel;
-		$model->Hotel_Items = new Items;
-		$model->Hotel_ItemsImg = new ItemsImg;
-		//设置验证场景
-		$model->Hotel_Items->scenario = 'create';
-		//添加 或者 减去 价格类型
-		if ((isset($_POST['add']) || isset($_POST['cut'])) && isset($_POST['Items'],$_POST['Fare']) && is_array($_POST['Fare']))
-		{
-			//价格不免费
-			if (isset($_POST['Items']['free_status']) && $_POST['Items']['free_status'] != Items::free_status_yes)
-			{
-				$number = $this->set_number('Fare', Yii::app()->params['items_fare_number']);
-				//创建多个model
-				$model->Hotel_Fare = $this->new_modes('Fare', 'create_hotel', $number);
-				//赋值
-				$this->set_attributes($model->Hotel_Fare);
-			}
-			else
-			{
-				//价格免费
-				$array = array();
-				$default = array('name' =>'免费套房', 'info'=>45, 'number'=>2, 'price' =>'0.00');
-				//创建模型
-				$model->Hotel_Fare = $this->new_modes('Fare', 'create_hotel');
-				//赋值免费的
-				foreach ($model->Hotel_Fare as $info)
-				{
-					$info->attributes = $default;
-					$array[] = $info;
-				}
-				$model->Hotel_Fare = $array;
-			}
-			//赋值
-			$model->Hotel_Items->attributes = $_POST['Items'];
-		}
-		else if (isset($_POST['Items'], $_POST['Fare']) && is_array($_POST['Fare']))
-		{
-			//提交 设置价格  不是免费的
-			if (isset($_POST['Items']['free_status']) && $_POST['Items']['free_status'] != Items::free_status_yes)
-			{
-				$number = count($_POST['Fare']);
-				if ($number > Yii::app()->params['items_fare_number'])
-					$number = Yii::app()->params['items_fare_number'];	
-				$model->Hotel_Fare = $this->new_modes('Fare', 'create_hotel', $number);
-			}
-			else
-			{
-				$array = array();
-				$default = array('name' =>'免费套房', 'info'=>45, 'number'=>2, 'price' =>'0.00');
-				$model->Hotel_Fare = $this->new_modes('Fare', 'create_hotel');
-				foreach ($model->Hotel_Fare as $info)
-				{
-					$info->attributes = $default;
-					$array[] = $info;
-				}
-				$model->Hotel_Fare = $array;
-			}
-			//赋值
-			$model->Hotel_Items->attributes = $_POST['Items'];
-		}
-		else
-			//默认一个
-			$model->Hotel_Fare = $this->new_modes('Fare', 'create_hotel');
-		
-		//供应商主账号
-		$this->_class_model = 'StoreContent';
-		$model->Hotel_Items->Items_StoreContent = $this->loadModel($id, array(
-				'with'=>array(
-						'Content_Store'=>array(
-								'condition'=>'Content_Store.agent_id=:agent_id AND Content_Store.status=:status',
-								'params'=>array(':agent_id'=>Yii::app()->operator->id, ':status'=>StoreUser::status_suc),
-						),
-						'Content_Stoer_Son'
-				),
-		));
-		//设置供应商
-		$model->Hotel_Items->store_id = $model->Hotel_Items->Items_StoreContent->id;
-		//ajax 验证
-		$this->_Ajax_Verify_Same(array_merge($model->Hotel_Fare,array($model->Hotel_Items)), 'hotel-form');
-		//提交表单 排除添加价格类型
-		if (!isset($_POST['add']) && !isset($_POST['cut']) && isset($_POST['Items'], $_POST['Fare']) &&
-				is_array($_POST['Fare']) && count($_POST['Fare'])==count($model->Hotel_Fare)
-			)
-		{
-			//赋值
-			$model->Hotel_Items->attributes = $_POST['Items'];
-			// 住
-			$model->Hotel_Items->c_id = Items::items_hotel;
-			//归属运营商
-			$model->Hotel_Items->agent_id = Yii::app()->operator->id;
-			//归属供应商
-			$model->Hotel_Items->store_id=$model->Hotel_Items->Items_StoreContent->id;
-			//项目字段验证
-			$Items_validate = $model->Hotel_Items->validate();
-			//项目价格赋值 并验证
-			$Fare_validate = $this->models_validate($model->Hotel_Fare);		
-			//内容验证
-			$content_validate = false;
-			if ($model->Hotel_Items->content == '')
-			{
-				$model->Hotel_Items->addError('content', '详细内容 不可空白');
-				$content_validate = false;
-			}
-			else
-			{
-				//处理图片链接
-				$model->Hotel_Items->content = $this->admin_img_replace($model->Hotel_Items->content);
-				$content_validate = true;
-			}
-			//验证图片
-			if (isset($_POST['ItemsImg']['tmp']) && is_array($_POST['ItemsImg']['tmp']))
-			{
-				$img_validate = true;
-				$this->_upload = Yii::app()->params['uploads_items_tmp_hotel'];
-				$filename = $this->_upload . date('Ymd') . '/' . current($_POST['ItemsImg']['tmp']);
-				if (! $this->file_exists_uploads($filename))
-				{
-					$model->Hotel_ItemsImg->addError('tmp', '概况图 不可空白');
-					$img_validate = false;
-				}
-				else if (count($_POST['ItemsImg']['tmp']) > Yii::app()->params['items_image_number'])
-				{
-					$model->Hotel_ItemsImg->addError('tmp', '概况图 不可超过'.Yii::app()->params['items_image_number'].'张');
-					$img_validate = false;
-				}
-			}
-			else
-			{
-				$model->Hotel_ItemsImg->addError('tmp', '概况图 不可空白');
-				$img_validate = false;
-			}
-			//提前验证都通过
-			if($Fare_validate && $Items_validate && $img_validate && $content_validate)
-			{
-				$transaction = $model->dbConnection->beginTransaction();
-				try
-				{
-					//创建项目 默认下线状态
-					$model->Hotel_Items->status = Items::status_offline;
-					//创建项目 默认未提交
-					$model->Hotel_Items->audit = Items::audit_draft;
-					//处理图片链接
-					$model->Hotel_Items->content = $this->admin_img_replace($model->Hotel_Items->content);
-					//项目图片地址
-					$model->Hotel_Items->map = $this->getFilePath(Yii::app()->params['uploads_items_map']) . '.png';
-					//保存项目主要表
-					if ($model->Hotel_Items->save(false))
-					{
-						//保存图片
-						Items::saveAmapImage($model->Hotel_Items->map, $model->Hotel_Items->lng, $model->Hotel_Items->lat);			
-						$model->id = $model->Hotel_Items->id;
-						$model->c_id = $model->Hotel_Items->c_id;
-						//保存项目 吃 附表
-						if ($model->save(false))
-						{
-							foreach ($model->Hotel_Fare as $model_fare)
-							{
-								$model_fare->store_id = $model->Hotel_Items->store_id;
-								$model_fare->agent_id = $model->Hotel_Items->agent_id;
-								$model_fare->item_id = $model->Hotel_Items->id;
-								$model_fare->c_id = $model->Hotel_Items->c_id;
-								if ( !$model_fare->save(false))
-									throw new Exception("添加项目(住)价格记录错误");
-							}					
-							foreach ($_POST['ItemsImg']['tmp'] as $name)
-							{
-								//保存上传的项目图片多张
-								$this->_upload = Yii::app()->params['uploads_items_tmp_hotel'];
-								$filename = $this->_upload . date('Ymd') . '/' . $name;
-								if ($this->file_exists_uploads($filename))
-								{
-									$this->_upload = Yii::app()->params['uploads_items_hotel'];
-									//保存图片
-									if (! $this->items_img_save($model->Hotel_Items,$filename))
-										throw new Exception("添加项目(住)图片记录错误");
-								}
-							}			
-							$return = $this->log('添加项目(住)', ManageLog::operator, ManageLog::create);
-						}
-						else
-							throw new Exception("添加项目(住)记录错误");
-					}
-					else 
-						throw new Exception("添加项目(住)主要记录错误");
-					$transaction->commit();
-				}
-				catch(Exception $e)
-				{
-					$transaction->rollBack();
-					$this->error_log($e->getMessage(), ErrorLog::operator, ErrorLog::create, ErrorLog::rollback, __METHOD__);
-				}
-				if(isset($return) && $return)
-					$this->back();
-			}
-		}
-		
-		$this->render('create', array(
-			'model'=>$model,
-		));
-	}
+    /**
+     * 创建
+     */
+    public function actionCreate($id)
+    {
+        $this->addCss(Yii::app()->request->baseUrl.'/css/operator/ext/uploadify/uploadify.css');
+        $this->addJs(Yii::app()->request->baseUrl.'/css/operator/ext/uploadify/jquery.uploadify.min.js');
+        //实例化类
+        $model = new Hotel;
+        $model->Hotel_Items = new Items;
+        $model->Hotel_ItemsImg = new ItemsImg;
+        //设置验证场景
+        $model->Hotel_Items->scenario = 'create';
+        //添加 或者 减去 价格类型
+        if ((isset($_POST['add']) || isset($_POST['cut'])) && isset($_POST['Items'],$_POST['Fare']) && is_array($_POST['Fare']))
+        {
+            //价格不免费
+            if (isset($_POST['Items']['free_status']) && $_POST['Items']['free_status'] != Items::free_status_yes)
+            {
+                $number = $this->set_number('Fare', Yii::app()->params['items_fare_number']);
+                //创建多个model
+                $model->Hotel_Fare = $this->new_modes('Fare', 'create_hotel', $number);
+                //赋值
+                $this->set_attributes($model->Hotel_Fare);
+            }
+            else
+            {
+                //价格免费
+                $array = array();
+                $default = array('name' =>'免费套房', 'info'=>45, 'number'=>2, 'price' =>'0.00');
+                //创建模型
+                $model->Hotel_Fare = $this->new_modes('Fare', 'create_hotel');
+                //赋值免费的
+                foreach ($model->Hotel_Fare as $info)
+                {
+                    $info->attributes = $default;
+                    $array[] = $info;
+                }
+                $model->Hotel_Fare = $array;
+            }
+            //赋值
+            $model->Hotel_Items->attributes = $_POST['Items'];
+        }
+        else if (isset($_POST['Items'], $_POST['Fare']) && is_array($_POST['Fare']))
+        {
+            //提交 设置价格  不是免费的
+            if (isset($_POST['Items']['free_status']) && $_POST['Items']['free_status'] != Items::free_status_yes)
+            {
+                $number = count($_POST['Fare']);
+                if ($number > Yii::app()->params['items_fare_number'])
+                    $number = Yii::app()->params['items_fare_number'];    
+                $model->Hotel_Fare = $this->new_modes('Fare', 'create_hotel', $number);
+            }
+            else
+            {
+                $array = array();
+                $default = array('name' =>'免费套房', 'info'=>45, 'number'=>2, 'price' =>'0.00');
+                $model->Hotel_Fare = $this->new_modes('Fare', 'create_hotel');
+                foreach ($model->Hotel_Fare as $info)
+                {
+                    $info->attributes = $default;
+                    $array[] = $info;
+                }
+                $model->Hotel_Fare = $array;
+            }
+            //赋值
+            $model->Hotel_Items->attributes = $_POST['Items'];
+        }
+        else
+            //默认一个
+            $model->Hotel_Fare = $this->new_modes('Fare', 'create_hotel');
+        
+        //供应商主账号
+        $this->_class_model = 'StoreContent';
+        $model->Hotel_Items->Items_StoreContent = $this->loadModel($id, array(
+                'with'=>array(
+                        'Content_Store'=>array(
+                                'condition'=>'Content_Store.agent_id=:agent_id AND Content_Store.status=:status',
+                                'params'=>array(':agent_id'=>Yii::app()->operator->id, ':status'=>StoreUser::status_suc),
+                        ),
+                        'Content_Stoer_Son'
+                ),
+        ));
+        //设置供应商
+        $model->Hotel_Items->store_id = $model->Hotel_Items->Items_StoreContent->id;
+        //ajax 验证
+        $this->_Ajax_Verify_Same(array_merge($model->Hotel_Fare,array($model->Hotel_Items)), 'hotel-form');
+        //提交表单 排除添加价格类型
+        if (!isset($_POST['add']) && !isset($_POST['cut']) && isset($_POST['Items'], $_POST['Fare']) &&
+                is_array($_POST['Fare']) && count($_POST['Fare'])==count($model->Hotel_Fare)
+            )
+        {
+            //赋值
+            $model->Hotel_Items->attributes = $_POST['Items'];
+            // 住
+            $model->Hotel_Items->c_id = Items::items_hotel;
+            //归属运营商
+            $model->Hotel_Items->agent_id = Yii::app()->operator->id;
+            //归属供应商
+            $model->Hotel_Items->store_id=$model->Hotel_Items->Items_StoreContent->id;
+            //项目字段验证
+            $Items_validate = $model->Hotel_Items->validate();
+            //项目价格赋值 并验证
+            $Fare_validate = $this->models_validate($model->Hotel_Fare);        
+            //内容验证
+            $content_validate = false;
+            if ($model->Hotel_Items->content == '')
+            {
+                $model->Hotel_Items->addError('content', '详细内容 不可空白');
+                $content_validate = false;
+            }
+            else
+            {
+                //处理图片链接
+                $model->Hotel_Items->content = $this->admin_img_replace($model->Hotel_Items->content);
+                $content_validate = true;
+            }
+            //验证图片
+            if (isset($_POST['ItemsImg']['tmp']) && is_array($_POST['ItemsImg']['tmp']))
+            {
+                $img_validate = true;
+                $this->_upload = Yii::app()->params['uploads_items_tmp_hotel'];
+                $filename = $this->_upload . date('Ymd') . '/' . current($_POST['ItemsImg']['tmp']);
+                if (! $this->file_exists_uploads($filename))
+                {
+                    $model->Hotel_ItemsImg->addError('tmp', '概况图 不可空白');
+                    $img_validate = false;
+                }
+                else if (count($_POST['ItemsImg']['tmp']) > Yii::app()->params['items_image_number'])
+                {
+                    $model->Hotel_ItemsImg->addError('tmp', '概况图 不可超过'.Yii::app()->params['items_image_number'].'张');
+                    $img_validate = false;
+                }
+            }
+            else
+            {
+                $model->Hotel_ItemsImg->addError('tmp', '概况图 不可空白');
+                $img_validate = false;
+            }
+            //提前验证都通过
+            if($Fare_validate && $Items_validate && $img_validate && $content_validate)
+            {
+                $transaction = $model->dbConnection->beginTransaction();
+                try
+                {
+                    //创建项目 默认下线状态
+                    $model->Hotel_Items->status = Items::status_offline;
+                    //创建项目 默认未提交
+                    $model->Hotel_Items->audit = Items::audit_draft;
+                    //处理图片链接
+                    $model->Hotel_Items->content = $this->admin_img_replace($model->Hotel_Items->content);
+                    //项目图片地址
+                    $model->Hotel_Items->map = $this->getFilePath(Yii::app()->params['uploads_items_map']) . '.png';
+                    //保存项目主要表
+                    if ($model->Hotel_Items->save(false))
+                    {
+                        //保存图片
+                        Items::saveAmapImage($model->Hotel_Items->map, $model->Hotel_Items->lng, $model->Hotel_Items->lat);            
+                        $model->id = $model->Hotel_Items->id;
+                        $model->c_id = $model->Hotel_Items->c_id;
+                        //保存项目 吃 附表
+                        if ($model->save(false))
+                        {
+                            foreach ($model->Hotel_Fare as $model_fare)
+                            {
+                                $model_fare->store_id = $model->Hotel_Items->store_id;
+                                $model_fare->agent_id = $model->Hotel_Items->agent_id;
+                                $model_fare->item_id = $model->Hotel_Items->id;
+                                $model_fare->c_id = $model->Hotel_Items->c_id;
+                                if ( !$model_fare->save(false))
+                                    throw new Exception("添加项目(住)价格记录错误");
+                            }                    
+                            foreach ($_POST['ItemsImg']['tmp'] as $name)
+                            {
+                                //保存上传的项目图片多张
+                                $this->_upload = Yii::app()->params['uploads_items_tmp_hotel'];
+                                $filename = $this->_upload . date('Ymd') . '/' . $name;
+                                if ($this->file_exists_uploads($filename))
+                                {
+                                    $this->_upload = Yii::app()->params['uploads_items_hotel'];
+                                    //保存图片
+                                    if (! $this->items_img_save($model->Hotel_Items,$filename))
+                                        throw new Exception("添加项目(住)图片记录错误");
+                                }
+                            }            
+                            $return = $this->log('添加项目(住)', ManageLog::operator, ManageLog::create);
+                        }
+                        else
+                            throw new Exception("添加项目(住)记录错误");
+                    }
+                    else 
+                        throw new Exception("添加项目(住)主要记录错误");
+                    $transaction->commit();
+                }
+                catch(Exception $e)
+                {
+                    $transaction->rollBack();
+                    $this->error_log($e->getMessage(), ErrorLog::operator, ErrorLog::create, ErrorLog::rollback, __METHOD__);
+                }
+                if(isset($return) && $return)
+                    $this->back();
+            }
+        }
+        
+        $this->render('create', array(
+            'model'=>$model,
+        ));
+    }
 
-	/**
-	 * 更新
-	 * @param integer $id
-	 */
-	public function actionUpdate($id)
-	{
-		$this->addCss(Yii::app()->request->baseUrl.'/css/operator/ext/uploadify/uploadify.css');
-		$this->addJs(Yii::app()->request->baseUrl.'/css/operator/ext/uploadify/jquery.uploadify.min.js');
-		//加载项目
-		$model = $this->loadModel($id, array('with'=>array(
-							'Hotel_ItemsImg',
-							'Hotel_Fare',
-							'Hotel_Items'=>array('with'=>array(
-										'Items_StoreContent'=>array('with'=>array(
-												'Content_Store',
-												'Content_Stoer_Son',
-										))
-							)),
-					),
-					'condition'=>'Hotel_Items.status=:status AND t.c_id=:c_id AND Hotel_Items.audit !=:audit AND Hotel_Items.agent_id=:agent_id',
-					'params'=>array(':status'=>Items::status_offline, ':c_id'=>Items::items_hotel, ':audit'=>Items::audit_pending, ':agent_id'=>Yii::app()->operator->id),
-		));
-		//获取所有价格的ID
-		$fare_ids = $this->listData($model->Hotel_Fare, 'id', 'id');
-		//获取所有图片的ID
-		$items_img_ids = $this->listData($model->Hotel_ItemsImg, 'id', 'id');
-		//设置 价格对象 场景
-		$this->set_scenarios($model->Hotel_Fare, 'update_hotel');	
-		//设置 项目 住 的场景
-		$model->Hotel_Items->scenario = 'update';
-		//验证 是否是添加 减去价格
-		if ((isset($_POST['add']) || isset($_POST['cut'])) && isset($_POST['Items'], $_POST['Fare']) && is_array($_POST['Fare']))
-		{
-			//不免费
-			if (isset($_POST['Items']['free_status']) && $_POST['Items']['free_status'] != Items::free_status_yes)
-			{
-				//设置有多少个fare 	
-				$number = $this->set_number('Fare', Yii::app()->params['items_fare_number']);				
-	            $array = array();
-	            $default = array('name' =>'', 'info' =>'', 'number'=>'','price' =>'');
-	            $count = count($model->Hotel_Fare);
-	            //设置属性 保存数据
-	            $array = $this->set_attributes($model->Hotel_Fare, $default, $number);
-	            if ($number > $count )
-	            {
-	            	$array = array_merge($array, $this->new_modes('Fare', 'update_hotel', $number-$count));
-	            	//设置属性 保存数据
-	            	$array = $this->set_attributes($array, $default, $number);
-	            }
-	            //赋值对象
-	            $model->Hotel_Fare = $array;
-			}
-			else
-			{
-				// 价格免费
-				$array = array();
-				$default = array('name' =>'免费套房', 'info'=>45, 'number'=>2, 'price' =>'0.00');
-				//更新对象组
-				$model->Hotel_Fare = $this->update_models($model->Hotel_Fare, 1, 'update_hotel');
-				foreach ($model->Hotel_Fare as $info)
-				{
-					$info->attributes = $default;
-					$array[] = $info;
-				}
-				//赋值对象
-				$model->Hotel_Fare = $array;
-			}
-			//保存项目的值
-			$model->Hotel_Items->attributes = $_POST['Items'];
-			//图片
-			if (isset($_POST['ItemsImg']) && is_array($_POST['ItemsImg']))
-			{
+    /**
+     * 更新
+     * @param integer $id
+     */
+    public function actionUpdate($id)
+    {
+        $this->addCss(Yii::app()->request->baseUrl.'/css/operator/ext/uploadify/uploadify.css');
+        $this->addJs(Yii::app()->request->baseUrl.'/css/operator/ext/uploadify/jquery.uploadify.min.js');
+        //加载项目
+        $model = $this->loadModel($id, array('with'=>array(
+                            'Hotel_ItemsImg',
+                            'Hotel_Fare',
+                            'Hotel_Items'=>array('with'=>array(
+                                        'Items_StoreContent'=>array('with'=>array(
+                                                'Content_Store',
+                                                'Content_Stoer_Son',
+                                        ))
+                            )),
+                    ),
+                    'condition'=>'Hotel_Items.status=:status AND t.c_id=:c_id AND Hotel_Items.audit !=:audit AND Hotel_Items.agent_id=:agent_id',
+                    'params'=>array(':status'=>Items::status_offline, ':c_id'=>Items::items_hotel, ':audit'=>Items::audit_pending, ':agent_id'=>Yii::app()->operator->id),
+        ));
+        //获取所有价格的ID
+        $fare_ids = $this->listData($model->Hotel_Fare, 'id', 'id');
+        //获取所有图片的ID
+        $items_img_ids = $this->listData($model->Hotel_ItemsImg, 'id', 'id');
+        //设置 价格对象 场景
+        $this->set_scenarios($model->Hotel_Fare, 'update_hotel');    
+        //设置 项目 住 的场景
+        $model->Hotel_Items->scenario = 'update';
+        //验证 是否是添加 减去价格
+        if ((isset($_POST['add']) || isset($_POST['cut'])) && isset($_POST['Items'], $_POST['Fare']) && is_array($_POST['Fare']))
+        {
+            //不免费
+            if (isset($_POST['Items']['free_status']) && $_POST['Items']['free_status'] != Items::free_status_yes)
+            {
+                //设置有多少个fare     
+                $number = $this->set_number('Fare', Yii::app()->params['items_fare_number']);                
+                $array = array();
+                $default = array('name' =>'', 'info' =>'', 'number'=>'','price' =>'');
+                $count = count($model->Hotel_Fare);
+                //设置属性 保存数据
+                $array = $this->set_attributes($model->Hotel_Fare, $default, $number);
+                if ($number > $count )
+                {
+                    $array = array_merge($array, $this->new_modes('Fare', 'update_hotel', $number-$count));
+                    //设置属性 保存数据
+                    $array = $this->set_attributes($array, $default, $number);
+                }
+                //赋值对象
+                $model->Hotel_Fare = $array;
+            }
+            else
+            {
+                // 价格免费
+                $array = array();
+                $default = array('name' =>'免费套房', 'info'=>45, 'number'=>2, 'price' =>'0.00');
+                //更新对象组
+                $model->Hotel_Fare = $this->update_models($model->Hotel_Fare, 1, 'update_hotel');
+                foreach ($model->Hotel_Fare as $info)
+                {
+                    $info->attributes = $default;
+                    $array[] = $info;
+                }
+                //赋值对象
+                $model->Hotel_Fare = $array;
+            }
+            //保存项目的值
+            $model->Hotel_Items->attributes = $_POST['Items'];
+            //图片
+            if (isset($_POST['ItemsImg']) && is_array($_POST['ItemsImg']))
+            {
                 $ids_img = $this->array_listData($_POST['ItemsImg'], 'id');
-  				//过滤 id
-				$models_img = ItemsImg::filter_id($model->id, $ids_img, false);
-               	//赋值对象与数据
+                  //过滤 id
+                $models_img = ItemsImg::filter_id($model->id, $ids_img, false);
+                   //赋值对象与数据
                 $model->Hotel_ItemsImg = $this->models_attributes($model->Hotel_ItemsImg, $models_img, array('id', 'img'));
-			}
-		}
-		else if (isset($_POST['Fare'], $_POST['Items']) && is_array($_POST['Fare']))
-		{
-			// 提交价格 不是免费的
-			if (isset($_POST['Items']['free_status']) && $_POST['Items']['free_status'] != Items::free_status_yes)
-			{
-				$number = count($_POST['Fare']);
-				if ($number > Yii::app()->params['items_fare_number'])
-					$number = Yii::app()->params['items_fare_number'];
-				//更新models
-				$model->Hotel_Fare=$this->update_models($model->Hotel_Fare, $number, 'update_hotel');
-			}
-			else
-			{
-				$array = array();
-				$default = array('name' =>'免费套房', 'info'=>45, 'number'=>2, 'price' =>'0.00');
-				//更新对象组
-				$model->Hotel_Fare = $this->update_models($model->Hotel_Fare, 1, 'update_hotel');
-				foreach ($model->Hotel_Fare as $info)
-				{
-					$info->attributes = $default;
-					$array[] = $info;
-				}
-				$model->Hotel_Fare = $array;
-			}
-			//项目属性赋值
-			$model->Hotel_Items->attributes = $_POST['Items'];
-		}
-		//设置价格场景
-		$this->set_scenarios($model->Hotel_Fare, 'update_hotel');
-		//ajax 验证
-		$this->_Ajax_Verify_Same(array_merge($model->Hotel_Fare, array($model->Hotel_Items)), 'hotel-form');
-		//提交表单 排除添加 去除价格类型
-		if ( !isset($_POST['add']) && !isset($_POST['cut']) && isset($_POST['Items'], $_POST['Fare']) &&
-				is_array($_POST['Fare']) && count($_POST['Fare']) == count($model->Hotel_Fare)
-			)
-		{
-			//原来的图片
-			$old_map = $model->Hotel_Items->map;
-			$old_lng = $model->Hotel_Items->lng;
-			$old_lat = $model->Hotel_Items->lat;
-			//项目属性赋值
-			$model->Hotel_Items->attributes = $_POST['Items'];
-			//项目字段验证
-			$Items_validate = $model->Hotel_Items->validate();
-			//项目价格赋值 并验证
-			$Fare_validate = $this->models_validate($model->Hotel_Fare);			
-			//获取图片id	
-			$img_ids=$this->array_listData($_POST['ItemsImg'], 'id');
-			//过滤 id 剩下的id
-			if (!empty($img_ids))
-           		 $img_ids = ItemsImg::filter_id($model->id, $img_ids);
-			//获取所有的返回属性组成的数组
+            }
+        }
+        else if (isset($_POST['Fare'], $_POST['Items']) && is_array($_POST['Fare']))
+        {
+            // 提交价格 不是免费的
+            if (isset($_POST['Items']['free_status']) && $_POST['Items']['free_status'] != Items::free_status_yes)
+            {
+                $number = count($_POST['Fare']);
+                if ($number > Yii::app()->params['items_fare_number'])
+                    $number = Yii::app()->params['items_fare_number'];
+                //更新models
+                $model->Hotel_Fare=$this->update_models($model->Hotel_Fare, $number, 'update_hotel');
+            }
+            else
+            {
+                $array = array();
+                $default = array('name' =>'免费套房', 'info'=>45, 'number'=>2, 'price' =>'0.00');
+                //更新对象组
+                $model->Hotel_Fare = $this->update_models($model->Hotel_Fare, 1, 'update_hotel');
+                foreach ($model->Hotel_Fare as $info)
+                {
+                    $info->attributes = $default;
+                    $array[] = $info;
+                }
+                $model->Hotel_Fare = $array;
+            }
+            //项目属性赋值
+            $model->Hotel_Items->attributes = $_POST['Items'];
+        }
+        //设置价格场景
+        $this->set_scenarios($model->Hotel_Fare, 'update_hotel');
+        //ajax 验证
+        $this->_Ajax_Verify_Same(array_merge($model->Hotel_Fare, array($model->Hotel_Items)), 'hotel-form');
+        //提交表单 排除添加 去除价格类型
+        if ( !isset($_POST['add']) && !isset($_POST['cut']) && isset($_POST['Items'], $_POST['Fare']) &&
+                is_array($_POST['Fare']) && count($_POST['Fare']) == count($model->Hotel_Fare)
+            )
+        {
+            //原来的图片
+            $old_map = $model->Hotel_Items->map;
+            $old_lng = $model->Hotel_Items->lng;
+            $old_lat = $model->Hotel_Items->lat;
+            //项目属性赋值
+            $model->Hotel_Items->attributes = $_POST['Items'];
+            //项目字段验证
+            $Items_validate = $model->Hotel_Items->validate();
+            //项目价格赋值 并验证
+            $Fare_validate = $this->models_validate($model->Hotel_Fare);            
+            //获取图片id    
+            $img_ids=$this->array_listData($_POST['ItemsImg'], 'id');
+            //过滤 id 剩下的id
+            if (!empty($img_ids))
+                    $img_ids = ItemsImg::filter_id($model->id, $img_ids);
+            //获取所有的返回属性组成的数组
             $img_path_array = ItemsImg::filter_id($model->id, '', false, array('id'=>'img'));
             //内容验证
             $content_validate = false;
             if ($model->Hotel_Items->content == '')
             {
-            	$model->Hotel_Items->addError('content', '详细内容 不可空白');
-            	$content_validate = false;
+                $model->Hotel_Items->addError('content', '详细内容 不可空白');
+                $content_validate = false;
             }
             else
             {
-            	//处理图片链接
-            	$model->Hotel_Items->content = $this->admin_img_replace($model->Hotel_Items->content);
-            	$content_validate = true;
+                //处理图片链接
+                $model->Hotel_Items->content = $this->admin_img_replace($model->Hotel_Items->content);
+                $content_validate = true;
             }
             //是否存在图片对象
             if (!empty($model->Hotel_ItemsImg) && isset($model->Hotel_ItemsImg[0]))
-            	$Hotel_ItemsImg = $model->Hotel_ItemsImg[0];
+                $Hotel_ItemsImg = $model->Hotel_ItemsImg[0];
             else
             {
-            	$model->Hotel_ItemsImg = array( new ItemsImg );
-            	$Hotel_ItemsImg = $model->Hotel_ItemsImg[0];
+                $model->Hotel_ItemsImg = array( new ItemsImg );
+                $Hotel_ItemsImg = $model->Hotel_ItemsImg[0];
             }
             if (isset($_POST['ItemsImg']['tmp']) && is_array($_POST['ItemsImg']['tmp']))
             {
-            	if ((count($img_ids)+count($_POST['ItemsImg']['tmp']))>Yii::app()->params['items_image_number'])
-            	{
-            		$Hotel_ItemsImg->addError('tmp', '概况图 不可超过'.Yii::app()->params['items_image_number'].'张');
-            		$items_img_validate = false;
-            	}
-            	else if ((count($img_ids)+count($_POST['ItemsImg']['tmp'])) == 0)
-            	{
-            		$Hotel_ItemsImg->addError('tmp', '概况图 不可空白');
-            		$items_img_validate = false;
-            	}
-            	else
-            		$items_img_validate = true;
+                if ((count($img_ids)+count($_POST['ItemsImg']['tmp']))>Yii::app()->params['items_image_number'])
+                {
+                    $Hotel_ItemsImg->addError('tmp', '概况图 不可超过'.Yii::app()->params['items_image_number'].'张');
+                    $items_img_validate = false;
+                }
+                else if ((count($img_ids)+count($_POST['ItemsImg']['tmp'])) == 0)
+                {
+                    $Hotel_ItemsImg->addError('tmp', '概况图 不可空白');
+                    $items_img_validate = false;
+                }
+                else
+                    $items_img_validate = true;
             }
             else if (count($img_ids)>Yii::app()->params['items_image_number'])
             {
-            	$Hotel_ItemsImg->addError('tmp', '概况图 不可超过'.Yii::app()->params['items_image_number'].'张');
-            	$items_img_validate = false;
+                $Hotel_ItemsImg->addError('tmp', '概况图 不可超过'.Yii::app()->params['items_image_number'].'张');
+                $items_img_validate = false;
             }
             else if (count($img_ids)==0)
             {
-            	$Hotel_ItemsImg->addError('tmp', '概况图 不可空白');
-            	$items_img_validate = false;
+                $Hotel_ItemsImg->addError('tmp', '概况图 不可空白');
+                $items_img_validate = false;
             }
             else
-            	$items_img_validate = true;
+                $items_img_validate = true;
                 
-			//提前验证都通过
-			if ($Fare_validate && $Items_validate && $items_img_validate && $content_validate)
-			{
-				$transaction = $model->dbConnection->beginTransaction();
-				try
-				{
-					//修改未提交
-					$model->Hotel_Items->audit = Items::audit_draft;
-					//处理图片链接
-					$model->Hotel_Items->content = $this->admin_img_replace($model->Hotel_Items->content);
-					//项目图片地址
-					if((string)$old_lng != (string)$model->Hotel_Items->lng || (string)$old_lat != (string)$model->Hotel_Items->lat)
-						$model->Hotel_Items->map = $this->getFilePath(Yii::app()->params['uploads_items_map']) . '.png';
-					else
-						$model->Hotel_Items->map = $old_map;
-					//保存项目主要表
-					if ($model->Hotel_Items->save(false))
-					{
-						//保存图片
-						if($model->Hotel_Items->map != $old_map)
-						{
-							Items::saveAmapImage($model->Hotel_Items->map, $model->Hotel_Items->lng, $model->Hotel_Items->lat);
-							if ($this->file_exists_uploads($old_map))
-								unlink($this->get_file_uploads($old_map));
-						}
-						foreach ($model->Hotel_Fare as $model_fare)
-						{
-							$model_fare->store_id = $model->Hotel_Items->store_id;
-							$model_fare->agent_id = $model->Hotel_Items->agent_id;
-							$model_fare->item_id = $model->Hotel_Items->id;
-							$model_fare->c_id = $model->Hotel_Items->c_id;
-							if (! $model_fare->save(false))
-								throw new Exception("添加项目(住)价格记录错误");
-							if (isset($fare_ids[$model_fare->id]))
-								unset($fare_ids[$model_fare->id]);
-						}
-						// 删除不用的价格记录
-						if ( !empty($fare_ids))
-						{
-							if ( !Fare::model()->deleteAll(array('condition'=>'id in (' . implode(',', $fare_ids)  . ')' )))
-								throw new Exception("删除项目(住)不用的价格记录错误");
-						}
-						if (isset($_POST['ItemsImg']['tmp']) && is_array($_POST['ItemsImg']['tmp']))
-						{
-							foreach ($_POST['ItemsImg']['tmp'] as $name)
-							{
-								//保存上传的项目图片多张
-								$this->_upload = Yii::app()->params['uploads_items_tmp_hotel'];
-								$filename = $this->_upload . date('Ymd') . '/' . $name;
-								if ($this->file_exists_uploads($filename))
-								{
-									$this->_upload = Yii::app()->params['uploads_items_hotel'];
-									//保存图片
-									if ( !$this->items_img_save($model->Hotel_Items, $filename))
-										throw new Exception("添加项目(住)图片记录错误");
-								}
-							}
-						}
-						// 删除图片记录
-						foreach ($items_img_ids as $items_img_id)
-						{
-							if ( ! in_array($items_img_id, $img_ids) && ItemsImg::model()->deleteByPk($items_img_id))
-								$this->upload_delete($img_path_array[$items_img_id]);
-						}
-						$return = $this->log('修改项目(住)', ManageLog::operator, ManageLog::update);
-					}
-					else
-						throw new Exception("修改项目(住)主要记录错误");
-					$transaction->commit();
-				}
-				catch(Exception $e)
-				{
-					$transaction->rollBack();
-					$this->error_log($e->getMessage(), ErrorLog::operator, ErrorLog::update, ErrorLog::rollback, __METHOD__);
-				}
-				if (isset($return) && $return)
-					$this->back();
-			}
-		}
+            //提前验证都通过
+            if ($Fare_validate && $Items_validate && $items_img_validate && $content_validate)
+            {
+                $transaction = $model->dbConnection->beginTransaction();
+                try
+                {
+                    //修改未提交
+                    $model->Hotel_Items->audit = Items::audit_draft;
+                    //处理图片链接
+                    $model->Hotel_Items->content = $this->admin_img_replace($model->Hotel_Items->content);
+                    //项目图片地址
+                    if((string)$old_lng != (string)$model->Hotel_Items->lng || (string)$old_lat != (string)$model->Hotel_Items->lat)
+                        $model->Hotel_Items->map = $this->getFilePath(Yii::app()->params['uploads_items_map']) . '.png';
+                    else
+                        $model->Hotel_Items->map = $old_map;
+                    //保存项目主要表
+                    if ($model->Hotel_Items->save(false))
+                    {
+                        //保存图片
+                        if($model->Hotel_Items->map != $old_map)
+                        {
+                            Items::saveAmapImage($model->Hotel_Items->map, $model->Hotel_Items->lng, $model->Hotel_Items->lat);
+                            if ($this->file_exists_uploads($old_map))
+                                unlink($this->get_file_uploads($old_map));
+                        }
+                        foreach ($model->Hotel_Fare as $model_fare)
+                        {
+                            $model_fare->store_id = $model->Hotel_Items->store_id;
+                            $model_fare->agent_id = $model->Hotel_Items->agent_id;
+                            $model_fare->item_id = $model->Hotel_Items->id;
+                            $model_fare->c_id = $model->Hotel_Items->c_id;
+                            if (! $model_fare->save(false))
+                                throw new Exception("添加项目(住)价格记录错误");
+                            if (isset($fare_ids[$model_fare->id]))
+                                unset($fare_ids[$model_fare->id]);
+                        }
+                        // 删除不用的价格记录
+                        if ( !empty($fare_ids))
+                        {
+                            if ( !Fare::model()->deleteAll(array('condition'=>'id in (' . implode(',', $fare_ids)  . ')' )))
+                                throw new Exception("删除项目(住)不用的价格记录错误");
+                        }
+                        if (isset($_POST['ItemsImg']['tmp']) && is_array($_POST['ItemsImg']['tmp']))
+                        {
+                            foreach ($_POST['ItemsImg']['tmp'] as $name)
+                            {
+                                //保存上传的项目图片多张
+                                $this->_upload = Yii::app()->params['uploads_items_tmp_hotel'];
+                                $filename = $this->_upload . date('Ymd') . '/' . $name;
+                                if ($this->file_exists_uploads($filename))
+                                {
+                                    $this->_upload = Yii::app()->params['uploads_items_hotel'];
+                                    //保存图片
+                                    if ( !$this->items_img_save($model->Hotel_Items, $filename))
+                                        throw new Exception("添加项目(住)图片记录错误");
+                                }
+                            }
+                        }
+                        // 删除图片记录
+                        foreach ($items_img_ids as $items_img_id)
+                        {
+                            if ( ! in_array($items_img_id, $img_ids) && ItemsImg::model()->deleteByPk($items_img_id))
+                                $this->upload_delete($img_path_array[$items_img_id]);
+                        }
+                        $return = $this->log('修改项目(住)', ManageLog::operator, ManageLog::update);
+                    }
+                    else
+                        throw new Exception("修改项目(住)主要记录错误");
+                    $transaction->commit();
+                }
+                catch(Exception $e)
+                {
+                    $transaction->rollBack();
+                    $this->error_log($e->getMessage(), ErrorLog::operator, ErrorLog::update, ErrorLog::rollback, __METHOD__);
+                }
+                if (isset($return) && $return)
+                    $this->back();
+            }
+        }
 
-		$this->render('update', array(
-			'model'=>$model,
-		));
-	}
+        $this->render('update', array(
+            'model'=>$model,
+        ));
+    }
 
-	/**
-	 * 上传图成功 删除
-	 */
-	public function actionUploads()
-	{
-		$this->_upload = Yii::app()->params['uploads_items_tmp_hotel'];
-		if (isset($_POST['file_name']))
-		{
-			$filename = $this->_upload . date('Ymd') . '/' . $_POST['file_name'];
-			if ($this->file_exists_uploads($filename))
-				echo unlink($this->get_file_uploads($filename));
-			else
-				echo 0;
-			Yii::app()->end();
-		}
-		$model = new ItemsImg;
-		$model->scenario = 'uploads';
-		$uploads = array('tmp');
-		if ($this->upload_images($model, $uploads, true))
-			echo json_encode(array('img_name'=>basename($model->tmp), 'litimg'=>$this->litimg_path($model->tmp, Yii::app()->params['litimg_pc'])));
-		else
-			echo json_encode(array('img_name'=>'none'));
-		Yii::app()->end();
-	}
+    /**
+     * 上传图成功 删除
+     */
+    public function actionUploads()
+    {
+        $this->_upload = Yii::app()->params['uploads_items_tmp_hotel'];
+        if (isset($_POST['file_name']))
+        {
+            $filename = $this->_upload . date('Ymd') . '/' . $_POST['file_name'];
+            if ($this->file_exists_uploads($filename))
+                echo unlink($this->get_file_uploads($filename));
+            else
+                echo 0;
+            Yii::app()->end();
+        }
+        $model = new ItemsImg;
+        $model->scenario = 'uploads';
+        $uploads = array('tmp');
+        if ($this->upload_images($model, $uploads, true))
+            echo json_encode(array('img_name'=>basename($model->tmp), 'litimg'=>$this->get_file_uploads($this->litimg_path($model->tmp, Yii::app()->params['litimg_pc']))));
+        else
+            echo json_encode(array('img_name'=>'none'));
+        Yii::app()->end();
+    }
 }

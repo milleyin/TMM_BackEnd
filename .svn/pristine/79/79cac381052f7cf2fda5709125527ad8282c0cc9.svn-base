@@ -1,0 +1,103 @@
+<?php
+
+/**
+ * SBaseController class file.
+ *
+ * @author Spyros Soldatos <spyros@valor.gr>
+ * @link http://code.google.com/p/srbac/
+ */
+
+/**
+ * SBaseController must be extended by all of the applications controllers
+ * if the auto srbac should be used.
+ * You can import it in your main config file as<br />
+ * 'import'=>array(<br />
+ * 'application.modules.srbac.controllers.SBaseController',<br />
+ * ),
+ *
+ *
+ * @author Spyros Soldatos <spyros@valor.gr>
+ * @package srbac.controllers
+ * @since 1.0.2
+ */
+Yii::import("srbac.components.Helper");
+class SBaseController extends Controller {
+  /**
+   * Checks if srbac access is granted for the current user
+   * @param String $action . The current action
+   * @return boolean true if access is granted else false
+   */
+  public function beforeAction($action) {
+    if (parent::beforeAction($action)) {
+        //是否安装
+        if (!Yii::app()->getModule('srbac')->isInstalled()) {
+          return true;
+        }
+        //是否开启
+        if (Yii::app()->getModule('srbac')->debug) {
+          return true;
+        }
+        $del = Helper::findModule('srbac')->delimeter;
+        //srbac access
+        $mod = $this->module !== null ? $this->module->id . $del : "";
+        $contrArr = explode($del, $this->id);
+        $contrArr[sizeof($contrArr) - 1] = ucfirst($contrArr[sizeof($contrArr) - 1]);
+        $controller = implode(".", $contrArr);
+        $contr = str_replace($del, ".", $this->id);
+        $access = $mod . $controller . ucfirst($this->action->id);
+        //白名单
+        if (in_array($access, $this->allowedAccess())) {
+            return true;
+        }
+        //获取当前的module 除后台模块有权限限制 其他不做限制限制
+        $module = $this->module !== null ? ($this->module->id=='srbac' ? 'admin' : $this->module->id) : 'user';
+        if($module !== 'admin'){
+           return true;
+        }
+        //验证权限
+        if (!Yii::app()->$module->checkAccess($access) || Yii::app()->$module->isGuest) {
+          $this->onUnauthorizedAccess();
+        } else {
+          return true;
+        }
+    } else {
+        return false;
+    }
+  }
+
+  /**
+   * The auth items that access is always  allowed. Configured in srbac module's
+   * configuration
+   * @return The always allowed auth items
+   */
+  protected function allowedAccess() {
+    Yii::import("srbac.components.Helper");
+    return Helper::findModule('srbac')->getAlwaysAllowed();
+  }
+
+  protected function onUnauthorizedAccess() {
+    /**
+     *  Check if the unautorizedacces is a result of the user no longer being logged in.
+     *  If so, redirect the user to the login page and after login return the user to the page they tried to open.
+     *  If not, show the unautorizedacces message.
+     */
+    if (Yii::app()->admin->isGuest) {
+      Yii::app()->admin->loginRequired();
+    } else {
+      $mod = $this->module !== null ? $this->module->id : "";
+      $access = $mod . ucfirst($this->id) . ucfirst($this->action->id);
+      $error["code"] = "403";
+      $error["title"] = Helper::translate('srbac', 'You are not authorized for this action');
+      $error["message"] = Helper::translate('srbac', 'Error while trying to access') . ' ' . $mod . "/" . $this->id . "/" . $this->action->id . ".";
+      //You may change the view for unauthorized access
+      if (Yii::app()->request->isAjaxRequest) {
+        $this->renderPartial(Yii::app()->getModule('srbac')->notAuthorizedView, array("error" => $error,'ajax'=>true));
+      } else {
+        $this->render(Yii::app()->getModule('srbac')->notAuthorizedView, array("error" => $error));
+      }
+      return false;
+    }
+  }
+  
+}
+

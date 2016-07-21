@@ -1,6 +1,6 @@
 <?php 
 return array(
-		'app_api_domain'=>'http://www.tmm.cn',
+		'app_api_domain'=>'http://test2.365tmm.net',
  		//图片链接
  		'admin_img_domain'=>'http://test2.365tmm.net',
 		//微信链接
@@ -8,9 +8,9 @@ return array(
 		//测试订单号前缀
 		'test_order_no'=> 'TT',
 		//api 错误返回 程序错误 json
-		'api_error_json'=>false,
+		'api_error_json'=>true,
 		//api 错误返回 程序错误 json
-		'store_error_json'=>false,
+		'store_error_json'=>true,
 		//csrf 白名单
 		'csrf_allowed'=>array(
 				'/admin/tmm_hotel/uploads',

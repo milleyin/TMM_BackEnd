@@ -4,7 +4,7 @@
 
 $this->pageTitle=Yii::app()->name . ' - 错误';
 $this->breadcrumbs=array(
-	'错误',
+    '错误',
 );
 ?>
 

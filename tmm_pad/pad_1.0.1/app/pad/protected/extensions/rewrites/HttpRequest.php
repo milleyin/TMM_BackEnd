@@ -16,6 +16,24 @@ class HttpRequest extends CHttpRequest
      * @var boolean | array
      */
     public $enableHttpsValidation = true;
+    /**
+     * 是否RawBody获取数据
+     * @var boolean | array
+     */
+    public $enableRawBodyValidation = true;
+    
+    /**
+     * 删除 CsrfToken 使其更新
+     * @return boolean
+     */
+    public function unsetCsrfToken()
+    {
+        $cookie = $this->getCookies();
+        if(isset($cookie[$this->csrfTokenName]->value)) {
+            unset($cookie[$this->csrfTokenName]);
+        }
+        return true;
+    }
     
     /**
      * (non-PHPdoc)
@@ -36,7 +54,7 @@ class HttpRequest extends CHttpRequest
     public function validateCsrfToken($event)
     {
         if ($this->enableCsrfValidation && isset($event->enableCsrfValidation)) {
-            $this->enableCsrfValidation = $this->isException($event, $event->enableCsrfValidation);
+            $this->enableCsrfValidation = $this->validate($event, $event->enableCsrfValidation);
         }
         if ($this->enableCsrfValidation) {
             if ($this->getIsPostRequest() ||
@@ -67,8 +85,13 @@ class HttpRequest extends CHttpRequest
                 }
                 else
                     $valid = false;
-                if (!$valid)
-                    throw new CHttpException(200,Yii::t('yii','The CSRF token could not be verified.'), 400);
+                if (!$valid) {
+                    if (isset($event->enableCsrfException)) {
+                        $this->evaluateExpression($event->enableCsrfException, array('this'=>$event, 'request'=>$this));
+                    } else {
+                        throw new CHttpException(400, Yii::t('yii','The CSRF token could not be verified.'));
+                    }
+                }
             }
             if (isset($_POST[$this->csrfTokenName])) {
                 unset($_POST[$this->csrfTokenName]);
@@ -82,16 +105,18 @@ class HttpRequest extends CHttpRequest
     public function validateCrossDomain($event)
     {
         if ($this->enableCrossValidation && isset($event->enableCrossValidation)) {
-            $this->enableCrossValidation = $this->isException($event, $event->enableCrossValidation);
+            $this->enableCrossValidation = $this->validate($event, $event->enableCrossValidation);
             $this->crossDomainName = $event->crossDomainName;
         }
         if ($this->enableCrossValidation && isset($_SERVER['HTTP_ORIGIN'])) {
-            header('Access-Control-Allow-Credentials: true');
             if ($this->crossDomainName == '*') {
+                header('Access-Control-Allow-Credentials: true');
                 header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
             } elseif (is_array($this->crossDomainName) && in_array($_SERVER['HTTP_ORIGIN'], $this->crossDomainName)) {
+                header('Access-Control-Allow-Credentials: true');
                 header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
-            } else {
+            } elseif ( !is_array($this->crossDomainName)) {
+                header('Access-Control-Allow-Credentials: true');
                 header('Access-Control-Allow-Origin: ' . $this->crossDomainName);
             }
         }
@@ -100,17 +125,17 @@ class HttpRequest extends CHttpRequest
     /**
      * 例外的
      * @param unknown $event
-     * @param unknown $validation
+     * @param unknown $validation array(false, 'actionName', 'actionName' => false) 
      * @return boolean
      */
-    public function isException($event , $validation)
+    public function validate($event , $validation)
     {
-        if (is_array($validation)) {
-            if (in_array($event->id, $validation)) {
-                return true;
-            } else {
-                return false;
-            }
+        if (is_array($validation) && in_array($event->getAction()->id, $validation)) {
+            return true;
+        } elseif (is_array($validation) && isset($validation[$event->getAction()->id])) {
+            return !!$validation[$event->getAction()->id];
+        } elseif (is_array($validation)) {
+            return isset($validation[0]) && ($validation[0] === true || $validation[0] === false) ? $validation[0] : true;
         } else {
             return $validation === true ? true : false;
         }
@@ -123,7 +148,7 @@ class HttpRequest extends CHttpRequest
     public function validateHttpsMust($event)
     {
         if ($this->enableHttpsValidation && isset($event->enableHttpsValidation)) {
-            $this->enableHttpsValidation = $this->isException($event, $event->enableHttpsValidation);
+            $this->enableHttpsValidation = $this->validate($event, $event->enableHttpsValidation);
         }
         if ($this->enableHttpsValidation && !$this->getIsSecureConnection()) {
             $url = $this->getUrl();
@@ -133,6 +158,23 @@ class HttpRequest extends CHttpRequest
             if (strpos($url, 'https') !== 0) {
                 $url = 'https' . ltrim($url, 'http');
                 $event->redirect($url);
+            }
+        }
+    }
+    
+    /**
+     * 是否开启 rawBody
+     * @param unknown $event
+     */
+    public function validateRawBody($event)
+    {
+        if ($this->enableRawBodyValidation && isset($event->enableRawBodyValidation)) {
+            $this->enableRawBodyValidation = $this->validate($event, $event->enableRawBodyValidation);
+        }
+        if ($this->enableRawBodyValidation && $this->getIsPostRequest() && $_POST === array()) {
+            $_POST = json_decode($this->getRawBody(), true);
+            if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
+                $_POST = $this->stripSlashes($_POST);
             }
         }
     }

@@ -28,10 +28,14 @@ class AuthitemController extends SBaseController {
    * @var CActiveRecord the currently loaded data model instance.
    */
   private $_model;
-
+  /**
+   * csrf 攻击
+   * @var boolean
+   */
+  public $enableCsrfValidation = false;
+  
   public function init() {
     parent::init();
-   // $this->module->cssPublished=Helper::publishCss($this->module->css);
   }
 
   /**
@@ -39,27 +43,29 @@ class AuthitemController extends SBaseController {
    * @param String $action The current action
    * @return Boolean true if user has the authority role
    */
-  protected function beforeAction($action) {
-    
-//     if (!$this->module->isInstalled() && $action->id != "install") {
-//       $this->redirect(array("install"));
-//       return false;
-//     }
-
-    if ($this->module->debug) {
-      return true;
-    }
-    
-    if($this->module->id=='srbac')
-    	$this->module->setImport(array('admin.AdminModule'));
-    if (Yii::app()->admin->checkAccess(Helper::findModule('srbac')->superUser) ||
-      !Helper::isAuthorizer()) {
-      return true;
-    } else {
-      parent::beforeAction($action);
-    }
+  public function beforeAction($action) {
+    //安装程序
+    //     if (!$this->module->isInstalled() && $action->id != "install") {
+    //       $this->redirect(array("install"));
+    //       return false;
+    //     }
+        //是否开启
+        if ($this->module->debug) {
+          return true;
+        }
+        //只负责 admin 权限
+        if($this->module->id=='srbac')
+            $this->module->setImport(array('admin.AdminModule'));
+        if (Yii::app()->admin->checkAccess(Helper::findModule('srbac')->superUser) ||
+          !Helper::isAuthorizer()) {
+          //验证请求的
+          $this->validateRequest();
+          return true;
+        } else {
+            return parent::beforeAction($action);
+        }
   }
-
+  
   /**
    * Assigns roles to a user
    *
@@ -800,24 +806,24 @@ class AuthitemController extends SBaseController {
    */
   public function getNames($control, $controller, $module)
   {
-   	$contents = explode('//{actions}', file_get_contents($control));
-   	if (!empty($contents) && isset($contents[1]))
-   	{
-   		$return = eval ($contents[1]);
-   		if (isset($return) && is_array($return))
-   			return $return;
-   		else
-   			throw new CHttpException(404,$control . 'actions 没有按照规定代码书写 //{actions} ... //{actions}');
-   	}
-   	Yii::log('//{actions}', 'info', $control);
-   	if (YII_DEBUG)
-   		throw new CHttpException(404,$control . 'actions 没有按照规定代码书写 //{actions} ... //{actions}');
-  	if (!class_exists($controller, false)) {
-  		require($control);
-  	}
-  	$controller_obj = new $controller($controller, $module);
-  	//Get actions
-  	return  $controller_obj->actions();
+       $contents = explode('//{actions}', file_get_contents($control));
+       if (!empty($contents) && isset($contents[1]))
+       {
+           $return = eval ($contents[1]);
+           if (isset($return) && is_array($return))
+               return $return;
+           else
+               throw new CHttpException(404,$control . 'actions 没有按照规定代码书写 //{actions} ... //{actions}');
+       }
+       Yii::log('//{actions}', 'info', $control);
+       if (YII_DEBUG)
+           throw new CHttpException(404,$control . 'actions 没有按照规定代码书写 //{actions} ... //{actions}');
+      if (!class_exists($controller, false)) {
+          require($control);
+      }
+      $controller_obj = new $controller($controller, $module);
+      //Get actions
+      return  $controller_obj->actions();
   }
   
   /**

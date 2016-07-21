@@ -6,6 +6,11 @@
 class Tmm_eatController extends MainController
 {
     /**
+     * 添加 csrf白名单
+     * @var unknown
+     */
+    public $enableCsrfValidation = array('uploads' => false);
+    /**
      * 默认操作数据模型
      * @var string
      */
@@ -279,7 +284,7 @@ class Tmm_eatController extends MainController
         //清空图片缓存
         $this->clear_tmp(Yii::app()->params['uploads_items_tmp_eat']);
         if ($this->upload_images($model, $uploads, true))
-            echo json_encode(array('img_name'=>basename($model->tmp), 'litimg'=>$this->litimg_path($model->tmp, Yii::app()->params['litimg_pc'])));
+            echo json_encode(array('img_name'=>basename($model->tmp), 'litimg'=>$this->rewritePath($this->litimg_path($model->tmp, Yii::app()->params['litimg_pc']))));
         else
             echo json_encode(array('img_name'=>'none'));
         Yii::app()->end();

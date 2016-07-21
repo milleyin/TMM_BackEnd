@@ -22,6 +22,21 @@ class StoreMainController extends AppController
 	 */
 	public $breadcrumbs=array();
 	/**
+	 * 是否RawBody获取数据
+	 * @var boolean | array
+	 */
+	public $enableRawBodyValidation = true;
+	/**
+	 * 能否 跨域
+	 * @var boolean
+	 */
+	public $enableCrossValidation = true;
+	/**
+	 * 跨域 域名
+	 * @var string
+	 */
+	public $crossDomainName = '*';
+	/**
 	 * 初始化
 	 * zch 
 	 * (non-PHPdoc)
@@ -29,11 +44,6 @@ class StoreMainController extends AppController
 	 */
 	public function  init(){
 		parent::init();
-		if (isset($_SERVER['HTTP_ORIGIN']))
-		{
-			header("Access-Control-Allow-Credentials: true");
-			header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
-		}
 	}
 
 	/**

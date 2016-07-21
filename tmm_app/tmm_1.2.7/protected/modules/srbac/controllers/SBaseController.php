@@ -27,44 +27,41 @@ class SBaseController extends Controller {
    * @param String $action . The current action
    * @return boolean true if access is granted else false
    */
-  protected function beforeAction($action) {
-    $del = Helper::findModule('srbac')->delimeter;
-    //srbac access
-    $mod = $this->module !== null ? $this->module->id . $del : "";
-    $contrArr = explode($del, $this->id);
-    $contrArr[sizeof($contrArr) - 1] = ucfirst($contrArr[sizeof($contrArr) - 1]);
-    $controller = implode(".", $contrArr);
-
-    $contr = str_replace($del, ".", $this->id);
-
-    $access = $mod . $controller . ucfirst($this->action->id);
-    //Always allow access if $access is in the allowedAccess array
-    if (in_array($access, $this->allowedAccess())) {
-      return true;
-    }
-
-    //Allow access if srbac is not installed yet
-//     if (!Yii::app()->getModule('srbac')->isInstalled()) {
-//       return true;
-//     }
-    //Allow access when srbac is in debug mode
-    if (Yii::app()->getModule('srbac')->debug) {
-      return true;
-    }
-
-    /**
-     获取当前的module 除后台模块有权限限制 其他不做限制限制
-     */
-    $module = $this->module !== null ? ($this->module->id=='srbac' ? 'admin' : $this->module->id) : 'user';
-    if($module !== 'admin'){
-   		return true;
-    }
-    
-    // Check for srbac access
-    if (!Yii::app()->$module->checkAccess($access) || Yii::app()->$module->isGuest) {
-      $this->onUnauthorizedAccess();
+  public function beforeAction($action) {
+    if (parent::beforeAction($action)) {
+        //是否安装
+        if (!Yii::app()->getModule('srbac')->isInstalled()) {
+          return true;
+        }
+        //是否开启
+        if (Yii::app()->getModule('srbac')->debug) {
+          return true;
+        }
+        $del = Helper::findModule('srbac')->delimeter;
+        //srbac access
+        $mod = $this->module !== null ? $this->module->id . $del : "";
+        $contrArr = explode($del, $this->id);
+        $contrArr[sizeof($contrArr) - 1] = ucfirst($contrArr[sizeof($contrArr) - 1]);
+        $controller = implode(".", $contrArr);
+        $contr = str_replace($del, ".", $this->id);
+        $access = $mod . $controller . ucfirst($this->action->id);
+        //白名单
+        if (in_array($access, $this->allowedAccess())) {
+            return true;
+        }
+        //获取当前的module 除后台模块有权限限制 其他不做限制限制
+        $module = $this->module !== null ? ($this->module->id=='srbac' ? 'admin' : $this->module->id) : 'user';
+        if($module !== 'admin'){
+           return true;
+        }
+        //验证权限
+        if (!Yii::app()->$module->checkAccess($access) || Yii::app()->$module->isGuest) {
+          $this->onUnauthorizedAccess();
+        } else {
+          return true;
+        }
     } else {
-      return true;
+        return false;
     }
   }
 
