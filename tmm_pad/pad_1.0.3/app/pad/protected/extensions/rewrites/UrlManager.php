@@ -1,0 +1,23 @@
+<?php
+/**
+ * 兼容 没有重写的
+ * @author Changhai Zhan
+ * 
+ */
+class UrlManager extends CUrlManager
+{
+    /**
+     * Parses the user request.
+     * @see CUrlManager::parseUrl()
+     */
+    public function parseUrl($request)
+    {
+        if (isset($_GET[$this->routeVar])) {
+            return $this->removeUrlSuffix($_GET[$this->routeVar], $this->urlSuffix);
+        } elseif (isset($_POST[$this->routeVar])) {
+            return $this->removeUrlSuffix($_POST[$this->routeVar], $this->urlSuffix);
+        } else {
+           return parent::parseUrl($request);
+        }
+    }
+}

@@ -1,0 +1,43 @@
+<?php
+/**
+ * 初始化安装
+ * @author Changhai Zhan
+ *
+ */
+class m160520_065949_init extends CDbMigration
+{
+    public function up()
+    {
+        $this->execute(file_get_contents(Yii::app()->basePath . '/data/sql/init.sql'));
+        return true;
+    }
+
+    /**
+     * 删除
+     * @see CDbMigration::down()
+     */
+    public function down()
+    {
+        $this->dropTable(Ad::model()->tableName());
+        $this->dropTable(Admin::model()->tableName());
+        $this->dropTable(Area::model()->tableName());
+        $this->dropTable(Chance::model()->tableName());
+        $this->dropTable(Config::model()->tableName());
+        $this->dropTable(Express::model()->tableName());
+        $this->dropTable(Menu::model()->tableName());
+        $this->dropTable(Migration::model()->tableName());
+        $this->dropTable(Pad::model()->tableName());
+        $this->dropTable(Password::model()->tableName());
+        $this->dropTable(Prize::model()->tableName());
+        $this->dropTable(Record::model()->tableName());
+        $this->dropTable(Role::model()->tableName());
+        $this->dropTable(Select::model()->tableName());
+        $this->dropTable(Shop::model()->tableName());
+        $this->dropTable(Sms::model()->tableName());
+        $this->dropTable(Store::model()->tableName());
+        $this->dropTable(Upload::model()->tableName());
+        $this->dropTable(User::model()->tableName());
+        Yii::app()->cache->flush();
+        return true;
+    }
+}

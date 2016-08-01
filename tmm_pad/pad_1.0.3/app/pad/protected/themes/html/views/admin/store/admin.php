@@ -1,0 +1,389 @@
+<?php
+/* @var $this StoreController */
+/* @var $model Store */
+
+$this->breadcrumbs = array(
+	'体验店管理页',
+);
+Yii::app()->clientScript->registerScript('search', "
+$('.search-button').click(function(){
+	$('.search-form').toggle();
+	return false;
+});
+$('.search-form form').submit(function(){
+	$('#store-grid').yiiGridView('update', {
+		data: $(this).serialize()
+	});
+	return false;
+});
+");
+?>
+<h1>管理体验店</h1>
+
+<div>
+	<span>
+		<?php echo CHtml::link('高级搜索','#',array('class'=>'search-button')); ?>	
+	</span>
+	<span>
+		<?php echo CHtml::link('创建体验店', array('create')); ?>	
+	</span>
+</div>
+
+<div class="search-form" style="display:none">
+<?php $this->renderPartial('_search',array(
+	'model'=>$model,
+)); ?>
+</div><!-- search-form -->
+
+<?php 
+	$Confirmation = "你确定执行此项操作？";
+	if (Yii::app()->request->enableCsrfValidation)
+	{
+		$csrfTokenName = Yii::app()->request->csrfTokenName;
+		$csrfToken = Yii::app()->request->csrfToken;
+		$csrf = "\n\t\tdata:{ '$csrfTokenName':'$csrfToken'},";
+	}
+	else
+		$csrf = '';
+		
+$click_alert = <<<"EOD"
+function() { 
+	if ( !confirm("$Confirmation")) return false; 
+	var th = this;  
+	var afterDelete = function(link, success, data){ if (success) alert(data);};  
+	$.fn.yiiGridView.update('store-grid', {  
+	type:'POST',
+	url:$(this).attr('href'),$csrf
+	success:function(data) {
+	$.fn.yiiGridView.update('store-grid');  
+	   afterDelete(th,true,data);  
+	},
+	error:function(XHR) {
+	   return afterDelete(th,false,XHR);
+	}
+  });
+    return false;
+}
+EOD;
+
+$click = <<<"EOD"
+function() {  
+	if ( !confirm("$Confirmation")) return false;
+	var th = this,
+	afterDelete = function () {};
+	jQuery('#store-grid').yiiGridView('update', {
+		type: 'POST',
+		url: jQuery(this).attr('href'),$csrf
+		success: function(data) {
+			jQuery('#store-grid').yiiGridView('update');
+			afterDelete(th, true, data);
+		},
+		error: function(XHR) {
+			return afterDelete(th, false, XHR);
+		}
+});
+    return false;
+}
+EOD;
+
+$qrcode = <<<"EOD"
+function() {
+    jQuery("#qrcode").html('<div style="text-align: center;"><img src="' + jQuery(this).attr('href') + '"></div>');
+    jQuery("#qrcode").dialog("open");
+    return false;
+}
+EOD;
+
+
+
+Yii::app()->clientScript->registerScript('re-install-date-picker', "
+function reinstallDatePicker(id, data) {
+	jQuery('#up_time_date').datepicker(jQuery.extend({showMonthAfterYear:false},jQuery.datepicker.regional['zh-CN'],{'maxDate':'new date()','dateFormat':'yy-mm-dd','showOn':'focus','showOtherMonths':true,'selectOtherMonths':true,'changeMonth':true,'changeYear':true,'showButtonPanel':true}));
+	jQuery('#add_time_date').datepicker(jQuery.extend({showMonthAfterYear:false},jQuery.datepicker.regional['zh-CN'],{'maxDate':'new date()','dateFormat':'yy-mm-dd','showOn':'focus','showOtherMonths':true,'selectOtherMonths':true,'changeMonth':true,'changeYear':true,'showButtonPanel':true}));
+}
+");
+
+$this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'store-grid',
+	'dataProvider'=>$model->search(),
+	'filter'=>$model,
+    'enableHistory'=>true,
+    'afterAjaxUpdate' => 'reinstallDatePicker',
+	'columns'=>array(
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				//'filter'=>,
+				'name'=>'id',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
+						return $data->getAttributeLabel('id') . '：' . $data->id;
+					}
+				),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				//'filter'=>,
+				'name'=>'phone',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
+						return $data->getAttributeLabel('phone') . '：' . $data->phone;
+					}
+				),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				//'filter'=>,
+				'name'=>'store_name',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:120px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
+						return $data->getAttributeLabel('store_name') . '：' . $data->store_name;
+					}
+				),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				//'filter'=>,
+				'name'=>'name',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
+						return $data->getAttributeLabel('name') . '：' . $data->name;
+					}
+				),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				//'filter'=>,
+				'name'=>'telephone',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
+						return $data->getAttributeLabel('telephone') . '：' . $data->telephone;
+					}
+				),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				//'filter'=>,
+				'name'=>'pad_count',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
+						return $data->getAttributeLabel('pad_count') . '：' . $data->pad_count;
+					}
+				),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'filter'=>Area::model()->getAreaArray(),
+				'name'=>'province',
+		        'value'=>function ($data, $row) {
+					return $data->Store_Area_province->name;
+				},
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
+						return $data->getAttributeLabel('province') . '：' . $data->province;
+					}
+				),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'filter'=>Area::model()->getAreaArray($model->province),
+				'name'=>'city',
+		        'value'=>function ($data, $row) {
+		            return $data->Store_Area_city->name;
+		        },
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
+						return $data->getAttributeLabel('city') . '：' . $data->city;
+					}
+				),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'filter'=>Area::model()->getAreaArray($model->city),
+				'name'=>'district',
+		        'value'=>function ($data, $row) {
+		            return $data->Store_Area_district->name;
+		        },
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
+						return $data->getAttributeLabel('district') . '：' . $data->district . "\n" . $data->getAttributeLabel('address') . '：' . $data->address;
+					}
+				),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'filter'=>$this->widget('zii.widgets.jui.CJuiDatePicker', array(
+						'language'=>'zh-CN',
+						'model'=>$model,
+						'attribute'=>'up_time',
+						'value'=>date('Y-m-d'),
+						'options'=>array(
+								'maxDate'=>'new date()',
+								'dateFormat'=>'yy-mm-dd',
+								'showOn' => 'focus',
+								'showOtherMonths' => true,
+								'selectOtherMonths' => true,
+								'changeMonth' => true,
+								'changeYear' => true,
+								'showButtonPanel' => true,
+						),
+						'htmlOptions'=>array(
+								'id' =>'up_time_date',
+						),
+					),true),
+				'name'=>'up_time',
+				'type'=>'datetime',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
+						return $data->getAttributeLabel('up_time') . '：' . Yii::app()->format->FormatDate($data->up_time);
+					},
+				),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'filter'=>$this->widget('zii.widgets.jui.CJuiDatePicker', array(
+						'language'=>'zh-CN',
+						'model'=>$model,
+						'attribute'=>'add_time',
+						'value'=>date('Y-m-d'),
+						'options'=>array(
+								'maxDate'=>'new date()',
+								'dateFormat'=>'yy-mm-dd',
+								'showOn' => 'focus',
+								'showOtherMonths' => true,
+								'selectOtherMonths' => true,
+								'changeMonth' => true,
+								'changeYear' => true,
+								'showButtonPanel' => true,
+						),
+						'htmlOptions'=>array(
+								'id' =>'add_time_date',
+						),
+					),true),
+				'name'=>'add_time',
+				'type'=>'datetime',
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
+						return $data->getAttributeLabel('add_time') . '：' . Yii::app()->format->FormatDate($data->add_time);
+					},
+				),
+		),
+		array(
+				'class'=>'DataColumn',
+				'evaluateHtmlOptions'=>true,
+				'filter'=>$model::$_status,
+				'name'=>'status',
+				'value'=>function ($data, $row) {
+					return $data::$_status[$data->status];
+				},
+				'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;'),
+				'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
+						return $data->getAttributeLabel('status') . '：' . $data::$_status[$data->status];
+					},
+				),
+		),
+		array(
+			'class'=>'CButtonColumn',
+			'header'=>'操 作',
+			'template'=>'{view}{update}{qrcode}{pad}{view_pad}{delete}{disable}{start}{restore}',
+			'buttons'=>array(
+					'view'=>array(
+						'options'=>array('style'=>'padding:0 10px 0 0;'),
+					),
+					'update'=>array(
+						'options'=>array('style'=>'padding:0 10px 0 0;'),
+					),
+			        'qrcode'=>array(
+						'label'=>'查看二维码',
+						'url'=>function ($data, $row) {
+							return  CHtml::normalizeUrl(array('qrcode', 'id'=>$data->id));
+						},
+						'click'=>$qrcode,
+						'options'=>array('style'=>'padding:0 8px 0 0;'),
+					),
+			        'pad'=>array(
+			                'label'=>'绑定展示屏',
+			                'visible'=>function ($row, $data){
+			                    return $data->status == $data::_STATUS_NORMAL;
+			                },
+			                'url'=>function ($data, $row) {
+			                    return  CHtml::normalizeUrl(array('pad/create', 'id'=>$data->id));
+			                },
+			                'options'=>array('style'=>'padding:0 10px 0 0;'),
+			        ),
+			        'view_pad'=>array(
+			                'label'=>'查看展示屏',
+			                'url'=>function ($data, $row) {
+			                    return  CHtml::normalizeUrl(array('pad/admin', 'Pad[store_id]'=>'=' . $data->id));
+			                },
+			                'options'=>array('style'=>'padding:0 10px 0 0;'),
+			        ),
+					'delete'=>array(
+						'visible'=>function ($row, $data){
+							return $data->status == $data::_STATUS_DISABLE;
+						},
+						'options'=>array('style'=>'padding:0 10px 0 0;'),
+					),
+					'disable'=>array(
+						'label'=>'禁用',
+						'visible'=>function ($row, $data) {
+							return $data->status == $data::_STATUS_NORMAL;
+						},
+						'url'=>function ($data, $row) {
+							return  CHtml::normalizeUrl(array('disable', 'id'=>$data->id));
+						},
+						'click'=>$click,
+						'options'=>array('style'=>'padding:0 8px 0 0;'),
+					),
+					'start'=>array(
+						'label'=>'激活',
+						'visible'=>function ($row, $data) {
+							return $data->status == $data::_STATUS_DISABLE;
+						},
+						'url'=>function ($data, $row) {
+							return  CHtml::normalizeUrl(array('start', 'id'=>$data->id));
+							//return Yii::app()->createUrl('/admin/store/start', array('id'=>$data->id));
+						},
+						'click'=>$click,
+						'options'=>array('style'=>'padding:0 8px 0 0;'),
+					),
+					'restore'=>array(
+						'label'=>'还原',
+						'visible'=>function ($row, $data) {
+							return $data->status == $data::_STATUS_DELETED;
+						},
+						'url'=>function ($data, $row) {
+							return  CHtml::normalizeUrl(array('restore', 'id'=>$data->id));
+							//return Yii::app()->createUrl('/admin/store/restore', array('id'=>$data->id));
+						},
+						'click'=>$click,
+						'options'=>array('style'=>'padding:0 8px 0 0;'),
+					),
+			),
+			'headerHtmlOptions'=>array('style'=>'text-align:center;width:250px;'),
+		),
+	),
+));
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+        'id'=>'qrcode',                //弹窗ID
+        'options'=>array(           //传递给JUI插件的参数
+            'title'=>'查看二维码',
+            'autoOpen'=>false,	//是否自动打开
+            'width'=>'430',			//宽度
+            'resizable'=>true,
+            'height'=>430,			//高度
+            'modal' => true,
+        ),
+));
+$this->endWidget();
+?>

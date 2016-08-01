@@ -1,0 +1,204 @@
+<?php
+/**
+ * 数据模型入口
+ * @author Changhai Zhan
+ * 命名规则 
+ * 1）全大写
+ * 2）全局使用             _columnName_typeName
+ * 3）非全局使用      modelName_columnName_typeName 
+ */
+class ActiveRecord extends CActiveRecord
+{    
+    /***************************************  {公共的}  *****************************************************/
+    /**
+     * 记录状态 => 删除的 
+     * @var integer
+     */
+    const _STATUS_DELETED = -1;
+    /**
+     * 记录状态 => 禁用的
+     * @var integer
+     */
+    const _STATUS_DISABLE = 0;
+    /**
+     * 记录状态 => 正常的
+     * @var integer
+     */
+    const _STATUS_NORMAL = 1;
+    /**
+     * 解释字段 status 的含义
+     * @var array
+     */
+    public static $_status = array(
+        self::_STATUS_DELETED => '已删除',
+        self::_STATUS_DISABLE => '已禁用',
+        self::_STATUS_NORMAL => '正常',
+    );
+    protected $_timeSearchString = '~';
+        
+    /***************************************  function   *****************************************************/
+    /**
+     * 时间搜索 
+     * @param unknown $attribute
+     * @param unknown $criteria
+     * @param string $relation
+     */
+    public function timeSearch($column, $criteria, $value = false)
+    {
+        if ($value === false) {
+            $value = CHtml::value($this, $column);
+        }
+        if ( !is_array($value) && strpos($value, $this->_timeSearchString) !== false) {
+            $value = explode($this->_timeSearchString, $value);
+        }
+        if (is_array($value)) {
+            if (empty($value))
+                return $this;
+            $start = isset($value[0]) ? strtotime($value[0]) : false;
+            $end = isset($value[1]) ? strtotime($value[1]) : false;
+            if ($start !== false && $end !== false) {
+                $criteria->addBetweenCondition($column, $start, $end + 3600 * 24 - 1);
+            } elseif ($start !== false) {
+                $criteria->compare($column, '>=' . $start);
+            } elseif ($end !== false) {
+                $criteria->compare($column, '<=' . ($end + + 3600 * 24 - 1));
+            }
+        } else {
+            if (preg_match('/^(?:\s*(<>|<=|>=|<|>|=))?(.*)$/', $value, $matches)) {
+                $value = $matches[2];
+                $op = $matches[1];
+            } else {
+                $op = '';
+            }
+            if ($value === '')
+                return $this;
+            if (($value = strtotime($value)) !== false) {
+                if ($op == '<>') {
+                    $criteria->addCondition($column . '<'. CDbCriteria::PARAM_PREFIX . CDbCriteria::$paramCount . ' OR ' . $column . '>'. CDbCriteria::PARAM_PREFIX . (CDbCriteria::$paramCount+1));
+                    $criteria->params[CDbCriteria::PARAM_PREFIX . CDbCriteria::$paramCount++] = $value;
+                    $criteria->params[CDbCriteria::PARAM_PREFIX . CDbCriteria::$paramCount++] = $value + 3600 * 24 - 1;
+                }
+                elseif ($op == '<=' || $op == '<')
+                    $criteria->compare($column, $op . ($value + 3600 * 24 - 1));
+                elseif ($op == '>=' || $op == '>')
+                    $criteria->compare($column, $op . $value);
+                elseif ($op == '' || $op == '=')
+                    $criteria->addBetweenCondition($column, $value, $value + 3600 * 24 - 1);
+            }
+        }
+        return $this;
+    }
+    
+    /**
+     * 时间搜索
+     * @param unknown $model
+     * @param unknown $attribute
+     * @param string $captureOutput
+     */
+    public function timeSearchInput($model, $attribute, $captureOutput = false)
+    {
+        $attributeStart = $attribute . '[0]';
+        $attributeEnd = $attribute . '[1]';
+        $attributeStartId = CHtml::activeId($model, $attributeStart);
+        $attributeEndId = CHtml::activeId($model, $attributeEnd);
+        $value = $model->$attribute;
+        $default = is_array($value) ? '' : $value;
+        Yii::app()->getController()->widget('ext.dateRangePicker.JDateRangePicker',array(
+            'name'=>CHtml::activeName($model, $attributeStart),
+            'value'=> is_array($value) && isset($value[0]) ? $value[0] : $default,
+            'htmlOptions' => array(
+                'style'=>'width:95px',
+                'onfocus'=>'var ' . $attributeEndId . '=$dp.$("' . $attributeEndId . '");'
+            ),
+            'options'=>array(
+                'dateFmt'=>'yyyy-MM-dd',
+                'maxDate'=>'%y-%M-#{%d}',
+                'isShowWeek' => true,
+                'onpicked' => 'js:function(){' . $attributeEndId . '.focus();}',
+            ),
+            'name2'=>CHtml::activeName($model, $attributeEnd),
+            'value2'=> is_array($value) && isset($value[1]) ? $value[1] : $default,
+            'htmlOptions2' => array(
+                'style'=>'width:95px',
+            ),
+            'options2'=>array(
+                'dateFmt'=>'yyyy-MM-dd',
+                'maxDate'=>'%y-%M-#{%d}',
+                'isShowWeek' => true,
+                'minDate' => '#F{$dp.$D(\'' . $attributeStartId . '\')}',
+            ),
+            'template' => '<div style ="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{start} ' . $this->_timeSearchString . ' {end}</div>',
+        ), $captureOutput);
+        if (is_array($value)) {
+            if (!empty($value)) {
+               if (isset($value[0], $value[1]) && $value[0] != '' && $value[1] != '') {
+                    $model->$attribute = implode($this->_timeSearchString, $model->$attribute);
+                } elseif (isset($value[0]) && $value[0] != '' ) {
+                    $model->$attribute = '>=' . $value[0];
+                } elseif (isset($value[1]) && $value[1] != '' ) {
+                    $model->$attribute = '<=' . $value[1];
+                } else {
+                    $model->$attribute = '';
+                }
+            } else {
+                $model->$attribute = '';
+            }
+        }
+    }
+    
+    /**
+     * 属性是否存在
+     * @param unknown $attribute
+     */
+    public function isExistAttribute($attribute)
+    {
+        return in_array($attribute, $this->attributeNames());
+    }
+    
+    /**
+     * 保存之前的操作
+     * @see CActiveRecord::beforeSave()
+     */
+    public function beforeSave()
+    {
+        if (parent::beforeSave())
+        {
+            if ($this->getIsNewRecord())
+            {
+                if ($this->isExistAttribute('add_time'))
+                    $this->add_time = time();
+                if ($this->isExistAttribute('up_time'))
+                    $this->up_time = time();
+            }
+            else
+            {
+                if ($this->isExistAttribute('up_time'))
+                    $this->up_time = time();
+            }
+            if ($this->isExistAttribute('manager_id') && isset(Yii::app()->user, Yii::app()->user->id))
+                $this->manager_id = Yii::app()->user->id;       
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * 查看钱 执行的方法
+     * @param unknown $value
+     * @return number
+     */
+    public function viewMoney($value, $int = 2)
+    {
+        return bcdiv($value, pow(10, $int), $int);
+    }
+    
+    /**
+     * 保存钱 执行的方法
+     * @param unknown $value
+     * @return number
+     */
+    public function saveMoney($value, $int = 2)
+    {
+        return $value * pow(10, $int);
+    }
+}

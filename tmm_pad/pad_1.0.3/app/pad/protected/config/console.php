@@ -1,0 +1,48 @@
+<?php
+
+// This is the configuration for yiic console application.
+// Any writable CConsoleApplication properties can be configured here.
+return array(
+    'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
+    'language'=>'zh_cn',
+    'charset' => 'utf-8',
+    'timeZone'=>'Asia/Shanghai',
+    // preloading 'log' component
+    'preload'=>array('log'),
+    // autoloading model and component classes
+    'import'=>array(
+        'application.models.*',
+        'application.components.*',
+        'ext.rewrites.*',
+    ),
+    'commandMap' => array(
+        //数据迁移
+        'migrate' => array(
+            'class'=>'system.cli.commands.MigrateCommand',
+            'migrationTable'=>'{{migration}}',
+            //'templateFile'=>'application.migrations.template',
+        ),
+    ),
+    // application components
+    'components'=>array(
+        // database settings are configured in database.php
+        'db'=>require(dirname(__FILE__).'/database/database.php'),
+        
+        'cache'=>array(
+            //'class'=>'CApcCache',
+            //'class'=>'CMemCache',//缓存
+            'class'=>'CFileCache',
+        ),
+        
+        'log'=>array(
+            'class'=>'CLogRouter',
+            'routes'=>array(
+                array(
+                    'class'=>'FileLogRoute',
+                    'levels'=>'error, warning, info',
+                    'logFile'=> 'error/console/' . date('Y-m-d') . '.log',
+                ),
+            ),
+        ),
+    ),
+);

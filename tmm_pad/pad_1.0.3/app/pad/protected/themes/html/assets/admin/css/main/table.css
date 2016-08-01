@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+/*
+禁止表格溢出
+*/
+.items{
+	table-layout:fixed;
+}
+.items td{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

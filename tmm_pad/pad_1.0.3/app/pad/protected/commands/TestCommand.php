@@ -1,0 +1,35 @@
+<?php
+/**
+ * 测试
+ * @author Changhai Zhan
+ * yiic.php test
+ */
+class TestCommand  extends ConsoleCommand
+{
+    /**
+     * test index
+     */
+    public function actionIndex()
+    {
+        $this->logText[] = '测试';
+        return self::right;
+    }
+    
+    /**
+     * test Right
+     */
+    public function actionRight()
+    {
+        $this->logText[] = '正确的';
+        return self::right;
+    }
+    
+    /**
+     * test Error
+     */
+    public function actionError()
+    {
+        $this->logText[] = '错误的';
+        return self::error;
+    }
+}

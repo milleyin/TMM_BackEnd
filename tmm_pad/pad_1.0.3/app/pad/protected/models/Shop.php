@@ -1,0 +1,211 @@
+<?php
+
+/**
+ * This is the model class for table "{{shop}}".
+ *
+ * The followings are the available columns in table '{{shop}}':
+ * @property string $id
+ * @property string $store_id
+ * @property string $pad_id
+ * @property string $manager_id
+ * @property string $name
+ * @property string $up_time
+ * @property string $add_time
+ * @property string $sort
+ * @property integer $status
+ */
+class Shop extends ActiveRecord
+{
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return '{{shop}}';
+    }
+
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            //array('store_id, pad_id, manager_id', 'required'),
+            array('status, up_time, add_time, sort', 'numerical', 'integerOnly'=>true),
+            array('store_id, pad_id, manager_id', 'length', 'max'=>20),
+            array('name', 'length', 'max'=>32),
+            array('up_time, add_time, sort', 'length', 'max'=>10),
+            
+            array('status', 'in', 'range'=>array_keys(self::$_status)),
+            //创建 修改
+            array('name, sort', 'required', 'on'=>'create, update'),
+            array('name, sort', 'safe', 'on'=>'create, update'),
+            array('id, store_id, pad_id, manager_id, up_time, add_time, status', 'unsafe', 'on'=>'create, update'),
+            
+            //更新排序sort
+            array('sort', 'required', 'on'=>'sort'),
+            array('sort', 'safe', 'on'=>'sort'),
+            array('id, store_id, pad_id, manager_id, name, up_time, add_time, status', 'unsafe', 'on'=>'sort'),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('id, store_id, pad_id, manager_id, name, up_time, add_time, sort, status', 'safe', 'on'=>'search'),
+        );
+    }
+
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'Shop_Pad'=>array(self::BELONGS_TO, 'Pad', 'pad_id'),
+            'Shop_Store'=>array(self::BELONGS_TO, 'Store', 'store_id'),
+            'Shop_Upload'=>array(self::HAS_ONE, 'Upload', 'upload_id', 'on'=>'`Shop_Upload`.`type`=' . Upload::UPLOAD_TYPE_SHOP),
+        );
+    }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'id' => 'ID',
+            'store_id' => '体验店',
+            'pad_id' => '展示屏',
+            'manager_id' => '操作角色',
+            'name' => '商品名称',
+            'up_time' => '更新时间',
+            'add_time' => '创建时间',
+            'sort' => '排序',
+            'status' => '状态',
+        );
+    }
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+    public function search()
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria = new CDbCriteria;
+        $criteria->with = array(
+            'Shop_Upload',
+            'Shop_Pad',
+            'Shop_Store'=>array(
+                'with'=>array(
+                    'Store_Area_province',
+                    'Store_Area_city',
+                    'Store_Area_district',
+                ),
+            ),
+        );
+        $criteria->compare('t.id', $this->id,true);
+        
+        if (strpos($this->store_id, '=') === 0)
+            $criteria->compare('t.store_id', $this->store_id);
+        else
+            $criteria->compare('Shop_Store.store_name', $this->store_id, true);
+        
+        if (strpos($this->pad_id, '=') === 0)
+            $criteria->compare('t.pad_id', $this->pad_id);
+        else
+            $criteria->compare('Shop_Pad.name', $this->pad_id, true);
+        
+        $criteria->compare('t.manager_id', $this->manager_id, true);
+        $criteria->compare('t.name', $this->name, true);
+        $this->timeSearch('t.up_time', $criteria, $this->up_time);
+        $this->timeSearch('t.add_time', $criteria, $this->add_time);
+        $criteria->compare('t.sort', $this->sort, true);
+        if ($this->status != self::_STATUS_DELETED)
+            $criteria->compare('t.status', '<>' . self::_STATUS_DELETED);
+        $criteria->compare('t.status', $this->status);
+        
+        $criteria->compare('Shop_Store.phone', $this->Shop_Store->phone, true);
+        if ( (!!$area = Area::model()->validateAttribute('city', $this->Shop_Store->city)) && $area->pid != $this->Shop_Store->province)
+            $this->Shop_Store->city = $this->Shop_Store->district = '';
+        $criteria->compare('Shop_Store.province', $this->Shop_Store->province);
+        $criteria->compare('Shop_Store.city', $this->Shop_Store->city);
+        $criteria->compare('Shop_Store.district', $this->Shop_Store->district);
+        
+        $criteria->compare('Shop_Pad.number', $this->Shop_Pad->number, true);
+        
+        $criteria->compare('Shop_Upload.path', $this->Shop_Upload->path, true);
+        $criteria->compare('Shop_Upload.size/100', $this->Shop_Upload->size, true);
+
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+            'pagination'=>array(
+                'pageSize'=>10,
+            ),
+            'sort'=>array(
+                'defaultOrder'=>'`t`.`sort` desc, `t`.`up_time` desc',
+                'attributes'=>array(
+                    'Shop_Upload.path'=>array(
+                        'desc'=>'Shop_Upload.path desc',
+                    ),
+                    'Shop_Upload.size'=>array(
+                            'desc'=>'Shop_Upload.size desc',
+                    ),
+                    'Shop_Store.phone'=>array(
+                            'desc'=>'Shop_Store.phone desc',
+                    ),
+                    'Shop_Store.province'=>array(
+                            'desc'=>'Shop_Store.province desc',
+                    ),
+                    'Shop_Store.city'=>array(
+                            'desc'=>'Shop_Store.city desc',
+                    ),
+                    'Shop_Store.district'=>array(
+                            'desc'=>'Shop_Store.district desc',
+                    ),
+                    'Shop_Pad.number'=>array(
+                            'desc'=>'Shop_Pad.number desc',
+                    ),
+                    '*',
+                ),
+            ),
+        ));
+    }
+
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return Shop the static model class
+     */
+    public static function model($className=__CLASS__)
+    {
+        return parent::model($className);
+    }
+    
+    /**
+     * 保存之前的操作
+     * (non-PHPdoc)
+     * @see CActiveRecord::beforeSave()
+     */
+    public function beforeSave()
+    {
+        if (parent::beforeSave())
+        {
+            if ($this->getIsNewRecord())
+                $this->up_time = $this->add_time = time();
+            return true;
+        }
+        return false;
+    }
+}

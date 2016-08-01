@@ -1,0 +1,168 @@
+<?php
+/**
+ * @author Changhai Zhan
+ */
+$path = explode('/', $this->controller);
+$namespace = '';
+if ( !empty($path) && count($path) > 1)
+{
+    unset($path[count($path)-1]);
+    $namespace = '\\' . implode('\\', $path);
+}
+?>
+<?php echo "<?php\n"; ?>
+namespace app<?php echo $namespace;?>\controllers;
+
+use <?php echo $this->baseControllerClass?>;
+
+/**
+ * @author Changhai Zhan
+ *    创建时间：<?php echo date('Y-m-d H:i:s');?>
+ */
+class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseControllerClass."\n"; ?>
+{
+    /**
+     * 当前操作模型的名称
+     * @var string
+     */
+    public $_modelName = '<?php echo $this->modelClass; ?>';
+    
+    /**
+     * 管理
+     */
+    public function actionAdmin()
+    {
+        $model = new \<?php echo $this->modelClass; ?>('search');
+        //清除默认值
+        $model->unsetAttributes();
+        if (isset($_GET['<?php echo $this->modelClass; ?>']))
+            $model->attributes = $_GET['<?php echo $this->modelClass; ?>'];
+
+        $this->render('admin', array(
+            'model'=>$model,
+        ));
+    }
+    
+    /**
+     * 查看
+     * @param integer $id
+     */
+    public function actionView($id)
+    {
+        $this->render('view', array(
+            'model'=>$this->loadModelByPk($id),
+        ));
+    }
+
+    /**
+     * 创建
+     * @return Success page "view"
+     */
+    public function actionCreate()
+    {
+        $model = new \<?php echo $this->modelClass; ?>;
+
+        $model->scenario = 'create';
+        $this->ajaxVerify($model, '<?php echo $this->class2id($this->modelClass);?>-form');
+
+        if (isset($_POST['<?php echo $this->modelClass; ?>']))
+        {
+            $model->attributes = $_POST['<?php echo $this->modelClass; ?>'];
+            if ($model->save())
+                $this->redirect(array('view', 'id'=>$model-><?php echo $this->tableSchema->primaryKey; ?>));
+        }
+
+        $this->render('create', array(
+            'model'=>$model,
+        ));
+    }
+
+    /**
+     * 更新
+     * @param integer $id
+     * @return Success page "view"
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->loadModelByPk($id);
+
+        $model->scenario = 'update';
+        $this->ajaxVerify($model, '<?php echo $this->class2id($this->modelClass);?>-form');
+
+        if (isset($_POST['<?php echo $this->modelClass; ?>']))
+        {
+            $model->attributes = $_POST['<?php echo $this->modelClass; ?>'];
+            if ($model->save())
+                $this->redirect(array('view', 'id'=>$model-><?php echo $this->tableSchema->primaryKey; ?>));
+        }
+
+        $this->render('update', array(
+            'model'=>$model,
+        ));
+    }
+
+    /**
+     * 删除
+     * @param integer $id the ID of the model to be deleted
+     * @return Success page "admin"
+     */
+    public function actionDelete($id)
+    {
+        $this->loadModelByPk($id, '`status`=:status', array(':status'=>\<?php echo $this->modelClass; ?>::_STATUS_DISABLE))->updateByPk($id, array('status'=>\<?php echo $this->modelClass; ?>::_STATUS_DELETED));
+        
+        if ( !isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+    }
+    
+    /**
+     * 禁用
+     * @param integer $id the ID of the model to be deleted
+     * @return Success page "admin"
+     */
+    public function actionDisable($id)
+    {
+        $this->loadModelByPk($id, '`status`=:status', array(':status'=>\<?php echo $this->modelClass; ?>::_STATUS_NORMAL))->updateByPk($id, array('status'=>\<?php echo $this->modelClass; ?>::_STATUS_DISABLE));
+        
+        if ( !isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+    }
+    
+    /**
+     * 激活
+     * @param integer $id the ID of the model to be deleted
+     * @return Success page "admin"
+     */
+    public function actionStart($id)
+    {
+        $this->loadModelByPk($id, '`status`=:status', array(':status'=>\<?php echo $this->modelClass; ?>::_STATUS_DISABLE))->updateByPk($id, array('status'=>\<?php echo $this->modelClass; ?>::_STATUS_NORMAL));
+        
+        if ( !isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+    }
+    
+    /**
+     * 还原
+     * @param integer $id the ID of the model to be deleted
+     * @return Success page "admin"
+     */
+    public function actionRestore($id)
+    {
+        $this->loadModelByPk($id, '`status`=:status', array(':status'=>\<?php echo $this->modelClass; ?>::_STATUS_DELETED))->updateByPk($id, array('status'=>\<?php echo $this->modelClass; ?>::_STATUS_DISABLE));
+        
+        if ( !isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+    }
+    
+    /**
+     * 清除记录
+     * @param integer $id the ID of the model to be deleted
+     * @return Success page "admin"
+     */
+    public function actionClear($id)
+    {
+        $this->loadModelByPk($id, '`status`=:status', array(':status'=>\<?php echo $this->modelClass; ?>::_STATUS_DELETED))->delete();
+        
+        if ( !isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+    }
+}

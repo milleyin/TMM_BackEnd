@@ -1,0 +1,13 @@
+<?php
+    $form = array(
+        'attributes' => array(
+            CHtml::modelName($model) =>$model->getAttributes($model->safeAttributeNames),
+        ),
+        'error'=>array(
+            CHtml::modelName($model) =>$model->getErrors(),
+        ),
+    );
+    if (Yii::app()->request->enableCsrfValidation) {
+        $form['hidden'] = array(Yii::app()->request->csrfTokenName=>Yii::app()->request->csrfToken);
+    }
+    echo json_encode($form);
