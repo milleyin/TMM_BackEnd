@@ -1,0 +1,331 @@
+<?php
+
+/**
+ * This is the model class for table "{{record}}".
+ *
+ * The followings are the available columns in table '{{record}}':
+ * @property string $id
+ * @property string $user_id
+ * @property string $store_id
+ * @property string $pad_id
+ * @property string $config_id
+ * @property string $prize_id
+ * @property string $chance_id
+ * @property string $manager_id
+ * @property integer $type
+ * @property integer $receive_type
+ * @property string $prize_name
+ * @property string $prize_info
+ * @property string $url
+ * @property string $code
+ * @property string $exchange_time
+ * @property integer $exchange_status
+ * @property integer $print_status
+ * @property string $up_time
+ * @property string $add_time
+ * @property integer $status
+ */
+class Record extends ActiveRecord
+{
+    /**
+     * 兑换状态 已放弃
+     * @var integer
+     */
+    const RECORD_EXCHANGE_STATUS_QUIT = -3;
+    /**
+     * 兑换状态 待选择
+     * @var integer
+     */
+    const RECORD_EXCHANGE_STATUS_SELECT = -2;
+    /**
+     * 兑换状态 无需兑换
+     * @var integer
+     */
+    const RECORD_EXCHANGE_STATUS_NONE = -1;
+    /**
+     * 兑换状态 未兑换
+     * @var integer
+     */
+    const RECORD_EXCHANGE_STATUS_NO = 0;
+    /**
+     * 兑换状态 兑换中
+     * @var integer
+     */
+    const RECORD_EXCHANGE_STATUS_ING = 1;
+    /**
+     * 兑换状态 已兑换
+     * @var integer
+     */
+    const RECORD_EXCHANGE_STATUS_YES = 2;
+    /**
+     * 兑换状态 解释字段 exchange_status 含义
+     * @var unknown
+     */
+    public static $_exchange_status = array(
+        self::RECORD_EXCHANGE_STATUS_QUIT => '已放弃',
+        self::RECORD_EXCHANGE_STATUS_SELECT => '待选择',
+        self::RECORD_EXCHANGE_STATUS_NONE => '无需兑换',
+        self::RECORD_EXCHANGE_STATUS_NO => '未兑换',
+        self::RECORD_EXCHANGE_STATUS_ING => '兑换中',
+        self::RECORD_EXCHANGE_STATUS_YES=> '已兑换',
+    );
+    /**
+     * 无需打印
+     * @var integer
+     */
+    const RECORD_PRINT_STATUS_NONE = -1;
+    /**
+     * 未打印
+     * @var integer
+     */
+    const RECORD_PRINT_STATUS_NO = 0;
+    /**
+     * 已打印
+     * @var integer
+     */
+    const RECORD_PRINT_STATUS_YES = 1;
+    /**
+     * 打印状态 解释字段 print_status 含义
+     * @var array
+     */
+    public static $_print_status = array(
+        self::RECORD_PRINT_STATUS_NONE => '无需打印',
+        self::RECORD_PRINT_STATUS_NO => '未打印',
+        self::RECORD_PRINT_STATUS_YES => '已打印',
+    );
+    /**
+    * 中奖类型 解释字段 status 含义
+    * @var unknown
+    */
+    public static $_status = array(
+        self::_STATUS_DELETED => '谢谢参与',
+        self::_STATUS_NORMAL=> '中奖记录',
+    );
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return '{{record}}';
+    }
+
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            //array('user_id, store_id, pad_id, config_id, prize_id, chance_id, manager_id', 'required'),
+            array('type, receive_type, exchange_status, print_status, status', 'numerical', 'integerOnly'=>true),
+            array('user_id, store_id, pad_id, config_id, prize_id, chance_id, manager_id', 'length', 'max'=>20),
+            array('prize_name', 'length', 'max'=>32),
+            array('prize_info, url, code', 'length', 'max'=>128),
+            array('exchange_time, up_time, add_time', 'length', 'max'=>10),
+            
+            array('status', 'in', 'range'=>array_keys(self::$_status)),
+            array('receive_type', 'in', 'range'=>array_keys(Prize::$_receive_type)),
+            array('exchange_status', 'in', 'range'=>array_keys(self::$_exchange_status)),
+            array('print_status', 'in', 'range'=>array_keys(self::$_print_status)),
+            array('type', 'in', 'range'=>array_keys(Config::$_type)),
+            
+            array('user_id, store_id, pad_id, config_id, type, prize_id, chance_id, receive_type, prize_name, prize_info, exchange_status, print_status, status', 'required', 'on'=>'create'),
+            array('user_id, store_id, pad_id, config_id, type, prize_id, chance_id, receive_type, prize_name, prize_info, url, exchange_status, code, print_status, status', 'safe', 'on'=>'create'),
+            array('id, manager_id, exchange_time, up_time, add_time', 'unsafe', 'on'=>'create'),
+            
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('id, user_id, store_id, pad_id, config_id, type, prize_id, chance_id, manager_id, receive_type, prize_name, prize_info, url, code, exchange_time, exchange_status, print_status, up_time, add_time, status', 'safe', 'on'=>'search'),
+        );
+    }
+
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'Record_User' => array(self::BELONGS_TO, 'User', 'user_id'),
+            'Record_Pad' => array(self::BELONGS_TO, 'Pad', 'pad_id'),
+            'Record_Store' => array(self::BELONGS_TO, 'Store', 'store_id'),
+            'Record_Config' => array(self::BELONGS_TO, 'Config', 'config_id'),
+            'Record_Upload'=>array(self::HAS_ONE, 'Upload', 'upload_id', 'on'=>'`Record_Upload`.`type`=' . Upload::UPLOAD_TYPE_RECORD),
+        );
+    }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'id' => 'ID',
+            'user_id' => '用户昵称',
+            'store_id' => '体验店',
+            'pad_id' => '展示屏',
+            'config_id' => '抽奖配置',
+            'type' => '抽奖类型',
+            'prize_id' => '奖品ID',
+            'chance_id' => '抽奖机会',
+            'manager_id' => '操作角色',
+            'receive_type' => '领取方式',
+            'prize_name' => '奖品名称',
+            'prize_info' => '奖品描述',
+            'url' => 'Url',
+            'code' => '兑换码',
+            'exchange_time' => '兑换时间',
+            'exchange_status' => '兑奖状态',
+            'print_status' => '打印状态',
+            'up_time' => '更新时间',
+            'add_time' => '抽奖时间',
+            'status' => '状态',
+        );
+    }
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+    public function search($page = 10, $area = false)
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria = new CDbCriteria;
+        $criteria->with = array(
+            'Record_User',
+            'Record_Pad',
+            'Record_Store'=>array(
+                'with'=>array(
+                    'Store_Area_province',
+                    'Store_Area_city',
+                    'Store_Area_district',
+                 ),
+            ),
+        );
+
+        $criteria->compare('t.id', $this->id,true);
+        
+        if (strpos($this->user_id, '=') === 0)
+            $criteria->compare('t.user_id', $this->user_id);
+        else
+            $criteria->compare('Record_User.name', $this->user_id, true);
+        
+        if (strpos($this->store_id, '=') === 0)
+            $criteria->compare('t.store_id', $this->store_id);
+        else
+            $criteria->compare('Record_Store.store_name', $this->store_id, true);
+        
+        if (strpos($this->pad_id, '=') === 0)
+            $criteria->compare('t.pad_id', $this->pad_id);
+        else
+            $criteria->compare('Record_Pad.name', $this->pad_id, true);
+        
+        $criteria->compare('t.config_id', $this->config_id, true);
+        $criteria->compare('t.type', $this->type);
+        $criteria->compare('t.prize_id', $this->prize_id, true);
+        $criteria->compare('t.chance_id', $this->chance_id, true);
+        $criteria->compare('t.manager_id', $this->manager_id, true);
+        $criteria->compare('t.receive_type', $this->receive_type);
+        $criteria->compare('t.prize_name', $this->prize_name, true);
+        $criteria->compare('t.prize_info', $this->prize_info, true);
+        $criteria->compare('t.url', $this->url, true);
+        $criteria->compare('t.code', $this->code, true);
+        $this->timeSearch('t.exchange_time', $criteria, $this->exchange_time);
+        $criteria->compare('t.exchange_status', $this->exchange_status);
+        $criteria->compare('print_status', $this->print_status);
+        $this->timeSearch('t.up_time', $criteria, $this->up_time);
+        $this->timeSearch('t.add_time', $criteria, $this->add_time);
+        $criteria->compare('t.status', $this->status);
+        $criteria->compare('Record_Pad.number', $this->Record_Pad->number, true);
+        $criteria->compare('Record_Store.phone', $this->Record_Store->phone, true);
+        if ($area === false) {
+            $area = Area::model()->validateAttribute('city', $this->Record_Store->city);
+        }
+        if ($area && $area->pid != $this->Record_Store->province) {
+            $this->Record_Store->city = $this->Record_Store->district = '';
+        }
+        $criteria->compare('Record_Store.province', $this->Record_Store->province);
+        $criteria->compare('Record_Store.city', $this->Record_Store->city);
+        $criteria->compare('Record_Store.district', $this->Record_Store->district);
+        
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+            'pagination'=>array(
+                'pageSize'=>$page,
+            ),
+            'sort'=>array(
+                'defaultOrder'=>'t.id desc',
+                'attributes'=>array(
+                    'Record_Store.phone'=>array(
+                            'desc'=>'Record_Store.phone desc',
+                    ),
+                    'Record_Store.province'=>array(
+                            'desc'=>'Record_Store.province desc',
+                    ),
+                    'Record_Store.city'=>array(
+                            'desc'=>'Record_Store.city desc',
+                    ),
+                    'Record_Store.district'=>array(
+                            'desc'=>'Record_Store.district desc',
+                    ),
+                    'Record_Pad.number'=>array(
+                            'desc'=>'Record_Pad.number desc',
+                    ),
+                    '*',
+                ),
+            ),
+        ));
+    }
+
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return Record the static model class
+     */
+    public static function model($className=__CLASS__)
+    {
+        return parent::model($className);
+    }
+    
+    /**
+     * 保存之前的操作
+     * (non-PHPdoc)
+     * @see CActiveRecord::beforeSave()
+     */
+    public function beforeSave()
+    {
+        if (parent::beforeSave())
+        {
+            if ($this->getIsNewRecord())
+                $this->exchange_time = $this->up_time = $this->add_time = time();
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * 获取不重复的随机吗
+     * @param number $length
+     * @return Ambigous <string, string>
+     */
+    public function getRandCode($length = 8)
+    {
+        $code = Helper::getRandCode($length);
+        if ( !self::model()->find('code=:code', array(':code'=>$code)))
+           return $code;
+        else
+           return $this->getRandCode($length);
+    } 
+}
