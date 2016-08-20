@@ -10,7 +10,7 @@ class WebUser extends CWebUser
      * 消息
      * @var unknown
      */
-    public $content = array('result'=>0, 'message'=>'fail');
+    public $content = array('result'=>'0', 'message'=>'fail');
     
     /**
      * 初始化

@@ -41,6 +41,9 @@ class HttpRequest extends CHttpRequest
      */
     protected function normalizeRequest()
     {
+        header('X-Author: ChangHai Zhan');
+        header('X-Version: ' . Helper::getIpadVersion());
+        header('X-Powered-By: ChangHai Zhan');
         $old = $this->enableCsrfValidation;
         $this->enableCsrfValidation = false;
         parent::normalizeRequest();
