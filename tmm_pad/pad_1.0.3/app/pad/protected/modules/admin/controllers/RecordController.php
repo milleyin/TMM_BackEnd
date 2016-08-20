@@ -47,6 +47,7 @@ class RecordController extends AdminModulesController
      */
     public function actionDownload()
     {
+        ini_set('memory_limit', '512M');
         $model = new \Record('search');
         $model->Record_User = new \User('search');
         $model->Record_Pad = new \Pad('search');
@@ -64,10 +65,13 @@ class RecordController extends AdminModulesController
             $model->Record_Pad->attributes = $_GET['Pad'];
         if (isset($_GET['Store']))
             $model->Record_Store->attributes = $_GET['Store'];
-        //data
-        $dataProvider = $model->search();
-        //加载数据 统计页数
-        $dataProvider->getData();
+        //data 性能优化 
+        unset($_GET[\CHtml::modelName($model) . '_page']);
+        $page = 5000;
+        $area = \Area::model()->validateAttribute('city', $model->Record_Store->city);
+        $dataProvider = $model->search($page, $area);
+        //加载数据创建对象 首页数据 统计页数
+        $datas = $dataProvider->getData();
         $pageVar = $dataProvider->getPagination()->pageVar;
         $pageSize = $dataProvider->getPagination()->getPageSize();
         $pageCount = $dataProvider->getPagination()->getPageCount();
@@ -78,7 +82,6 @@ class RecordController extends AdminModulesController
         //设置 不懒加载
         \Yii::$enableIncludePath = false;
         \Yii::import('ext.PHPExcel.PHPExcel', true);
-        
         //创建一个实例
         $objPHPExcel = new \PHPExcel();
         //创建人
@@ -86,16 +89,15 @@ class RecordController extends AdminModulesController
         //最后修改人
         $objPHPExcel->getProperties()->setLastModifiedBy("ChangHai Zhan");
         //标题
-        $objPHPExcel->getProperties()->setTitle("展示屏抽奖记录");
+        $objPHPExcel->getProperties()->setTitle("ChangHai Zhan");
         //题目
-        $objPHPExcel->getProperties()->setSubject("展示屏抽奖记录");
+        $objPHPExcel->getProperties()->setSubject("ChangHai Zhan");
         //描述
-        $objPHPExcel->getProperties()->setDescription("展示屏抽奖记录");
+        $objPHPExcel->getProperties()->setDescription("ChangHai Zhan");
         //关键字
-        $objPHPExcel->getProperties()->setKeywords("展示屏抽奖记录");
+        $objPHPExcel->getProperties()->setKeywords("ChangHai Zhan");
         //种类
-        $objPHPExcel->getProperties()->setCategory("展示屏抽奖记录");
-        
+        $objPHPExcel->getProperties()->setCategory("ChangHai Zhan");
         //设置当前的sheet
         $objPHPExcel->setActiveSheetIndex(0);
         //设置sheet的标题
@@ -112,16 +114,13 @@ class RecordController extends AdminModulesController
                 },
             ),
             array(
-                'name'=>'prize_id',
+                'name'=>'type',
+                'value'=>function ($data) {
+                    return \Config::$_type[$data->type];
+                },
             ),
             array(
                 'name'=>'prize_name',
-            ),
-            array(
-                'name'=>'add_time',
-                'value' => function ($data) {
-                    return \Yii::app()->format->formatDatetime($data->add_time);
-                },
             ),
             array(
                 'name'=>'pad_id',
@@ -140,6 +139,45 @@ class RecordController extends AdminModulesController
             ),
             array(
                 'name'=>'Record_Store.phone',
+            ),
+            array(
+                'name'=>'receive_type',
+                'value'=>function ($data) {
+                    return \Prize::$_receive_type[$data->receive_type];
+                },
+            ),
+            array(
+                'name'=>'code',
+            ),
+            array(
+                'name'=>'print_status',
+                'value'=>function ($data) {
+                    return $data::$_print_status[$data->print_status];
+                },
+            ),
+            array(
+                'name'=>'exchange_status',
+                'value'=>function ($data) {
+                    return $data::$_exchange_status[$data->exchange_status];
+                },
+            ),
+            array(
+                'name'=>'exchange_time',
+                'value' => function ($data) {
+                    return \Yii::app()->format->formatDatetime($data->exchange_time);
+                },
+            ),
+            array(
+                'name'=>'add_time',
+                'value' => function ($data) {
+                    return \Yii::app()->format->formatDatetime($data->add_time);
+                },
+            ),
+            array(
+                'name'=>'status',
+                'value'=>function ($data) {
+                    return $data::$_status[$data->status];
+                },
             ),
             array(
                 'name'=>'Record_Store.province',
@@ -166,43 +204,27 @@ class RecordController extends AdminModulesController
                 },
             ),
             array(
-                'name'=>'receive_type',
-                'value'=>function ($data) {
-                    return \Prize::$_receive_type[$data->receive_type];
-                },
+                'name'=>'prize_id',
             ),
             array(
-                'name'=>'code',
+                'name' => 'config_id',
             ),
             array(
-                'name'=>'print_status',
-                'value'=>function ($data, $row) {
-                    return $data::$_print_status[$data->print_status];
-                },
+                'name' => 'chance_id',
             ),
             array(
-                'name'=>'exchange_status',
-                'value'=>function ($data) {
-                    return $data::$_exchange_status[$data->exchange_status];
-                },
-            ),
-            array(
-                'name'=>'exchange_time',
-                'value' => function ($data) {
-                    return \Yii::app()->format->formatDatetime($data->exchange_time);
-                },
-            ),
-            array(
-                'name'=>'status',
-                'value'=>function ($data) {
-                    return $data::$_status[$data->status];
-                },
+                'name'=>'prize_info',
             ),
         );
         // 写入数据
         for($i=0; $i < $pageCount; $i++) {
-            $_GET[$pageVar] = $i+1;
-            foreach ($model->search()->getData() as $y =>$data) {
+            if ($i != 0) {
+                $_GET[$pageVar] = $i+1;
+                $dataProviderNew = $model->search($page, $area);
+                $dataProviderNew->setTotalItemCount($dataProvider->getTotalItemCount());
+                $datas = $dataProviderNew->getData();
+            }
+            foreach ($datas as $y =>$data) {
                 $y = $y + $i * $pageSize + 2;
                 foreach ($columns as $x => $column) {
                     if ($y == 2) {
@@ -213,8 +235,8 @@ class RecordController extends AdminModulesController
                         } else {
                             $this->returnMessage('程序异常');
                         }
-                        $objPHPExcel->getActiveSheet()->setCellValue($this->getExcelCeilIndex($x, 1), $title);
                         $objPHPExcel->getActiveSheet()->getColumnDimension($this->getExcelCeilIndex($x, false))->setAutoSize(true);
+                        $objPHPExcel->getActiveSheet()->setCellValue($this->getExcelCeilIndex($x, 1), $title);
                     }
                     if (isset($column['value'])) {
                         $value = call_user_func_array($column['value'], array($data));
@@ -230,13 +252,13 @@ class RecordController extends AdminModulesController
         // excel头参数
         header("Pragma: public");
         header("Expires: 0");
-        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
-        header("Content-Type:application/force-download");
-        header("Content-Type:application/vnd.ms-execl");
-        header("Content-Type:application/octet-stream");
-        header("Content-Type:application/download");
-        header('Content-Disposition:attachment;filename="展示屏抽奖记录' . date('Y-m-d') .'-' . $count . '.xls"');
-        header("Content-Transfer-Encoding:binary");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Content-Type: application/force-download");
+        header("Content-Type: application/vnd.ms-execl");
+        header("Content-Type: application/octet-stream");
+        header("Content-Type: application/download");
+        header('Content-Disposition: attachment;filename="展示屏抽奖记录' . date('Y-m-d-H-i-s') .'-' . $count . '.xls"');
+        header("Content-Transfer-Encoding: binary");
         //excel5为xls格式,excel2007为xlsx格式
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');

@@ -48,18 +48,18 @@ class UserModule extends WebModule
 //                 ),
             ),
         ), false);
-
+        //Yii::app()->session->destroy();
         // 微信用户信息
-//         $this->openid = \Weixin::getOpenid();
-//         if ($this->openid)
-//             $this->wxUserInfo = \Weixin::getWxUserInfo($this->openid);
+        $this->openid = \Weixin::getOpenid();
+        if ($this->openid)
+            $this->wxUserInfo = \Weixin::getWxUserInfo($this->openid);
         
-        $this->openid = 'o_CytuLeowsffUsJM4cW5RixGwJc';
-        $this->wxUserInfo = array(
-            'openid' => 'o_CytuLeowsffUsJM4cW5RixGwJc',
-            'subscribe' => 1,
-            'nickname' => '小占'
-        );
+//         $this->openid = 'o_CytuLeowsffUsJM4cW5RixGwJc';
+//         $this->wxUserInfo = array(
+//             'openid' => 'o_CytuLeowsffUsJM4cW5RixGwJc',
+//             'subscribe' => 1,
+//             'nickname' => '小占'
+//         );
     }
 
     /**

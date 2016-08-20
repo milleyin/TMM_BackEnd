@@ -15,7 +15,7 @@ class WxpayController extends CallbackModulesController
      */
     public function actionIndex()
     {
-        error_reporting(E_ERROR);
+        error_reporting(0);
         require_once (\Yii::app()->basePath . '/extensions/Wxpay/lib/WxPay.Api.php');
         require_once (\Yii::app()->basePath . '/extensions/Wxpay/lib/WxPay.Notify.php');
         require_once (\Yii::app()->basePath . '/extensions/Wxpay/PayNotifyCallBack.php');
@@ -51,19 +51,11 @@ class WxpayController extends CallbackModulesController
         $criteria->addCondition('`t`.`order_status`=:yes OR `t`.`order_status`=:no');
         $criteria->params[':no'] = \OrderFood::ORDER_ORDER_STATUS_NO;      //未支付
         $criteria->params[':yes'] = \OrderFood::ORDER_ORDER_STATUS_YES;     //已支付
+        $criteria->addColumnCondition(array(
+            'OrderFood_Order.order_no' => $result['out_trade_no'],                      //订单号
+        ));
         $this->_modelName = 'OrderFood';
-        $model = $this->loadModelByPk($result['out_trade_no'], $criteria);
-        if ($test) {
-            $cash_fee = $model->OrderFood_Order->money;                         //支付金额相等
-        } else {
-            $cash_fee = $result['cash_fee'];
-        }
-        if ($model->OrderFood_Order->money != $cash_fee) {
-            return false;
-        }
-        if ($model->order_status == \OrderFood::ORDER_ORDER_STATUS_YES) {
-            return true;
-        }
+        $model = $this->loadModel($criteria);
         //开启事物
         $transaction = $model->dbConnection->beginTransaction();
         try
@@ -72,57 +64,75 @@ class WxpayController extends CallbackModulesController
             if ( !$model) {
                 throw new \Exception("回调订单 没有找到订单");
             }
-            //已支付
-            $model->order_status = \OrderFood::ORDER_ORDER_STATUS_YES;
-            $model->order_status = \OrderFood::ORDER_ORDER_STATUS_YES;
-            //支付金额
-            $model->OrderFood_Order->trade_money = $cash_fee;
-            //支付微信订单号
-            $model->OrderFood_Order->trade_no = $result['transaction_id'];
-            //支付账号
-            $model->OrderFood_Order->trade_id = $result['openid'];
-            //支付昵称
-            $model->OrderFood_Order->trade_name = $result['openid'];
-            //微信支付
-            $model->OrderFood_Order->trade_type = \Order::ORDER_TRADE_TYPE_WX;
-            //支付时间
-            $model->OrderFood_Order->trade_time = time();
-            //已支付
-            $model->OrderFood_Order->pay_status = \Order::ORDER_PAY_STATUS_YES;
-            if ( !$model->save(false)) {
-                throw new \Exception("回调订单 保存抢菜订单表失败");
+            if ($test) {
+                $cash_fee = $model->OrderFood_Order->money;                         //支付金额相等
+            } else {
+                $cash_fee = $result['cash_fee'];
             }
-            if ( !$model->OrderFood_Order->save(false)) {
-                throw new \Exception("回调订单 保存订单主表失败");
+            if ($model->OrderFood_Order->money != $cash_fee) {
+                throw new \Exception("回调订单 支付金额不相等");
             }
-            //付款成功 添加抽奖机会
-            $criteria = new \CDbCriteria;
-            $criteria->addColumnCondition(array(
-                'pad_id' => $model->pad_id,
-                'type' => \Config::Config_TYPE_PAY,
-            ));
-            $modelConfig = \Config::model()->find($criteria);
-            if ( !$modelConfig) {
-                throw new \Exception("回调订单 没有找到奖品配置");
-            }
-            $data = array(
-                'user_id' => $model->user_id,
-                'store_id' => $model->store_id,
-                'pad_id' => $model->pad_id,
-                'config_id' => $modelConfig->id,
-                'type' => \Config::Config_TYPE_PAY,
-                'count' => $modelConfig->number,
-                'number' => $modelConfig->number,
-                'date_time' => strtotime(date('Y-m-d', time())),
-                'status' => \Chance::_STATUS_NORMAL,
-            );
-            if ( !!$modelChance = \Chance::model()->createChance($data, \Config::Config_TYPE_FREE) &&
-                $modelChance->updateChance($modelChance, $model->pad_id)
-            ) {
+            if ($model->order_status == \OrderFood::ORDER_ORDER_STATUS_YES) {
                 //成功 获取抽奖机会
                 $return = true;
             } else {
-                throw new \Exception("回调订单 获取机会失败");
+                //已支付
+                $model->order_status = \OrderFood::ORDER_ORDER_STATUS_YES;
+                //支付金额
+                $model->OrderFood_Order->trade_money = $cash_fee;
+                //支付微信订单号
+                $model->OrderFood_Order->trade_no = $result['transaction_id'];
+                //支付账号
+                $model->OrderFood_Order->trade_id = $result['openid'];
+                $modelUser = \User::model()->find('openid=:openid', array(':openid' => $result['openid']));
+                if ($modelUser) {
+                    $trade_name = $modelUser->name;
+                } else {
+                    $trade_name = $result['openid'];
+                }
+                //支付昵称
+                $model->OrderFood_Order->trade_name = $trade_name;
+                //微信支付
+                $model->OrderFood_Order->trade_type = \Order::ORDER_TRADE_TYPE_WX;
+                //支付时间
+                $model->OrderFood_Order->trade_time = time();
+                //已支付
+                $model->OrderFood_Order->pay_status = \Order::ORDER_PAY_STATUS_YES;
+                if ( !$model->save(false)) {
+                    throw new \Exception("回调订单 保存抢菜订单表失败");
+                }
+                if ( !$model->OrderFood_Order->save(false)) {
+                    throw new \Exception("回调订单 保存订单主表失败");
+                }
+                //付款成功 添加抽奖机会
+                $criteria = new \CDbCriteria;
+                $criteria->addColumnCondition(array(
+                    'pad_id' => $model->pad_id,
+                    'type' => \Config::Config_TYPE_PAY,
+                ));
+                $modelConfig = \Config::model()->find($criteria);
+                if ( !$modelConfig) {
+                    throw new \Exception("回调订单 没有找到奖品配置");
+                }
+                $data = array(
+                    'user_id' => $model->user_id,
+                    'store_id' => $model->store_id,
+                    'pad_id' => $model->pad_id,
+                    'config_id' => $modelConfig->id,
+                    'type' => \Config::Config_TYPE_PAY,
+                    'count' => $modelConfig->number,
+                    'number' => $modelConfig->number,
+                    'date_time' => strtotime(date('Y-m-d', time())),
+                    'status' => \Chance::_STATUS_NORMAL,
+                );
+                if ( (!!$modelChance = \Chance::model()->createChance($data, \Config::Config_TYPE_FREE)) &&
+                    $modelChance->updateChance($modelChance, $model->pad_id)
+                ) {
+                    //成功 获取抽奖机会
+                    $return = true;
+                } else {
+                    throw new \Exception("回调订单 获取机会失败");
+                }
             }
             $transaction->commit();
         } catch (\Exception $e) {

@@ -175,7 +175,7 @@ class IndexController extends UserModulesController
                 //②、统一下单
                 $input = new \WxPayUnifiedOrder();
                 //订单简要描述
-                $input->SetBody('田觅觅“觅境”抢菜活动订单：' . $model->OrderFood_Order->order_no );
+                $input->SetBody('田觅觅“觅镜”付费抽奖');
                 //订单附加数据
                 $input->SetAttach($model->OrderFood_Order->order_no);
                 //订单号
@@ -199,6 +199,7 @@ class IndexController extends UserModulesController
                 //设置$openId
                 $input->SetOpenid($openId);
                 $order = \WxPayApi::unifiedOrder($input);
+                //\Yii::log(var_export($order, true), 'info', __METHOD__);
                 $jsApiParameters = $tools->GetJsApiParameters($order);
                 //支付数据
                 $return['wxpay'] = $jsApiParameters;
@@ -212,8 +213,8 @@ class IndexController extends UserModulesController
         if (isset($returnChance) && $returnChance) {
             $this->redirect(array('index', 'id' => $model->pad_id));
         } elseif (isset($return) && $return) {
-            \Yii::log(var_export($return, true), 'info', __METHOD__);
-            $this->render('pad', $return);
+            //\Yii::log(var_export($return, true), 'info', __METHOD__);
+            $this->render('pay', $return);
         } elseif (isset($model) && $model) {
             $this->redirect(array('index', 'id' => $model->pad_id));
         } else {
