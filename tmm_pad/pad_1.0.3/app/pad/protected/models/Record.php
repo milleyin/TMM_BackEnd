@@ -12,6 +12,7 @@
  * @property string $prize_id
  * @property string $chance_id
  * @property string $manager_id
+ * @property integer $type
  * @property integer $receive_type
  * @property string $prize_name
  * @property string $prize_info
@@ -32,12 +33,12 @@ class Record extends ActiveRecord
      */
     const RECORD_EXCHANGE_STATUS_QUIT = -3;
     /**
-     * 兑换状态 无需兑换
+     * 兑换状态 待选择
      * @var integer
      */
     const RECORD_EXCHANGE_STATUS_SELECT = -2;
     /**
-     * 兑换状态 待选择
+     * 兑换状态 无需兑换
      * @var integer
      */
     const RECORD_EXCHANGE_STATUS_NONE = -1;
@@ -93,12 +94,12 @@ class Record extends ActiveRecord
         self::RECORD_PRINT_STATUS_YES => '已打印',
     );
     /**
-    * 状态 解释字段 status 含义
+    * 中奖类型 解释字段 status 含义
     * @var unknown
     */
     public static $_status = array(
         self::_STATUS_DELETED => '谢谢参与',
-        self::_STATUS_NORMAL=> '中奖记录'
+        self::_STATUS_NORMAL=> '中奖记录',
     );
     /**
      * @return string the associated database table name
@@ -117,7 +118,7 @@ class Record extends ActiveRecord
         // will receive user inputs.
         return array(
             //array('user_id, store_id, pad_id, config_id, prize_id, chance_id, manager_id', 'required'),
-            array('receive_type, exchange_status, print_status, status', 'numerical', 'integerOnly'=>true),
+            array('type, receive_type, exchange_status, print_status, status', 'numerical', 'integerOnly'=>true),
             array('user_id, store_id, pad_id, config_id, prize_id, chance_id, manager_id', 'length', 'max'=>20),
             array('prize_name', 'length', 'max'=>32),
             array('prize_info, url, code', 'length', 'max'=>128),
@@ -127,15 +128,15 @@ class Record extends ActiveRecord
             array('receive_type', 'in', 'range'=>array_keys(Prize::$_receive_type)),
             array('exchange_status', 'in', 'range'=>array_keys(self::$_exchange_status)),
             array('print_status', 'in', 'range'=>array_keys(self::$_print_status)),
+            array('type', 'in', 'range'=>array_keys(Config::$_type)),
             
-            array('user_id, store_id, pad_id, config_id, prize_id, chance_id, receive_type, prize_name, prize_info, exchange_status, print_status, status', 'required', 'on'=>'create'),
-            array('user_id, store_id, pad_id, config_id, prize_id, chance_id, receive_type, prize_name, prize_info, url, exchange_status, code, print_status, status', 'required', 'on'=>'create_yz'),
-            array('user_id, store_id, pad_id, config_id, prize_id, chance_id, receive_type, prize_name, prize_info, url, exchange_status, code, print_status, status', 'safe', 'on'=>'create, create_yz'),
-            array('id, manager_id, exchange_time, up_time, add_time', 'unsafe', 'on'=>'create, create_yz'),
+            array('user_id, store_id, pad_id, config_id, type, prize_id, chance_id, receive_type, prize_name, prize_info, exchange_status, print_status, status', 'required', 'on'=>'create'),
+            array('user_id, store_id, pad_id, config_id, type, prize_id, chance_id, receive_type, prize_name, prize_info, url, exchange_status, code, print_status, status', 'safe', 'on'=>'create'),
+            array('id, manager_id, exchange_time, up_time, add_time', 'unsafe', 'on'=>'create'),
             
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, user_id, store_id, pad_id, config_id, prize_id, chance_id, manager_id, receive_type, prize_name, prize_info, url, code, exchange_time, exchange_status, print_status, up_time, add_time, status', 'safe', 'on'=>'search'),
+            array('id, user_id, store_id, pad_id, config_id, type, prize_id, chance_id, manager_id, receive_type, prize_name, prize_info, url, code, exchange_time, exchange_status, print_status, up_time, add_time, status', 'safe', 'on'=>'search'),
         );
     }
 
@@ -150,6 +151,7 @@ class Record extends ActiveRecord
             'Record_User' => array(self::BELONGS_TO, 'User', 'user_id'),
             'Record_Pad' => array(self::BELONGS_TO, 'Pad', 'pad_id'),
             'Record_Store' => array(self::BELONGS_TO, 'Store', 'store_id'),
+            'Record_Config' => array(self::BELONGS_TO, 'Config', 'config_id'),
             'Record_Upload'=>array(self::HAS_ONE, 'Upload', 'upload_id', 'on'=>'`Record_Upload`.`type`=' . Upload::UPLOAD_TYPE_RECORD),
         );
     }
@@ -165,6 +167,7 @@ class Record extends ActiveRecord
             'store_id' => '体验店',
             'pad_id' => '展示屏',
             'config_id' => '抽奖配置',
+            'type' => '抽奖类型',
             'prize_id' => '奖品ID',
             'chance_id' => '抽奖机会',
             'manager_id' => '操作角色',
@@ -194,7 +197,7 @@ class Record extends ActiveRecord
      * @return CActiveDataProvider the data provider that can return the models
      * based on the search/filter conditions.
      */
-    public function search()
+    public function search($page = 10, $area = false)
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
@@ -229,7 +232,8 @@ class Record extends ActiveRecord
             $criteria->compare('Record_Pad.name', $this->pad_id, true);
         
         $criteria->compare('t.config_id', $this->config_id, true);
-        $criteria->compare('t.prize_id', $this->prize_id, true);    
+        $criteria->compare('t.type', $this->type);
+        $criteria->compare('t.prize_id', $this->prize_id, true);
         $criteria->compare('t.chance_id', $this->chance_id, true);
         $criteria->compare('t.manager_id', $this->manager_id, true);
         $criteria->compare('t.receive_type', $this->receive_type);
@@ -243,13 +247,14 @@ class Record extends ActiveRecord
         $this->timeSearch('t.up_time', $criteria, $this->up_time);
         $this->timeSearch('t.add_time', $criteria, $this->add_time);
         $criteria->compare('t.status', $this->status);
-        
         $criteria->compare('Record_Pad.number', $this->Record_Pad->number, true);
-
         $criteria->compare('Record_Store.phone', $this->Record_Store->phone, true);
-        
-        if ( (!!$area = Area::model()->validateAttribute('city', $this->Record_Store->city)) && $area->pid != $this->Record_Store->province)
+        if ($area === false) {
+            $area = Area::model()->validateAttribute('city', $this->Record_Store->city);
+        }
+        if ($area && $area->pid != $this->Record_Store->province) {
             $this->Record_Store->city = $this->Record_Store->district = '';
+        }
         $criteria->compare('Record_Store.province', $this->Record_Store->province);
         $criteria->compare('Record_Store.city', $this->Record_Store->city);
         $criteria->compare('Record_Store.district', $this->Record_Store->district);
@@ -257,7 +262,7 @@ class Record extends ActiveRecord
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
             'pagination'=>array(
-                'pageSize'=>10,
+                'pageSize'=>$page,
             ),
             'sort'=>array(
                 'defaultOrder'=>'t.id desc',
@@ -321,6 +326,6 @@ class Record extends ActiveRecord
         if ( !self::model()->find('code=:code', array(':code'=>$code)))
            return $code;
         else
-            $this->getRandCode($length);
+           return $this->getRandCode($length);
     } 
 }

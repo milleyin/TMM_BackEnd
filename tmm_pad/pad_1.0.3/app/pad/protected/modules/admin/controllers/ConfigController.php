@@ -89,9 +89,29 @@ class ConfigController extends AdminModulesController
             $model->attributes = $_POST['Config'];
             if ($model->validate())
             {
-                //格式化钱
-                $model->money = $model->saveMoney($model->money);
-                if ($model->save(false)) {
+                $transaction = $model->dbConnection->beginTransaction();
+                try
+                {
+                    //格式化钱
+                    $model->money = $model->saveMoney($model->money);
+                    if ( !$model->save(false)) {
+                        throw new \Exception('创建抽奖配置失败');
+                    }
+                    $data = array(
+                        'store_id'=>$model->store_id,
+                        'pad_id'=>$model->pad_id,
+                        'config_id'=>$model->id,
+                    );
+                    if ( !\Prize::model()->autoCreatePrize($data)) {
+                        throw new \Exception('创建奖品失败');
+                    }
+                    $return = true;
+                    $transaction->commit();
+                } catch (\Exception $e) {
+                    $transaction->rollBack();
+                    \Yii::log($e->getMessage(), 'error', __METHOD__);
+                }
+                if (isset($return) && $return) {
                     $this->redirect(array('view', 'id'=>$model->id));
                 }
             }
