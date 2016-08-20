@@ -34,7 +34,7 @@ class PadController extends FrontController
      * 实时更新状态
      */
     public function actionState()
-    {      
+    {
         $this->render('state', array(
             'status'=>\Pad::model()->updateByPk(\Yii::app()->user->padId, array('state'=>\Pad::PAD_STATE_NORMAL, 'up_time'=>time())),
         ));

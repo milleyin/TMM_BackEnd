@@ -112,6 +112,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'htmlOptions'=>array('style'=>'text-align:center;'),
 		),
 		array(
+    		    'class'=>'DataColumn',
+    		    'evaluateHtmlOptions'=>true,
 				'filter'=>CHtml::activeDropDownList($model->OrderActives_Actives, 'is_organizer',array(''=>'')+Actives::$_is_organizer, array('id'=>false)),
 				'name'=>'OrderActives_Actives.is_organizer',
 				'value'=>'Actives::$_is_organizer[$data->OrderActives_Actives->is_organizer]',

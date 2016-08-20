@@ -21,7 +21,7 @@ class Helper
      */
     public static function getIpadVersion()
     {
-        return '1.0.2';
+        return '1.0.3';
     }
     
     /**
@@ -65,13 +65,13 @@ class Helper
             $url = $app->controller->getLastUrl();
         }
         $return = array(
-            'code'=>200,
-            'errorCode' => 302,
+            'code'=>'200',
+            'errorCode' => '302',
             'source'=>$request->getUrl(),
             'location'=>$url,
-            'result'=>1,
+            'result'=>'1',
             'message'=>'success',
-            'time' =>8
+            'time' =>'8'
         );
         if ($message != '' && is_array($message)) {
             $return = array_merge($return, $message);
