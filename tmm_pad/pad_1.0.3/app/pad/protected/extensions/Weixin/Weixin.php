@@ -6,8 +6,12 @@
  * @author Moore Mo
  */
 class Weixin {
-    private static $appId = 'wx5ef6db5eeb32aeb0';
-    private static $appSecret = '67aba54fbad7b1fc10b49b91f8a3e7f8';
+    //test
+    private static $appId = 'wx7276cefc5ef30643';
+    private static $appSecret = 'be4c6500837f69c93722f20d1e3ad527';
+    
+//     private static $appId = 'wx5ef6db5eeb32aeb0';
+//     private static $appSecret = '67aba54fbad7b1fc10b49b91f8a3e7f8';
 
     /**
      * 获取openid
@@ -129,9 +133,9 @@ class Weixin {
      */
     public static function requestCode($redirectUri)
     {
-        $url = 'https://m.365tmm.com/wx.html?appid=' . self::$appId . '&scope=snsapi_base&state=1&redirect_uri=' . urlencode($redirectUri);
+        //$url = 'https://m.365tmm.com/wx.html?appid=' . self::$appId . '&scope=snsapi_base&state=1&redirect_uri=' . urlencode($redirectUri);
         //$url = 'http://test2.365tmm.net/wx.html?appid=' . self::$appId . '&scope=snsapi_base&state=1&redirect_uri=' . urlencode($redirectUri);
-        //$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' . self::$appId . '&redirect_uri=' . urlencode($redirectUri) . '&response_type=code&scope=snsapi_base&state=1#wechat_redirect';
+        $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' . self::$appId . '&redirect_uri=' . urlencode($redirectUri) . '&response_type=code&scope=snsapi_base&state=1#wechat_redirect';
         header("location: " . $url);
         exit;
     }
