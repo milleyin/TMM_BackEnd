@@ -102,7 +102,7 @@ class Order extends ActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('type, trade_type, pay_status, status', 'numerical', 'integerOnly'=>true),
+            array('type, money, trade_type, pay_status, status', 'numerical', 'integerOnly'=>true),
             array('p_id, role_id, money, trade_money, manager_id', 'length', 'max'=>20),
             array('order_no, trade_no, trade_id, trade_name', 'length', 'max'=>256),
             array('trade_time, up_time, add_time', 'length', 'max'=>10),

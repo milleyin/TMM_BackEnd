@@ -72,10 +72,10 @@ class Config extends ActiveRecord
             array('type', 'in', 'range'=>array_keys(self::$_type)),
             // 创建，更新抽奖配置
             array('type, money, chance_number, number, info', 'required', 'on'=>'create, update'),
-            array('number', 'numerical', 'integerOnly'=>true, 'min'=>0, 'max'=>100, 'on'=>'create, update'),
+            array('number', 'numerical', 'integerOnly'=>true, 'min'=>1, 'max'=>100, 'on'=>'create, update'),
             array('chance_number', 'numerical', 'integerOnly'=>true, 'min'=>-1, 'max'=>100, 'on'=>'create, update'),
             array('pad_id', 'isPadIdValidator', 'on'=>'create'),
-            array('money', 'ext.validators.DecimalValidator', 'on' => 'create, update'),
+            array('money', 'numerical', 'numberPattern'=>'/^(([1-9][0-9]{1,8})|0)(\.[0-9]{1,2})?$/', 'message'=>'必须是不小于零的二位有效小数', 'max'=>5000, 'on' => 'create, update'),
             array('money', 'typeMoneyValidator', 'on' => 'create, update'),
             array('ad_url', 'url', 'on' => 'create, update'),
             array('type, money, chance_number, number, info, ad_url','safe', 'on'=>'create, update'),
@@ -111,7 +111,7 @@ class Config extends ActiveRecord
             'store_id' => '体验店',
             'pad_id' => '展示屏',
             'manager_id' => '操作角色',
-            'type' => '配置类型',
+            'type' => '抽奖类型',
             'chance_number' => '机会/天',
             'number' => '次数/机会',
             'money' => '支付金额',
@@ -145,15 +145,12 @@ class Config extends ActiveRecord
             'Config_Store',
             'Config_Upload',
         );
-
         $criteria->compare('t.id', $this->id,true);
-        
         if (strpos($this->pad_id, '=') === 0) {
             $criteria->compare('t.pad_id', $this->pad_id);
         } else {
             $criteria->compare('Config_Pad.name', $this->pad_id, true);
         }
-        
         if (strpos($this->store_id, '=') === 0) {
             $criteria->compare('t.store_id', $this->store_id);
         } else {
@@ -163,8 +160,8 @@ class Config extends ActiveRecord
         $criteria->compare('Config_Pad.number', $this->Config_Pad->number, true);
         $criteria->compare('Config_Store.phone', $this->Config_Store->phone, true);
         $criteria->compare('t.manager_id', $this->manager_id, true);
-        $criteria->compare('type', $this->type);
-        $criteria->compare('chance_number', $this->chance_number, true);
+        $criteria->compare('t.type', $this->type);
+        $criteria->compare('t.chance_number', $this->chance_number, true);
         $criteria->compare('t.number', $this->number, true);
         $criteria->compare('money', $this->money, true);
         $criteria->compare('t.info', $this->info,true);

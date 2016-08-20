@@ -26,6 +26,7 @@ class WxPayConfig
 // 	const MCHID = '1238332302';
 // 	const KEY = '5gpIc7ybDqNIRPW9m1dEBsCJYQwsETat';
 // 	const APPSECRET = '67aba54fbad7b1fc10b49b91f8a3e7f8';
+//test
 	const APPID = 'wx7276cefc5ef30643';
 	const MCHID = '1330962501';
 	const KEY = 'VGuQInx7hvpnL9iHaKe4A2kebjjX07sJ';
@@ -43,6 +44,9 @@ class WxPayConfig
 	 * API证书下载地址：https://pay.weixin.qq.com/index.php/account/api_cert，下载之前需要安装商户操作证书）
 	 * @var path
 	 */
+// 	const SSLCERT_PATH = '../cert/pad/apiclient_cert.pem';
+// 	const SSLKEY_PATH = '../cert/pad/apiclient_key.pem';
+	//test
 	const SSLCERT_PATH = '../cert/apiclient_cert.pem';
 	const SSLKEY_PATH = '../cert/apiclient_key.pem';
 	

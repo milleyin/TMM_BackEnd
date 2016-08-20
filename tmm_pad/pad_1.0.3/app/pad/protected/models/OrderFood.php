@@ -61,7 +61,7 @@ class OrderFood extends ActiveRecord
             array('status', 'in', 'range'=>array_keys(self::$_status)),
             //创建订单
             array('store_id, pad_id, money', 'required', 'on'=>'create'),
-            array('money', 'numerical', 'integerOnly'=>true, 'max'=>99999999999, 'on'=>'create'),
+            array('money', 'numerical', 'integerOnly'=>true, 'min'=>0, 'max'=>100000, 'on'=>'create'),
             array('store_id, pad_id, money', 'safe', 'on'=>'create'),
             array('id, user_id, manager_id, up_time, add_time, order_status, status', 'unsafe', 'on'=>'create'),
             
@@ -125,7 +125,13 @@ class OrderFood extends ActiveRecord
         $criteria->with = array(
             'OrderFood_Order',
             'OrderFood_User',
-            'OrderFood_Store',
+            'OrderFood_Store' => array(
+                'with' => array(
+                    'Store_Area_province',
+                    'Store_Area_city',
+                    'Store_Area_district',
+                ),
+            ),
             'OrderFood_Pad',
         );
         $criteria->compare('t.id', $this->id, true);

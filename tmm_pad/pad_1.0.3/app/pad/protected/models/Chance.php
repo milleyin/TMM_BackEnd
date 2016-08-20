@@ -88,7 +88,7 @@ class Chance extends ActiveRecord
             'store_id' => '体验店',
             'pad_id' => '展示屏',
             'config_id' => '抽奖配置',
-            'type' => '配置类型',
+            'type' => '抽奖类型',
             'count' => '抽奖次数',
             'number' => '剩余次数',
             'date_time' => '获取日期',
