@@ -10,7 +10,7 @@
 </head>
 
 <body>
-<div class="pay-img"><img src="<?php echo $this->getAssets() . '/images/logo-pay.png';?>"/></div>
+<div class="payment-img"><img src="<?php echo $this->getAssets() . '/images/logo-pay.png';?>"/></div>
 <div class="payment-amount">￥<?php echo $modelOrder->viewMoney($modelOrder->money); ?></div>
 <div class="payment-info-list">
     <div class="info-item">

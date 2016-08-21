@@ -24,6 +24,16 @@ $this->breadcrumbs = array(
                 'name'=>'prize_id',
         ),
         array(
+            'name'=>'config_id',
+        ),
+        array(
+            'name'=>'type',
+            'value'=>Config::$_type[$model->type],
+        ),
+        array(
+            'name'=>'chance_id',
+        ),
+        array(
                 'name'=>'prize_name',
         ),
         array(
@@ -80,7 +90,7 @@ $this->breadcrumbs = array(
         ),
         array(
                 'name'=>'receive_type',
-                'value'=>\Prize::$_receive_type[$model->receive_type],
+                'value'=>Prize::$_receive_type[$model->receive_type],
         ),
         array(
                 'name'=>'url',

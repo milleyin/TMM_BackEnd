@@ -14,7 +14,7 @@ foreach ($models as $model) {
         $str2 = '';
     }
     $record['list'][] = array(
-    	'name' => $str1 . '**' . $str2,
+        'name' => $str1 . '**' . $str2,
         'prize_name'=>$model->prize_name,
     );
 }
