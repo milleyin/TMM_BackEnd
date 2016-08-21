@@ -334,13 +334,10 @@ jQuery(function($) {
     var updateUrl = '$updateUrl';
     //获取当前页的所有的
     function getAll() {
-        var data = new Array();
-        $("input:checkbox[name='select[]']").each(function () {
-                data.push($(this).val());
-        });
-        return data;
+        return jQuery('#pad-grid').yiiGridView('getChecked', 'select');
     }
     function ajaxCheckbox(ids, url) {
+        //console.log('ids', ids);
         $.ajax({
             type:"POST",$csrf         url:url,
             success: function(data) {

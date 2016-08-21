@@ -44,7 +44,7 @@
     <div class="row value">
         <?php echo $form->label($model, 'position'); ?>
         <strong style="color:red">    <?php echo CHtml::encode($model->position); ?>    </strong>
-        <span class="hint" >转盘图片位置：<strong  style="color:red"><?php echo (45*($model->position-1)) . '°' , ' ~ ' , (45*$model->position) . '°' ; ?></strong></span>
+        <span class="hint" >图片位置：<strong  style="color:red"><?php echo $model->position; ?></strong>（左上角为第一个，顺时针旋转）</span>
     </div>
     
     <div class="row">
@@ -56,7 +56,7 @@
     <div class="row">
         <?php echo $form->labelEx($model->Prize_Upload, 'path'); ?>
         <?php echo $form->fileField($model->Prize_Upload, 'path'); ?>
-         <span class="hint" >仅支持2M以内的jpg, png, jpeg, gif等，奖品图片规格：168*78</span>
+         <span class="hint" >仅支持2M以内的jpg, png, jpeg, gif等，奖品图片规格：301 * 204</span>
         <?php echo $form->error($model->Prize_Upload, 'path'); ?>
     </div>
     
@@ -106,8 +106,13 @@
     </div>
 
     <div class="row">
+        <?php 
+            if ($model->status == $model::_STATUS_DELETED) {
+                $model->receive_type = '';
+            }
+        ?>
         <?php echo $form->labelEx($model, 'receive_type'); ?>
-        <?php echo $form->dropDownList($model, 'receive_type', $model::$_receive_type); ?>
+        <?php echo $form->dropDownList($model, 'receive_type', array('' => '--请选择--') + $model::$_receive_type); ?>
         <?php echo $form->error($model, 'receive_type'); ?>
     </div>
 

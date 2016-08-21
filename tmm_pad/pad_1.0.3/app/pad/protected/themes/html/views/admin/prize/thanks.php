@@ -50,6 +50,7 @@ $this->breadcrumbs = array(
     <div class="row value">
         <?php echo $form->label($model, 'position'); ?>
         <?php echo CHtml::encode($model->position); ?>
+        <span class="hint" >图片位置：<strong  style="color:red"><?php echo $model->position; ?></strong>（左上角为第一个，顺时针旋转）</span>
     </div>
     
     <div class="row">

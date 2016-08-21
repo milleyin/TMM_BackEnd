@@ -38,7 +38,12 @@ or <b>=</b>) 开始你的每一个搜索的值来指定应该如何做比较。
         <?php echo $form->label($model,'config_id'); ?>
         <?php echo $form->textField($model,'config_id',array('size'=>20,'maxlength'=>20)); ?>
     </div>
- 
+    
+     <div class="row">
+        <?php echo $form->label($model,'type'); ?>
+        <?php echo $form->dropDownList($model, 'type', array(''=>'--请选择--')+Config::$_type); ?>
+    </div>
+    
     <div class="row">
         <?php echo $form->label($model,'prize_id'); ?>
         <?php echo $form->textField($model,'prize_id',array('size'=>20,'maxlength'=>20)); ?>

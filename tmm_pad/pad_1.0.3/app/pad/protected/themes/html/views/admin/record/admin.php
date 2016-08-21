@@ -18,7 +18,7 @@ $('.search-form form').submit(function(){
 });
 ");
 ?>
-<h1>管理抽奖记录</h1>
+<h1>管理 抽奖记录</h1>
 
 <div>
     <span>
@@ -129,65 +129,39 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'value'=>function ($data, $row) {
                     return $data->Record_User->name;
                 },
-                'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px;'),
+                'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;'),
                 'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
                         return $data->getAttributeLabel('user_id') . '：' . $data->Record_User->name;
                     }
                 ),
         ),
         array(
-                'class'=>'DataColumn',
-                'evaluateHtmlOptions'=>true,
-                //'filter'=>,
-                'name'=>'prize_id',
-                'headerHtmlOptions'=>array('style'=>'text-align:center;width:55px;'),
-                'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
-                        return $data->getAttributeLabel('prize_id') . '：' . $data->prize_id;
-                    }
-                ),
+            'class'=>'DataColumn',
+            'evaluateHtmlOptions'=>true,
+            'filter'=>Config::$_type,
+            'name'=>'type',
+            'value' => function ($data, $row) {
+                return Config::$_type[$data->type];
+            },
+            'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;'),
+            'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
+                    return $data->getAttributeLabel('type') . '：' . Config::$_type[$data->type];
+                }
+            ),
         ),
         array(
                 'class'=>'DataColumn',
                 'evaluateHtmlOptions'=>true,
                 //'filter'=>,
                 'name'=>'prize_name',
-                'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px;'),
+                'headerHtmlOptions'=>array('style'=>'text-align:center;width:75px;'),
                 'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
                         return $data->getAttributeLabel('prize_name') . '：' . $data->prize_name . "\n" .
                             $data->getAttributeLabel('prize_info') . "：\n" . $data->prize_info . "\n" . 
+                            $data->getAttributeLabel('prize_id') . "：\n" . $data->prize_id . "\n" .
                             $data->getAttributeLabel('url') . '：' . $data->url;
                     },
                 ),
-        ),
-        array(
-            'class'=>'DataColumn',
-            'evaluateHtmlOptions'=>true,
-            'filter'=>$this->widget('zii.widgets.jui.CJuiDatePicker', array(
-                'language'=>'zh-CN',
-                'model'=>$model,
-                'attribute'=>'add_time',
-                'value'=>date('Y-m-d'),
-                'options'=>array(
-                    'maxDate'=>'new date()',
-                    'dateFormat'=>'yy-mm-dd',
-                    'showOn' => 'focus',
-                    'showOtherMonths' => true,
-                    'selectOtherMonths' => true,
-                    'changeMonth' => true,
-                    'changeYear' => true,
-                    'showButtonPanel' => true,
-                ),
-                'htmlOptions'=>array(
-                    'id' =>'add_time_date',
-                ),
-            ),true),
-            'name'=>'add_time',
-            'type'=>'datetime',
-            'headerHtmlOptions'=>array('style'=>'text-align:center;width:60px;'),
-            'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
-                    return $data->getAttributeLabel('add_time') . '：' . Yii::app()->format->FormatDate($data->add_time);
-                },
-            ),
         ),
         array(
                 'class'=>'DataColumn',
@@ -368,6 +342,36 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         $data->getAttributeLabel('up_time') . '：' . Yii::app()->format->FormatDate($data->up_time);
                     },
                 ),
+        ),
+        array(
+            'class'=>'DataColumn',
+            'evaluateHtmlOptions'=>true,
+            'filter'=>$this->widget('zii.widgets.jui.CJuiDatePicker', array(
+                'language'=>'zh-CN',
+                'model'=>$model,
+                'attribute'=>'add_time',
+                'value'=>date('Y-m-d'),
+                'options'=>array(
+                    'maxDate'=>'new date()',
+                    'dateFormat'=>'yy-mm-dd',
+                    'showOn' => 'focus',
+                    'showOtherMonths' => true,
+                    'selectOtherMonths' => true,
+                    'changeMonth' => true,
+                    'changeYear' => true,
+                    'showButtonPanel' => true,
+                ),
+                'htmlOptions'=>array(
+                    'id' =>'add_time_date',
+                ),
+            ),true),
+            'name'=>'add_time',
+            'type'=>'datetime',
+            'headerHtmlOptions'=>array('style'=>'text-align:center;width:60px;'),
+            'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
+                    return $data->getAttributeLabel('add_time') . '：' . Yii::app()->format->FormatDate($data->add_time);
+                },
+            ),
         ),
         array(
             'class'=>'DataColumn',
