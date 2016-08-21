@@ -18,7 +18,7 @@ $('.search-form form').submit(function(){
 });
 ");
 ?>
-<h1>管理抽奖配置</h1>
+<h1>管理 抽奖配置</h1>
 
 <div>
     <span>
@@ -158,8 +158,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;', 'title' => '每次抽奖机会获取的抽奖次数'),
             'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
                     return $data->getAttributeLabel('number') . '：'  . $data->number . "\n" . 
-                        $data->getAttributeLabel('info') . "：\n" . $data->info  . "\n" . 
-                        $data->getAttributeLabel('ad_url') . "：\n" . $data->ad_url;
+                        //$data->getAttributeLabel('ad_url') . "：\n" . $data->ad_url . "\n" .
+                        $data->getAttributeLabel('info') . "：\n" . $data->info;
+                        
                 }
             ),
         ),

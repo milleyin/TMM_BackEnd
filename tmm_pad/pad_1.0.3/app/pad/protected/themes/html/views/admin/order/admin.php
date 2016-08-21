@@ -117,7 +117,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'value'=>function ($data, $row) {
                 return $data::$_type[$data->type];
             },
-            'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;'),
+            'headerHtmlOptions'=>array('style'=>'text-align:center;width:55px;'),
             'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
                     return $data->getAttributeLabel('type') . '：' . $data::$_type[$data->type];
                 },
@@ -128,7 +128,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'evaluateHtmlOptions'=>true,
             //'filter'=>,
             'name'=>'order_no',
-            'headerHtmlOptions'=>array('style'=>'text-align:center;width:130px;'),
+            'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px;'),
             'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
                     return $data->getAttributeLabel('order_no') . '：' . $data->order_no;
                 }
@@ -178,31 +178,32 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'evaluateHtmlOptions'=>true,
             //'filter'=>,
             'name'=>'trade_no',
-            'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+            'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px;'),
             'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
                     return $data->getAttributeLabel('trade_no') . '：' . $data->trade_no;
                 }
             ),
         ),
-        array(
-            'class'=>'DataColumn',
-            'evaluateHtmlOptions'=>true,
-            //'filter'=>,
-            'name'=>'trade_id',
-            'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;'),
-            'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
-                    return $data->getAttributeLabel('trade_id') . '：' . $data->trade_id;
-                }
-            ),
-        ),
+//         array(
+//             'class'=>'DataColumn',
+//             'evaluateHtmlOptions'=>true,
+//             //'filter'=>,
+//             'name'=>'trade_id',
+//             'headerHtmlOptions'=>array('style'=>'text-align:center;width:65px;'),
+//             'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
+//                     return $data->getAttributeLabel('trade_id') . '：' . $data->trade_id;
+//                 }
+//             ),
+//         ),
         array(
             'class'=>'DataColumn',
             'evaluateHtmlOptions'=>true,
             //'filter'=>,
             'name'=>'trade_name',
-            'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+            'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px;'),
             'htmlOptions'=>array('style'=>'text-align:center;', 'title'=>function ($row, $data) {
-                    return $data->getAttributeLabel('trade_name') . '：' . $data->trade_name;
+                    return $data->getAttributeLabel('trade_name') . '：' . $data->trade_name . "\n" .
+                    $data->getAttributeLabel('trade_id') . '：' . $data->trade_id;
                 }
             ),
         ),
@@ -354,11 +355,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'header'=>'操 作',
             'template'=>'{view}',
             'buttons'=>array(
-                'view'=>array(
-                    'options'=>array('style'=>'padding:0 8px 0 0;'),
-                ),
+                'view'
             ),
-            'headerHtmlOptions'=>array('style'=>'text-align:center;width:40px;'),
+            'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
         ),
     ),
 )); ?>

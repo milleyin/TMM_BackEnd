@@ -59,12 +59,12 @@ or <b>=</b>) 开始你的每一个搜索的值来指定应该如何做比较。
         <?php echo $form->label($model,'info'); ?>
         <?php echo $form->textField($model, 'info', array('size'=>60, 'maxlength'=>128)); ?>
     </div>
-    
+    <!-- 
     <div class="row">
         <?php echo $form->label($model, 'ad_url'); ?>
         <?php echo $form->textField($model, 'ad_url', array('size'=>60, 'maxlength'=>128)); ?>
     </div>
-
+    -->
     <div class="row">
         <?php echo $form->label($model, 'up_time'); ?>
         <?php echo $model->timeSearchInput($model, 'up_time'); ?>

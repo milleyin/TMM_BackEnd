@@ -35,9 +35,9 @@ $this->breadcrumbs = array(
                 'type'=>'raw',
                 'value'=>nl2br(CHtml::encode($model->info)),
         ),
-        array(
-            'name'=>'ad_url',
-        ),
+//         array(
+//             'name'=>'ad_url',
+//         ),
         array(
             'name'=>'pad_id',
             'value'=>$model->Config_Pad->name

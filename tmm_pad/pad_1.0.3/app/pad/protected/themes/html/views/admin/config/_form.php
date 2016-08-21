@@ -42,9 +42,14 @@
     </div>
     
     <div class="row">
+        <?php 
+            if ($model->isNewRecord) {
+                $model->type = '';
+            }
+        ?>
         <?php echo $form->labelEx($model, 'type'); ?>
-        <?php echo $form->dropDownList($model, 'type', $model::$_type); ?>
-        <span class="hint">（请勿频繁修改！！！）</span>
+        <?php echo $form->dropDownList($model, 'type', array('' => '--请选择--') + $model::$_type); ?>
+        <span class="hint"><strong  style="color:red">（请勿频繁修改！！！）</strong></span>
         <?php echo $form->error($model, 'type'); ?>
     </div>
     
@@ -74,13 +79,13 @@
         <?php echo $form->textArea($model, 'info',array('style'=>'width:600px;height:150px;', 'maxlength'=>128)); ?>
         <?php echo $form->error($model, 'info'); ?>
     </div>
-    
+    <!-- 
     <div class="row">
         <?php echo $form->labelEx($model, 'ad_url'); ?>
         <?php echo $form->textField($model, 'ad_url',array('size'=>70, 'maxlength'=>128)); ?>
         <?php echo $form->error($model, 'ad_url'); ?>
     </div>
-    
+     -->
     <div class="row buttons">
         <?php echo CHtml::submitButton($model->isNewRecord ? '创建' : '保存'); ?>
     </div>
