@@ -353,9 +353,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'header'=>'操 作',
             'template'=>'{view}',
             'buttons'=>array(
-                    'view'=>array(
-                        'options'=>array('style'=>'padding:0 8px 0 0;'),
-                    ),
+                    'view'
             ),
             'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
         ),
